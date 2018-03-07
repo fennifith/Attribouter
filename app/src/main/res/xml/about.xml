@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<about repo="TheAndroidMaster/MediaNotification">
+    <contributors>
+        <contributor
+            id="TheAndroidMaster"
+            task="Lead Developer / Founder" />
+        <!-- since "auto=false" is not specified, Attribouter still fetches the contributors from github, but any values defined here will override them -->
+    </contributors>
+    <licenses>
+        <project repo="TheAndroidMaster/ColorPickerDialog" />
+        <!-- all of this project's info is fetched from github -->
+        <project
+            name="Android Open Source Project"
+            description="Android is an open source software stack for a wide range of mobile devices and a corresponding open source project led by Google."
+            license="Creative Commons 3.0"
+            url="https://source.android.com/" />
+        <!-- license identifiers can be found here https://developer.github.com/v3/licenses/ -->
+    </licenses>
+</about>
