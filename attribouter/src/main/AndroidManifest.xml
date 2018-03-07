@@ -1,1 +1,12 @@
-<manifest package="me.jfenn.attribouter" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="me.jfenn.attribouter">
+
+    <application>
+
+        <activity
+            android:name=".activities.AboutActivity"
+            android:theme="@style/AttribouterTheme" />
+
+    </application>
+
+</manifest>
