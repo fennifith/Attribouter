@@ -4,4 +4,6 @@
     <string name="title_licenses">Licenses</string>
     <string name="title_email">Email</string>
     <string name="title_website">Website</string>
+    <string name="title_github">GitHub</string>
+    <string name="title_rate">Rate</string>
 </resources>
