@@ -16,8 +16,9 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler"
+    <fragment
+        android:id="@+id/fragment"
+        android:name="me.jfenn.attribouter.fragments.AboutFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />

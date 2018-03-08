@@ -2,6 +2,7 @@ package me.jfenn.attribouter.data;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
+import android.content.res.XmlResourceParser;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -10,7 +11,7 @@ import me.jfenn.attribouter.R;
 
 public class AppInfoData extends InfoData<AppInfoData.ViewHolder> {
 
-    public AppInfoData() {
+    public AppInfoData(XmlResourceParser parser) {
         super(R.layout.item_attribouter_app_info);
     }
 

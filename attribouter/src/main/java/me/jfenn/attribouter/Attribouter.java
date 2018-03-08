@@ -7,6 +7,8 @@ import me.jfenn.attribouter.activities.AboutActivity;
 
 public class Attribouter {
 
+    public static final String EXTRA_FILE_RES = "me.jfenn.attribouter.EXTRA_FILE_RES";
+
     private Context context;
     private int fileRes;
 
@@ -16,7 +18,7 @@ public class Attribouter {
 
     public void show() {
         Intent intent = new Intent(context, AboutActivity.class);
-        intent.putExtra(AboutActivity.EXTRA_FILE_RES, fileRes);
+        intent.putExtra(EXTRA_FILE_RES, fileRes);
         context.startActivity(intent);
     }
 
