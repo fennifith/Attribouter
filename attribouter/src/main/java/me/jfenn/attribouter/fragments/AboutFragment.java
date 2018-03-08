@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,11 +14,13 @@ import android.view.ViewGroup;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import me.jfenn.attribouter.Attribouter;
 import me.jfenn.attribouter.R;
+import me.jfenn.attribouter.adapters.InfoAdapter;
 import me.jfenn.attribouter.data.AppInfoData;
 import me.jfenn.attribouter.data.ContributorsInfoData;
 import me.jfenn.attribouter.data.InfoData;
@@ -29,7 +32,7 @@ public class AboutFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        RecyclerView recycler = (RecyclerView) inflater.inflate(R.layout.activity_attribouter_about, container, false);
+        RecyclerView recycler = (RecyclerView) inflater.inflate(R.layout.fragment_attribouter_about, container, false);
 
         List<InfoData> infos = new ArrayList<>();
         String repo = null;
@@ -57,13 +60,19 @@ public class AboutFragment extends Fragment {
                                 break;
                         }
                     }
+                    parser.next();
                 }
-            } catch (XmlPullParserException e) {
+            } catch (IOException | XmlPullParserException e) {
                 e.printStackTrace();
             }
+
+            parser.close();
         } else {
             //TODO: throw exception or something
         }
+
+        recycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        recycler.setAdapter(new InfoAdapter(infos));
 
         return recycler;
     }

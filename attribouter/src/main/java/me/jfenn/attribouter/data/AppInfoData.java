@@ -2,6 +2,8 @@ package me.jfenn.attribouter.data;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.XmlResourceParser;
 import android.view.View;
 import android.widget.ImageView;
@@ -25,7 +27,12 @@ public class AppInfoData extends InfoData<AppInfoData.ViewHolder> {
         ApplicationInfo info = context.getApplicationInfo();
         viewHolder.appIconView.setImageResource(info.icon);
         viewHolder.nameTextView.setText(info.labelRes);
-
+        try {
+            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(info.packageName, 0);
+            viewHolder.versionTextView.setText(String.format(context.getString(R.string.title_attribouter_version), packageInfo.versionName));
+        } catch (PackageManager.NameNotFoundException e) {
+            viewHolder.versionTextView.setVisibility(View.GONE);
+        }
     }
 
     static class ViewHolder extends InfoData.ViewHolder {

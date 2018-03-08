@@ -6,4 +6,5 @@
     <string name="title_website">Website</string>
     <string name="title_github">GitHub</string>
     <string name="title_rate">Rate</string>
+    <string name="title_attribouter_version">Version %1$s</string>
 </resources>

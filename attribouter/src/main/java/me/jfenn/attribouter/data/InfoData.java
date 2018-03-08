@@ -21,7 +21,7 @@ public abstract class InfoData<T extends InfoData.ViewHolder> {
 
     public abstract void bind(Context context, T viewHolder);
 
-    protected static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         ViewHolder(View v) {
             super(v);
