@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
@@ -92,20 +94,22 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
     @Override
     public void bind(Context context, ViewHolder viewHolder) {
         ContributorData first = null, second = null, third = null;
-        List<ContributorData> remainingContributors = new ArrayList<>(contributors);
+        List<ContributorData> remainingContributors = new ArrayList<>();
         for (ContributorData contributor : contributors) {
             if (contributor.position != null) {
                 if (first == null && contributor.position == 1) {
                     first = contributor;
-                    remainingContributors.remove(contributor);
+                    continue;
                 } else if (second == null && contributor.position == 2) {
                     second = contributor;
-                    remainingContributors.remove(contributor);
+                    continue;
                 } else if (third == null && contributor.position == 3) {
                     third = contributor;
-                    remainingContributors.remove(contributor);
+                    continue;
                 }
             }
+
+            remainingContributors.add(contributor);
         }
 
         viewHolder.topThreeView.setVisibility(first != null || second != null || third != null ? View.VISIBLE : View.GONE);
@@ -113,6 +117,7 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
         if (first != null) {
             viewHolder.firstView.setVisibility(View.VISIBLE);
             viewHolder.firstNameView.setText(ResourceUtils.getString(context, first.getName()));
+            Glide.with(context).load(first.avatarUrl).into(viewHolder.firstImageView); //TODO: account for resource strings
             if (first.task != null) {
                 viewHolder.firstTaskView.setVisibility(View.VISIBLE);
                 viewHolder.firstTaskView.setText(ResourceUtils.getString(context, first.task));
@@ -122,6 +127,7 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
         if (second != null) {
             viewHolder.secondView.setVisibility(View.VISIBLE);
             viewHolder.secondNameView.setText(ResourceUtils.getString(context, second.getName()));
+            Glide.with(context).load(second.avatarUrl).into(viewHolder.secondImageView);
             if (second.task != null) {
                 viewHolder.secondTaskView.setVisibility(View.VISIBLE);
                 viewHolder.secondTaskView.setText(ResourceUtils.getString(context, second.task));
@@ -131,6 +137,7 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
         if (third != null) {
             viewHolder.thirdView.setVisibility(View.VISIBLE);
             viewHolder.thirdNameView.setText(ResourceUtils.getString(context, third.getName()));
+            Glide.with(context).load(third.avatarUrl).into(viewHolder.thirdImageView);
             if (third.task != null) {
                 viewHolder.thirdTaskView.setVisibility(View.VISIBLE);
                 viewHolder.thirdTaskView.setText(ResourceUtils.getString(context, third.task));
