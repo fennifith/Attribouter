@@ -21,11 +21,11 @@ import java.util.List;
 import me.jfenn.attribouter.Attribouter;
 import me.jfenn.attribouter.R;
 import me.jfenn.attribouter.adapters.InfoAdapter;
-import me.jfenn.attribouter.data.AppInfoData;
-import me.jfenn.attribouter.data.ContributorsInfoData;
-import me.jfenn.attribouter.data.InfoData;
-import me.jfenn.attribouter.data.LicensesInfoData;
-import me.jfenn.attribouter.data.TextInfoData;
+import me.jfenn.attribouter.data.info.AppInfoData;
+import me.jfenn.attribouter.data.info.ContributorsInfoData;
+import me.jfenn.attribouter.data.info.InfoData;
+import me.jfenn.attribouter.data.info.LicensesInfoData;
+import me.jfenn.attribouter.data.info.TextInfoData;
 
 public class AboutFragment extends Fragment {
 

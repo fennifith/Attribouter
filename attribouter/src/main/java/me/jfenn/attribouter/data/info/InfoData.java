@@ -1,4 +1,4 @@
-package me.jfenn.attribouter.data;
+package me.jfenn.attribouter.data.info;
 
 import android.content.Context;
 import android.support.annotation.LayoutRes;
@@ -26,6 +26,7 @@ public abstract class InfoData<T extends InfoData.ViewHolder> {
         ViewHolder(View v) {
             super(v);
         }
+
     }
 
 }

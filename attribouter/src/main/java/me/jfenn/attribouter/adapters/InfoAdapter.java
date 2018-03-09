@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-import me.jfenn.attribouter.data.InfoData;
+import me.jfenn.attribouter.data.info.InfoData;
 
 public class InfoAdapter extends RecyclerView.Adapter<InfoData.ViewHolder> {
 

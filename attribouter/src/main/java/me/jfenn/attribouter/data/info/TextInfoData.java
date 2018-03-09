@@ -1,4 +1,4 @@
-package me.jfenn.attribouter.data;
+package me.jfenn.attribouter.data.info;
 
 import android.content.Context;
 import android.content.res.XmlResourceParser;
