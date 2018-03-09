@@ -126,9 +126,11 @@ public class AboutFragment extends Fragment implements GitHubData.OnInitListener
 
     @Override
     public void onRequest(InfoData info, GitHubData request) {
-        if (!requests.contains(request))
+        if (!requests.contains(request)) {
             requests.add(request);
-        else {
+            request.addOnInitListener(this);
+            request.startInit();
+        } else {
             int i = requests.indexOf(request);
             GitHubData activeRequest = requests.get(i);
             if (activeRequest.isInitialized()) {
