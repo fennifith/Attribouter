@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import me.jfenn.attribouter.R;
+import me.jfenn.attribouter.utils.ResourceUtils;
 import me.jfenn.attribouter.utils.UrlClickListener;
 
 public class AppInfoData extends InfoData<AppInfoData.ViewHolder> {
@@ -54,13 +55,13 @@ public class AppInfoData extends InfoData<AppInfoData.ViewHolder> {
 
         if (description != null) {
             viewHolder.descriptionTextView.setVisibility(View.VISIBLE);
-            viewHolder.descriptionTextView.setText(description);
+            viewHolder.descriptionTextView.setText(ResourceUtils.getString(context, description));
         } else viewHolder.descriptionTextView.setVisibility(View.GONE);
 
         if (isPlayStore) {
             UrlClickListener listener = new UrlClickListener("https://play.google.com/store/apps/details?id=" + info.packageName);
             if (playStoreUrl != null)
-                listener = new UrlClickListener(playStoreUrl);
+                listener = new UrlClickListener(ResourceUtils.getString(context, playStoreUrl));
 
             viewHolder.playStoreButton.setVisibility(View.VISIBLE);
             viewHolder.playStoreButton.setOnClickListener(listener);
@@ -68,12 +69,12 @@ public class AppInfoData extends InfoData<AppInfoData.ViewHolder> {
 
         if (websiteUrl != null) {
             viewHolder.websiteButton.setVisibility(View.VISIBLE);
-            viewHolder.websiteButton.setOnClickListener(new UrlClickListener(websiteUrl));
+            viewHolder.websiteButton.setOnClickListener(new UrlClickListener(ResourceUtils.getString(context, websiteUrl)));
         } else viewHolder.websiteButton.setVisibility(View.GONE);
 
         if (gitHubUrl != null) {
             viewHolder.gitHubButton.setVisibility(View.VISIBLE);
-            viewHolder.gitHubButton.setOnClickListener(new UrlClickListener(gitHubUrl));
+            viewHolder.gitHubButton.setOnClickListener(new UrlClickListener(ResourceUtils.getString(context, gitHubUrl)));
         } else viewHolder.gitHubButton.setVisibility(View.GONE);
     }
 

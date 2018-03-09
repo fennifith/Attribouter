@@ -9,6 +9,7 @@ import android.widget.TextView;
 import org.xmlpull.v1.XmlPullParserException;
 
 import me.jfenn.attribouter.R;
+import me.jfenn.attribouter.utils.ResourceUtils;
 
 public class TextInfoData extends InfoData {
 
@@ -31,7 +32,7 @@ public class TextInfoData extends InfoData {
     @Override
     public void bind(Context context, ViewHolder viewHolder) {
         TextView textView = (TextView) viewHolder.itemView;
-        textView.setText(text);
+        textView.setText(ResourceUtils.getString(context, text));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
             textView.setTextAlignment(isCentered ? View.TEXT_ALIGNMENT_CENTER : View.TEXT_ALIGNMENT_GRAVITY);
     }
