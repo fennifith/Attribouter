@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -79,6 +80,7 @@ public class AboutFragment extends Fragment implements GitHubData.OnInitListener
 
         adapter = new InfoAdapter(infos);
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        recycler.addItemDecoration(new DividerItemDecoration(recycler.getContext(), DividerItemDecoration.VERTICAL));
         recycler.setAdapter(adapter);
 
         requests = new ArrayList<>();

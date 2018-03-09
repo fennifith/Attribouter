@@ -7,13 +7,26 @@
     android:paddingBottom="8dp"
     android:paddingTop="8dp">
 
+    <TextView
+        android:id="@+id/contributorsTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:textColor="?android:textColorPrimary"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:text="@string/title_contributors" />
+
     <LinearLayout
         android:id="@+id/topThree"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="8dp">
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
 
         <LinearLayout
             android:id="@+id/second"
@@ -29,25 +42,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:padding="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:scaleType="centerInside"
-                tools:src="@android:color/black" />
+                tools:src="@android:color/darker_gray" />
 
             <TextView
                 android:id="@+id/secondName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
                 android:gravity="center"
+                android:lines="1"
+                android:singleLine="true"
                 android:textAlignment="center"
                 android:textColor="?android:textColorPrimary"
                 android:textSize="18sp"
-                tools:text="John Doe" />
+                tools:text="John Doemaning" />
 
             <TextView
                 android:id="@+id/secondTask"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
                 android:gravity="center"
+                android:lines="1"
+                android:singleLine="true"
                 android:textAlignment="center"
                 android:textColor="?android:textColorSecondary"
                 android:textSize="14sp"
@@ -69,15 +89,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:padding="16dp"
                 android:scaleType="centerInside"
-                tools:src="@android:color/black" />
+                tools:src="@android:color/darker_gray" />
 
             <TextView
                 android:id="@+id/firstName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
                 android:gravity="center"
+                android:lines="1"
+                android:singleLine="true"
                 android:textAlignment="center"
                 android:textColor="?android:textColorPrimary"
                 android:textSize="18sp"
@@ -87,7 +112,10 @@
                 android:id="@+id/firstTask"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
                 android:gravity="center"
+                android:lines="1"
+                android:singleLine="true"
                 android:textAlignment="center"
                 android:textColor="?android:textColorSecondary"
                 android:textSize="14sp"
@@ -109,15 +137,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:padding="16dp"
                 android:scaleType="centerInside"
-                tools:src="@android:color/black" />
+                tools:src="@android:color/darker_gray" />
 
             <TextView
                 android:id="@+id/thirdName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
                 android:gravity="center"
+                android:lines="1"
+                android:singleLine="true"
                 android:textAlignment="center"
                 android:textColor="?android:textColorPrimary"
                 android:textSize="18sp"
@@ -127,7 +160,10 @@
                 android:id="@+id/thirdTask"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
                 android:gravity="center"
+                android:lines="1"
+                android:singleLine="true"
                 android:textAlignment="center"
                 android:textColor="?android:textColorSecondary"
                 android:textSize="14sp"

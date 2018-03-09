@@ -3,8 +3,15 @@
     <appInfo />
     <contributors>
         <contributor
-            id="TheAndroidMaster"
-            task="Lead Developer / Founder" />
+            login="TheAndroidMaster"
+            task="Lead Developer / Founder"
+            position="1" />
+        <contributor
+            login="BrianValente"
+            position="2" />
+        <contributor
+            login="jahirfiquitiva"
+            position="3" />
         <!-- since "auto=false" is not specified, Attribouter still fetches the contributors from github, but any values defined here will override them -->
     </contributors>
     <licenses>
