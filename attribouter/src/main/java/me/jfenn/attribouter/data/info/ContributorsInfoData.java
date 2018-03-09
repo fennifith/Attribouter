@@ -36,12 +36,11 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
         contributorsTitle = parser.getAttributeValue(null, "title");
         while (parser.getEventType() != XmlResourceParser.END_TAG || parser.getName().equals("contributor")) {
             parser.next();
-            String login = parser.getAttributeValue(null, "login");
-            int position = parser.getAttributeIntValue(null, "position", -1);
+            if (parser.getEventType() == XmlResourceParser.START_TAG && parser.getName().equals("contributor")) {
+                int position = parser.getAttributeIntValue(null, "position", -1);
 
-            if (login != null) {
                 ContributorInfoData contributor = new ContributorInfoData(
-                        login,
+                        parser.getAttributeValue(null, "login"),
                         parser.getAttributeValue(null, "name"),
                         parser.getAttributeValue(null, "avatar"),
                         parser.getAttributeValue(null, "task"),

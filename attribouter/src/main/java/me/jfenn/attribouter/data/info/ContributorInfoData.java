@@ -1,7 +1,6 @@
 package me.jfenn.attribouter.data.info;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,7 +13,7 @@ import me.jfenn.attribouter.utils.ResourceUtils;
 
 public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder> {
 
-    @NonNull
+    @Nullable
     String login;
     @Nullable
     String name;
@@ -29,7 +28,7 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
     @Nullable
     String task;
 
-    ContributorInfoData(@NonNull String login, @Nullable String name, @Nullable String avatarUrl, @Nullable String task, @Nullable Integer position, @Nullable String bio, @Nullable String blog) {
+    ContributorInfoData(@Nullable String login, @Nullable String name, @Nullable String avatarUrl, @Nullable String task, @Nullable Integer position, @Nullable String bio, @Nullable String blog) {
         super(R.layout.item_attribouter_contributor);
         this.login = login;
         this.name = name;
@@ -63,7 +62,7 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof ContributorInfoData && ((ContributorInfoData) obj).login.equals(login);
+        return obj instanceof ContributorInfoData && (login != null ? login.equals(((ContributorInfoData) obj).login) : super.equals(obj));
     }
 
     @Override
