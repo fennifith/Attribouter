@@ -21,20 +21,26 @@ import java.util.List;
 import me.jfenn.attribouter.Attribouter;
 import me.jfenn.attribouter.R;
 import me.jfenn.attribouter.adapters.InfoAdapter;
+import me.jfenn.attribouter.data.github.GitHubData;
 import me.jfenn.attribouter.data.info.AppInfoData;
 import me.jfenn.attribouter.data.info.ContributorsInfoData;
 import me.jfenn.attribouter.data.info.InfoData;
 import me.jfenn.attribouter.data.info.LicensesInfoData;
 import me.jfenn.attribouter.data.info.TextInfoData;
 
-public class AboutFragment extends Fragment {
+public class AboutFragment extends Fragment implements GitHubData.OnInitListener {
+
+    private InfoAdapter adapter;
+
+    private List<InfoData> infos;
+    private List<GitHubData> requests;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         RecyclerView recycler = (RecyclerView) inflater.inflate(R.layout.fragment_attribouter_about, container, false);
 
-        List<InfoData> infos = new ArrayList<>();
+        infos = new ArrayList<>();
         String repo = null;
 
         Bundle args = getArguments();
@@ -47,7 +53,7 @@ public class AboutFragment extends Fragment {
                     } else if (parser.getEventType() == XmlPullParser.START_TAG) {
                         switch (parser.getName()) {
                             case "appInfo":
-                                infos.add(new AppInfoData(parser));
+                                infos.add(new AppInfoData(parser, repo));
                                 break;
                             case "contributors":
                                 infos.add(new ContributorsInfoData(parser));
@@ -71,9 +77,50 @@ public class AboutFragment extends Fragment {
             //TODO: throw exception or something
         }
 
+        adapter = new InfoAdapter(infos);
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        recycler.setAdapter(new InfoAdapter(infos));
+        recycler.setAdapter(adapter);
+
+        requests = new ArrayList<>();
+        for (InfoData info : infos) {
+            for (GitHubData request : (List<GitHubData>) info.getRequests()) {
+                if (!requests.contains(request))
+                    requests.add(request);
+                else {
+                    int i = requests.indexOf(request);
+                    requests.set(i, request.merge(requests.get(i)));
+                }
+            }
+        }
+
+        for (GitHubData request : requests) {
+            request.addOnInitListener(this);
+            request.startInit();
+        }
 
         return recycler;
     }
+
+    @Override
+    public void onInit(GitHubData data) {
+        requests.remove(data);
+        for (int i = 0; i < infos.size(); i++) {
+            if (infos.get(i).hasRequest(data))
+                adapter.notifyItemChanged(i);
+        }
+    }
+
+    @Override
+    public void onFailure(GitHubData data) {
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (requests != null) {
+            for (GitHubData request : requests)
+                request.interruptThread();
+        }
+    }
+
 }
