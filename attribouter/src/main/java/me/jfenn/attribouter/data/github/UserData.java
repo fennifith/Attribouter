@@ -2,13 +2,13 @@ package me.jfenn.attribouter.data.github;
 
 public class UserData extends GitHubData {
 
-    private String login;
-    private String name;
-    private String avatar_url;
-    private String html_url;
-    private String blog;
-    private String email;
-    private String bio;
+    public String login;
+    public String name;
+    public String avatar_url;
+    public String html_url;
+    public String blog;
+    public String email;
+    public String bio;
 
     public UserData(String login) {
         super("https://api.github.com/users/" + login);

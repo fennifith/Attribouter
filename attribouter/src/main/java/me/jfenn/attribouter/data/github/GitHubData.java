@@ -1,5 +1,8 @@
 package me.jfenn.attribouter.data.github;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.InstanceCreator;
@@ -125,24 +128,30 @@ public abstract class GitHubData {
 
         private GitHubData data;
         private String url;
+        private StringBuilder builder;
 
         private GitHubThread(GitHubData data, String url) {
             this.data = data;
             this.url = url;
+            builder = new StringBuilder();
         }
 
         @Override
         public void run() {
             BufferedReader reader = null;
             try {
-                StringBuilder builder = new StringBuilder();
                 reader = new BufferedReader(new InputStreamReader(new URL(url).openConnection().getInputStream()));
 
                 String line;
                 while ((line = reader.readLine()) != null)
                     builder.append(line);
 
-                data.init(builder.toString());
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        data.init(builder.toString());
+                    }
+                });
             } catch (IOException e) {
                 e.printStackTrace();
             }

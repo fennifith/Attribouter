@@ -2,14 +2,14 @@ package me.jfenn.attribouter.data.github;
 
 public class LicenseData extends GitHubData {
 
-    private String key;
-    private String name;
-    private String html_url;
-    private String description;
-    private String[] permissions;
-    private String[] conditions;
-    private String[] limitations;
-    private String body;
+    public String key;
+    public String name;
+    public String html_url;
+    public String description;
+    public String[] permissions;
+    public String[] conditions;
+    public String[] limitations;
+    public String body;
 
     public LicenseData(String key) {
         super("https://api.github.com/licenses/" + key);

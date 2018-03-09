@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import me.jfenn.attribouter.R;
+import me.jfenn.attribouter.data.github.GitHubData;
+import me.jfenn.attribouter.data.github.RepositoryData;
 import me.jfenn.attribouter.utils.ResourceUtils;
 import me.jfenn.attribouter.utils.UrlClickListener;
 
@@ -33,6 +35,25 @@ public class AppInfoData extends InfoData<AppInfoData.ViewHolder> {
 
         if (gitHubUrl == null && repo != null)
             gitHubUrl = "https://github.com/" + repo;
+
+        addRequest(new RepositoryData(repo));
+    }
+
+    @Override
+    public void onInit(GitHubData data) {
+        if (data instanceof RepositoryData) {
+            RepositoryData repository = (RepositoryData) data;
+            if ((description == null || !description.startsWith("^")) && repository.description != null)
+                description = repository.description;
+            if ((gitHubUrl == null || !gitHubUrl.startsWith("^")) && repository.html_url != null)
+                gitHubUrl = repository.html_url;
+            if ((websiteUrl == null || !websiteUrl.startsWith("^")) && repository.homepage != null) {
+                if (repository.homepage.startsWith("https://play.google.com/")) {
+                    if (playStoreUrl == null || !playStoreUrl.startsWith("^"))
+                        playStoreUrl = repository.homepage;
+                } else websiteUrl = repository.homepage;
+            }
+        }
     }
 
     @Override

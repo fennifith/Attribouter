@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 
 public class ContributorsData extends GitHubData {
 
-    private ContributorData[] contributors;
+    public ContributorData[] contributors;
 
     public ContributorsData(String repo) {
         super("https://api.github.com/repos/" + repo + "/contributors");
@@ -17,7 +17,7 @@ public class ContributorsData extends GitHubData {
 
     public static class ContributorData {
 
-        private String login;
+        public String login;
 
     }
 

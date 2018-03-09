@@ -7,6 +7,9 @@ public class ResourceUtils {
 
     @Nullable
     public static String getString(Context context, @Nullable String identifier) {
+        if (identifier != null && identifier.startsWith("^"))
+            identifier = identifier.substring(1);
+
         if (identifier != null && identifier.startsWith("@")) {
             identifier = identifier.substring(1);
             if (identifier.contains("/")) {
