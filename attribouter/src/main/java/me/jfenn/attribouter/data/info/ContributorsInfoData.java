@@ -7,12 +7,51 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import me.jfenn.attribouter.R;
+import me.jfenn.attribouter.data.github.ContributorsData;
+import me.jfenn.attribouter.data.github.GitHubData;
+import me.jfenn.attribouter.data.github.UserData;
 
 public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHolder> {
 
-    public ContributorsInfoData(XmlResourceParser parser) {
+    private List<ContributorData> contributors;
+
+    public ContributorsInfoData(XmlResourceParser parser, String repo) {
         super(R.layout.item_attribouter_contributors);
+        contributors = new ArrayList<>();
+        addRequest(new UserData("TheAndroidMaster")); //hey, that's me
+        addRequest(new ContributorsData(repo));
+    }
+
+    @Override
+    public void onInit(GitHubData data) {
+        if (data instanceof ContributorsData) {
+            if (((ContributorsData) data).contributors != null) {
+                for (ContributorsData.ContributorData contributor : ((ContributorsData) data).contributors) {
+                    if (contributor.login == null)
+                        continue;
+
+                    boolean shouldDoSomething = true;
+                    for (ContributorData contributor2 : contributors) {
+                        if (contributor.login.equals(contributor2.login)) {
+                            shouldDoSomething = !contributor2.hasEverything();
+                        }
+                    }
+
+                    if (shouldDoSomething)
+                        addRequest(new UserData(contributor.login));
+                }
+            }
+        } else if (data instanceof UserData) {
+            UserData user = (UserData) data;
+            ContributorData contributor = new ContributorData(user.login, user.name, user.bio, user.blog);
+            if (!contributors.contains(contributor))
+                contributors.add(0, contributor);
+            else contributors.get(contributors.indexOf(contributor)).merge(contributor);
+        }
     }
 
     @Override
@@ -59,6 +98,39 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
             thirdNameView = v.findViewById(R.id.thirdName);
             thirdTaskView = v.findViewById(R.id.thirdTask);
             recycler = v.findViewById(R.id.recycler);
+        }
+    }
+
+    public static class ContributorData {
+
+        private String login;
+        private String name;
+        private String bio;
+        private String blog;
+
+        private ContributorData(String login, String name, String bio, String blog) {
+            this.login = login;
+            this.name = name;
+            this.bio = bio;
+            this.blog = blog;
+        }
+
+        private void merge(ContributorData contributor) {
+            if ((name == null || !name.startsWith("^")) && contributor.name != null)
+                name = contributor.name;
+            if ((bio == null || !bio.startsWith("^")) && contributor.bio != null)
+                bio = contributor.bio;
+            if ((blog == null || !blog.startsWith("^")) && contributor.blog != null)
+                blog = contributor.blog;
+        }
+
+        private boolean hasEverything() {
+            return name != null && name.startsWith("^") && bio != null && bio.startsWith("^") && blog != null && blog.startsWith("^");
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            return obj instanceof ContributorData && ((ContributorData) obj).login.equals(login);
         }
     }
 
