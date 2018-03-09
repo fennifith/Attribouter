@@ -56,7 +56,7 @@ public class AboutFragment extends Fragment implements GitHubData.OnInitListener
                                 infos.add(new AppInfoData(parser, repo));
                                 break;
                             case "contributors":
-                                infos.add(new ContributorsInfoData(parser));
+                                infos.add(new ContributorsInfoData(parser, repo));
                                 break;
                             case "licenses":
                                 infos.add(new LicensesInfoData(parser));
