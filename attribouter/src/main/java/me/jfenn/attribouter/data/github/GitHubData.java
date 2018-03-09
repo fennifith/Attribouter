@@ -17,6 +17,7 @@ public abstract class GitHubData {
     private String url;
     private GitHubThread thread;
     private Gson gson;
+    private boolean isInitialized;
 
     private List<OnInitListener> listeners;
 
@@ -37,6 +38,7 @@ public abstract class GitHubData {
     private void init(String json) {
         initJson(gson, json);
         onInit();
+        isInitialized = true;
         for (OnInitListener listener : listeners) {
             listener.onInit(this);
         }
@@ -65,6 +67,10 @@ public abstract class GitHubData {
     public final void startInit() {
         thread = new GitHubThread(this, url);
         thread.start();
+    }
+
+    public final boolean isInitialized() {
+        return isInitialized;
     }
 
     /**

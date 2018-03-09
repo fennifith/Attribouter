@@ -28,7 +28,7 @@ import me.jfenn.attribouter.data.info.InfoData;
 import me.jfenn.attribouter.data.info.LicensesInfoData;
 import me.jfenn.attribouter.data.info.TextInfoData;
 
-public class AboutFragment extends Fragment implements GitHubData.OnInitListener {
+public class AboutFragment extends Fragment implements GitHubData.OnInitListener, InfoData.OnRequestListener {
 
     private InfoAdapter adapter;
 
@@ -103,7 +103,6 @@ public class AboutFragment extends Fragment implements GitHubData.OnInitListener
 
     @Override
     public void onInit(GitHubData data) {
-        requests.remove(data);
         for (int i = 0; i < infos.size(); i++) {
             if (infos.get(i).hasRequest(data))
                 adapter.notifyItemChanged(i);
@@ -123,4 +122,16 @@ public class AboutFragment extends Fragment implements GitHubData.OnInitListener
         }
     }
 
+    @Override
+    public void onRequest(InfoData info, GitHubData request) {
+        if (!requests.contains(request))
+            requests.add(request);
+        else {
+            int i = requests.indexOf(request);
+            GitHubData activeRequest = requests.get(i);
+            if (activeRequest.isInitialized()) {
+                info.onInit(activeRequest);
+            } else requests.set(i, requests.get(i).merge(request));
+        }
+    }
 }

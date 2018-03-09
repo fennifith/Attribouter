@@ -15,6 +15,8 @@ public abstract class InfoData<T extends InfoData.ViewHolder> implements GitHubD
     private int layoutRes;
     private List<GitHubData> requests;
 
+    private OnRequestListener listener;
+
     public InfoData(@LayoutRes int layoutRes) {
         this.layoutRes = layoutRes;
         requests = new ArrayList<>();
@@ -24,6 +26,12 @@ public abstract class InfoData<T extends InfoData.ViewHolder> implements GitHubD
         request.addOnInitListener(this);
         if (!requests.contains(request))
             requests.add(request);
+        if (listener != null)
+            listener.onRequest(this, request);
+    }
+
+    public final void setOnRequestListener(OnRequestListener listener) {
+        this.listener = listener;
     }
 
     public final List<GitHubData> getRequests() {
@@ -56,6 +64,10 @@ public abstract class InfoData<T extends InfoData.ViewHolder> implements GitHubD
             super(v);
         }
 
+    }
+
+    public interface OnRequestListener {
+        void onRequest(InfoData info, GitHubData request);
     }
 
 }
