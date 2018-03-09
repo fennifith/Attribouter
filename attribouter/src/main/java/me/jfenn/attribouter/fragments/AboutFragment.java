@@ -91,6 +91,8 @@ public class AboutFragment extends Fragment implements GitHubData.OnInitListener
                     requests.set(i, request.merge(requests.get(i)));
                 }
             }
+
+            info.setOnRequestListener(this);
         }
 
         for (GitHubData request : requests) {
