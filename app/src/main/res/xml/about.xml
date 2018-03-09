@@ -4,14 +4,20 @@
     <contributors>
         <contributor
             login="TheAndroidMaster"
-            task="Lead Developer / Founder"
+            task="Owner"
             position="1" />
         <contributor
             login="BrianValente"
+            task="Contributor"
             position="2" />
         <contributor
             login="jahirfiquitiva"
+            task="Contributor"
             position="3" />
+        <contributor
+            name="Alex Dueppen"
+            task="Icon Designer"
+            avatar="https://avatars3.githubusercontent.com/u/6982070" />
         <!-- since "auto=false" is not specified, Attribouter still fetches the contributors from github, but any values defined here will override them -->
     </contributors>
     <licenses>
