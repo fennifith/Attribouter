@@ -51,7 +51,8 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> {
 
             return name.replace('-', ' ')
                     .replace('_', ' ')
-                    .replaceAll("/([A-Z])/g", " $1")
+                    .replaceAll("([a-z])([A-Z])", "$1 $2")
+                    .replaceAll("([A-Z])([A-Z][a-z])", "$1 $2")
                     .trim();
         } else return null;
     }
