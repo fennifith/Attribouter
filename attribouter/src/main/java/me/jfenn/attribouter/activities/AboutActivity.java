@@ -25,13 +25,11 @@ public class AboutActivity extends AppCompatActivity {
         toolbar.setTitleTextColor(ColorUtils.isColorLight(ContextCompat.getColor(this, R.color.colorPrimary)) ? Color.BLACK : Color.WHITE);
 
         Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            if (savedInstanceState == null) {
-                AboutFragment fragment = new AboutFragment();
-                fragment.setArguments(bundle);
+        if (bundle != null && savedInstanceState == null) {
+            AboutFragment fragment = new AboutFragment();
+            fragment.setArguments(bundle);
 
-                getSupportFragmentManager().beginTransaction().add(R.id.fragment, fragment).commit();
-            }
+            getSupportFragmentManager().beginTransaction().add(R.id.fragment, fragment).commit();
         }
     }
 
