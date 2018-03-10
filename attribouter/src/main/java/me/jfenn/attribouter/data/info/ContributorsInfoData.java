@@ -66,15 +66,22 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
                     if (contributor.login == null)
                         continue;
 
-                    boolean shouldDoSomething = true;
-                    for (ContributorInfoData contributor2 : contributors) {
-                        if (contributor.login.equals(contributor2.login)) {
-                            shouldDoSomething = !contributor2.hasEverything();
-                        }
-                    }
+                    ContributorInfoData mergeContributor = new ContributorInfoData(
+                            contributor.login,
+                            null,
+                            contributor.avatar_url,
+                            repo.startsWith(contributor.login) ? "Owner" : "Contributor",
+                            null,
+                            null,
+                            null
+                    );
 
-                    if (shouldDoSomething)
-                        addRequest(new UserData(contributor.login));
+                    if (contributors.contains(mergeContributor)) {
+                        ContributorInfoData contributorInfo = contributors.get(contributors.indexOf(mergeContributor));
+                        contributorInfo.merge(mergeContributor);
+                        if (!contributorInfo.hasEverything())
+                            addRequest(new UserData(contributor.login));
+                    }
                 }
             }
         } else if (data instanceof UserData) {

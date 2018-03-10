@@ -18,6 +18,8 @@ public class ContributorsData extends GitHubData {
     public static class ContributorData {
 
         public String login;
+        public String avatar_url;
+        public String html_url;
 
     }
 

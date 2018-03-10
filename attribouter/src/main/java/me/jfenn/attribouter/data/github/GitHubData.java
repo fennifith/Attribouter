@@ -21,6 +21,7 @@ public abstract class GitHubData {
     private GitHubThread thread;
     private Gson gson;
     private boolean isInitialized;
+    private String tag;
 
     private List<OnInitListener> listeners;
 
@@ -90,6 +91,14 @@ public abstract class GitHubData {
         }
 
         return this;
+    }
+
+    public final void setTag(String tag) {
+        this.tag = tag;
+    }
+
+    public final String getTag() {
+        return tag;
     }
 
     public final void addOnInitListener(OnInitListener listener) {

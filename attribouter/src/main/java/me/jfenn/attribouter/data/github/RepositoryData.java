@@ -9,6 +9,7 @@ public class RepositoryData extends GitHubData {
 
     public RepositoryData(String repo) {
         super("https://api.github.com/repos/" + repo);
+        setTag(repo);
     }
 
     public static class LicenseData {
