@@ -33,6 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="6dp"
             android:layout_marginStart="6dp"
+            android:background="@drawable/bg_attribouter_license_name"
             android:textColor="?android:textColorSecondary"
             android:textSize="14sp"
             tools:text="License" />

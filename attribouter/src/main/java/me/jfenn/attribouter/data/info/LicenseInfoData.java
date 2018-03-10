@@ -93,7 +93,12 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> {
     public void bind(Context context, ViewHolder viewHolder) {
         viewHolder.titleView.setText(ResourceUtils.getString(context, getName()));
         viewHolder.descriptionView.setText(ResourceUtils.getString(context, description));
-        viewHolder.licenseView.setText(ResourceUtils.getString(context, licenseName));
+
+        if (licenseName != null) {
+            viewHolder.licenseView.setVisibility(View.VISIBLE);
+            viewHolder.licenseView.setText(ResourceUtils.getString(context, licenseName));
+        } else viewHolder.licenseView.setVisibility(View.GONE);
+
         viewHolder.links.setVisibility(websiteUrl != null || gitHubUrl != null || licenseUrl != null ? View.VISIBLE : View.GONE);
 
         if (websiteUrl != null) {
