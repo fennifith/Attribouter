@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import me.jfenn.attribouter.R;
+import me.jfenn.attribouter.dialogs.LicenseDialog;
 import me.jfenn.attribouter.utils.ResourceUtils;
 import me.jfenn.attribouter.utils.UrlClickListener;
 
@@ -18,15 +19,25 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> {
     @Nullable
     String description;
     @Nullable
-    String licenseName;
+    public String licenseName;
     @Nullable
     String websiteUrl;
     @Nullable
     String gitHubUrl;
     @Nullable
-    String licenseUrl;
+    public String licenseUrl;
+    @Nullable
+    String[] licensePermissions;
+    @Nullable
+    String[] licenseConditions;
+    @Nullable
+    String[] licenseLimitations;
+    @Nullable
+    public String licenseDescription;
+    @Nullable
+    public String licenseBody;
 
-    public LicenseInfoData(@Nullable String repo, @Nullable String title, @Nullable String description, @Nullable String licenseName, @Nullable String websiteUrl, @Nullable String gitHubUrl, @Nullable String licenseUrl) {
+    public LicenseInfoData(@Nullable String repo, @Nullable String title, @Nullable String description, @Nullable String licenseName, @Nullable String websiteUrl, @Nullable String gitHubUrl, @Nullable String licenseUrl, @Nullable String[] licensePermissions, @Nullable String[] licenseConditions, @Nullable String[] licenseLimitations, @Nullable String licenseDescription, @Nullable String licenseBody) {
         super(R.layout.item_attribouter_license);
         this.repo = repo;
         this.title = title;
@@ -35,6 +46,11 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> {
         this.websiteUrl = websiteUrl;
         this.gitHubUrl = gitHubUrl;
         this.licenseUrl = licenseUrl;
+        this.licensePermissions = licensePermissions;
+        this.licenseConditions = licenseConditions;
+        this.licenseLimitations = licenseLimitations;
+        this.licenseDescription = licenseDescription;
+        this.licenseBody = licenseBody;
     }
 
     public String getName() {
@@ -57,6 +73,57 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> {
         } else return null;
     }
 
+    public String getLicensePermissions() {
+        if (licensePermissions == null)
+            return null;
+        else {
+            StringBuilder builder = new StringBuilder();
+            for (String permission : licensePermissions) {
+                if (permission.length() > 1) {
+                    builder.append(String.valueOf(permission.charAt(0)).toUpperCase())
+                            .append(permission.replace('-', ' ').substring(1))
+                            .append("\n");
+                }
+            }
+
+            return builder.substring(0, builder.length() - 1);
+        }
+    }
+
+    public String getLicenseConditions() {
+        if (licenseConditions == null)
+            return null;
+        else {
+            StringBuilder builder = new StringBuilder();
+            for (String condition : licenseConditions) {
+                if (condition.length() > 1) {
+                    builder.append(String.valueOf(condition.charAt(0)).toUpperCase())
+                            .append(condition.replace('-', ' ').substring(1))
+                            .append("\n");
+                }
+            }
+
+            return builder.substring(0, builder.length() - 1);
+        }
+    }
+
+    public String getLicenseLimitations() {
+        if (licenseLimitations == null)
+            return null;
+        else {
+            StringBuilder builder = new StringBuilder();
+            for (String limitation : licenseLimitations) {
+                if (limitation.length() > 1) {
+                    builder.append(String.valueOf(limitation.charAt(0)).toUpperCase())
+                            .append(limitation.replace('-', ' ').substring(1))
+                            .append("\n");
+                }
+            }
+
+            return builder.substring(0, builder.length() - 1);
+        }
+    }
+
     public void merge(LicenseInfoData license) {
         if ((title == null || !title.startsWith("^")) && license.title != null)
             title = license.title;
@@ -70,6 +137,16 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> {
             gitHubUrl = license.gitHubUrl;
         if ((licenseUrl == null || !licenseUrl.startsWith("^")) && license.licenseUrl != null)
             licenseUrl = license.licenseUrl;
+        if (license.licensePermissions != null)
+            licensePermissions = license.licensePermissions;
+        if (license.licenseConditions != null)
+            licenseConditions = license.licenseConditions;
+        if (license.licenseLimitations != null)
+            licenseLimitations = license.licenseLimitations;
+        if (license.licenseDescription != null)
+            licenseDescription = license.licenseDescription;
+        if ((licenseBody == null || !licenseBody.startsWith("^")) && license.licenseBody != null)
+            licenseBody = license.licenseBody;
     }
 
     public boolean hasEverythingGeneric() {
@@ -77,7 +154,7 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> {
     }
 
     public boolean hasEverythingLicense() {
-        return licenseName != null && licenseName.startsWith("^") && licenseUrl != null && licenseUrl.startsWith("^");
+        return licenseName != null && licenseName.startsWith("^") && licenseUrl != null && licenseUrl.startsWith("^") && licenseBody != null && licenseBody.startsWith("^");
     }
 
     @Override
@@ -112,10 +189,34 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> {
             viewHolder.gitHubButton.setOnClickListener(new UrlClickListener(ResourceUtils.getString(context, gitHubUrl)));
         } else viewHolder.gitHubButton.setVisibility(View.GONE);
 
-        if (licenseUrl != null) {
+        View.OnClickListener licenseClickListener = null;
+        if (licenseBody != null) {
+            licenseClickListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    new LicenseDialog(view.getContext(), LicenseInfoData.this)
+                            .show();
+                }
+            };
+        } else if (licenseUrl != null) {
+            licenseClickListener = new UrlClickListener(licenseUrl);
+        }
+
+        if (licenseClickListener != null) {
             viewHolder.licenseButton.setVisibility(View.VISIBLE);
-            viewHolder.licenseButton.setOnClickListener(new UrlClickListener(ResourceUtils.getString(context, licenseUrl))); //TODO: create dialog to show license info
+            viewHolder.licenseButton.setOnClickListener(licenseClickListener);
+            viewHolder.licenseView.setOnClickListener(licenseClickListener);
         } else viewHolder.licenseButton.setVisibility(View.GONE);
+
+        if (licenseClickListener != null) {
+            viewHolder.itemView.setOnClickListener(licenseClickListener);
+        } else if (licenseUrl != null) {
+            viewHolder.itemView.setOnClickListener(new UrlClickListener(licenseUrl));
+        } else if (websiteUrl != null) {
+            viewHolder.itemView.setOnClickListener(new UrlClickListener(websiteUrl));
+        } else if (gitHubUrl != null) {
+            viewHolder.itemView.setOnClickListener(new UrlClickListener(gitHubUrl));
+        } else viewHolder.itemView.setOnClickListener(null);
     }
 
     static class ViewHolder extends InfoData.ViewHolder {

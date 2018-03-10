@@ -42,7 +42,12 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
                         parser.getAttributeValue(null, "licenseName"),
                         parser.getAttributeValue(null, "website"),
                         projectRepo != null ? "https://github.com/" + projectRepo : null,
-                        parser.getAttributeValue(null, "licenseUrl")
+                        parser.getAttributeValue(null, "licenseUrl"),
+                        null,
+                        null,
+                        null,
+                        null,
+                        parser.getAttributeValue(null, "licenseBody")
                 );
 
                 if (projectRepo != null && !license.hasEverythingGeneric())
@@ -69,6 +74,11 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
                         repo.license != null ? repo.license.name : null,
                         repo.homepage,
                         "https://github.com/" + repo.getTag(),
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
                         null
                 );
 
@@ -92,7 +102,12 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
                         license.name,
                         null,
                         "https://github.com/" + license.getTag(),
-                        license.html_url
+                        license.html_url,
+                        license.permissions,
+                        license.conditions,
+                        license.limitations,
+                        license.description,
+                        license.body
                 );
 
                 if (licenses.contains(mergeLicense))

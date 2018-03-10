@@ -3,4 +3,8 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="licensePermissionsColor">#00C853</color>
+    <color name="licenseConditionsColor">#0091EA</color>
+    <color name="licenseLimitationsColor">#EF5350</color>
 </resources>
