@@ -81,13 +81,15 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
             viewHolder.taskView.setText(ResourceUtils.getString(context, task));
         } else viewHolder.taskView.setVisibility(View.GONE);
 
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new UserDialog(view.getContext(), ContributorInfoData.this)
-                        .show();
-            }
-        });
+        if (bio != null) {
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    new UserDialog(view.getContext(), ContributorInfoData.this)
+                            .show();
+                }
+            });
+        } else viewHolder.itemView.setOnClickListener(null);
     }
 
     static class ViewHolder extends InfoData.ViewHolder {
