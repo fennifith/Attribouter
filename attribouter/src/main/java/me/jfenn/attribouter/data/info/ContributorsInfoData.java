@@ -21,6 +21,7 @@ import me.jfenn.attribouter.adapters.InfoAdapter;
 import me.jfenn.attribouter.data.github.ContributorsData;
 import me.jfenn.attribouter.data.github.GitHubData;
 import me.jfenn.attribouter.data.github.UserData;
+import me.jfenn.attribouter.dialogs.UserDialog;
 import me.jfenn.attribouter.utils.ResourceUtils;
 
 public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHolder> {
@@ -132,6 +133,15 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
                 viewHolder.firstTaskView.setText(ResourceUtils.getString(context, first.task));
             } else viewHolder.firstTaskView.setVisibility(View.GONE);
 
+            viewHolder.firstView.setTag(first);
+            viewHolder.firstView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    new UserDialog(view.getContext(), (ContributorInfoData) view.getTag())
+                            .show();
+                }
+            });
+
             viewHolder.secondNameView.setText(ResourceUtils.getString(context, second.getName()));
             Glide.with(context).load(second.avatarUrl).into(viewHolder.secondImageView);
             if (second.task != null) {
@@ -139,12 +149,30 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
                 viewHolder.secondTaskView.setText(ResourceUtils.getString(context, second.task));
             } else viewHolder.secondTaskView.setVisibility(View.GONE);
 
+            viewHolder.secondView.setTag(second);
+            viewHolder.secondView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    new UserDialog(view.getContext(), (ContributorInfoData) view.getTag())
+                            .show();
+                }
+            });
+
             viewHolder.thirdNameView.setText(ResourceUtils.getString(context, third.getName()));
             Glide.with(context).load(third.avatarUrl).into(viewHolder.thirdImageView);
             if (third.task != null) {
                 viewHolder.thirdTaskView.setVisibility(View.VISIBLE);
                 viewHolder.thirdTaskView.setText(ResourceUtils.getString(context, third.task));
             } else viewHolder.thirdTaskView.setVisibility(View.GONE);
+
+            viewHolder.thirdView.setTag(third);
+            viewHolder.thirdView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    new UserDialog(view.getContext(), (ContributorInfoData) view.getTag())
+                            .show();
+                }
+            });
         } else {
             viewHolder.topThreeView.setVisibility(View.GONE);
 

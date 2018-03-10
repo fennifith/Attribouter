@@ -9,24 +9,25 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import me.jfenn.attribouter.R;
+import me.jfenn.attribouter.dialogs.UserDialog;
 import me.jfenn.attribouter.utils.ResourceUtils;
 
 public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder> {
 
     @Nullable
-    String login;
+    public String login;
     @Nullable
-    String name;
+    public String name;
     @Nullable
-    String avatarUrl;
+    public String avatarUrl;
     @Nullable
-    String bio;
+    public String bio;
     @Nullable
-    String blog;
+    public String blog;
     @Nullable
     Integer position;
     @Nullable
-    String task;
+    public String task;
 
     ContributorInfoData(@Nullable String login, @Nullable String name, @Nullable String avatarUrl, @Nullable String task, @Nullable Integer position, @Nullable String bio, @Nullable String blog) {
         super(R.layout.item_attribouter_contributor);
@@ -39,6 +40,7 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
         this.blog = blog;
     }
 
+    @Nullable
     public String getName() {
         return name != null ? name : login;
     }
@@ -78,6 +80,14 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
             viewHolder.taskView.setVisibility(View.VISIBLE);
             viewHolder.taskView.setText(ResourceUtils.getString(context, task));
         } else viewHolder.taskView.setVisibility(View.GONE);
+
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new UserDialog(view.getContext(), ContributorInfoData.this)
+                        .show();
+            }
+        });
     }
 
     static class ViewHolder extends InfoData.ViewHolder {
