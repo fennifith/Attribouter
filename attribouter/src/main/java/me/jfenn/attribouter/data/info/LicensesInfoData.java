@@ -34,7 +34,6 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
             parser.next();
             if (parser.getEventType() == XmlResourceParser.START_TAG && parser.getName().equals("project")) {
                 String projectRepo = parser.getAttributeValue(null, "repo");
-                String licenseId = parser.getAttributeValue(null, "license");
                 LicenseInfoData license = new LicenseInfoData(
                         projectRepo,
                         parser.getAttributeValue(null, "title"),
@@ -47,18 +46,53 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
                         null,
                         null,
                         null,
-                        parser.getAttributeValue(null, "licenseBody")
+                        parser.getAttributeValue(null, "licenseBody"),
+                        parser.getAttributeValue(null, "license")
                 );
-
-                if (projectRepo != null && !license.hasEverythingGeneric())
-                    addRequest(new RepositoryData(projectRepo));
-                if (licenseId != null && !license.hasEverythingLicense())
-                    addRequest(new LicenseData(licenseId));
 
                 if (!licenses.contains(license))
                     licenses.add(license);
                 else licenses.get(licenses.indexOf(license)).merge(license);
             }
+        }
+
+        licenses.add(new LicenseInfoData(
+                "google/gson",
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+        ));
+
+        licenses.add(new LicenseInfoData(
+                "bumptech/glide",
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+        ));
+
+        for (LicenseInfoData license : licenses) {
+            if (license.repo != null && !license.hasEverythingGeneric())
+                addRequest(new RepositoryData(license.repo));
+            if (license.licenseKey != null && !license.hasEverythingLicense())
+                addRequest(new LicenseData(license.licenseKey));
         }
     }
 
@@ -74,6 +108,7 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
                         repo.license != null ? repo.license.name : null,
                         repo.homepage,
                         "https://github.com/" + repo.getTag(),
+                        null,
                         null,
                         null,
                         null,
@@ -107,7 +142,8 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
                         license.conditions,
                         license.limitations,
                         license.description,
-                        license.body
+                        license.body,
+                        license.key
                 );
 
                 if (licenses.contains(mergeLicense))

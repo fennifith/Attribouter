@@ -5,6 +5,9 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import me.jfenn.attribouter.R;
 import me.jfenn.attribouter.dialogs.LicenseDialog;
 import me.jfenn.attribouter.utils.ResourceUtils;
@@ -36,8 +39,10 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> {
     public String licenseDescription;
     @Nullable
     public String licenseBody;
+    @Nullable
+    String licenseKey;
 
-    public LicenseInfoData(@Nullable String repo, @Nullable String title, @Nullable String description, @Nullable String licenseName, @Nullable String websiteUrl, @Nullable String gitHubUrl, @Nullable String licenseUrl, @Nullable String[] licensePermissions, @Nullable String[] licenseConditions, @Nullable String[] licenseLimitations, @Nullable String licenseDescription, @Nullable String licenseBody) {
+    public LicenseInfoData(@Nullable String repo, @Nullable String title, @Nullable String description, @Nullable String licenseName, @Nullable String websiteUrl, @Nullable String gitHubUrl, @Nullable String licenseUrl, @Nullable String[] licensePermissions, @Nullable String[] licenseConditions, @Nullable String[] licenseLimitations, @Nullable String licenseDescription, @Nullable String licenseBody, @Nullable String licenseKey) {
         super(R.layout.item_attribouter_license);
         this.repo = repo;
         this.title = title;
@@ -51,6 +56,7 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> {
         this.licenseLimitations = licenseLimitations;
         this.licenseDescription = licenseDescription;
         this.licenseBody = licenseBody;
+        this.licenseKey = licenseKey;
     }
 
     public String getName() {
@@ -65,11 +71,19 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> {
                 else name = names[0];
             }
 
-            return name.replace('-', ' ')
+            name = name.replace('-', ' ')
                     .replace('_', ' ')
                     .replaceAll("([a-z])([A-Z])", "$1 $2")
                     .replaceAll("([A-Z])([A-Z][a-z])", "$1 $2")
                     .trim();
+
+            StringBuffer nameBuffer = new StringBuffer();
+            Pattern pattern = Pattern.compile("\\b(\\w)");
+            Matcher matcher = pattern.matcher(name);
+            while (matcher.find())
+                matcher.appendReplacement(nameBuffer, matcher.group(1).toUpperCase());
+
+            return matcher.appendTail(nameBuffer).toString();
         } else return null;
     }
 
