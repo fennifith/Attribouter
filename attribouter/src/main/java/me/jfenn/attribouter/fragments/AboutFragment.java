@@ -99,7 +99,7 @@ public class AboutFragment extends Fragment implements GitHubData.OnInitListener
 
         for (GitHubData request : requests) {
             request.addOnInitListener(this);
-            request.startInit();
+            request.startInit(getContext());
         }
 
         return recycler;
@@ -131,7 +131,7 @@ public class AboutFragment extends Fragment implements GitHubData.OnInitListener
         if (!requests.contains(request)) {
             requests.add(request);
             request.addOnInitListener(this);
-            request.startInit();
+            request.startInit(getContext());
         } else {
             int i = requests.indexOf(request);
             GitHubData activeRequest = requests.get(i);

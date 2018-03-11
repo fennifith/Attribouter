@@ -1,5 +1,6 @@
 package me.jfenn.attribouter.data.github;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
@@ -8,12 +9,18 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.InstanceCreator;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
 public abstract class GitHubData {
 
@@ -68,8 +75,8 @@ public abstract class GitHubData {
     /**
      * Starts the network request thread, should only be called once.
      */
-    public final void startInit() {
-        thread = new GitHubThread(this, url);
+    public final void startInit(Context context) {
+        thread = new GitHubThread(context, this, url);
         thread.start();
     }
 
@@ -135,42 +142,102 @@ public abstract class GitHubData {
 
     private static class GitHubThread extends Thread {
 
+        private File cacheFile;
         private GitHubData data;
         private String url;
-        private StringBuilder builder;
+        private Gson gson;
 
-        private GitHubThread(GitHubData data, String url) {
+        private GitHubThread(Context context, GitHubData data, String url) {
             this.data = data;
             this.url = url;
-            builder = new StringBuilder();
+            gson = new GsonBuilder().setLenient().create();
+            cacheFile = new File(context.getCacheDir(), ".attriboutergithubcache");
         }
 
         @Override
         public void run() {
-            BufferedReader reader = null;
-            try {
-                reader = new BufferedReader(new InputStreamReader(new URL(url).openConnection().getInputStream()));
-
-                String line;
-                while ((line = reader.readLine()) != null)
-                    builder.append(line);
-
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        data.init(builder.toString());
+            Map<String, Object> cache = null;
+            if (Math.abs(System.currentTimeMillis() - cacheFile.lastModified()) < 864000000) {
+                StringBuilder cacheBuilder = new StringBuilder();
+                Scanner cacheScanner = null;
+                try {
+                    cacheScanner = new Scanner(cacheFile);
+                    while (cacheScanner.hasNext()) {
+                        cacheBuilder.append(cacheScanner.nextLine());
                     }
-                });
-            } catch (IOException e) {
-                e.printStackTrace();
+
+                    cache = gson.fromJson(cacheBuilder.toString(), new HashMap<String, Object>().getClass());
+                } catch (IOException ignored) {
+                } catch (Exception e) {
+                    cacheFile.delete(); //probably a formatting error
+                }
+
+                if (cacheScanner != null)
+                    cacheScanner.close();
+
+                if (cache != null && cache.containsKey(url)) {
+                    Object cached = cache.get(url);
+                    if (cached instanceof String) {
+                        callInit((String) cached);
+                        return;
+                    }
+                }
             }
 
-            if (reader != null) {
+            BufferedReader jsonReader = null;
+            StringBuilder jsonBuilder = new StringBuilder();
+            try {
+                HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+                jsonReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                if (connection.getResponseCode() == 403) {
+                    jsonReader.close();
+                    return;
+                }
+
+                String line;
+                while ((line = jsonReader.readLine()) != null)
+                    jsonBuilder.append(line);
+            } catch (IOException e) {
+                e.printStackTrace();
+                jsonBuilder = null;
+            }
+
+            if (jsonBuilder != null) {
+                String json = jsonBuilder.toString();
+                callInit(json);
+
+                if (cache == null)
+                    cache = new HashMap<>();
+
+                cache.put(url, json);
+
+                PrintWriter cacheWriter = null;
                 try {
-                    reader.close();
+                    cacheWriter = new PrintWriter(cacheFile);
+                    cacheWriter.println(gson.toJson(cache));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                if (cacheWriter != null)
+                    cacheWriter.close();
+            }
+
+            if (jsonReader != null) {
+                try {
+                    jsonReader.close();
                 } catch (IOException ignored) {
                 }
             }
+        }
+
+        private void callInit(final String json) {
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    data.init(json);
+                }
+            });
         }
     }
 
