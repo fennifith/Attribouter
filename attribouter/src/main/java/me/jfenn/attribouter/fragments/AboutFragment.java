@@ -31,6 +31,7 @@ import me.jfenn.attribouter.data.info.TextInfoData;
 
 public class AboutFragment extends Fragment implements GitHubData.OnInitListener, InfoData.OnRequestListener {
 
+    private RecyclerView recycler;
     private InfoAdapter adapter;
 
     private List<InfoData> infos;
@@ -39,7 +40,7 @@ public class AboutFragment extends Fragment implements GitHubData.OnInitListener
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        RecyclerView recycler = (RecyclerView) inflater.inflate(R.layout.fragment_attribouter_about, container, false);
+        recycler = (RecyclerView) inflater.inflate(R.layout.fragment_attribouter_about, container, false);
 
         infos = new ArrayList<>();
         String repo = null;
@@ -111,6 +112,8 @@ public class AboutFragment extends Fragment implements GitHubData.OnInitListener
             if (infos.get(i).hasRequest(data))
                 adapter.notifyItemChanged(i);
         }
+
+        recycler.smoothScrollToPosition(0);
     }
 
     @Override
