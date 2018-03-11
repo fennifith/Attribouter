@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="licensePermissionsColor">#00C853</color>
-    <color name="licenseConditionsColor">#0091EA</color>
-    <color name="licenseLimitationsColor">#EF5350</color>
+    <color name="attribouter_licensePermissionsColor">#00C853</color>
+    <color name="attribouter_licenseConditionsColor">#0091EA</color>
+    <color name="attribouter_licenseLimitationsColor">#EF5350</color>
 </resources>

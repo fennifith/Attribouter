@@ -15,7 +15,7 @@
         android:textColor="?android:textColorPrimary"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:text="@string/title_licenses" />
+        android:text="@string/title_attribouter_licenses" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler"

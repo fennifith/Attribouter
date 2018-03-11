@@ -82,7 +82,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/title_website"
+                android:text="@string/title_attribouter_website"
                 android:textAllCaps="true"
                 android:textColor="?android:textColorPrimary"
                 android:textSize="16sp"
@@ -109,7 +109,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/title_github"
+                android:text="@string/title_attribouter_github"
                 android:textAllCaps="true"
                 android:textColor="?android:textColorPrimary"
                 android:textSize="16sp"
@@ -136,7 +136,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/title_rate"
+                android:text="@string/title_attribouter_rate"
                 android:textAllCaps="true"
                 android:textColor="?android:textColorPrimary"
                 android:textSize="16sp"

@@ -16,7 +16,7 @@
         android:textColor="?android:textColorPrimary"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:text="@string/title_contributors" />
+        android:text="@string/title_attribouter_contributors" />
 
     <LinearLayout
         android:id="@+id/topThree"
