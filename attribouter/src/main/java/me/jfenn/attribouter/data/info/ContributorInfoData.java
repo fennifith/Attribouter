@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide;
 import me.jfenn.attribouter.R;
 import me.jfenn.attribouter.dialogs.UserDialog;
 import me.jfenn.attribouter.utils.ResourceUtils;
+import me.jfenn.attribouter.utils.UrlClickListener;
 
 public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder> {
 
@@ -81,6 +82,7 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
             viewHolder.taskView.setText(ResourceUtils.getString(context, task));
         } else viewHolder.taskView.setVisibility(View.GONE);
 
+        String blog = ResourceUtils.getString(context, this.blog);
         if (bio != null) {
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -89,6 +91,8 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
                             .show();
                 }
             });
+        } else if (blog != null) {
+            viewHolder.itemView.setOnClickListener(new UrlClickListener(blog));
         } else viewHolder.itemView.setOnClickListener(null);
     }
 
