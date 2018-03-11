@@ -13,9 +13,20 @@ public class ResourceUtils {
         if (identifier != null && identifier.startsWith("@")) {
             identifier = identifier.substring(1);
             if (identifier.contains("/")) {
-                int stringRes = context.getResources().getIdentifier(context.getApplicationInfo().packageName + ":" + identifier, "string", null);
-                return stringRes == 0 ? null : context.getString(stringRes);
-            } else return null;
+                String[] identifiers = identifier.split("/");
+                if (identifiers[0].length() > 0 && identifiers[1].length() > 0) {
+                    int stringRes = context.getResources().getIdentifier(identifiers[1], identifiers[0], context.getPackageName());
+                    return stringRes == 0 ? null : context.getString(stringRes);
+                }
+            } else {
+                try {
+                    return context.getString(Integer.parseInt(identifier));
+                } catch (NumberFormatException ignored) {
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
         } else return identifier;
     }
 

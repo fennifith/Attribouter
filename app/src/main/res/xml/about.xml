@@ -20,10 +20,12 @@
         <!-- For Jahir, the task "Lazy Slacker" will override the default task "Contributor" even after the github data is fetched (starting with the "^"
             character is what tells the library to do this) -->
         <contributor
-            name="Alex Dueppen"
+            name="@string/alex_name"
             task="Icon Designer"
-            avatar="https://avatars3.githubusercontent.com/u/6982070" />
-        <!-- Alex doesn't have a github account (actually, he does, but let's pretend he doesn't), so his data is simply added to the existing info -->
+            avatar="https://avatars3.githubusercontent.com/u/6982070"
+            blog="https://github.com/adueppen/" />
+        <!-- Alex doesn't have a github account (actually, he does, but let's pretend he doesn't), so his data is simply added to the list of contributors from github -->
+        <!-- Note the string resource used in place of a name. You can use string resources. Even though there's no autocompletion. They still work. -->
     </contributors>
     <licenses>
         <project repo="TheAndroidMaster/ColorPickerDialog" />
