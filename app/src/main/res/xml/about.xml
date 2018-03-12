@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <about repo="TheAndroidMaster/MediaNotification">
     <appInfo />
+    <text text="@string/html" />
     <contributors>
         <contributor
             login="TheAndroidMaster"

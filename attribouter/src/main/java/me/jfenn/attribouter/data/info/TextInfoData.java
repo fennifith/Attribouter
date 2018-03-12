@@ -3,6 +3,8 @@ package me.jfenn.attribouter.data.info;
 import android.content.Context;
 import android.content.res.XmlResourceParser;
 import android.os.Build;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.TextView;
 
@@ -34,7 +36,9 @@ public class TextInfoData extends InfoData {
     @Override
     public void bind(Context context, ViewHolder viewHolder) {
         TextView textView = (TextView) viewHolder.itemView;
-        textView.setText(ResourceUtils.getString(context, text));
+        textView.setMovementMethod(new LinkMovementMethod());
+        String text = ResourceUtils.getString(context, this.text);
+        textView.setText(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N ? Html.fromHtml(text, 0) : Html.fromHtml(text));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
             textView.setTextAlignment(isCentered ? View.TEXT_ALIGNMENT_CENTER : View.TEXT_ALIGNMENT_GRAVITY);
     }

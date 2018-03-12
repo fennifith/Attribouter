@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Attribouter Sample</string>
     <string name="alex_name">Alex Dueppen</string>
+    <string name="html"><![CDATA[I like things that do stuff. <a href="https://jfenn.me/">This</a> is a link.]]></string>
 </resources>
