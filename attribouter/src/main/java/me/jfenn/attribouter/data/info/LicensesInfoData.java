@@ -100,14 +100,14 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
     public void onInit(GitHubData data) {
         if (data instanceof RepositoryData) {
             RepositoryData repo = (RepositoryData) data;
-            if (repo.getTag() != null) {
+            for (String tag : repo.getTags()) {
                 LicenseInfoData mergeLicense = new LicenseInfoData(
-                        repo.getTag(),
+                        tag,
                         null,
                         repo.description,
                         repo.license != null ? repo.license.name : null,
                         repo.homepage,
-                        "https://github.com/" + repo.getTag(),
+                        "https://github.com/" + tag,
                         null,
                         null,
                         null,
@@ -122,21 +122,23 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
                     license.merge(mergeLicense);
                     if (repo.license != null && repo.license.key != null && !license.hasEverythingLicense()) {
                         LicenseData request = new LicenseData(repo.license.key);
-                        request.setTag(repo.getTag());
+                        request.addTag(tag);
                         addRequest(request);
                     }
+
+                    break;
                 }
             }
         } else if (data instanceof LicenseData) {
             LicenseData license = (LicenseData) data;
-            if (license.getTag() != null) {
+            for (String tag : license.getTags()) {
                 LicenseInfoData mergeLicense = new LicenseInfoData(
-                        license.getTag(),
+                        tag,
                         null,
                         null,
                         license.name,
                         null,
-                        "https://github.com/" + license.getTag(),
+                        "https://github.com/" + tag,
                         license.html_url,
                         license.permissions,
                         license.conditions,

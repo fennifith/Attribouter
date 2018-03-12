@@ -28,13 +28,14 @@ public abstract class GitHubData {
     private GitHubThread thread;
     private Gson gson;
     private boolean isInitialized;
-    private String tag;
 
     private List<OnInitListener> listeners;
+    private List<String> tags;
 
     GitHubData(String url) {
         this.url = url;
         listeners = new ArrayList<>();
+        tags = new ArrayList<>();
 
         gson = new GsonBuilder()
                 .registerTypeAdapter(getClass(), new MootInstanceCreator(this))
@@ -97,15 +98,19 @@ public abstract class GitHubData {
                 listeners.add(listener);
         }
 
+        for (String tag : data.tags)
+            addTag(tag);
+
         return this;
     }
 
-    public final void setTag(String tag) {
-        this.tag = tag;
+    public final void addTag(String tag) {
+        if (!tags.contains(tag))
+            tags.add(tag);
     }
 
-    public final String getTag() {
-        return tag;
+    public final List<String> getTags() {
+        return tags;
     }
 
     public final void addOnInitListener(OnInitListener listener) {
