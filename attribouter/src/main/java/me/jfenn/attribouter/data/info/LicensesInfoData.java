@@ -58,12 +58,28 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
 
         licenses.add(new LicenseInfoData(
                 "google/gson",
+                "Gson",
+                "A Java serialization/deserialization library to convert Java Objects into JSON and back",
+                "Apache License 2.0",
+                null,
+                "https://github.com/google/gson",
                 null,
                 null,
                 null,
                 null,
                 null,
                 null,
+                "apache-2.0"
+        ));
+
+        licenses.add(new LicenseInfoData(
+                "bumptech/glide",
+                "Glide",
+                "An image loading and caching library for Android focused on smooth scrolling",
+                "Other",
+                "https://bumptech.github.io/glide/",
+                "https://github.com/bumptech/glide",
+                "https://raw.githubusercontent.com/bumptech/glide/master/LICENSE",
                 null,
                 null,
                 null,
@@ -73,26 +89,29 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
         ));
 
         licenses.add(new LicenseInfoData(
-                "bumptech/glide",
+                null,
+                "Android Open Source Project",
+                "Android is an open source software stack for a wide range of mobile devices and a corresponding open source project led by Google.",
+                "Apache License 2.0",
+                "https://source.android.com/license",
+                "https://github.com/aosp-mirror",
                 null,
                 null,
                 null,
                 null,
                 null,
                 null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null
+                "apache-2.0"
         ));
 
         for (LicenseInfoData license : licenses) {
             if (license.repo != null && !license.hasEverythingGeneric())
                 addRequest(new RepositoryData(license.repo));
-            if (license.licenseKey != null && !license.hasEverythingLicense())
-                addRequest(new LicenseData(license.licenseKey));
+            if (license.licenseKey != null && (license.repo != null || license.title != null) && !license.hasEverythingLicense()) {
+                LicenseData request = new LicenseData(license.licenseKey);
+                request.addTag(license.repo != null ? license.repo : license.title);
+                addRequest(request);
+            }
         }
     }
 

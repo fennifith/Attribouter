@@ -173,7 +173,7 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> {
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof LicenseInfoData && (repo != null ? repo.equals(((LicenseInfoData) obj).repo) : super.equals(obj));
+        return obj instanceof LicenseInfoData && (repo != null ? repo.equals(((LicenseInfoData) obj).repo) || repo.equals(((LicenseInfoData) obj).title) : (title != null ? title.equals(((LicenseInfoData) obj).repo) : super.equals(obj)));
     }
 
     @Override
@@ -191,16 +191,19 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> {
             viewHolder.licenseView.setText(ResourceUtils.getString(context, licenseName));
         } else viewHolder.licenseView.setVisibility(View.GONE);
 
+        String websiteUrl = ResourceUtils.getString(context, this.websiteUrl);
+        String gitHubUrl = ResourceUtils.getString(context, this.gitHubUrl);
+        String licenseUrl = ResourceUtils.getString(context, this.licenseUrl);
         viewHolder.links.setVisibility(websiteUrl != null || gitHubUrl != null || licenseUrl != null ? View.VISIBLE : View.GONE);
 
         if (websiteUrl != null) {
             viewHolder.websiteButton.setVisibility(View.VISIBLE);
-            viewHolder.websiteButton.setOnClickListener(new UrlClickListener(ResourceUtils.getString(context, websiteUrl)));
+            viewHolder.websiteButton.setOnClickListener(new UrlClickListener(websiteUrl));
         } else viewHolder.websiteButton.setVisibility(View.GONE);
 
         if (gitHubUrl != null) {
             viewHolder.gitHubButton.setVisibility(View.VISIBLE);
-            viewHolder.gitHubButton.setOnClickListener(new UrlClickListener(ResourceUtils.getString(context, gitHubUrl)));
+            viewHolder.gitHubButton.setOnClickListener(new UrlClickListener(gitHubUrl));
         } else viewHolder.gitHubButton.setVisibility(View.GONE);
 
         View.OnClickListener licenseClickListener = null;
@@ -224,8 +227,6 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> {
 
         if (licenseClickListener != null) {
             viewHolder.itemView.setOnClickListener(licenseClickListener);
-        } else if (licenseUrl != null) {
-            viewHolder.itemView.setOnClickListener(new UrlClickListener(licenseUrl));
         } else if (websiteUrl != null) {
             viewHolder.itemView.setOnClickListener(new UrlClickListener(websiteUrl));
         } else if (gitHubUrl != null) {
