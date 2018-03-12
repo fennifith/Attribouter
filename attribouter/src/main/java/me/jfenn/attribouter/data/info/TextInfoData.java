@@ -14,14 +14,16 @@ import me.jfenn.attribouter.utils.ResourceUtils;
 public class TextInfoData extends InfoData {
 
     private String text;
-    private boolean isHeader;
     private boolean isCentered;
 
     public TextInfoData(XmlResourceParser parser) throws XmlPullParserException {
+        this(parser.getAttributeValue(null, "text"), parser.getAttributeBooleanValue(null, "centered", false));
+    }
+
+    public TextInfoData(String text, boolean isCentered) {
         super(R.layout.item_attribouter_text);
-        text = parser.getAttributeValue(null, "text");
-        isHeader = parser.getAttributeBooleanValue(null, "header", false);
-        isCentered = parser.getAttributeBooleanValue(null, "centered", false);
+        this.text = text;
+        this.isCentered = isCentered;
     }
 
     @Override
