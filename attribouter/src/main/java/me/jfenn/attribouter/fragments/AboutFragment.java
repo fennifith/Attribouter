@@ -137,10 +137,9 @@ public class AboutFragment extends Fragment implements GitHubData.OnInitListener
             request.startInit(getContext());
         } else {
             int i = requests.indexOf(request);
-            GitHubData activeRequest = requests.get(i);
-            if (activeRequest.isInitialized()) {
+            GitHubData activeRequest = requests.get(i).merge(request);
+            if (activeRequest.isInitialized())
                 info.onInit(activeRequest);
-            } else requests.set(i, requests.get(i).merge(request));
         }
     }
 }
