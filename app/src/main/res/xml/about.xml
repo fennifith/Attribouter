@@ -31,10 +31,10 @@
         <project repo="TheAndroidMaster/ColorPickerDialog" />
         <!-- all of ColorPickerDialog's info is fetched from github -->
         <project
-            title="Android Open Source Project"
-            description="Android is an open source software stack for a wide range of mobile devices and a corresponding open source project led by Google."
-            licenseName="Creative Commons 3.0"
-            website="https://source.android.com/" />
+            title="Library Something Or Other"
+            description="Something Does Stuff With Things"
+            licenseName="This Is A License"
+            website="https://jfenn.me/" />
         <!-- this data is not fetched from github, and works exactly the same as the contributors -->
         <!-- some license identifiers can be found here https://developer.github.com/v3/licenses/ -->
     </licenses>
