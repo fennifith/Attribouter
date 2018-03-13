@@ -24,8 +24,7 @@ public abstract class InfoData<T extends InfoData.ViewHolder> implements GitHubD
 
     protected void addRequest(GitHubData request) {
         request.addOnInitListener(this);
-        if (!requests.contains(request))
-            requests.add(request);
+        requests.add(request);
         if (listener != null)
             listener.onRequest(this, request);
     }

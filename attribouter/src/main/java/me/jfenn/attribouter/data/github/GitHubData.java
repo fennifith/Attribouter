@@ -7,10 +7,6 @@ import android.os.Looper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.InstanceCreator;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonToken;
-import com.google.gson.stream.JsonWriter;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -43,7 +39,6 @@ public abstract class GitHubData {
 
         gson = new GsonBuilder()
                 .registerTypeAdapter(getClass(), new MootInstanceCreator(this))
-                .registerTypeAdapter(String.class, new NonEmptyStringStringAdapter())
                 .create();
     }
 
@@ -147,28 +142,6 @@ public abstract class GitHubData {
         @Override
         public GitHubData createInstance(Type type) {
             return instance;
-        }
-    }
-
-    private static class NonEmptyStringStringAdapter extends TypeAdapter<String> {
-        @Override
-        public void write(JsonWriter out, String value) throws IOException {
-            if (value == null || !value.matches(".*\\w.*"))
-                out.nullValue();
-            else out.value(value);
-        }
-
-        @Override
-        public String read(JsonReader in) throws IOException {
-            if (in.peek() == JsonToken.NULL) {
-                in.nextNull();
-                return null;
-            }
-
-            String value = in.nextString();
-            if (value.matches(".*\\w.*"))
-                return value;
-            else return null;
         }
     }
 

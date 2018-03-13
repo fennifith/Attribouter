@@ -16,6 +16,8 @@ import me.jfenn.attribouter.utils.UrlClickListener;
 public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> {
 
     @Nullable
+    String token;
+    @Nullable
     String repo;
     @Nullable
     String title;
@@ -57,6 +59,10 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> {
         this.licenseDescription = licenseDescription;
         this.licenseBody = licenseBody;
         this.licenseKey = licenseKey;
+
+        if (repo != null)
+            token = repo;
+        else token = title;
     }
 
     public String getName() {

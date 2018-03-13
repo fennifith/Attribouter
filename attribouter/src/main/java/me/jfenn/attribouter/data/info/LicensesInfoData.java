@@ -109,7 +109,7 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
                 addRequest(new RepositoryData(license.repo));
             if (license.licenseKey != null && (license.repo != null || license.title != null) && !license.hasEverythingLicense()) {
                 LicenseData request = new LicenseData(license.licenseKey);
-                request.addTag(license.repo != null ? license.repo : license.title);
+                request.addTag(license.token);
                 addRequest(request);
             }
         }
@@ -150,25 +150,24 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
             }
         } else if (data instanceof LicenseData) {
             LicenseData license = (LicenseData) data;
-            for (String tag : license.getTags()) {
-                LicenseInfoData mergeLicense = new LicenseInfoData(
-                        tag,
-                        null,
-                        null,
-                        license.name,
-                        null,
-                        "https://github.com/" + tag,
-                        license.html_url,
-                        license.permissions,
-                        license.conditions,
-                        license.limitations,
-                        license.description,
-                        license.body,
-                        license.key
-                );
-
-                if (licenses.contains(mergeLicense))
-                    licenses.get(licenses.indexOf(mergeLicense)).merge(mergeLicense);
+            for (LicenseInfoData licenseInfo : licenses) {
+                if (license.getTags().contains(licenseInfo.token)) {
+                    licenseInfo.merge(new LicenseInfoData(
+                            null,
+                            null,
+                            null,
+                            license.name,
+                            null,
+                            "https://github.com/" + licenseInfo.repo,
+                            license.html_url,
+                            license.permissions,
+                            license.conditions,
+                            license.limitations,
+                            license.description,
+                            license.body,
+                            license.key
+                    ));
+                }
             }
         }
     }
