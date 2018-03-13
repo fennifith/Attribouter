@@ -77,12 +77,15 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
                             null
                     );
 
+                    ContributorInfoData contributorInfo = mergeContributor;
+
                     if (contributors.contains(mergeContributor)) {
-                        ContributorInfoData contributorInfo = contributors.get(contributors.indexOf(mergeContributor));
+                        contributorInfo = contributors.get(contributors.indexOf(mergeContributor));
                         contributorInfo.merge(mergeContributor);
-                        if (!contributorInfo.hasEverything())
-                            addRequest(new UserData(contributor.login));
-                    }
+                    } else contributors.add(contributorInfo);
+
+                    if (!contributorInfo.hasEverything())
+                        addRequest(new UserData(contributor.login));
                 }
             }
         } else if (data instanceof UserData) {
