@@ -35,6 +35,7 @@ public class UserDialog extends AppCompatDialog {
         View links = findViewById(R.id.links);
         View websiteButton = findViewById(R.id.website);
         View gitHubButton = findViewById(R.id.gitHub);
+        View emailButton = findViewById(R.id.email);
 
         nameView.setText(ResourceUtils.getString(getContext(), contributor.getName()));
         taskView.setText(ResourceUtils.getString(getContext(), contributor.task));
@@ -45,7 +46,7 @@ public class UserDialog extends AppCompatDialog {
         else imageView.setVisibility(View.GONE);
 
         bioView.setText(ResourceUtils.getString(getContext(), contributor.bio));
-        links.setVisibility(contributor.login != null || contributor.blog != null ? View.VISIBLE : View.GONE);
+        links.setVisibility(contributor.login != null || contributor.blog != null || contributor.email != null ? View.VISIBLE : View.GONE);
 
         String blog = ResourceUtils.getString(getContext(), contributor.blog);
         if (blog != null) {
@@ -57,5 +58,10 @@ public class UserDialog extends AppCompatDialog {
             gitHubButton.setVisibility(View.VISIBLE);
             gitHubButton.setOnClickListener(new UrlClickListener("https://github.com/" + contributor.login));
         } else gitHubButton.setVisibility(View.GONE);
+
+        if (contributor.email != null) {
+            emailButton.setVisibility(View.VISIBLE);
+            emailButton.setOnClickListener(new UrlClickListener("mailto:" + contributor.email));
+        } else emailButton.setVisibility(View.GONE);
     }
 }

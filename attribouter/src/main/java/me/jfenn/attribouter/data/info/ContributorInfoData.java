@@ -26,11 +26,13 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
     @Nullable
     public String blog;
     @Nullable
+    public String email;
+    @Nullable
     Integer position;
     @Nullable
     public String task;
 
-    ContributorInfoData(@Nullable String login, @Nullable String name, @Nullable String avatarUrl, @Nullable String task, @Nullable Integer position, @Nullable String bio, @Nullable String blog) {
+    ContributorInfoData(@Nullable String login, @Nullable String name, @Nullable String avatarUrl, @Nullable String task, @Nullable Integer position, @Nullable String bio, @Nullable String blog, @Nullable String email) {
         super(R.layout.item_attribouter_contributor);
         this.login = login;
         this.name = name;
@@ -39,6 +41,7 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
         this.position = position;
         this.bio = bio;
         this.blog = blog;
+        this.email = email;
     }
 
     @Nullable

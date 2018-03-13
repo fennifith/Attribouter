@@ -47,7 +47,8 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
                         parser.getAttributeValue(null, "task"),
                         position != -1 ? position : null,
                         parser.getAttributeValue(null, "bio"),
-                        parser.getAttributeValue(null, "blog"));
+                        parser.getAttributeValue(null, "blog"),
+                        parser.getAttributeValue(null, "email"));
 
                 if (!contributors.contains(contributor))
                     contributors.add(contributor);
@@ -74,6 +75,7 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
                             repo.startsWith(contributor.login) ? "Owner" : "Contributor",
                             null,
                             null,
+                            null,
                             null
                     );
 
@@ -87,7 +89,17 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
             }
         } else if (data instanceof UserData) {
             UserData user = (UserData) data;
-            ContributorInfoData contributor = new ContributorInfoData(user.login, user.name, user.avatar_url, repo.startsWith(user.login) ? "Owner" : "Contributor", null, user.bio, user.blog);
+            ContributorInfoData contributor = new ContributorInfoData(
+                    user.login,
+                    user.name,
+                    user.avatar_url,
+                    repo.startsWith(user.login) ? "Owner" : "Contributor",
+                    null,
+                    user.bio,
+                    user.blog,
+                    user.email
+            );
+
             if (!contributors.contains(contributor))
                 contributors.add(0, contributor);
             else contributors.get(contributors.indexOf(contributor)).merge(contributor);
