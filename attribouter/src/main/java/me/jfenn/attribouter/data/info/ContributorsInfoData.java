@@ -8,8 +8,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
@@ -139,7 +137,7 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
             viewHolder.topThreeView.setVisibility(View.VISIBLE);
 
             viewHolder.firstNameView.setText(ResourceUtils.getString(context, first.getName()));
-            Glide.with(context).load(first.avatarUrl).into(viewHolder.firstImageView); //TODO: account for resource strings
+            ResourceUtils.setImage(context, first.avatarUrl, viewHolder.firstImageView);
             if (first.task != null) {
                 viewHolder.firstTaskView.setVisibility(View.VISIBLE);
                 viewHolder.firstTaskView.setText(ResourceUtils.getString(context, first.task));
@@ -155,7 +153,7 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
             });
 
             viewHolder.secondNameView.setText(ResourceUtils.getString(context, second.getName()));
-            Glide.with(context).load(second.avatarUrl).into(viewHolder.secondImageView);
+            ResourceUtils.setImage(context, second.avatarUrl, viewHolder.secondImageView);
             if (second.task != null) {
                 viewHolder.secondTaskView.setVisibility(View.VISIBLE);
                 viewHolder.secondTaskView.setText(ResourceUtils.getString(context, second.task));
@@ -171,7 +169,7 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
             });
 
             viewHolder.thirdNameView.setText(ResourceUtils.getString(context, third.getName()));
-            Glide.with(context).load(third.avatarUrl).into(viewHolder.thirdImageView);
+            ResourceUtils.setImage(context, third.avatarUrl, viewHolder.thirdImageView);
             if (third.task != null) {
                 viewHolder.thirdTaskView.setVisibility(View.VISIBLE);
                 viewHolder.thirdTaskView.setText(ResourceUtils.getString(context, third.task));

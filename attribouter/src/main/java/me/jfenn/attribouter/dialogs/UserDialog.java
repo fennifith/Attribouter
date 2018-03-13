@@ -7,8 +7,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-
 import me.jfenn.attribouter.R;
 import me.jfenn.attribouter.data.info.ContributorInfoData;
 import me.jfenn.attribouter.utils.ResourceUtils;
@@ -42,7 +40,7 @@ public class UserDialog extends AppCompatDialog {
 
         String url = ResourceUtils.getString(getContext(), contributor.avatarUrl);
         if (url != null)
-            Glide.with(getContext()).load(url).into(imageView);
+            ResourceUtils.setImage(getContext(), contributor.avatarUrl, imageView);
         else imageView.setVisibility(View.GONE);
 
         bioView.setText(ResourceUtils.getString(getContext(), contributor.bio));

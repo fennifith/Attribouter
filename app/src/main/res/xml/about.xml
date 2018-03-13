@@ -6,7 +6,9 @@
         <contributor
             login="TheAndroidMaster"
             task="Owner"
+            avatar="^@drawable/me"
             position="1" />
+        <!-- the "avatar" attribute can take either a url or a resource -->
         <!-- setting the "position" attribute makes me appear in the center of a row of three items above the list, instead of in the list like normal -->
         <!-- there must be position attributes for 1, 2, and 3 for this to work, otherwise setting "position=1" will just move me to the top of the list -->
         <contributor

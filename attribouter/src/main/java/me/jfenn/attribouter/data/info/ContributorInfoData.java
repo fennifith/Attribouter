@@ -6,8 +6,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-
 import me.jfenn.attribouter.R;
 import me.jfenn.attribouter.dialogs.UserDialog;
 import me.jfenn.attribouter.utils.ResourceUtils;
@@ -78,7 +76,7 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
 
     @Override
     public void bind(Context context, ViewHolder viewHolder) {
-        Glide.with(context).load(avatarUrl).into(viewHolder.imageView);
+        ResourceUtils.setImage(context, avatarUrl, viewHolder.imageView);
         viewHolder.nameView.setText(ResourceUtils.getString(context, getName()));
         if (task != null) {
             viewHolder.taskView.setVisibility(View.VISIBLE);
