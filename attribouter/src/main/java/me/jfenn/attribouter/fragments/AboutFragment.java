@@ -36,6 +36,7 @@ public class AboutFragment extends Fragment implements GitHubData.OnInitListener
 
     private List<InfoData> infos;
     private List<GitHubData> requests;
+    private String gitHubToken;
 
     @Nullable
     @Override
@@ -46,38 +47,41 @@ public class AboutFragment extends Fragment implements GitHubData.OnInitListener
         String repo = null;
 
         Bundle args = getArguments();
-        if (args != null && args.containsKey(Attribouter.EXTRA_FILE_RES)) {
-            XmlResourceParser parser = getResources().getXml(args.getInt(Attribouter.EXTRA_FILE_RES, -1));
-            try {
-                while (parser.getEventType() != XmlPullParser.END_DOCUMENT) {
-                    if (parser.getEventType() == XmlPullParser.START_TAG && parser.getName().equals("about")) {
-                        repo = parser.getAttributeValue(null, "repo");
-                    } else if (parser.getEventType() == XmlPullParser.START_TAG) {
-                        switch (parser.getName()) {
-                            case "appInfo":
-                                infos.add(new AppInfoData(parser, repo));
-                                break;
-                            case "contributors":
-                                infos.add(new ContributorsInfoData(parser, repo));
-                                break;
-                            case "licenses":
-                                infos.add(new LicensesInfoData(parser));
-                                break;
-                            case "text":
-                                infos.add(new TextInfoData(parser));
-                                break;
-                        }
-                    }
-                    parser.next();
-                }
-            } catch (IOException | XmlPullParserException e) {
-                e.printStackTrace();
-            }
-
-            parser.close();
-        } else {
-            //TODO: throw exception or something
+        int fileRes = R.xml.attribouter;
+        if (args != null) {
+            gitHubToken = args.getString(Attribouter.EXTRA_GITHUB_OAUTH_TOKEN, null);
+            fileRes = args.getInt(Attribouter.EXTRA_FILE_RES, R.xml.attribouter);
         }
+
+        XmlResourceParser parser = getResources().getXml(fileRes);
+        try {
+            while (parser.getEventType() != XmlPullParser.END_DOCUMENT) {
+                if (parser.getEventType() == XmlPullParser.START_TAG && parser.getName().equals("about")) {
+                    repo = parser.getAttributeValue(null, "repo");
+                } else if (parser.getEventType() == XmlPullParser.START_TAG) {
+                    switch (parser.getName()) {
+                        case "appInfo":
+                            infos.add(new AppInfoData(parser, repo));
+                            break;
+                        case "contributors":
+                            infos.add(new ContributorsInfoData(parser, repo));
+                            break;
+                        case "licenses":
+                            infos.add(new LicensesInfoData(parser));
+                            break;
+                        case "text":
+                            infos.add(new TextInfoData(parser));
+                            break;
+                    }
+                }
+                parser.next();
+            }
+        } catch (IOException | XmlPullParserException e) {
+            e.printStackTrace();
+        }
+
+        parser.close();
+
 
         adapter = new InfoAdapter(infos);
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -100,7 +104,7 @@ public class AboutFragment extends Fragment implements GitHubData.OnInitListener
 
         for (GitHubData request : requests) {
             request.addOnInitListener(this);
-            request.startInit(getContext());
+            request.startInit(getContext(), gitHubToken);
         }
 
         return recycler;
@@ -134,7 +138,7 @@ public class AboutFragment extends Fragment implements GitHubData.OnInitListener
         if (!requests.contains(request)) {
             requests.add(request);
             request.addOnInitListener(this);
-            request.startInit(getContext());
+            request.startInit(getContext(), gitHubToken);
         } else {
             int i = requests.indexOf(request);
             GitHubData activeRequest = requests.get(i).merge(request);

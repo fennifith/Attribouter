@@ -81,8 +81,8 @@ public abstract class GitHubData {
     /**
      * Starts the network request thread, should only be called once.
      */
-    public final void startInit(Context context) {
-        thread = new GitHubThread(context, this, url);
+    public final void startInit(Context context, String token) {
+        thread = new GitHubThread(context, token, this, url);
         thread.start();
     }
 
@@ -177,11 +177,13 @@ public abstract class GitHubData {
         private File cacheFile;
         private GitHubData data;
         private String url;
+        private String token;
         private Gson gson;
 
-        private GitHubThread(Context context, GitHubData data, String url) {
+        private GitHubThread(Context context, String token, GitHubData data, String url) {
             this.data = data;
             this.url = url;
+            this.token = token;
             gson = new GsonBuilder().setLenient().create();
             cacheFile = new File(context.getCacheDir(), ".attriboutergithubcache");
         }
@@ -220,6 +222,9 @@ public abstract class GitHubData {
             StringBuilder jsonBuilder = new StringBuilder();
             try {
                 HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+                if (token != null)
+                    connection.setRequestProperty("Authorization", "token " + token);
+
                 jsonReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 if (connection.getResponseCode() == 403) {
                     jsonReader.close();
