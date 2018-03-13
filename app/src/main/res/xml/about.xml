@@ -7,6 +7,7 @@
             login="TheAndroidMaster"
             task="Owner"
             avatar="^@drawable/me"
+            email="dev@jfenn.me"
             position="1" />
         <!-- the "avatar" attribute can take either a url or a resource -->
         <!-- setting the "position" attribute makes me appear in the center of a row of three items above the list, instead of in the list like normal -->
