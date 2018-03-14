@@ -57,6 +57,22 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
         }
 
         licenses.add(new LicenseInfoData(
+                "TheAndroidMaster/Attribouter",
+                "Attribouter",
+                "A lightweight \"about screen\" library to allow quick but customizable attribution in Android apps.",
+                "Apache License 2.0",
+                null,
+                "https://github.com/TheAndroidMaster/Attribouter",
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                "apache-2.0"
+        ));
+
+        licenses.add(new LicenseInfoData(
                 "google/gson",
                 "Gson",
                 "A Java serialization/deserialization library to convert Java Objects into JSON and back",

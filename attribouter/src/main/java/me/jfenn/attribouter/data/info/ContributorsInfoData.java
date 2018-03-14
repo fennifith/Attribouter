@@ -54,7 +54,21 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
             }
         }
 
-        addRequest(new UserData("TheAndroidMaster")); //hey, that's me
+        ContributorInfoData me = new ContributorInfoData(
+                "TheAndroidMaster",
+                "James Fenn",
+                "https://avatars1.githubusercontent.com/u/13000407",
+                "Library Developer",
+                null,
+                "Android developer and co-founder of Double Dot Labs. Writes Java, C, and HTML. PHP confuses me.",
+                "https://jfenn.me/",
+                "dev@jfenn.me"
+        );
+
+        if (!contributors.contains(me))
+            contributors.add(me);
+
+        addRequest(new ContributorsData("TheAndroidMaster/Attribouter")); //hey, that's me
         addRequest(new ContributorsData(repo));
     }
 
