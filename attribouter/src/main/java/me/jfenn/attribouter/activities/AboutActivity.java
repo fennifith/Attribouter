@@ -37,12 +37,14 @@ public class AboutActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(backArrow);
 
         Bundle bundle = getIntent().getExtras();
-        if (bundle != null && savedInstanceState == null) {
-            AboutFragment fragment = new AboutFragment();
+        AboutFragment fragment = new AboutFragment();
+        if (bundle != null)
             fragment.setArguments(bundle);
 
+        if (savedInstanceState == null)
             getSupportFragmentManager().beginTransaction().add(R.id.fragment, fragment).commit();
-        }
+        else
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment, fragment).commit();
     }
 
     @Override
