@@ -88,3 +88,34 @@ A list of the open source licenses used by the project. Child elements are `<pro
 |licenseName|String / String Resource|The name of the license.|
 |licenseBody|String / String Resource|The content of the license.|
 |licenseUrl|String / String Resource|The URL of the license.|
+
+### Things You Can Override
+
+Couple strings, drawables, themes, etc. If you make any translations, feel free to make a PR because I like PRs. PRs are nice.
+
+|The thing|What the thing is|What the thing's supposed to do|
+|-----|-----|-----|
+|@style/AttribouterTheme|Extension of `Theme.AppCompat.Light.NoActionBar`|Defines colors and stuff.|
+|@string/title_attribouter_about|"About"|Toolbar title.|
+|@string/title_attribouter_version|"Version %1$s"|The app version thing name thing.|
+|@string/title_attribouter_contributors|"Contributors"|Header of the contributors section.|
+|@string/title_attribouter_licenses|"Open Source Licenses"|Header of the licenses section.|
+|@string/title_attribouter_license|"License"|I can't remember, but this probably does something somewhere.|
+|@string/title_attribouter_license_permissions|"Permissions"|Title of the 'permissions' section of the license dialog.|
+|@string/title_attribouter_license_conditions|"Conditions"|Title of the 'conditions' section of the license dialog.|
+|@string/title_attribouter_license_limitations|"Limitations"|Title of the 'limitations' section of the license dialog.|
+|@string/title_attribouter_more_info|"More Info"|Title of the 'more info' button at the bottom of the license dialog.|
+|@string/title_attribouter_email|"Email"|Title of the "email" button in the contributor dialog.|
+|@string/title_attribouter_website|"Website"|Title of the website buttons on... yeah just about everything.|
+|@string/title_attribouter_github|"GitHub"|Title of the GitHub buttons on... also just about everything.|
+|@string/title_attribouter_rate|"Rate"|Title of the Rate button.|
+|@color/attribouter_licensePermissionsColor|#00C853|Color of the 'permissions' header in the license dialog.|
+|@color/attribouter_licenseConditionsColor|#0091EA|Color of the 'conditions' header in the license dialog.|
+|@color/attribouter_licenseLimitationsColor|#EF5350|Color of the 'limitations' header in the license dialog.|
+|@drawable/ic_attribouter_arrow_back|--|Back arrow used in the dialog.|
+|@drawable/ic_attribouter_copyright|--|Copyright icon. Buttons.|
+|@drawable/ic_attribouter_email|--|Email icon. Buttons.|
+|@drawable/ic_attribouter_github|--|GitHub icon. Buttons.|
+|@drawable/ic_attribouter_link|--|Link icon. Buttons.|
+|@drawable/ic_attribouter_rate|--|Rate/star icon. Buttons.|
+|@drawable/bg_attribouter_emphasized|--|Rounded & slightly darkened background for the license names / text (in dialogs).|
