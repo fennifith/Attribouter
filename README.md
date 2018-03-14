@@ -39,12 +39,12 @@ Shows a list of the contributors of a project on github, merged with a list of c
 |Attribute|Type|Description|
 |-----|-----|-----|
 |login|String|The GitHub username/login of the contributor (especially useful for overriding specific attributes of certian contributors.|
-|name|String|The name of the contributor.|
-|avatar|String (URL) / Drawable|The "profile picture" of the contributor.|
-|task|String|A short phrase describing the contributor's role in the project ("Icon Designer", "Founder", etc).|
-|bio|String|The biography of the contributor.|
-|blog|String (URL)|The contributor's website.|
-|email|String|The email of the contributor.|
+|name|String / String Resource|The name of the contributor.|
+|avatar|String (URL) / Drawable Resource|The "profile picture" of the contributor.|
+|task|String / String Resource|A short phrase describing the contributor's role in the project ("Icon Designer", "Founder", etc).|
+|bio|String / String Resource|The biography of the contributor.|
+|blog|String / String Resource (URL)|The contributor's website.|
+|email|String / String Resource|The email of the contributor.|
 |position|Integer|If this attribute is given to three contributors with values between 1 and 3 (one each), they will be displayed in a row at the top of the list (1 in the middle, slightly bigger, 2 on the left, 3 on the right).|
 
 #### `<licenses>`
@@ -55,10 +55,10 @@ A list of the open source licenses used by the project. Child elements are `<pro
 |Attribute|Type|Description|
 |-----|-----|-----|
 |repo|String (name/repository)|The GitHub repository to fetch the license's information from.|
-|title|String|The name of the project (will be generated from the repository name if not present, ex: "TheAndroidMaster/ColorPickerDialog" -> "Color Picker Dialog").|
-|description|String|A description of what the project contains.|
-|website|String|A URL of the website for the project.|
+|title|String / String Resource|The name of the project (will be generated from the repository name if not present, ex: "TheAndroidMaster/ColorPickerDialog" -> "Color Picker Dialog").|
+|description|String / String Resource|A description of what the project contains.|
+|website|String / String Resource|A URL of the website for the project.|
 |license|String|The "key" of the license the project is under. This will cause Attribouter to fetch information from the [GitHub Licenses API](https://developer.github.com/v3/licenses/).|
-|licenseName|String|The name of the license.|
-|licenseBody|String|The content of the license.|
-|licenseUrl|String|The URL of the license.|
+|licenseName|String / String Resource|The name of the license.|
+|licenseBody|String / String Resource|The content of the license.|
+|licenseUrl|String / String Resource|The URL of the license.|
