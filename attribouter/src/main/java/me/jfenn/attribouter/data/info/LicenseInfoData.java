@@ -145,13 +145,13 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> {
     }
 
     public void merge(LicenseInfoData license) {
-        if ((title == null || !title.startsWith("^")) && license.title != null)
+        if ((title == null || !title.startsWith("^")) && license.title != null && !license.title.isEmpty())
             title = license.title;
-        if ((description == null || !description.startsWith("^")) && license.description != null)
+        if ((description == null || !description.startsWith("^")) && license.description != null && !license.description.isEmpty())
             description = license.description;
         if ((licenseName == null || !licenseName.startsWith("^")) && license.licenseName != null)
             licenseName = license.licenseName;
-        if ((websiteUrl == null || !websiteUrl.startsWith("^")) && license.websiteUrl != null)
+        if ((websiteUrl == null || !websiteUrl.startsWith("^")) && license.websiteUrl != null && !license.websiteUrl.isEmpty())
             websiteUrl = license.websiteUrl;
         if ((gitHubUrl == null || !gitHubUrl.startsWith("^")) && license.gitHubUrl != null)
             gitHubUrl = license.gitHubUrl;

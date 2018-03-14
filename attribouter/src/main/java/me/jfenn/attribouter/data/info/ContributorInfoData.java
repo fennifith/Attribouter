@@ -52,9 +52,9 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
             name = contributor.name;
         if ((avatarUrl == null || !avatarUrl.startsWith("^")) && contributor.avatarUrl != null)
             avatarUrl = contributor.avatarUrl;
-        if ((bio == null || !bio.startsWith("^")) && contributor.bio != null)
+        if ((bio == null || !bio.startsWith("^")) && contributor.bio != null && !contributor.bio.isEmpty())
             bio = contributor.bio;
-        if ((blog == null || !blog.startsWith("^")) && contributor.blog != null)
+        if ((blog == null || !blog.startsWith("^")) && contributor.blog != null && !contributor.blog.isEmpty())
             blog = contributor.blog;
         if ((task == null || !task.startsWith("^")) && contributor.task != null)
             task = contributor.task;
