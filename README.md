@@ -12,7 +12,20 @@ For demonstration and experimentation, an apk of the sample project can be downl
 
 ### Setup
 
-The gradle dependency will soon be available through jCenter.
+The Gradle dependency will soon be available through jCenter, which is used by default in Android Studio. Until then, simply add the following to your project's build.gradle file instead:
+```gradle
+allprojects {
+  repositories {
+    maven { url 'https://dl.bintray.com/18jafenn90/maven' }
+  }
+}
+```
+
+To add the dependency to your project, copy this line into the dependencies section of your build.gradle file.
+ 
+```gradle
+compile 'me.jfenn:attribouter:0.0.1'
+```
 
 #### Starting an Activity
 This is pretty simple.
