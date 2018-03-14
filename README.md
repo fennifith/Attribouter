@@ -76,7 +76,7 @@ Shows a list of the contributors of a project on github, merged with a list of c
 
 |Attribute|Type|Description|
 |-----|-----|-----|
-|login|String|The GitHub username/login of the contributor (especially useful for overriding specific attributes of certian contributors.|
+|login|String|The GitHub username/login of the contributor (especially useful for overriding specific attributes of certain contributors.|
 |name|String / String Resource|The name of the contributor.|
 |avatar|String (URL) / Drawable Resource|The "profile picture" of the contributor.|
 |task|String / String Resource|A short phrase describing the contributor's role in the project ("Icon Designer", "Founder", etc).|
@@ -84,6 +84,7 @@ Shows a list of the contributors of a project on github, merged with a list of c
 |blog|String / String Resource (URL)|The contributor's website.|
 |email|String / String Resource|The email of the contributor.|
 |position|Integer|If this attribute is given to three contributors with values between 1 and 3 (one each), they will be displayed in a row at the top of the list (1 in the middle, slightly bigger, 2 on the left, 3 on the right).|
+|hidden|Boolean|Whether to remove the contributor from the list. This is only really useful if you want to remove certain contributors that are fetched from GitHub. Default value is 'false', obviously.|
 
 #### `<licenses>`
 A list of the open source licenses used by the project. Child elements are `<project>` tags with attributes that function similar to the `<contributor>`s ("^" overrides GitHub values, otherwise they're replaced by the GitHub data), except the repository is defined by a `repo` attribute (starting a value with "^" is obsolete if the `repo` attribute is not defined).
