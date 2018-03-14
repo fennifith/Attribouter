@@ -48,6 +48,8 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
                         parser.getAttributeValue(null, "blog"),
                         parser.getAttributeValue(null, "email"));
 
+                contributor.isHidden = parser.getAttributeBooleanValue(null, "hidden", false);
+
                 if (!contributors.contains(contributor))
                     contributors.add(contributor);
                 else contributors.get(contributors.indexOf(contributor)).merge(contributor);
@@ -134,6 +136,9 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
         ContributorInfoData first = null, second = null, third = null;
         List<InfoData> remainingContributors = new ArrayList<>();
         for (ContributorInfoData contributor : contributors) {
+            if (contributor.isHidden)
+                continue;
+
             if (contributor.position != null) {
                 if (first == null && contributor.position == 1) {
                     first = contributor;

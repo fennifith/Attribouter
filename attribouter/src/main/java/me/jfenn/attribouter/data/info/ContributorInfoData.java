@@ -30,6 +30,8 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
     @Nullable
     public String task;
 
+    boolean isHidden;
+
     ContributorInfoData(@Nullable String login, @Nullable String name, @Nullable String avatarUrl, @Nullable String task, @Nullable Integer position, @Nullable String bio, @Nullable String blog, @Nullable String email) {
         super(R.layout.item_attribouter_contributor);
         this.login = login;
