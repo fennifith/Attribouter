@@ -1,6 +1,7 @@
 package me.jfenn.attribouter.utils;
 
 import android.content.Context;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
@@ -14,6 +15,17 @@ public class ResourceUtils {
             imageView.setImageResource(resInt);
         } else {
             Glide.with(context).load(identifier).into(imageView);
+        }
+    }
+
+    public static void setImage(Context context, String identifier, @DrawableRes int defaultRes, ImageView imageView) {
+        Integer resInt = getResourceInt(context, identifier);
+        if (resInt != null) {
+            imageView.setImageResource(resInt);
+        } else if (identifier != null) {
+            Glide.with(context).load(identifier).into(imageView);
+        } else {
+            imageView.setImageResource(defaultRes);
         }
     }
 

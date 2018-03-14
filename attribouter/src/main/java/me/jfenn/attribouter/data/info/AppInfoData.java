@@ -18,6 +18,7 @@ import me.jfenn.attribouter.utils.UrlClickListener;
 public class AppInfoData extends InfoData<AppInfoData.ViewHolder> {
 
     private String repo;
+    private String icon;
     private String description;
     private String playStoreUrl;
     private String websiteUrl;
@@ -28,6 +29,7 @@ public class AppInfoData extends InfoData<AppInfoData.ViewHolder> {
     public AppInfoData(XmlResourceParser parser) {
         super(R.layout.item_attribouter_app_info);
         repo = parser.getAttributeValue(null, "repo");
+        icon = parser.getAttributeValue(null, "icon");
         description = parser.getAttributeValue(null, "description");
         playStoreUrl = parser.getAttributeValue(null, "playStoreUrl");
         isPlayStore = parser.getAttributeBooleanValue(null, "showPlayStoreUrl", true);
@@ -65,7 +67,7 @@ public class AppInfoData extends InfoData<AppInfoData.ViewHolder> {
     @Override
     public void bind(Context context, ViewHolder viewHolder) {
         ApplicationInfo info = context.getApplicationInfo();
-        viewHolder.appIconView.setImageResource(info.icon);
+        ResourceUtils.setImage(context, icon, info.icon, viewHolder.appIconView);
         viewHolder.nameTextView.setText(info.labelRes);
         try {
             PackageInfo packageInfo = context.getPackageManager().getPackageInfo(info.packageName, 0);
