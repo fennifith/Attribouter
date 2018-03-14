@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<about repo="TheAndroidMaster/MediaNotification">
-    <appInfo />
+<about>
+    <appInfo repo="TheAndroidMaster/Attribouter" />
     <text text="@string/html" />
     <!-- <text> elements can be added anywhere directly within the <about> tag -->
     <!-- they support html formatting (<p> <b> <i>) & links (<a href="">) -->
-    <contributors>
+    <contributors repo="TheAndroidMaster/MediaNotification">
         <contributor
             login="TheAndroidMaster"
             task="Owner"

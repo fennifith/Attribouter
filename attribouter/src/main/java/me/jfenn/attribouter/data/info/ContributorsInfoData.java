@@ -28,9 +28,9 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
     private String contributorsTitle;
     private List<ContributorInfoData> contributors;
 
-    public ContributorsInfoData(XmlResourceParser parser, String repo) throws XmlPullParserException, IOException {
+    public ContributorsInfoData(XmlResourceParser parser) throws XmlPullParserException, IOException {
         super(R.layout.item_attribouter_contributors);
-        this.repo = repo;
+        repo = parser.getAttributeValue(null, "repo");
         contributors = new ArrayList<>();
         contributorsTitle = parser.getAttributeValue(null, "title");
         while (parser.getEventType() != XmlResourceParser.END_TAG || parser.getName().equals("contributor")) {

@@ -44,7 +44,6 @@ public class AboutFragment extends Fragment implements GitHubData.OnInitListener
         recycler = (RecyclerView) inflater.inflate(R.layout.fragment_attribouter_about, container, false);
 
         infos = new ArrayList<>();
-        String repo = null;
 
         Bundle args = getArguments();
         int fileRes = R.xml.attribouter;
@@ -56,15 +55,13 @@ public class AboutFragment extends Fragment implements GitHubData.OnInitListener
         XmlResourceParser parser = getResources().getXml(fileRes);
         try {
             while (parser.getEventType() != XmlPullParser.END_DOCUMENT) {
-                if (parser.getEventType() == XmlPullParser.START_TAG && parser.getName().equals("about")) {
-                    repo = parser.getAttributeValue(null, "repo");
-                } else if (parser.getEventType() == XmlPullParser.START_TAG) {
+                if (parser.getEventType() == XmlPullParser.START_TAG) {
                     switch (parser.getName()) {
                         case "appInfo":
-                            infos.add(new AppInfoData(parser, repo));
+                            infos.add(new AppInfoData(parser));
                             break;
                         case "contributors":
-                            infos.add(new ContributorsInfoData(parser, repo));
+                            infos.add(new ContributorsInfoData(parser));
                             break;
                         case "licenses":
                             infos.add(new LicensesInfoData(parser));

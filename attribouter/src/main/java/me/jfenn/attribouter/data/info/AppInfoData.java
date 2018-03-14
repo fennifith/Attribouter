@@ -5,7 +5,6 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.XmlResourceParser;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,6 +17,7 @@ import me.jfenn.attribouter.utils.UrlClickListener;
 
 public class AppInfoData extends InfoData<AppInfoData.ViewHolder> {
 
+    private String repo;
     private String description;
     private String playStoreUrl;
     private String websiteUrl;
@@ -25,8 +25,9 @@ public class AppInfoData extends InfoData<AppInfoData.ViewHolder> {
 
     private boolean isPlayStore;
 
-    public AppInfoData(XmlResourceParser parser, @Nullable String repo) {
+    public AppInfoData(XmlResourceParser parser) {
         super(R.layout.item_attribouter_app_info);
+        repo = parser.getAttributeValue(null, "repo");
         description = parser.getAttributeValue(null, "description");
         playStoreUrl = parser.getAttributeValue(null, "playStoreUrl");
         isPlayStore = parser.getAttributeBooleanValue(null, "showPlayStoreUrl", true);
