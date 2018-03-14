@@ -2,6 +2,8 @@
 <about repo="TheAndroidMaster/MediaNotification">
     <appInfo />
     <text text="@string/html" />
+    <!-- <text> elements can be added anywhere directly within the <about> tag -->
+    <!-- they support html formatting (<p> <b> <i>) & links (<a href="">) -->
     <contributors>
         <contributor
             login="TheAndroidMaster"
