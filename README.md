@@ -28,8 +28,23 @@ The configuration file consists of a single root element, `<about>`, with severa
 #### `<appInfo>`
 Displays the app icon, name, version, and links to the project on github and its website if available.
 
+|Attribute|Type|Description|
+|-----|-----|-----|
+|repo|String (name/repository)|The github repository to fetch data from.|
+|icon|String (URL) / Drawable Resource|The app icon to display.|
+|description|String / String Resource|A short description of the app/project.|
+|playStoreUrl|String / String Resource (URL)|The URL of the app on the Play Store (generated from the package name by default).|
+|showPlayStoreUrl|Boolean|Whether to display the "rate" button (defaults to true).|
+|websiteUrl|String / String Resource (URL)| The website of the project.|
+|gitHubUrl|String / String Resource (URL)|The URL for the open source GitHub project. You do not need to define this if it is the same as `repo`.|
+
 #### `<text>`
-A block of text. Has two possible attributes, `text` (a string or string resource, can be formatted in html (links work too)) which defines the text to display, and `centered` (a boolean) which either centers the text (it is left aligned by default).
+A block of text.
+
+|Attribute|Type|Description|
+|-----|-----|-----|
+|text|String / String Resource (HTML)|A string or string resource, can be formatted in html (links work too) that defines the text to display.|
+|centered|Boolean|Whether the text should be centered.|
 
 #### `<contributors>`
 Shows a list of the contributors of a project on github, merged with a list of child `<contributor>` elements defined in the configuration file. For example, if a user with the login "TheAndroidMaster" is both in GitHub and the configuration file, its attributes will be merged so that any attributes beginning with a "^" character will override the information from GitHub, and any attributes not beginning with a "^" character will be used while the GitHub information is loading, or if the information from GitHub is not present or unavailable.
@@ -38,6 +53,7 @@ Shows a list of the contributors of a project on github, merged with a list of c
 
 |Attribute|Type|Description|
 |-----|-----|-----|
+|repo|String (name/repository)|The GitHub repository to fetch contributors from.|
 |login|String|The GitHub username/login of the contributor (especially useful for overriding specific attributes of certian contributors.|
 |name|String / String Resource|The name of the contributor.|
 |avatar|String (URL) / Drawable Resource|The "profile picture" of the contributor.|
