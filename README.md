@@ -14,16 +14,7 @@ This is just sample data. It is not real. Though Jahir is lazy, so that part is 
 
 ### Setup
 
-The Gradle dependency will soon be available through jCenter, which is used by default in Android Studio. Until then, simply add the following to your project's build.gradle file instead:
-```gradle
-allprojects {
-  repositories {
-    maven { url 'https://dl.bintray.com/18jafenn90/maven' }
-  }
-}
-```
-
-To add the dependency to your project, copy this line into the dependencies section of your build.gradle file.
+The Gradle dependency is available through jCenter, which is used by default in Android Studio. To add the dependency to your project, copy this line into the dependencies section of your app's build.gradle file.
  
 ```gradle
 compile 'me.jfenn:attribouter:0.0.1'
