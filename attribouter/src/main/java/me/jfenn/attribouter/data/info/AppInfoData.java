@@ -5,6 +5,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.XmlResourceParser;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,18 +18,21 @@ import me.jfenn.attribouter.utils.UrlClickListener;
 
 public class AppInfoData extends InfoData<AppInfoData.ViewHolder> {
 
-    private String repo;
+    @Nullable
     private String icon;
+    @Nullable
     private String description;
+    @Nullable
     private String playStoreUrl;
+    @Nullable
     private String websiteUrl;
+    @Nullable
     private String gitHubUrl;
 
     private boolean isPlayStore;
 
     public AppInfoData(XmlResourceParser parser) {
         super(R.layout.item_attribouter_app_info);
-        repo = parser.getAttributeValue(null, "repo");
         icon = parser.getAttributeValue(null, "icon");
         description = parser.getAttributeValue(null, "description");
         playStoreUrl = parser.getAttributeValue(null, "playStoreUrl");
@@ -36,6 +40,7 @@ public class AppInfoData extends InfoData<AppInfoData.ViewHolder> {
         websiteUrl = parser.getAttributeValue(null, "websiteUrl");
         gitHubUrl = parser.getAttributeValue(null, "gitHubUrl");
 
+        String repo = parser.getAttributeValue(null, "repo");
         if (gitHubUrl == null && repo != null)
             gitHubUrl = "https://github.com/" + repo;
 

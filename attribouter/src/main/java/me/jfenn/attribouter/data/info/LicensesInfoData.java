@@ -2,6 +2,7 @@ package me.jfenn.attribouter.data.info;
 
 import android.content.Context;
 import android.content.res.XmlResourceParser;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -22,6 +23,7 @@ import me.jfenn.attribouter.utils.ResourceUtils;
 
 public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
 
+    @Nullable
     private String title;
     private List<LicenseInfoData> licenses;
 

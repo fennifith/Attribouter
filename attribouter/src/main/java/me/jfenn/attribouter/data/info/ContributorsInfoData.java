@@ -2,6 +2,7 @@ package me.jfenn.attribouter.data.info;
 
 import android.content.Context;
 import android.content.res.XmlResourceParser;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -24,7 +25,9 @@ import me.jfenn.attribouter.utils.ResourceUtils;
 
 public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHolder> {
 
+    @Nullable
     private String repo;
+    @Nullable
     private String contributorsTitle;
     private List<ContributorInfoData> contributors;
 
@@ -86,7 +89,7 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
                             contributor.login,
                             null,
                             contributor.avatar_url,
-                            repo.startsWith(contributor.login) ? "Owner" : "Contributor",
+                            repo != null && repo.startsWith(contributor.login) ? "Owner" : "Contributor",
                             null,
                             null,
                             null,
@@ -110,7 +113,7 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
                     user.login,
                     user.name,
                     user.avatar_url,
-                    repo.startsWith(user.login) ? "Owner" : "Contributor",
+                    repo != null && repo.startsWith(user.login) ? "Owner" : "Contributor",
                     null,
                     user.bio,
                     user.blog,
