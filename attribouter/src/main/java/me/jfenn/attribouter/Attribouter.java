@@ -15,7 +15,7 @@ public class Attribouter {
     public static final String EXTRA_GITHUB_OAUTH_TOKEN = "me.jfenn.attribouter.EXTRA_GITHUB_OAUTH_TOKEN";
 
     private Context context;
-    private int fileRes;
+    private Integer fileRes;
     private String gitHubToken;
 
     private Attribouter(Context context) {

@@ -49,7 +49,7 @@ public class AboutFragment extends Fragment implements GitHubData.OnInitListener
         int fileRes = R.xml.attribouter;
         if (args != null) {
             gitHubToken = args.getString(Attribouter.EXTRA_GITHUB_OAUTH_TOKEN, null);
-            fileRes = args.getInt(Attribouter.EXTRA_FILE_RES, R.xml.attribouter);
+            fileRes = args.getInt(Attribouter.EXTRA_FILE_RES, fileRes);
         }
 
         XmlResourceParser parser = getResources().getXml(fileRes);
