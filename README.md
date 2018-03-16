@@ -17,7 +17,7 @@ This is just sample data. It is not real. Though Jahir is lazy, so that part is 
 The Gradle dependency is available through jCenter, which is used by default in Android Studio. To add the dependency to your project, copy this line into the dependencies section of your app's build.gradle file.
  
 ```gradle
-compile 'me.jfenn:attribouter:0.0.1'
+compile 'me.jfenn:attribouter:0.0.2'
 ```
 
 #### Starting an Activity
