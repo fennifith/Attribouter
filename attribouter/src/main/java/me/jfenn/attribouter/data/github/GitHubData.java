@@ -191,10 +191,11 @@ public abstract class GitHubData {
                 }
             }
 
+            HttpURLConnection connection = null;
             BufferedReader jsonReader = null;
             StringBuilder jsonBuilder = new StringBuilder();
             try {
-                HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+                connection = (HttpURLConnection) new URL(url).openConnection();
                 if (token != null)
                     connection.setRequestProperty("Authorization", "token " + token);
 
@@ -210,6 +211,17 @@ public abstract class GitHubData {
             } catch (IOException e) {
                 e.printStackTrace();
                 jsonBuilder = null;
+            }
+
+            if (connection != null) {
+                connection.disconnect();
+            }
+
+            if (jsonReader != null) {
+                try {
+                    jsonReader.close();
+                } catch (IOException ignored) {
+                }
             }
 
             if (jsonBuilder != null) {
@@ -231,13 +243,6 @@ public abstract class GitHubData {
 
                 if (cacheWriter != null)
                     cacheWriter.close();
-            }
-
-            if (jsonReader != null) {
-                try {
-                    jsonReader.close();
-                } catch (IOException ignored) {
-                }
             }
         }
 
