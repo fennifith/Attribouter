@@ -22,6 +22,7 @@ import me.jfenn.attribouter.data.github.GitHubData;
 import me.jfenn.attribouter.data.github.UserData;
 import me.jfenn.attribouter.dialogs.UserDialog;
 import me.jfenn.attribouter.utils.ResourceUtils;
+import me.jfenn.attribouter.utils.UrlClickListener;
 
 public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHolder> {
 
@@ -169,13 +170,19 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
             } else viewHolder.firstTaskView.setVisibility(View.GONE);
 
             viewHolder.firstView.setTag(first);
-            viewHolder.firstView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    new UserDialog(view.getContext(), (ContributorInfoData) view.getTag())
-                            .show();
-                }
-            });
+            if (ResourceUtils.getString(context, first.bio) != null) {
+                viewHolder.firstView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        new UserDialog(view.getContext(), (ContributorInfoData) view.getTag())
+                                .show();
+                    }
+                });
+            } else if (ResourceUtils.getString(context, first.blog) != null) {
+                viewHolder.firstView.setOnClickListener(new UrlClickListener(ResourceUtils.getString(context, first.blog)));
+            } else if (first.login != null) {
+                viewHolder.firstView.setOnClickListener(new UrlClickListener("https://github.com/" + first.login));
+            } else viewHolder.firstView.setOnClickListener(null);
 
             viewHolder.secondNameView.setText(ResourceUtils.getString(context, second.getName()));
             ResourceUtils.setImage(context, second.avatarUrl, viewHolder.secondImageView);
@@ -185,13 +192,19 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
             } else viewHolder.secondTaskView.setVisibility(View.GONE);
 
             viewHolder.secondView.setTag(second);
-            viewHolder.secondView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    new UserDialog(view.getContext(), (ContributorInfoData) view.getTag())
-                            .show();
-                }
-            });
+            if (ResourceUtils.getString(context, second.bio) != null) {
+                viewHolder.secondView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        new UserDialog(view.getContext(), (ContributorInfoData) view.getTag())
+                                .show();
+                    }
+                });
+            } else if (ResourceUtils.getString(context, second.blog) != null) {
+                viewHolder.secondView.setOnClickListener(new UrlClickListener(ResourceUtils.getString(context, second.blog)));
+            } else if (second.login != null) {
+                viewHolder.secondView.setOnClickListener(new UrlClickListener("https://github.com/" + second.login));
+            } else viewHolder.secondView.setOnClickListener(null);
 
             viewHolder.thirdNameView.setText(ResourceUtils.getString(context, third.getName()));
             ResourceUtils.setImage(context, third.avatarUrl, viewHolder.thirdImageView);
@@ -201,13 +214,19 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
             } else viewHolder.thirdTaskView.setVisibility(View.GONE);
 
             viewHolder.thirdView.setTag(third);
-            viewHolder.thirdView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    new UserDialog(view.getContext(), (ContributorInfoData) view.getTag())
-                            .show();
-                }
-            });
+            if (ResourceUtils.getString(context, third.bio) != null) {
+                viewHolder.thirdView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        new UserDialog(view.getContext(), (ContributorInfoData) view.getTag())
+                                .show();
+                    }
+                });
+            } else if (ResourceUtils.getString(context, third.blog) != null) {
+                viewHolder.thirdView.setOnClickListener(new UrlClickListener(ResourceUtils.getString(context, third.blog)));
+            } else if (third.login != null) {
+                viewHolder.thirdView.setOnClickListener(new UrlClickListener("https://github.com/" + third.login));
+            } else viewHolder.thirdView.setOnClickListener(null);
         } else {
             viewHolder.topThreeView.setVisibility(View.GONE);
 

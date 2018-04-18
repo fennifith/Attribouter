@@ -86,7 +86,7 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
         } else viewHolder.taskView.setVisibility(View.GONE);
 
         String blog = ResourceUtils.getString(context, this.blog);
-        if (bio != null) {
+        if (ResourceUtils.getString(context, bio) != null) {
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -96,6 +96,8 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
             });
         } else if (blog != null) {
             viewHolder.itemView.setOnClickListener(new UrlClickListener(blog));
+        } else if (login != null) {
+            viewHolder.itemView.setOnClickListener(new UrlClickListener("https://github.com/" + login));
         } else viewHolder.itemView.setOnClickListener(null);
     }
 
