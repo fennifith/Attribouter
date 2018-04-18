@@ -94,7 +94,7 @@ A list of the open source licenses used by the project. Child elements are `<pro
 |-----|-----|-----|
 |title|String / String Resource|The title to show above the licenses (defaults to @string/title_attribouter_licenses / "Open Source Licenses")|
 
-##### `<license>`
+##### `<project>`
 
 |Attribute|Type|Description|
 |-----|-----|-----|
