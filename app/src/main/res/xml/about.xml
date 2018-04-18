@@ -33,6 +33,26 @@
         <!-- Alex doesn't have a github account (actually, he does, but let's pretend he doesn't), so his data is simply added to the list of contributors from github -->
         <!-- Note the string resource used in place of a name. You can use string resources. Even though there's no autocompletion. They still work. -->
     </contributors>
+    <translators>
+        <translator
+            name="John Doe"
+            avatar="https://raw.githubusercontent.com/TheAndroidMaster/TheAndroidMaster.github.io/master/images/headers/rocks.jpg"
+            locales="zh,rn,sn"
+            blog="https://example.com/" />
+        <translator
+            name="Jenny Doe"
+            avatar="https://raw.githubusercontent.com/TheAndroidMaster/TheAndroidMaster.github.io/master/images/headers/vukheader.jpg"
+            locales="zh,sn"
+            blog="https://example.com/" />
+        <translator
+            name="Joe Doe"
+            avatar="https://raw.githubusercontent.com/TheAndroidMaster/TheAndroidMaster.github.io/master/images/headers/highway.jpg"
+            locales="rn,cy"
+            blog="https://example.com/" />
+        <translator
+            login="TheAndroidMaster"
+            locales="en" />
+    </translators>
     <licenses>
         <project repo="TheAndroidMaster/ColorPickerDialog" />
         <!-- all of ColorPickerDialog's info is fetched from github -->

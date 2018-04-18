@@ -210,6 +210,14 @@ public enum Language {
         this.resource = resource;
     }
 
+    public String getLocale() {
+        return identifier;
+    }
+
+    public boolean includesLocale(String locale) {
+        return locale.toLowerCase().split("_")[0].equals(identifier);
+    }
+
     public String getName(Context context) {
         return context.getString(resource);
     }

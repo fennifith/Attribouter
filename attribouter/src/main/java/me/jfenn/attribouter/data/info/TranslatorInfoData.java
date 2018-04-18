@@ -7,11 +7,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import me.jfenn.attribouter.R;
-import me.jfenn.attribouter.dialogs.UserDialog;
 import me.jfenn.attribouter.utils.ResourceUtils;
 import me.jfenn.attribouter.utils.UrlClickListener;
 
-public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder> {
+public class TranslatorInfoData extends InfoData<TranslatorInfoData.ViewHolder> {
 
     @Nullable
     public String login;
@@ -20,26 +19,18 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
     @Nullable
     public String avatarUrl;
     @Nullable
-    public String bio;
-    @Nullable
     public String blog;
     @Nullable
     public String email;
     @Nullable
-    Integer position;
-    @Nullable
-    public String task;
+    public String locales;
 
-    boolean isHidden;
-
-    ContributorInfoData(@Nullable String login, @Nullable String name, @Nullable String avatarUrl, @Nullable String task, @Nullable Integer position, @Nullable String bio, @Nullable String blog, @Nullable String email) {
-        super(R.layout.item_attribouter_contributor);
+    TranslatorInfoData(@Nullable String login, @Nullable String name, @Nullable String avatarUrl, @Nullable String locales, @Nullable String blog, @Nullable String email) {
+        super(R.layout.item_attribouter_translator);
         this.login = login;
         this.name = name;
         this.avatarUrl = avatarUrl;
-        this.task = task;
-        this.position = position;
-        this.bio = bio;
+        this.locales = locales;
         this.blog = blog;
         this.email = email;
     }
@@ -49,28 +40,26 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
         return name != null ? name : login;
     }
 
-    public void merge(ContributorInfoData contributor) {
+    public void merge(TranslatorInfoData contributor) {
         if ((name == null || !name.startsWith("^")) && contributor.name != null)
             name = contributor.name;
         if ((avatarUrl == null || !avatarUrl.startsWith("^")) && contributor.avatarUrl != null)
             avatarUrl = contributor.avatarUrl;
-        if ((bio == null || !bio.startsWith("^")) && contributor.bio != null && !contributor.bio.isEmpty())
-            bio = contributor.bio;
         if ((blog == null || !blog.startsWith("^")) && contributor.blog != null && !contributor.blog.isEmpty())
             blog = contributor.blog;
         if ((email == null || !email.startsWith("^")) && contributor.email != null && !contributor.email.isEmpty())
             email = contributor.email;
-        if ((task == null || !task.startsWith("^")) && contributor.task != null)
-            task = contributor.task;
+        if ((locales == null || !locales.startsWith("^")) && contributor.locales != null)
+            locales = contributor.locales;
     }
 
     public boolean hasEverything() {
-        return name != null && name.startsWith("^") && bio != null && bio.startsWith("^") && blog != null && blog.startsWith("^") && email != null && email.startsWith("^");
+        return name != null && name.startsWith("^") && blog != null && blog.startsWith("^");
     }
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof ContributorInfoData && (login != null ? login.equals(((ContributorInfoData) obj).login) : super.equals(obj));
+        return obj instanceof TranslatorInfoData && (login != null ? login.equals(((TranslatorInfoData) obj).login) : super.equals(obj));
     }
 
     @Override
@@ -82,21 +71,9 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
     public void bind(Context context, ViewHolder viewHolder) {
         ResourceUtils.setImage(context, avatarUrl, viewHolder.imageView);
         viewHolder.nameView.setText(ResourceUtils.getString(context, getName()));
-        if (task != null) {
-            viewHolder.taskView.setVisibility(View.VISIBLE);
-            viewHolder.taskView.setText(ResourceUtils.getString(context, task));
-        } else viewHolder.taskView.setVisibility(View.GONE);
 
         String blog = ResourceUtils.getString(context, this.blog);
-        if (ResourceUtils.getString(context, bio) != null) {
-            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    new UserDialog(view.getContext(), ContributorInfoData.this)
-                            .show();
-                }
-            });
-        } else if (blog != null) {
+        if (blog != null) {
             viewHolder.itemView.setOnClickListener(new UrlClickListener(blog));
         } else if (login != null) {
             viewHolder.itemView.setOnClickListener(new UrlClickListener("https://github.com/" + login));
@@ -107,13 +84,11 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
 
         private ImageView imageView;
         private TextView nameView;
-        private TextView taskView;
 
         ViewHolder(View v) {
             super(v);
             imageView = v.findViewById(R.id.image);
             nameView = v.findViewById(R.id.name);
-            taskView = v.findViewById(R.id.task);
         }
     }
 }

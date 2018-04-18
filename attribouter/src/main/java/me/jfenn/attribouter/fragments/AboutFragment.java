@@ -28,6 +28,7 @@ import me.jfenn.attribouter.data.info.ContributorsInfoData;
 import me.jfenn.attribouter.data.info.InfoData;
 import me.jfenn.attribouter.data.info.LicensesInfoData;
 import me.jfenn.attribouter.data.info.TextInfoData;
+import me.jfenn.attribouter.data.info.TranslatorsInfoData;
 
 public class AboutFragment extends Fragment implements GitHubData.OnInitListener, InfoData.OnRequestListener {
 
@@ -62,6 +63,9 @@ public class AboutFragment extends Fragment implements GitHubData.OnInitListener
                             break;
                         case "contributors":
                             infos.add(new ContributorsInfoData(parser));
+                            break;
+                        case "translators":
+                            infos.add(new TranslatorsInfoData(parser));
                             break;
                         case "licenses":
                             infos.add(new LicensesInfoData(parser));
