@@ -36,7 +36,7 @@ public class TranslatorsInfoData extends InfoData<TranslatorsInfoData.ViewHolder
             parser.next();
             if (parser.getEventType() == XmlResourceParser.START_TAG && parser.getName().equals("translator")) {
 
-                TranslatorInfoData contributor = new TranslatorInfoData(
+                TranslatorInfoData translator = new TranslatorInfoData(
                         parser.getAttributeValue(null, "login"),
                         parser.getAttributeValue(null, "name"),
                         parser.getAttributeValue(null, "avatar"),
@@ -44,9 +44,12 @@ public class TranslatorsInfoData extends InfoData<TranslatorsInfoData.ViewHolder
                         parser.getAttributeValue(null, "blog"),
                         parser.getAttributeValue(null, "email"));
 
-                if (!translators.contains(contributor))
-                    translators.add(contributor);
-                else translators.get(translators.indexOf(contributor)).merge(contributor);
+                if (!translators.contains(translator))
+                    translators.add(translator);
+                else translators.get(translators.indexOf(translator)).merge(translator);
+
+                if (translator.login != null && !translator.hasEverything())
+                    addRequest(new UserData(translator.login));
             }
         }
     }
