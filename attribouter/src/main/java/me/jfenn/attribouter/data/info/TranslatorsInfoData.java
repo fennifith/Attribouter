@@ -13,10 +13,10 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import me.jfenn.attribouter.R;
 import me.jfenn.attribouter.adapters.InfoAdapter;
-import me.jfenn.attribouter.data.Language;
 import me.jfenn.attribouter.data.github.ContributorsData;
 import me.jfenn.attribouter.data.github.GitHubData;
 import me.jfenn.attribouter.data.github.UserData;
@@ -110,7 +110,7 @@ public class TranslatorsInfoData extends InfoData<TranslatorsInfoData.ViewHolder
             viewHolder.titleView.setText(ResourceUtils.getString(context, translatorsTitle));
 
         List<InfoData> sortedList = new ArrayList<>();
-        for (Language language : Language.values()) {
+        for (String language : Locale.getISOLanguages()) {
             boolean isHeader = false;
             for (TranslatorInfoData translator : translators) {
                 if (translator.locales == null)
@@ -118,7 +118,7 @@ public class TranslatorsInfoData extends InfoData<TranslatorsInfoData.ViewHolder
 
                 boolean isLocale = false;
                 for (String locale : translator.locales.split(",")) {
-                    if (language.includesLocale(locale)) {
+                    if (language.equals(locale)) {
                         isLocale = true;
                         break;
                     }
@@ -126,7 +126,7 @@ public class TranslatorsInfoData extends InfoData<TranslatorsInfoData.ViewHolder
 
                 if (isLocale) {
                     if (!isHeader) {
-                        sortedList.add(new TextInfoData(language.getName(context), false));
+                        sortedList.add(new TextInfoData("<b>" + new Locale(language).getDisplayLanguage() + "</b>", false));
                         isHeader = true;
                     }
 
