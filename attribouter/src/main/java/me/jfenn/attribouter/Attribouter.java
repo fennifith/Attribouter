@@ -41,7 +41,8 @@ public class Attribouter {
 
     public Fragment toFragment() {
         Bundle args = new Bundle();
-        args.putInt(EXTRA_FILE_RES, fileRes);
+        if (fileRes != null)
+            args.putInt(EXTRA_FILE_RES, fileRes);
         args.putString(EXTRA_GITHUB_OAUTH_TOKEN, gitHubToken);
 
         AboutFragment fragment = new AboutFragment();
