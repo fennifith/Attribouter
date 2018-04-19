@@ -126,7 +126,7 @@ public class TranslatorsInfoData extends InfoData<TranslatorsInfoData.ViewHolder
 
                 if (isLocale) {
                     if (!isHeader) {
-                        sortedList.add(new TextInfoData("<b>" + new Locale(language).getDisplayLanguage() + "</b>", false));
+                        sortedList.add(new HeaderInfoData(new Locale(language).getDisplayLanguage()));
                         isHeader = true;
                     }
 
