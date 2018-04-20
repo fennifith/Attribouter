@@ -216,6 +216,12 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> {
             licenseDescription = license.licenseDescription;
         if ((licenseBody == null || !licenseBody.startsWith("^")) && license.licenseBody != null)
             licenseBody = license.licenseBody;
+
+        for (LinkInfoData link : license.links) {
+            if (links.contains(link))
+                links.get(links.indexOf(link)).merge(link);
+            else links.add(link);
+        }
     }
 
     public boolean hasEverythingGeneric() {
