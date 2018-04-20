@@ -21,7 +21,6 @@ public class LinkInfoData extends InfoData<LinkInfoData.ViewHolder> {
     private String url;
     @Nullable
     private String icon;
-    @Nullable
     int priority;
 
     public LinkInfoData(XmlResourceParser parser) {
