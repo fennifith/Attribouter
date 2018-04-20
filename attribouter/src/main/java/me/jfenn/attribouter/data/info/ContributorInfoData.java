@@ -6,6 +6,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import me.jfenn.attribouter.R;
 import me.jfenn.attribouter.dialogs.UserDialog;
 import me.jfenn.attribouter.utils.ResourceUtils;
@@ -29,6 +32,7 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
     Integer position;
     @Nullable
     public String task;
+    public List<LinkInfoData> links;
 
     boolean isHidden;
 
@@ -42,6 +46,14 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
         this.bio = bio;
         this.blog = blog;
         this.email = email;
+
+        links = new ArrayList<>();
+        if (login != null)
+            links.add(new LinkInfoData("@string/title_attribouter_github", "https://github.com/" + login, "@drawable/ic_attribouter_github"));
+        if (blog != null)
+            links.add(new LinkInfoData("@string/title_attribouter_website", blog, "@drawable/ic_attribouter_link"));
+        if (email != null)
+            links.add(new LinkInfoData("@string/title_attribouter_email", "mailto:" + email, "@drawable/ic_attribouter_email"));
     }
 
     @Nullable
@@ -62,6 +74,11 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
             email = contributor.email;
         if ((task == null || !task.startsWith("^")) && contributor.task != null)
             task = contributor.task;
+
+        for (LinkInfoData link : contributor.links) {
+            if (!links.contains(link))
+                links.add(link);
+        }
     }
 
     public boolean hasEverything() {
