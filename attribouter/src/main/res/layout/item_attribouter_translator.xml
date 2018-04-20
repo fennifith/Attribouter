@@ -12,7 +12,7 @@
 
     <me.jfenn.attribouter.views.CircleImageView
         android:id="@+id/image"
-        android:layout_width="32dp"
+        android:layout_width="24dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="6dp"
         android:layout_marginEnd="12dp"
@@ -25,8 +25,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginStart="18dp"
         android:textColor="?android:textColorPrimary"
         android:textSize="16sp"
         tools:text="John Doe" />
