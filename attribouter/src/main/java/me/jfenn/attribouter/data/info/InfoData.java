@@ -59,7 +59,7 @@ public abstract class InfoData<T extends InfoData.ViewHolder> implements GitHubD
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        ViewHolder(View v) {
+        public ViewHolder(View v) {
             super(v);
         }
 

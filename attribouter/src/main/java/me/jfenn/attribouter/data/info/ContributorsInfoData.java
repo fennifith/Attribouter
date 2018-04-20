@@ -20,6 +20,7 @@ import me.jfenn.attribouter.adapters.InfoAdapter;
 import me.jfenn.attribouter.data.github.ContributorsData;
 import me.jfenn.attribouter.data.github.GitHubData;
 import me.jfenn.attribouter.data.github.UserData;
+import me.jfenn.attribouter.data.info.link.LinkInfoData;
 import me.jfenn.attribouter.dialogs.UserDialog;
 import me.jfenn.attribouter.utils.ResourceUtils;
 import me.jfenn.attribouter.utils.UrlClickListener;
@@ -56,7 +57,11 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
 
                 parser.next();
                 while (parser.getEventType() != XmlResourceParser.END_TAG && parser.getName().equals("link")) {
-                    contributor.links.add(new LinkInfoData(parser));
+                    LinkInfoData link = new LinkInfoData(parser);
+                    if (contributor.links.contains(link))
+                        contributor.links.get(contributor.links.indexOf(link)).merge(link);
+                    else contributor.links.add(link);
+                    parser.next();
                 }
 
                 if (!contributors.contains(contributor))

@@ -5,10 +5,16 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import me.jfenn.attribouter.R;
+import me.jfenn.attribouter.data.info.link.GitHubLinkInfoData;
+import me.jfenn.attribouter.data.info.link.LicenseLinkInfoData;
+import me.jfenn.attribouter.data.info.link.LinkInfoData;
+import me.jfenn.attribouter.data.info.link.WebsiteLinkInfoData;
 import me.jfenn.attribouter.dialogs.LicenseDialog;
 import me.jfenn.attribouter.utils.ResourceUtils;
 import me.jfenn.attribouter.utils.UrlClickListener;
@@ -43,6 +49,7 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> {
     public String licenseBody;
     @Nullable
     String licenseKey;
+    List<LinkInfoData> links;
 
     public LicenseInfoData(@Nullable String repo, @Nullable String title, @Nullable String description, @Nullable String licenseName, @Nullable String websiteUrl, @Nullable String gitHubUrl, @Nullable String licenseUrl, @Nullable String[] licensePermissions, @Nullable String[] licenseConditions, @Nullable String[] licenseLimitations, @Nullable String licenseDescription, @Nullable String licenseBody, @Nullable String licenseKey) {
         super(R.layout.item_attribouter_license);
@@ -63,6 +70,14 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> {
         if (repo != null)
             token = repo;
         else token = title;
+
+        links = new ArrayList<>();
+        if (websiteUrl != null)
+            links.add(new WebsiteLinkInfoData(websiteUrl, 2));
+        if (repo != null)
+            links.add(new GitHubLinkInfoData(repo, 1));
+        if (licenseBody != null || licenseUrl != null)
+            links.add(new LicenseLinkInfoData(this, 0));
     }
 
     public String getName() {

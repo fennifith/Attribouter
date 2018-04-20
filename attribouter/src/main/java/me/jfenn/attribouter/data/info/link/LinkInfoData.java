@@ -1,4 +1,4 @@
-package me.jfenn.attribouter.data.info;
+package me.jfenn.attribouter.data.info.link;
 
 import android.content.Context;
 import android.content.res.XmlResourceParser;
@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import me.jfenn.attribouter.R;
+import me.jfenn.attribouter.data.info.InfoData;
 import me.jfenn.attribouter.utils.ResourceUtils;
 import me.jfenn.attribouter.utils.UrlClickListener;
 
@@ -24,11 +25,12 @@ public class LinkInfoData extends InfoData<LinkInfoData.ViewHolder> {
     int priority;
 
     public LinkInfoData(XmlResourceParser parser) {
-        super(R.layout.item_attribouter_link);
-        id = parser.getAttributeValue(null, "id");
-        name = parser.getAttributeValue(null, "name");
-        url = parser.getAttributeValue(null, "url");
-        icon = parser.getAttributeValue(null, "icon");
+        this(parser.getAttributeValue(null, "id"),
+                parser.getAttributeValue(null, "name"),
+                parser.getAttributeValue(null, "url"),
+                parser.getAttributeValue(null, "icon"),
+                0);
+
         String priorityString = parser.getAttributeValue(null, "priority");
         if (priorityString != null)
             priority = Integer.parseInt(priorityString);
@@ -80,6 +82,14 @@ public class LinkInfoData extends InfoData<LinkInfoData.ViewHolder> {
         if (url != null)
             return new UrlClickListener(ResourceUtils.getString(context, url));
         else return null;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    String getUrl() {
+        return url;
     }
 
 

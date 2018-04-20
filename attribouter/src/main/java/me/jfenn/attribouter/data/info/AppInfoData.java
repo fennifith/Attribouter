@@ -10,9 +10,19 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import me.jfenn.attribouter.R;
 import me.jfenn.attribouter.data.github.GitHubData;
 import me.jfenn.attribouter.data.github.RepositoryData;
+import me.jfenn.attribouter.data.info.link.GitHubLinkInfoData;
+import me.jfenn.attribouter.data.info.link.LinkInfoData;
+import me.jfenn.attribouter.data.info.link.PlayStoreLinkInfoData;
+import me.jfenn.attribouter.data.info.link.WebsiteLinkInfoData;
 import me.jfenn.attribouter.utils.ResourceUtils;
 import me.jfenn.attribouter.utils.UrlClickListener;
 
@@ -29,20 +39,35 @@ public class AppInfoData extends InfoData<AppInfoData.ViewHolder> {
     @Nullable
     private String gitHubUrl;
 
-    private boolean isPlayStore;
+    private List<LinkInfoData> links;
 
-    public AppInfoData(XmlResourceParser parser) {
+    public AppInfoData(XmlResourceParser parser) throws IOException, XmlPullParserException {
         super(R.layout.item_attribouter_app_info);
         icon = parser.getAttributeValue(null, "icon");
         description = parser.getAttributeValue(null, "description");
         playStoreUrl = parser.getAttributeValue(null, "playStoreUrl");
-        isPlayStore = parser.getAttributeBooleanValue(null, "showPlayStoreUrl", true);
         websiteUrl = parser.getAttributeValue(null, "websiteUrl");
         gitHubUrl = parser.getAttributeValue(null, "gitHubUrl");
 
         String repo = parser.getAttributeValue(null, "repo");
         if (gitHubUrl == null && repo != null)
             gitHubUrl = "https://github.com/" + repo;
+
+        links = new ArrayList<>();
+        if (repo != null || gitHubUrl != null)
+            links.add(new GitHubLinkInfoData(gitHubUrl != null ? gitHubUrl : repo, 0, gitHubUrl != null));
+        if (websiteUrl != null)
+            links.add(new WebsiteLinkInfoData(websiteUrl, 0));
+        links.add(new PlayStoreLinkInfoData(playStoreUrl, 0));
+
+        parser.next();
+        while (parser.getEventType() != XmlResourceParser.END_TAG && parser.getName().equals("link")) {
+            LinkInfoData link = new LinkInfoData(parser);
+            if (links.contains(link))
+                links.get(links.indexOf(link)).merge(link);
+            else links.add(link);
+            parser.next();
+        }
 
         addRequest(new RepositoryData(repo));
     }
@@ -87,14 +112,12 @@ public class AppInfoData extends InfoData<AppInfoData.ViewHolder> {
             viewHolder.descriptionTextView.setText(ResourceUtils.getString(context, description));
         } else viewHolder.descriptionTextView.setVisibility(View.GONE);
 
-        if (isPlayStore) {
-            UrlClickListener listener = new UrlClickListener("https://play.google.com/store/apps/details?id=" + info.packageName);
-            if (playStoreUrl != null)
-                listener = new UrlClickListener(ResourceUtils.getString(context, playStoreUrl));
+        UrlClickListener listener = new UrlClickListener("https://play.google.com/store/apps/details?id=" + info.packageName);
+        if (playStoreUrl != null)
+            listener = new UrlClickListener(ResourceUtils.getString(context, playStoreUrl));
 
-            viewHolder.playStoreButton.setVisibility(View.VISIBLE);
-            viewHolder.playStoreButton.setOnClickListener(listener);
-        } else viewHolder.playStoreButton.setVisibility(View.GONE);
+        viewHolder.playStoreButton.setVisibility(View.VISIBLE);
+        viewHolder.playStoreButton.setOnClickListener(listener);
 
         if (websiteUrl != null) {
             viewHolder.websiteButton.setVisibility(View.VISIBLE);

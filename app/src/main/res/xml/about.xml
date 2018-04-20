@@ -29,7 +29,13 @@
             name="@string/alex_name"
             task="Icon Designer"
             avatar="https://avatars3.githubusercontent.com/u/6982070"
-            blog="https://github.com/adueppen/" />
+            blog="https://github.com/adueppen/">
+            <link
+                name="Twitter"
+                url="https://twitter.com/adueppen/"
+                icon="@drawable/ic_attribouter_link"
+                priority="5" />
+        </contributor>
         <!-- Alex doesn't have a github account (actually, he does, but let's pretend he doesn't), so his data is simply added to the list of contributors from github -->
         <!-- Note the string resource used in place of a name. You can use string resources. Even though there's no autocompletion. They still work. -->
     </contributors>

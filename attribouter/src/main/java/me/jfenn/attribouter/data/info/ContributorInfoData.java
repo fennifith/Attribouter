@@ -10,6 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.jfenn.attribouter.R;
+import me.jfenn.attribouter.data.info.link.EmailLinkInfoData;
+import me.jfenn.attribouter.data.info.link.GitHubLinkInfoData;
+import me.jfenn.attribouter.data.info.link.LinkInfoData;
+import me.jfenn.attribouter.data.info.link.WebsiteLinkInfoData;
 import me.jfenn.attribouter.dialogs.UserDialog;
 import me.jfenn.attribouter.utils.ResourceUtils;
 
@@ -48,11 +52,11 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
 
         links = new ArrayList<>();
         if (login != null)
-            links.add(new LinkInfoData("github", "@string/title_attribouter_github", "https://github.com/" + login, "@drawable/ic_attribouter_github", 1));
+            links.add(new GitHubLinkInfoData(login, 1));
         if (blog != null)
-            links.add(new LinkInfoData("website", "@string/title_attribouter_website", blog, "@drawable/ic_attribouter_link", 2));
+            links.add(new WebsiteLinkInfoData(blog, 2));
         if (email != null)
-            links.add(new LinkInfoData("email", "@string/title_attribouter_email", "mailto:" + email, "@drawable/ic_attribouter_email", 0));
+            links.add(new EmailLinkInfoData(email, -1));
     }
 
     @Nullable
@@ -115,7 +119,7 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
         } else {
             LinkInfoData importantLink = null;
             for (LinkInfoData link : links) {
-                if (importantLink == null || link.priority > importantLink.priority)
+                if (importantLink == null || link.getPriority() > importantLink.getPriority())
                     importantLink = link;
             }
 

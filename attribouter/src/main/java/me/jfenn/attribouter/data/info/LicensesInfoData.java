@@ -19,6 +19,7 @@ import me.jfenn.attribouter.adapters.InfoAdapter;
 import me.jfenn.attribouter.data.github.GitHubData;
 import me.jfenn.attribouter.data.github.LicenseData;
 import me.jfenn.attribouter.data.github.RepositoryData;
+import me.jfenn.attribouter.data.info.link.LinkInfoData;
 import me.jfenn.attribouter.utils.ResourceUtils;
 
 public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
@@ -51,6 +52,15 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
                         parser.getAttributeValue(null, "licenseBody"),
                         parser.getAttributeValue(null, "license")
                 );
+
+                parser.next();
+                while (parser.getEventType() != XmlResourceParser.END_TAG && parser.getName().equals("link")) {
+                    LinkInfoData link = new LinkInfoData(parser);
+                    if (license.links.contains(link))
+                        license.links.get(license.links.indexOf(link)).merge(link);
+                    else license.links.add(link);
+                    parser.next();
+                }
 
                 if (!licenses.contains(license))
                     licenses.add(license);
