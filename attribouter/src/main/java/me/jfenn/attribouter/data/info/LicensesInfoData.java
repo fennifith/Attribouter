@@ -76,6 +76,22 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
         ));
 
         licenses.add(new LicenseInfoData(
+                "google/flexbox-layout",
+                "FlexBox Layout",
+                "FlexboxLayout is a library that brings similar capabilities to the CSS Flexible Box Layout to Android.",
+                "Apache License 2.0",
+                null,
+                "https://github.com/google/flexbox-layout",
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                "apache-2.0"
+        ));
+
+        licenses.add(new LicenseInfoData(
                 "bumptech/glide",
                 "Glide",
                 "An image loading and caching library for Android focused on smooth scrolling",
