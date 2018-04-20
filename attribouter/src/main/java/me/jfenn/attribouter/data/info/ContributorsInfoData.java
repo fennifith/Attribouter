@@ -56,11 +56,7 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
 
                 parser.next();
                 while (parser.getEventType() != XmlResourceParser.END_TAG && parser.getName().equals("link")) {
-                    contributor.links.add(new LinkInfoData(
-                            parser.getAttributeValue(null, "name"),
-                            parser.getAttributeValue(null, "url"),
-                            parser.getAttributeValue(null, "icon")
-                    ));
+                    contributor.links.add(new LinkInfoData(parser));
                 }
 
                 if (!contributors.contains(contributor))

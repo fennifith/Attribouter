@@ -12,7 +12,6 @@ import java.util.List;
 import me.jfenn.attribouter.R;
 import me.jfenn.attribouter.dialogs.UserDialog;
 import me.jfenn.attribouter.utils.ResourceUtils;
-import me.jfenn.attribouter.utils.UrlClickListener;
 
 public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder> {
 
@@ -49,11 +48,11 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
 
         links = new ArrayList<>();
         if (login != null)
-            links.add(new LinkInfoData("@string/title_attribouter_github", "https://github.com/" + login, "@drawable/ic_attribouter_github"));
+            links.add(new LinkInfoData("github", "@string/title_attribouter_github", "https://github.com/" + login, "@drawable/ic_attribouter_github", 1));
         if (blog != null)
-            links.add(new LinkInfoData("@string/title_attribouter_website", blog, "@drawable/ic_attribouter_link"));
+            links.add(new LinkInfoData("website", "@string/title_attribouter_website", blog, "@drawable/ic_attribouter_link", 2));
         if (email != null)
-            links.add(new LinkInfoData("@string/title_attribouter_email", "mailto:" + email, "@drawable/ic_attribouter_email"));
+            links.add(new LinkInfoData("email", "@string/title_attribouter_email", "mailto:" + email, "@drawable/ic_attribouter_email", 0));
     }
 
     @Nullable
@@ -76,8 +75,9 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
             task = contributor.task;
 
         for (LinkInfoData link : contributor.links) {
-            if (!links.contains(link))
-                links.add(link);
+            if (links.contains(link))
+                links.get(links.indexOf(link)).merge(link);
+            else links.add(link);
         }
     }
 
@@ -104,7 +104,6 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
             viewHolder.taskView.setText(ResourceUtils.getString(context, task));
         } else viewHolder.taskView.setVisibility(View.GONE);
 
-        String blog = ResourceUtils.getString(context, this.blog);
         if (ResourceUtils.getString(context, bio) != null) {
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -113,11 +112,15 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
                             .show();
                 }
             });
-        } else if (blog != null) {
-            viewHolder.itemView.setOnClickListener(new UrlClickListener(blog));
-        } else if (login != null) {
-            viewHolder.itemView.setOnClickListener(new UrlClickListener("https://github.com/" + login));
-        } else viewHolder.itemView.setOnClickListener(null);
+        } else {
+            LinkInfoData importantLink = null;
+            for (LinkInfoData link : links) {
+                if (importantLink == null || link.priority > importantLink.priority)
+                    importantLink = link;
+            }
+
+            viewHolder.itemView.setOnClickListener(importantLink != null ? importantLink.getListener(context) : null);
+        }
     }
 
     static class ViewHolder extends InfoData.ViewHolder {
