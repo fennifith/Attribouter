@@ -12,6 +12,7 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import me.jfenn.attribouter.R;
@@ -30,6 +31,7 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
     public LicensesInfoData(XmlResourceParser parser) throws XmlPullParserException, IOException {
         super(R.layout.item_attribouter_licenses);
         title = parser.getAttributeValue(null, "title");
+        boolean showDefaults = parser.getAttributeBooleanValue(null, "showDefaults", true);
         licenses = new ArrayList<>();
 
         while (parser.getEventType() != XmlResourceParser.END_TAG || parser.getName().equals("project")) {
@@ -43,85 +45,91 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
             }
         }
 
-        licenses.add(new LicenseInfoData(
-                "TheAndroidMaster/Attribouter",
-                "Attribouter",
-                "A lightweight \"about screen\" library to allow quick but customizable attribution in Android apps.",
-                "Apache License 2.0",
-                null,
-                "https://github.com/TheAndroidMaster/Attribouter",
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                "apache-2.0"
-        ));
+        if (showDefaults) {
+            List<LicenseInfoData> defaultLicenses = new ArrayList<>(Arrays.asList(
+                    new LicenseInfoData(
+                            "TheAndroidMaster/Attribouter",
+                            "Attribouter",
+                            "A lightweight \"about screen\" library to allow quick but customizable attribution in Android apps.",
+                            "Apache License 2.0",
+                            null,
+                            "https://github.com/TheAndroidMaster/Attribouter",
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            "apache-2.0"
+                    ),
+                    new LicenseInfoData(
+                            "google/gson",
+                            "Gson",
+                            "A Java serialization/deserialization library to convert Java Objects into JSON and back",
+                            "Apache License 2.0",
+                            null,
+                            "https://github.com/google/gson",
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            "apache-2.0"
+                    ),
+                    new LicenseInfoData(
+                            "google/flexbox-layout",
+                            "FlexBox Layout",
+                            "FlexboxLayout is a library that brings similar capabilities to the CSS Flexible Box Layout to Android.",
+                            "Apache License 2.0",
+                            null,
+                            "https://github.com/google/flexbox-layout",
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            "apache-2.0"
+                    ),
+                    new LicenseInfoData(
+                            "bumptech/glide",
+                            "Glide",
+                            "An image loading and caching library for Android focused on smooth scrolling",
+                            "Other",
+                            "https://bumptech.github.io/glide/",
+                            "https://github.com/bumptech/glide",
+                            "https://raw.githubusercontent.com/bumptech/glide/master/LICENSE",
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null
+                    ),
+                    new LicenseInfoData(
+                            null,
+                            "Android Open Source Project",
+                            "Android is an open source software stack for a wide range of mobile devices and a corresponding open source project led by Google.",
+                            "Apache License 2.0",
+                            "https://source.android.com/license",
+                            "https://github.com/aosp-mirror",
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            "apache-2.0"
+                    )
+            ));
 
-        licenses.add(new LicenseInfoData(
-                "google/gson",
-                "Gson",
-                "A Java serialization/deserialization library to convert Java Objects into JSON and back",
-                "Apache License 2.0",
-                null,
-                "https://github.com/google/gson",
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                "apache-2.0"
-        ));
-
-        licenses.add(new LicenseInfoData(
-                "google/flexbox-layout",
-                "FlexBox Layout",
-                "FlexboxLayout is a library that brings similar capabilities to the CSS Flexible Box Layout to Android.",
-                "Apache License 2.0",
-                null,
-                "https://github.com/google/flexbox-layout",
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                "apache-2.0"
-        ));
-
-        licenses.add(new LicenseInfoData(
-                "bumptech/glide",
-                "Glide",
-                "An image loading and caching library for Android focused on smooth scrolling",
-                "Other",
-                "https://bumptech.github.io/glide/",
-                "https://github.com/bumptech/glide",
-                "https://raw.githubusercontent.com/bumptech/glide/master/LICENSE",
-                null,
-                null,
-                null,
-                null,
-                null,
-                null
-        ));
-
-        licenses.add(new LicenseInfoData(
-                null,
-                "Android Open Source Project",
-                "Android is an open source software stack for a wide range of mobile devices and a corresponding open source project led by Google.",
-                "Apache License 2.0",
-                "https://source.android.com/license",
-                "https://github.com/aosp-mirror",
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                "apache-2.0"
-        ));
+            for (LicenseInfoData license : defaultLicenses) {
+                if (licenses.contains(license))
+                    licenses.get(licenses.indexOf(license)).merge(license);
+                else licenses.add(license);
+            }
+        }
 
         for (LicenseInfoData license : licenses) {
             if (license.repo != null && !license.hasEverythingGeneric())

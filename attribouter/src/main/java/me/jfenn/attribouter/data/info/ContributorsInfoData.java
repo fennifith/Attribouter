@@ -37,6 +37,7 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
         repo = parser.getAttributeValue(null, "repo");
         contributors = new ArrayList<>();
         contributorsTitle = parser.getAttributeValue(null, "title");
+        boolean showDefaults = parser.getAttributeBooleanValue(null, "showDefaults", true);
         while (parser.getEventType() != XmlResourceParser.END_TAG || parser.getName().equals("contributor")) {
             parser.next();
             if (parser.getEventType() == XmlResourceParser.START_TAG && parser.getName().equals("contributor")) {
@@ -49,21 +50,24 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
             }
         }
 
-        ContributorInfoData me = new ContributorInfoData(
-                "TheAndroidMaster",
-                "James Fenn",
-                "https://avatars1.githubusercontent.com/u/13000407",
-                "Library Developer",
-                null,
-                "Android developer and co-founder of Double Dot Labs. Writes Java, C, and HTML. PHP confuses me.",
-                "https://jfenn.me/",
-                "dev@jfenn.me"
-        );
+        if (showDefaults) {
+            ContributorInfoData me = new ContributorInfoData(
+                    "TheAndroidMaster",
+                    "James Fenn",
+                    "https://avatars1.githubusercontent.com/u/13000407",
+                    "^Library Developer",
+                    null,
+                    "Android developer and co-founder of Double Dot Labs. Writes Java, C, and HTML. PHP confuses me.",
+                    "https://jfenn.me/",
+                    "dev@jfenn.me"
+            );
 
-        if (!contributors.contains(me))
-            contributors.add(me);
+            if (!contributors.contains(me))
+                contributors.add(me);
 
-        addRequest(new ContributorsData("TheAndroidMaster/Attribouter")); //hey, that's me
+            addRequest(new ContributorsData("TheAndroidMaster/Attribouter"));
+        }
+
         addRequest(new ContributorsData(repo));
     }
 
