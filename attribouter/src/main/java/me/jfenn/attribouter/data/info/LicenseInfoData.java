@@ -3,8 +3,13 @@ package me.jfenn.attribouter.data.info;
 import android.content.Context;
 import android.content.res.XmlResourceParser;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.flexbox.JustifyContent;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -16,13 +21,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import me.jfenn.attribouter.R;
+import me.jfenn.attribouter.adapters.InfoAdapter;
 import me.jfenn.attribouter.data.info.link.GitHubLinkInfoData;
 import me.jfenn.attribouter.data.info.link.LicenseLinkInfoData;
 import me.jfenn.attribouter.data.info.link.LinkInfoData;
 import me.jfenn.attribouter.data.info.link.WebsiteLinkInfoData;
-import me.jfenn.attribouter.dialogs.LicenseDialog;
 import me.jfenn.attribouter.utils.ResourceUtils;
-import me.jfenn.attribouter.utils.UrlClickListener;
 
 public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> {
 
@@ -240,47 +244,23 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> {
             viewHolder.licenseView.setText(ResourceUtils.getString(context, licenseName));
         } else viewHolder.licenseView.setVisibility(View.GONE);
 
-        String websiteUrl = ResourceUtils.getString(context, this.websiteUrl);
-        String gitHubUrl = ResourceUtils.getString(context, this.gitHubUrl);
-        String licenseUrl = ResourceUtils.getString(context, this.licenseUrl);
-        viewHolder.links.setVisibility(websiteUrl != null || gitHubUrl != null || licenseUrl != null ? View.VISIBLE : View.GONE);
+        if (links.size() > 0) {
+            viewHolder.links.setVisibility(View.VISIBLE);
 
-        if (websiteUrl != null) {
-            viewHolder.websiteButton.setVisibility(View.VISIBLE);
-            viewHolder.websiteButton.setOnClickListener(new UrlClickListener(websiteUrl));
-        } else viewHolder.websiteButton.setVisibility(View.GONE);
+            FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(context);
+            layoutManager.setFlexDirection(FlexDirection.ROW);
+            layoutManager.setJustifyContent(JustifyContent.FLEX_START);
+            viewHolder.links.setLayoutManager(layoutManager);
+            viewHolder.links.setAdapter(new InfoAdapter(new ArrayList<InfoData>(links)));
+        } else viewHolder.links.setVisibility(View.GONE);
 
-        if (gitHubUrl != null) {
-            viewHolder.gitHubButton.setVisibility(View.VISIBLE);
-            viewHolder.gitHubButton.setOnClickListener(new UrlClickListener(gitHubUrl));
-        } else viewHolder.gitHubButton.setVisibility(View.GONE);
-
-        View.OnClickListener licenseClickListener = null;
-        if (licenseBody != null) {
-            licenseClickListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    new LicenseDialog(view.getContext(), LicenseInfoData.this)
-                            .show();
-                }
-            };
-        } else if (licenseUrl != null) {
-            licenseClickListener = new UrlClickListener(licenseUrl);
+        LinkInfoData importantLink = null;
+        for (LinkInfoData link : links) {
+            if (importantLink == null || link.getPriority() > importantLink.getPriority())
+                importantLink = link;
         }
 
-        if (licenseClickListener != null) {
-            viewHolder.licenseButton.setVisibility(View.VISIBLE);
-            viewHolder.licenseButton.setOnClickListener(licenseClickListener);
-            viewHolder.licenseView.setOnClickListener(licenseClickListener);
-        } else viewHolder.licenseButton.setVisibility(View.GONE);
-
-        if (licenseClickListener != null) {
-            viewHolder.itemView.setOnClickListener(licenseClickListener);
-        } else if (websiteUrl != null) {
-            viewHolder.itemView.setOnClickListener(new UrlClickListener(websiteUrl));
-        } else if (gitHubUrl != null) {
-            viewHolder.itemView.setOnClickListener(new UrlClickListener(gitHubUrl));
-        } else viewHolder.itemView.setOnClickListener(null);
+        viewHolder.itemView.setOnClickListener(importantLink != null ? importantLink.getListener(context) : null);
     }
 
     static class ViewHolder extends InfoData.ViewHolder {
@@ -288,10 +268,7 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> {
         private TextView titleView;
         private TextView descriptionView;
         private TextView licenseView;
-        private View links;
-        private View websiteButton;
-        private View gitHubButton;
-        private View licenseButton;
+        private RecyclerView links;
 
         ViewHolder(View v) {
             super(v);
@@ -300,9 +277,6 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> {
             descriptionView = v.findViewById(R.id.description);
             licenseView = v.findViewById(R.id.license);
             links = v.findViewById(R.id.projectLinks);
-            websiteButton = v.findViewById(R.id.websiteButton);
-            gitHubButton = v.findViewById(R.id.gitHubButton);
-            licenseButton = v.findViewById(R.id.licenseButton);
         }
 
     }
