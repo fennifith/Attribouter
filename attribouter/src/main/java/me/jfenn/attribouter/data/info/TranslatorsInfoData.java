@@ -35,14 +35,7 @@ public class TranslatorsInfoData extends InfoData<TranslatorsInfoData.ViewHolder
         while (parser.getEventType() != XmlResourceParser.END_TAG || parser.getName().equals("translator")) {
             parser.next();
             if (parser.getEventType() == XmlResourceParser.START_TAG && parser.getName().equals("translator")) {
-
-                TranslatorInfoData translator = new TranslatorInfoData(
-                        parser.getAttributeValue(null, "login"),
-                        parser.getAttributeValue(null, "name"),
-                        parser.getAttributeValue(null, "avatar"),
-                        parser.getAttributeValue(null, "locales"),
-                        parser.getAttributeValue(null, "blog"),
-                        parser.getAttributeValue(null, "email"));
+                TranslatorInfoData translator = new TranslatorInfoData(parser);
 
                 if (!translators.contains(translator))
                     translators.add(translator);

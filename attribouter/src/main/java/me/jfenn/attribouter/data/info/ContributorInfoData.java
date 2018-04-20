@@ -1,11 +1,15 @@
 package me.jfenn.attribouter.data.info;
 
 import android.content.Context;
+import android.content.res.XmlResourceParser;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +42,28 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
     public List<LinkInfoData> links;
 
     boolean isHidden;
+
+    ContributorInfoData(XmlResourceParser parser, @Nullable Integer position) throws XmlPullParserException, IOException {
+        this(parser.getAttributeValue(null, "login"),
+                parser.getAttributeValue(null, "name"),
+                parser.getAttributeValue(null, "avatar"),
+                parser.getAttributeValue(null, "task"),
+                position,
+                parser.getAttributeValue(null, "bio"),
+                parser.getAttributeValue(null, "blog"),
+                parser.getAttributeValue(null, "email"));
+
+        isHidden = parser.getAttributeBooleanValue(null, "hidden", false);
+
+        parser.next();
+        while (parser.getEventType() != XmlResourceParser.END_TAG && parser.getName().equals("link")) {
+            LinkInfoData link = new LinkInfoData(parser);
+            if (links.contains(link))
+                links.get(links.indexOf(link)).merge(link);
+            else links.add(link);
+            parser.next();
+        }
+    }
 
     ContributorInfoData(@Nullable String login, @Nullable String name, @Nullable String avatarUrl, @Nullable String task, @Nullable Integer position, @Nullable String bio, @Nullable String blog, @Nullable String email) {
         super(R.layout.item_attribouter_contributor);

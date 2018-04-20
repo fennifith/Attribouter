@@ -1,10 +1,14 @@
 package me.jfenn.attribouter.data.info;
 
 import android.content.Context;
+import android.content.res.XmlResourceParser;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.TextView;
 
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -50,6 +54,31 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> {
     @Nullable
     String licenseKey;
     List<LinkInfoData> links;
+
+    public LicenseInfoData(XmlResourceParser parser) throws IOException, XmlPullParserException {
+        this(parser.getAttributeValue(null, "repo"),
+                parser.getAttributeValue(null, "title"),
+                parser.getAttributeValue(null, "description"),
+                parser.getAttributeValue(null, "licenseName"),
+                parser.getAttributeValue(null, "website"),
+                parser.getAttributeValue(null, "gitHubUrl"),
+                parser.getAttributeValue(null, "licenseUrl"),
+                null,
+                null,
+                null,
+                null,
+                parser.getAttributeValue(null, "licenseBody"),
+                parser.getAttributeValue(null, "license"));
+
+        parser.next();
+        while (parser.getEventType() != XmlResourceParser.END_TAG && parser.getName().equals("link")) {
+            LinkInfoData link = new LinkInfoData(parser);
+            if (links.contains(link))
+                links.get(links.indexOf(link)).merge(link);
+            else links.add(link);
+            parser.next();
+        }
+    }
 
     public LicenseInfoData(@Nullable String repo, @Nullable String title, @Nullable String description, @Nullable String licenseName, @Nullable String websiteUrl, @Nullable String gitHubUrl, @Nullable String licenseUrl, @Nullable String[] licensePermissions, @Nullable String[] licenseConditions, @Nullable String[] licenseLimitations, @Nullable String licenseDescription, @Nullable String licenseBody, @Nullable String licenseKey) {
         super(R.layout.item_attribouter_license);

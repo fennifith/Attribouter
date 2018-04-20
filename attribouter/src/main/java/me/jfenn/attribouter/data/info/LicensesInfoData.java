@@ -19,7 +19,6 @@ import me.jfenn.attribouter.adapters.InfoAdapter;
 import me.jfenn.attribouter.data.github.GitHubData;
 import me.jfenn.attribouter.data.github.LicenseData;
 import me.jfenn.attribouter.data.github.RepositoryData;
-import me.jfenn.attribouter.data.info.link.LinkInfoData;
 import me.jfenn.attribouter.utils.ResourceUtils;
 
 public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
@@ -36,31 +35,7 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
         while (parser.getEventType() != XmlResourceParser.END_TAG || parser.getName().equals("project")) {
             parser.next();
             if (parser.getEventType() == XmlResourceParser.START_TAG && parser.getName().equals("project")) {
-                String projectRepo = parser.getAttributeValue(null, "repo");
-                LicenseInfoData license = new LicenseInfoData(
-                        projectRepo,
-                        parser.getAttributeValue(null, "title"),
-                        parser.getAttributeValue(null, "description"),
-                        parser.getAttributeValue(null, "licenseName"),
-                        parser.getAttributeValue(null, "website"),
-                        projectRepo != null ? "https://github.com/" + projectRepo : null,
-                        parser.getAttributeValue(null, "licenseUrl"),
-                        null,
-                        null,
-                        null,
-                        null,
-                        parser.getAttributeValue(null, "licenseBody"),
-                        parser.getAttributeValue(null, "license")
-                );
-
-                parser.next();
-                while (parser.getEventType() != XmlResourceParser.END_TAG && parser.getName().equals("link")) {
-                    LinkInfoData link = new LinkInfoData(parser);
-                    if (license.links.contains(link))
-                        license.links.get(license.links.indexOf(link)).merge(link);
-                    else license.links.add(link);
-                    parser.next();
-                }
+                LicenseInfoData license = new LicenseInfoData(parser);
 
                 if (!licenses.contains(license))
                     licenses.add(license);

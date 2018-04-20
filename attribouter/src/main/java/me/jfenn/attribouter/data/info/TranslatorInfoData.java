@@ -1,6 +1,7 @@
 package me.jfenn.attribouter.data.info;
 
 import android.content.Context;
+import android.content.res.XmlResourceParser;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
@@ -24,6 +25,15 @@ public class TranslatorInfoData extends InfoData<TranslatorInfoData.ViewHolder> 
     public String email;
     @Nullable
     public String locales;
+
+    TranslatorInfoData(XmlResourceParser parser) {
+        this(parser.getAttributeValue(null, "login"),
+                parser.getAttributeValue(null, "name"),
+                parser.getAttributeValue(null, "avatar"),
+                parser.getAttributeValue(null, "locales"),
+                parser.getAttributeValue(null, "blog"),
+                parser.getAttributeValue(null, "email"));
+    }
 
     TranslatorInfoData(@Nullable String login, @Nullable String name, @Nullable String avatarUrl, @Nullable String locales, @Nullable String blog, @Nullable String email) {
         super(R.layout.item_attribouter_translator);

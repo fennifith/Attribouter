@@ -20,7 +20,6 @@ import me.jfenn.attribouter.adapters.InfoAdapter;
 import me.jfenn.attribouter.data.github.ContributorsData;
 import me.jfenn.attribouter.data.github.GitHubData;
 import me.jfenn.attribouter.data.github.UserData;
-import me.jfenn.attribouter.data.info.link.LinkInfoData;
 import me.jfenn.attribouter.dialogs.UserDialog;
 import me.jfenn.attribouter.utils.ResourceUtils;
 import me.jfenn.attribouter.utils.UrlClickListener;
@@ -42,27 +41,7 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
             parser.next();
             if (parser.getEventType() == XmlResourceParser.START_TAG && parser.getName().equals("contributor")) {
                 int position = parser.getAttributeIntValue(null, "position", -1);
-
-                ContributorInfoData contributor = new ContributorInfoData(
-                        parser.getAttributeValue(null, "login"),
-                        parser.getAttributeValue(null, "name"),
-                        parser.getAttributeValue(null, "avatar"),
-                        parser.getAttributeValue(null, "task"),
-                        position != -1 ? position : null,
-                        parser.getAttributeValue(null, "bio"),
-                        parser.getAttributeValue(null, "blog"),
-                        parser.getAttributeValue(null, "email"));
-
-                contributor.isHidden = parser.getAttributeBooleanValue(null, "hidden", false);
-
-                parser.next();
-                while (parser.getEventType() != XmlResourceParser.END_TAG && parser.getName().equals("link")) {
-                    LinkInfoData link = new LinkInfoData(parser);
-                    if (contributor.links.contains(link))
-                        contributor.links.get(contributor.links.indexOf(link)).merge(link);
-                    else contributor.links.add(link);
-                    parser.next();
-                }
+                ContributorInfoData contributor = new ContributorInfoData(parser, position != -1 ? position : null);
 
                 if (!contributors.contains(contributor))
                     contributors.add(contributor);
