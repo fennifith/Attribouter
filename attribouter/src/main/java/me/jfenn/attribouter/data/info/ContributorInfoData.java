@@ -56,11 +56,13 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
 
         isHidden = parser.getAttributeBooleanValue(null, "hidden", false);
 
-        while (parser.next() == XmlPullParser.START_TAG && parser.getName().equals("link")) {
-            LinkInfoData link = new LinkInfoData(parser);
-            if (links.contains(link))
-                links.get(links.indexOf(link)).merge(link);
-            else links.add(link);
+        while (parser.next() != XmlPullParser.END_TAG || parser.getName().equals("link")) {
+            if (parser.getEventType() == XmlPullParser.START_TAG && parser.getName().equals("link")) {
+                LinkInfoData link = new LinkInfoData(parser);
+                if (links.contains(link))
+                    links.get(links.indexOf(link)).merge(link);
+                else links.add(link);
+            }
         }
     }
 

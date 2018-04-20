@@ -6,9 +6,14 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.XmlResourceParser;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.flexbox.JustifyContent;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -18,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.jfenn.attribouter.R;
+import me.jfenn.attribouter.adapters.InfoAdapter;
 import me.jfenn.attribouter.data.github.GitHubData;
 import me.jfenn.attribouter.data.github.RepositoryData;
 import me.jfenn.attribouter.data.info.link.GitHubLinkInfoData;
@@ -25,7 +31,6 @@ import me.jfenn.attribouter.data.info.link.LinkInfoData;
 import me.jfenn.attribouter.data.info.link.PlayStoreLinkInfoData;
 import me.jfenn.attribouter.data.info.link.WebsiteLinkInfoData;
 import me.jfenn.attribouter.utils.ResourceUtils;
-import me.jfenn.attribouter.utils.UrlClickListener;
 
 public class AppInfoData extends InfoData<AppInfoData.ViewHolder> {
 
@@ -61,11 +66,13 @@ public class AppInfoData extends InfoData<AppInfoData.ViewHolder> {
             links.add(new WebsiteLinkInfoData(websiteUrl, 0));
         links.add(new PlayStoreLinkInfoData(playStoreUrl, 0));
 
-        while (parser.next() == XmlPullParser.START_TAG && parser.getName().equals("link")) {
-            LinkInfoData link = new LinkInfoData(parser);
-            if (links.contains(link))
-                links.get(links.indexOf(link)).merge(link);
-            else links.add(link);
+        while (parser.next() != XmlPullParser.END_TAG || parser.getName().equals("link")) {
+            if (parser.getEventType() == XmlPullParser.START_TAG && parser.getName().equals("link")) {
+                LinkInfoData link = new LinkInfoData(parser);
+                if (links.contains(link))
+                    links.get(links.indexOf(link)).merge(link);
+                else links.add(link);
+            }
         }
 
         addRequest(new RepositoryData(repo));
@@ -111,22 +118,15 @@ public class AppInfoData extends InfoData<AppInfoData.ViewHolder> {
             viewHolder.descriptionTextView.setText(ResourceUtils.getString(context, description));
         } else viewHolder.descriptionTextView.setVisibility(View.GONE);
 
-        UrlClickListener listener = new UrlClickListener("https://play.google.com/store/apps/details?id=" + info.packageName);
-        if (playStoreUrl != null)
-            listener = new UrlClickListener(ResourceUtils.getString(context, playStoreUrl));
+        if (links.size() > 0) {
+            viewHolder.links.setVisibility(View.VISIBLE);
 
-        viewHolder.playStoreButton.setVisibility(View.VISIBLE);
-        viewHolder.playStoreButton.setOnClickListener(listener);
-
-        if (websiteUrl != null) {
-            viewHolder.websiteButton.setVisibility(View.VISIBLE);
-            viewHolder.websiteButton.setOnClickListener(new UrlClickListener(ResourceUtils.getString(context, websiteUrl)));
-        } else viewHolder.websiteButton.setVisibility(View.GONE);
-
-        if (gitHubUrl != null) {
-            viewHolder.gitHubButton.setVisibility(View.VISIBLE);
-            viewHolder.gitHubButton.setOnClickListener(new UrlClickListener(ResourceUtils.getString(context, gitHubUrl)));
-        } else viewHolder.gitHubButton.setVisibility(View.GONE);
+            FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(context);
+            layoutManager.setFlexDirection(FlexDirection.ROW);
+            layoutManager.setJustifyContent(JustifyContent.CENTER);
+            viewHolder.links.setLayoutManager(layoutManager);
+            viewHolder.links.setAdapter(new InfoAdapter(new ArrayList<InfoData>(links)));
+        } else viewHolder.links.setVisibility(View.GONE);
     }
 
     static class ViewHolder extends InfoData.ViewHolder {
@@ -135,9 +135,7 @@ public class AppInfoData extends InfoData<AppInfoData.ViewHolder> {
         TextView nameTextView;
         TextView versionTextView;
         TextView descriptionTextView;
-        View websiteButton;
-        View gitHubButton;
-        View playStoreButton;
+        RecyclerView links;
 
         private ViewHolder(View v) {
             super(v);
@@ -145,9 +143,7 @@ public class AppInfoData extends InfoData<AppInfoData.ViewHolder> {
             nameTextView = v.findViewById(R.id.appName);
             versionTextView = v.findViewById(R.id.appVersion);
             descriptionTextView = v.findViewById(R.id.description);
-            websiteButton = v.findViewById(R.id.appLinkWebsite);
-            gitHubButton = v.findViewById(R.id.appLinkGitHub);
-            playStoreButton = v.findViewById(R.id.appLinkPlayStore);
+            links = v.findViewById(R.id.appLinks);
         }
 
     }

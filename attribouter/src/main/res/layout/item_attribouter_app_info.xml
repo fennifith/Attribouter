@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -54,96 +53,12 @@
         android:textSize="14sp"
         tools:text="Description description this is a description." />
 
-    <LinearLayout
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/appLinks"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:animateLayoutChanges="true"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:id="@+id/appLinkWebsite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?selectableItemBackground"
-            android:gravity="center"
-            android:padding="8dp">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="6dp"
-                android:layout_marginRight="6dp"
-                android:tint="?android:textColorPrimary"
-                app:srcCompat="@drawable/ic_attribouter_link" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/title_attribouter_website"
-                android:textAllCaps="true"
-                android:textColor="?android:textColorPrimary"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/appLinkGitHub"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?selectableItemBackground"
-            android:gravity="center"
-            android:padding="8dp">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="6dp"
-                android:layout_marginRight="6dp"
-                android:tint="?android:textColorPrimary"
-                app:srcCompat="@drawable/ic_attribouter_github" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/title_attribouter_github"
-                android:textAllCaps="true"
-                android:textColor="?android:textColorPrimary"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/appLinkPlayStore"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?selectableItemBackground"
-            android:gravity="center"
-            android:padding="8dp">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="6dp"
-                android:layout_marginRight="6dp"
-                android:tint="?android:textColorPrimary"
-                app:srcCompat="@drawable/ic_attribouter_rate" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/title_attribouter_rate"
-                android:textAllCaps="true"
-                android:textColor="?android:textColorPrimary"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-    </LinearLayout>
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

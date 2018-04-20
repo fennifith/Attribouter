@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <about>
-    <appInfo repo="TheAndroidMaster/Attribouter" />
+    <appInfo repo="TheAndroidMaster/Attribouter">
+        <link
+            name="Bintray"
+            url="https://bintray.com/18jafenn90/maven/attribouter"
+            icon="https://bintray.com/favicon.ico" />
+        <link
+            name="Documentation"
+            url="https://jfenn.me/about/?Attribouter"
+            icon="https://jfenn.me/favicon.ico" />
+    </appInfo>
     <text text="@string/html" />
     <!-- <text> elements can be added anywhere directly within the <about> tag -->
     <!-- they support html formatting (<p> <b> <i>) & links (<a href="">) -->
