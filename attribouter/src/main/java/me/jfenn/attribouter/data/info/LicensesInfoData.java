@@ -34,8 +34,7 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
         boolean showDefaults = parser.getAttributeBooleanValue(null, "showDefaults", true);
         licenses = new ArrayList<>();
 
-        while (parser.getEventType() != XmlResourceParser.END_TAG || parser.getName().equals("project")) {
-            parser.next();
+        while (parser.next() != XmlResourceParser.END_TAG || parser.getName().equals("project")) {
             if (parser.getEventType() == XmlResourceParser.START_TAG && parser.getName().equals("project")) {
                 LicenseInfoData license = new LicenseInfoData(parser);
 

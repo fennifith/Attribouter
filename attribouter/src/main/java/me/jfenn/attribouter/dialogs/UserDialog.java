@@ -3,14 +3,22 @@ package me.jfenn.attribouter.dialogs;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDialog;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.flexbox.JustifyContent;
+
+import java.util.ArrayList;
+
 import me.jfenn.attribouter.R;
+import me.jfenn.attribouter.adapters.InfoAdapter;
 import me.jfenn.attribouter.data.info.ContributorInfoData;
+import me.jfenn.attribouter.data.info.InfoData;
 import me.jfenn.attribouter.utils.ResourceUtils;
-import me.jfenn.attribouter.utils.UrlClickListener;
 
 public class UserDialog extends AppCompatDialog {
 
@@ -30,10 +38,7 @@ public class UserDialog extends AppCompatDialog {
         TextView taskView = findViewById(R.id.task);
         ImageView imageView = findViewById(R.id.image);
         TextView bioView = findViewById(R.id.description);
-        View links = findViewById(R.id.links);
-        View websiteButton = findViewById(R.id.website);
-        View gitHubButton = findViewById(R.id.gitHub);
-        View emailButton = findViewById(R.id.email);
+        RecyclerView links = findViewById(R.id.links);
 
         nameView.setText(ResourceUtils.getString(getContext(), contributor.getName()));
         taskView.setText(ResourceUtils.getString(getContext(), contributor.task));
@@ -44,22 +49,14 @@ public class UserDialog extends AppCompatDialog {
         else imageView.setVisibility(View.GONE);
 
         bioView.setText(ResourceUtils.getString(getContext(), contributor.bio));
-        links.setVisibility(contributor.login != null || contributor.blog != null || contributor.email != null ? View.VISIBLE : View.GONE);
+        if (contributor.links.size() > 0) {
+            links.setVisibility(View.VISIBLE);
 
-        String blog = ResourceUtils.getString(getContext(), contributor.blog);
-        if (blog != null) {
-            websiteButton.setVisibility(View.VISIBLE);
-            websiteButton.setOnClickListener(new UrlClickListener(blog));
-        } else websiteButton.setVisibility(View.GONE);
-
-        if (contributor.login != null) {
-            gitHubButton.setVisibility(View.VISIBLE);
-            gitHubButton.setOnClickListener(new UrlClickListener("https://github.com/" + contributor.login));
-        } else gitHubButton.setVisibility(View.GONE);
-
-        if (contributor.email != null) {
-            emailButton.setVisibility(View.VISIBLE);
-            emailButton.setOnClickListener(new UrlClickListener("mailto:" + contributor.email));
-        } else emailButton.setVisibility(View.GONE);
+            FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(getContext());
+            layoutManager.setFlexDirection(FlexDirection.ROW);
+            layoutManager.setJustifyContent(JustifyContent.FLEX_START);
+            links.setLayoutManager(layoutManager);
+            links.setAdapter(new InfoAdapter(new ArrayList<InfoData>(contributor.links)));
+        } else links.setVisibility(View.GONE);
     }
 }

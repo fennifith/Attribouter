@@ -38,8 +38,7 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
         contributors = new ArrayList<>();
         contributorsTitle = parser.getAttributeValue(null, "title");
         boolean showDefaults = parser.getAttributeBooleanValue(null, "showDefaults", true);
-        while (parser.getEventType() != XmlResourceParser.END_TAG || parser.getName().equals("contributor")) {
-            parser.next();
+        while (parser.next() != XmlResourceParser.END_TAG || parser.getName().equals("contributor")) {
             if (parser.getEventType() == XmlResourceParser.START_TAG && parser.getName().equals("contributor")) {
                 int position = parser.getAttributeIntValue(null, "position", -1);
                 ContributorInfoData contributor = new ContributorInfoData(parser, position != -1 ? position : null);

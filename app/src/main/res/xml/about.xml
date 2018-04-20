@@ -10,7 +10,13 @@
             task="Owner"
             avatar="^@drawable/me"
             email="dev@jfenn.me"
-            position="1" />
+            bio="This is a bio. I am a person."
+            position="1">
+            <link
+                name="Twitter"
+                url="https://twitter.com/idontlikephp"
+                icon="https://twitter.com/favicon.ico" />
+        </contributor>
         <!-- the "avatar" attribute can take either a url or a resource -->
         <!-- setting the "position" attribute makes me appear in the center of a row of three items above the list, instead of in the list like normal -->
         <!-- there must be position attributes for 1, 2, and 3 for this to work, otherwise setting "position=1" will just move me to the top of the list -->
@@ -45,6 +51,7 @@
             avatar="https://raw.githubusercontent.com/TheAndroidMaster/TheAndroidMaster.github.io/master/images/headers/rocks.jpg"
             locales="zh,rn,sn"
             blog="https://example.com/" />
+        <!-- locales are comma separated, no whitespace -->
         <translator
             name="Jenny Doe"
             avatar="https://raw.githubusercontent.com/TheAndroidMaster/TheAndroidMaster.github.io/master/images/headers/vukheader.jpg"

@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.TextView;
 
+import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
@@ -70,13 +71,11 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> {
                 parser.getAttributeValue(null, "licenseBody"),
                 parser.getAttributeValue(null, "license"));
 
-        parser.next();
-        while (parser.getEventType() != XmlResourceParser.END_TAG && parser.getName().equals("link")) {
+        while (parser.next() == XmlPullParser.START_TAG && parser.getName().equals("link")) {
             LinkInfoData link = new LinkInfoData(parser);
             if (links.contains(link))
                 links.get(links.indexOf(link)).merge(link);
             else links.add(link);
-            parser.next();
         }
     }
 

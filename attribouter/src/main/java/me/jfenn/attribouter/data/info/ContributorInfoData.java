@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
@@ -55,13 +56,11 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
 
         isHidden = parser.getAttributeBooleanValue(null, "hidden", false);
 
-        parser.next();
-        while (parser.getEventType() != XmlResourceParser.END_TAG && parser.getName().equals("link")) {
+        while (parser.next() == XmlPullParser.START_TAG && parser.getName().equals("link")) {
             LinkInfoData link = new LinkInfoData(parser);
             if (links.contains(link))
                 links.get(links.indexOf(link)).merge(link);
             else links.add(link);
-            parser.next();
         }
     }
 
