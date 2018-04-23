@@ -20,6 +20,7 @@ import me.jfenn.attribouter.adapters.InfoAdapter;
 import me.jfenn.attribouter.data.github.ContributorsData;
 import me.jfenn.attribouter.data.github.GitHubData;
 import me.jfenn.attribouter.data.github.UserData;
+import me.jfenn.attribouter.dialogs.OverflowDialog;
 import me.jfenn.attribouter.utils.ResourceUtils;
 
 public class TranslatorsInfoData extends InfoData<TranslatorsInfoData.ViewHolder> {
@@ -27,11 +28,14 @@ public class TranslatorsInfoData extends InfoData<TranslatorsInfoData.ViewHolder
     @Nullable
     private String translatorsTitle;
     private List<TranslatorInfoData> translators;
+    private List<InfoData> sortedTranslators;
+    private int overflow;
 
     public TranslatorsInfoData(XmlResourceParser parser) throws XmlPullParserException, IOException {
         super(R.layout.item_attribouter_translators);
         translators = new ArrayList<>();
         translatorsTitle = parser.getAttributeValue(null, "title");
+        overflow = parser.getAttributeIntValue(null, "overflow", -1);
         while (parser.getEventType() != XmlResourceParser.END_TAG || parser.getName().equals("translator")) {
             parser.next();
             if (parser.getEventType() == XmlResourceParser.START_TAG && parser.getName().equals("translator")) {
@@ -99,10 +103,16 @@ public class TranslatorsInfoData extends InfoData<TranslatorsInfoData.ViewHolder
 
     @Override
     public void bind(Context context, ViewHolder viewHolder) {
+        if (overflow == 0) {
+            return;
+        }
+
         if (translatorsTitle != null)
             viewHolder.titleView.setText(ResourceUtils.getString(context, translatorsTitle));
 
+        int remaining = overflow;
         List<InfoData> sortedList = new ArrayList<>();
+        sortedTranslators = new ArrayList<>();
         for (String language : Locale.getISOLanguages()) {
             boolean isHeader = false;
             for (TranslatorInfoData translator : translators) {
@@ -119,11 +129,19 @@ public class TranslatorsInfoData extends InfoData<TranslatorsInfoData.ViewHolder
 
                 if (isLocale) {
                     if (!isHeader) {
-                        sortedList.add(new HeaderInfoData(new Locale(language).getDisplayLanguage()));
+                        InfoData header = new HeaderInfoData(new Locale(language).getDisplayLanguage());
+                        sortedTranslators.add(header);
+                        if (remaining != 0)
+                            sortedList.add(header);
+
                         isHeader = true;
                     }
 
-                    sortedList.add(translator);
+                    sortedTranslators.add(translator);
+                    if (remaining != 0) {
+                        sortedList.add(translator);
+                        remaining--;
+                    }
                 }
             }
         }
@@ -131,18 +149,30 @@ public class TranslatorsInfoData extends InfoData<TranslatorsInfoData.ViewHolder
 
         viewHolder.recycler.setLayoutManager(new LinearLayoutManager(context));
         viewHolder.recycler.setAdapter(new InfoAdapter(sortedList));
+
+        if (sortedTranslators.size() > sortedList.size()) {
+            viewHolder.expand.setVisibility(View.VISIBLE);
+            viewHolder.expand.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new OverflowDialog(v.getContext(), sortedTranslators).show();
+                }
+            });
+        } else viewHolder.expand.setVisibility(View.GONE);
     }
 
     class ViewHolder extends InfoData.ViewHolder {
 
         private TextView titleView;
         private RecyclerView recycler;
+        private View expand;
 
         ViewHolder(View v) {
             super(v);
 
             titleView = v.findViewById(R.id.contributorsTitle);
             recycler = v.findViewById(R.id.recycler);
+            expand = v.findViewById(R.id.expand);
         }
     }
 

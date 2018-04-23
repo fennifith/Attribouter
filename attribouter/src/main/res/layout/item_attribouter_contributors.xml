@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -11,12 +12,12 @@
         android:id="@+id/contributorsTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="22sp"
         android:layout_marginTop="8dp"
-        android:textColor="?android:textColorPrimary"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:text="@string/title_attribouter_contributors" />
+        android:text="@string/title_attribouter_contributors"
+        android:textColor="?android:textColorPrimary"
+        android:textSize="22sp" />
 
     <LinearLayout
         android:id="@+id/topThree"
@@ -24,10 +25,10 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+        android:paddingRight="16dp"
+        android:paddingTop="8dp">
 
         <LinearLayout
             android:id="@+id/second"
@@ -177,6 +178,18 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:paddingBottom="12dp"
+        android:paddingTop="12dp" />
+
+    <ImageView
+        android:id="@+id/expand"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="-12dp"
+        android:background="?android:selectableItemBackground"
+        android:scaleType="centerInside"
+        android:tint="?android:textColorPrimary"
+        app:srcCompat="@drawable/ic_expand" />
 
 </LinearLayout>

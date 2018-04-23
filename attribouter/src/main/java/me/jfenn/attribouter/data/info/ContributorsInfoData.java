@@ -20,6 +20,7 @@ import me.jfenn.attribouter.adapters.InfoAdapter;
 import me.jfenn.attribouter.data.github.ContributorsData;
 import me.jfenn.attribouter.data.github.GitHubData;
 import me.jfenn.attribouter.data.github.UserData;
+import me.jfenn.attribouter.dialogs.OverflowDialog;
 import me.jfenn.attribouter.dialogs.UserDialog;
 import me.jfenn.attribouter.utils.ResourceUtils;
 import me.jfenn.attribouter.utils.UrlClickListener;
@@ -30,6 +31,7 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
     private String repo;
     @Nullable
     private String contributorsTitle;
+    private int overflow;
     private List<ContributorInfoData> contributors;
 
     public ContributorsInfoData(XmlResourceParser parser) throws XmlPullParserException, IOException {
@@ -38,6 +40,7 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
         contributors = new ArrayList<>();
         contributorsTitle = parser.getAttributeValue(null, "title");
         boolean showDefaults = parser.getAttributeBooleanValue(null, "showDefaults", true);
+        overflow = parser.getAttributeIntValue(null, "overflow", -1);
         while (parser.next() != XmlResourceParser.END_TAG || parser.getName().equals("contributor")) {
             if (parser.getEventType() == XmlResourceParser.START_TAG && parser.getName().equals("contributor")) {
                 int position = parser.getAttributeIntValue(null, "position", -1);
@@ -126,6 +129,10 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
 
     @Override
     public void bind(Context context, ViewHolder viewHolder) {
+        if (overflow == 0) {
+            return;
+        }
+
         if (contributorsTitle != null)
             viewHolder.titleView.setText(ResourceUtils.getString(context, contributorsTitle));
 
@@ -148,7 +155,8 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
                 }
             }
 
-            remainingContributors.add(contributor);
+            if (remainingContributors.size() < overflow || overflow == -1)
+                remainingContributors.add(contributor);
         }
 
         if (first != null && second != null && third != null) {
@@ -237,6 +245,16 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
             viewHolder.recycler.setLayoutManager(new LinearLayoutManager(context));
             viewHolder.recycler.setAdapter(new InfoAdapter(remainingContributors));
         } else viewHolder.recycler.setVisibility(View.GONE);
+
+        if (remainingContributors.size() + (first != null && second != null && third != null ? 3 : 0) < contributors.size()) {
+            viewHolder.expand.setVisibility(View.VISIBLE);
+            viewHolder.expand.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new OverflowDialog(v.getContext(), new ArrayList<InfoData>(contributors)).show();
+                }
+            });
+        } else viewHolder.expand.setVisibility(View.GONE);
     }
 
     class ViewHolder extends InfoData.ViewHolder {
@@ -256,6 +274,7 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
         private ImageView thirdImageView;
         private TextView thirdNameView;
         private TextView thirdTaskView;
+        private View expand;
 
         private RecyclerView recycler;
 
@@ -277,6 +296,7 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
             thirdNameView = v.findViewById(R.id.thirdName);
             thirdTaskView = v.findViewById(R.id.thirdTask);
             recycler = v.findViewById(R.id.recycler);
+            expand = v.findViewById(R.id.expand);
         }
     }
 

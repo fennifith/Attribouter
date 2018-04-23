@@ -20,6 +20,7 @@ import me.jfenn.attribouter.adapters.InfoAdapter;
 import me.jfenn.attribouter.data.github.GitHubData;
 import me.jfenn.attribouter.data.github.LicenseData;
 import me.jfenn.attribouter.data.github.RepositoryData;
+import me.jfenn.attribouter.dialogs.OverflowDialog;
 import me.jfenn.attribouter.utils.ResourceUtils;
 
 public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
@@ -27,13 +28,15 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
     @Nullable
     private String title;
     private List<LicenseInfoData> licenses;
+    private int overflow;
 
     public LicensesInfoData(XmlResourceParser parser) throws XmlPullParserException, IOException {
         super(R.layout.item_attribouter_licenses);
         title = parser.getAttributeValue(null, "title");
         boolean showDefaults = parser.getAttributeBooleanValue(null, "showDefaults", true);
-        licenses = new ArrayList<>();
+        overflow = parser.getAttributeIntValue(null, "overflow", -1);
 
+        licenses = new ArrayList<>();
         while (parser.next() != XmlResourceParser.END_TAG || parser.getName().equals("project")) {
             if (parser.getEventType() == XmlResourceParser.START_TAG && parser.getName().equals("project")) {
                 LicenseInfoData license = new LicenseInfoData(parser);
@@ -205,22 +208,39 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
 
     @Override
     public void bind(Context context, ViewHolder viewHolder) {
+        if (overflow == 0) {
+            return;
+        }
+
         if (title != null)
             viewHolder.titleView.setText(ResourceUtils.getString(context, title));
 
         viewHolder.recycler.setLayoutManager(new LinearLayoutManager(context));
-        viewHolder.recycler.setAdapter(new InfoAdapter(new ArrayList<InfoData>(licenses)));
+        viewHolder.recycler.setAdapter(new InfoAdapter(new ArrayList<InfoData>(
+                licenses.subList(0, overflow > licenses.size() || overflow < 0 ? licenses.size() : overflow))));
+
+        if (overflow > 0 && overflow < licenses.size()) {
+            viewHolder.expand.setVisibility(View.VISIBLE);
+            viewHolder.expand.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new OverflowDialog(v.getContext(), new ArrayList<InfoData>(licenses)).show();
+                }
+            });
+        } else viewHolder.expand.setVisibility(View.GONE);
     }
 
     static class ViewHolder extends InfoData.ViewHolder {
 
         private TextView titleView;
         private RecyclerView recycler;
+        private View expand;
 
         ViewHolder(View v) {
             super(v);
             titleView = v.findViewById(R.id.title);
             recycler = v.findViewById(R.id.recycler);
+            expand = v.findViewById(R.id.expand);
         }
     }
 }
