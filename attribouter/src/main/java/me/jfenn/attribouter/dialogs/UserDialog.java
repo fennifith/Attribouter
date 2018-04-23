@@ -13,6 +13,7 @@ import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import me.jfenn.attribouter.R;
 import me.jfenn.attribouter.adapters.InfoAdapter;
@@ -50,6 +51,7 @@ public class UserDialog extends AppCompatDialog {
 
         bioView.setText(ResourceUtils.getString(getContext(), contributor.bio));
         if (contributor.links.size() > 0) {
+            Collections.sort(contributor.links);
             links.setVisibility(View.VISIBLE);
 
             FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(getContext());

@@ -16,6 +16,7 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -253,6 +254,7 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> {
         } else viewHolder.licenseView.setVisibility(View.GONE);
 
         if (links.size() > 0) {
+            Collections.sort(links);
             viewHolder.links.setVisibility(View.VISIBLE);
 
             FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(context);

@@ -2,6 +2,7 @@ package me.jfenn.attribouter.data.info.link;
 
 import android.content.Context;
 import android.content.res.XmlResourceParser;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,7 +13,7 @@ import me.jfenn.attribouter.data.info.InfoData;
 import me.jfenn.attribouter.utils.ResourceUtils;
 import me.jfenn.attribouter.utils.UrlClickListener;
 
-public class LinkInfoData extends InfoData<LinkInfoData.ViewHolder> {
+public class LinkInfoData extends InfoData<LinkInfoData.ViewHolder> implements Comparable<LinkInfoData> {
 
     @Nullable
     private String id;
@@ -119,6 +120,12 @@ public class LinkInfoData extends InfoData<LinkInfoData.ViewHolder> {
         viewHolder.nameView.setText(getName(context));
         loadIcon(viewHolder.iconView);
         viewHolder.itemView.setOnClickListener(getListener(context));
+    }
+
+    @Override
+    public int compareTo(@NonNull LinkInfoData o) {
+        int comparison = name != null && o.name != null ? name.compareTo(o.name) : 0;
+        return ((o.priority - priority) * 2) + (comparison / Math.abs(comparison));
     }
 
     public static class ViewHolder extends InfoData.ViewHolder {

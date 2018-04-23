@@ -21,6 +21,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import me.jfenn.attribouter.R;
@@ -125,6 +126,7 @@ public class AppInfoData extends InfoData<AppInfoData.ViewHolder> {
         } else viewHolder.descriptionTextView.setVisibility(View.GONE);
 
         if (links.size() > 0) {
+            Collections.sort(links);
             viewHolder.links.setVisibility(View.VISIBLE);
 
             FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(context);
