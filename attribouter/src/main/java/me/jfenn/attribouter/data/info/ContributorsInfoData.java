@@ -251,7 +251,7 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
             viewHolder.expand.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new OverflowDialog(v.getContext(), new ArrayList<InfoData>(contributors)).show();
+                    new OverflowDialog(v.getContext(), contributorsTitle != null ? contributorsTitle : "@string/title_attribouter_contributors", new ArrayList<InfoData>(contributors)).show();
                 }
             });
         } else viewHolder.expand.setVisibility(View.GONE);

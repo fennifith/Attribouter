@@ -33,6 +33,6 @@
         android:background="?android:selectableItemBackground"
         android:scaleType="centerInside"
         android:tint="?android:textColorPrimary"
-        app:srcCompat="@drawable/ic_expand" />
+        app:srcCompat="@drawable/ic_attribouter_expand" />
 
 </LinearLayout>

@@ -224,7 +224,7 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
             viewHolder.expand.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new OverflowDialog(v.getContext(), new ArrayList<InfoData>(licenses)).show();
+                    new OverflowDialog(v.getContext(), title != null ? title : "@string/title_attribouter_licenses", new ArrayList<InfoData>(licenses)).show();
                 }
             });
         } else viewHolder.expand.setVisibility(View.GONE);

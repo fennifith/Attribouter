@@ -155,7 +155,7 @@ public class TranslatorsInfoData extends InfoData<TranslatorsInfoData.ViewHolder
             viewHolder.expand.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new OverflowDialog(v.getContext(), sortedTranslators).show();
+                    new OverflowDialog(v.getContext(), translatorsTitle != null ? translatorsTitle : "@string/title_attribouter_translators", sortedTranslators).show();
                 }
             });
         } else viewHolder.expand.setVisibility(View.GONE);
