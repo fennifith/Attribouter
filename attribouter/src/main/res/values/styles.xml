@@ -9,4 +9,13 @@
 
     <style name="AttribouterTheme.ActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
+    <style name="AttribouterTheme.Dialog.Fullscreen" parent="AttribouterTheme">
+        <item name="android:windowAnimationStyle">@style/AttribouterTheme.SlideAnimation</item>
+    </style>
+
+    <style name="AttribouterTheme.SlideAnimation">
+        <item name="android:windowEnterAnimation">@anim/attribouter_slide_in</item>
+        <item name="android:windowExitAnimation">@anim/attribouter_slide_out</item>
+    </style>
+
 </resources>
