@@ -35,6 +35,8 @@ public class TranslatorsInfoData extends InfoData<TranslatorsInfoData.ViewHolder
         super(R.layout.item_attribouter_translators);
         translators = new ArrayList<>();
         translatorsTitle = parser.getAttributeValue(null, "title");
+        if (translatorsTitle == null)
+            translatorsTitle = "@string/title_attribouter_translators";
         overflow = parser.getAttributeIntValue(null, "overflow", -1);
         while (parser.getEventType() != XmlResourceParser.END_TAG || parser.getName().equals("translator")) {
             parser.next();
@@ -104,7 +106,26 @@ public class TranslatorsInfoData extends InfoData<TranslatorsInfoData.ViewHolder
     @Override
     public void bind(Context context, ViewHolder viewHolder) {
         if (overflow == 0) {
+            viewHolder.titleView.setVisibility(View.GONE);
+            viewHolder.recycler.setVisibility(View.GONE);
+            viewHolder.expand.setVisibility(View.GONE);
+
+            viewHolder.overflow.setVisibility(View.VISIBLE);
+            viewHolder.overflow.setText(String.format(context.getString(R.string.title_attribouter_view_overflow), translatorsTitle));
+
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new OverflowDialog(v.getContext(), translatorsTitle, sortedTranslators).show();
+                }
+            });
             return;
+        } else {
+            viewHolder.titleView.setVisibility(View.VISIBLE);
+            viewHolder.recycler.setVisibility(View.VISIBLE);
+            viewHolder.expand.setVisibility(View.VISIBLE);
+            viewHolder.overflow.setVisibility(View.GONE);
+            viewHolder.itemView.setOnClickListener(null);
         }
 
         if (translatorsTitle != null)
@@ -155,7 +176,7 @@ public class TranslatorsInfoData extends InfoData<TranslatorsInfoData.ViewHolder
             viewHolder.expand.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new OverflowDialog(v.getContext(), translatorsTitle != null ? translatorsTitle : "@string/title_attribouter_translators", sortedTranslators).show();
+                    new OverflowDialog(v.getContext(), translatorsTitle, sortedTranslators).show();
                 }
             });
         } else viewHolder.expand.setVisibility(View.GONE);
@@ -166,6 +187,7 @@ public class TranslatorsInfoData extends InfoData<TranslatorsInfoData.ViewHolder
         private TextView titleView;
         private RecyclerView recycler;
         private View expand;
+        private TextView overflow;
 
         ViewHolder(View v) {
             super(v);
@@ -173,6 +195,7 @@ public class TranslatorsInfoData extends InfoData<TranslatorsInfoData.ViewHolder
             titleView = v.findViewById(R.id.contributorsTitle);
             recycler = v.findViewById(R.id.recycler);
             expand = v.findViewById(R.id.expand);
+            overflow = v.findViewById(R.id.overflow);
         }
     }
 

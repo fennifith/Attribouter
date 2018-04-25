@@ -33,6 +33,8 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
     public LicensesInfoData(XmlResourceParser parser) throws XmlPullParserException, IOException {
         super(R.layout.item_attribouter_licenses);
         title = parser.getAttributeValue(null, "title");
+        if (title == null)
+            title = "@string/title_attribouter_licenses";
         boolean showDefaults = parser.getAttributeBooleanValue(null, "showDefaults", true);
         overflow = parser.getAttributeIntValue(null, "overflow", -1);
 
@@ -209,7 +211,26 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
     @Override
     public void bind(Context context, ViewHolder viewHolder) {
         if (overflow == 0) {
+            viewHolder.titleView.setVisibility(View.GONE);
+            viewHolder.recycler.setVisibility(View.GONE);
+            viewHolder.expand.setVisibility(View.GONE);
+
+            viewHolder.overflow.setVisibility(View.VISIBLE);
+            viewHolder.overflow.setText(String.format(context.getString(R.string.title_attribouter_view_overflow), title));
+
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new OverflowDialog(v.getContext(), title, new ArrayList<InfoData>(licenses)).show();
+                }
+            });
             return;
+        } else {
+            viewHolder.titleView.setVisibility(View.VISIBLE);
+            viewHolder.recycler.setVisibility(View.VISIBLE);
+            viewHolder.expand.setVisibility(View.VISIBLE);
+            viewHolder.overflow.setVisibility(View.GONE);
+            viewHolder.itemView.setOnClickListener(null);
         }
 
         if (title != null)
@@ -224,7 +245,7 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
             viewHolder.expand.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new OverflowDialog(v.getContext(), title != null ? title : "@string/title_attribouter_licenses", new ArrayList<InfoData>(licenses)).show();
+                    new OverflowDialog(v.getContext(), title, new ArrayList<InfoData>(licenses)).show();
                 }
             });
         } else viewHolder.expand.setVisibility(View.GONE);
@@ -235,12 +256,14 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
         private TextView titleView;
         private RecyclerView recycler;
         private View expand;
+        private TextView overflow;
 
         ViewHolder(View v) {
             super(v);
             titleView = v.findViewById(R.id.title);
             recycler = v.findViewById(R.id.recycler);
             expand = v.findViewById(R.id.expand);
+            overflow = v.findViewById(R.id.overflow);
         }
     }
 }

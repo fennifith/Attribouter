@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?android:selectableItemBackground"
     android:orientation="vertical"
     android:paddingBottom="8dp"
     android:paddingTop="8dp">
@@ -191,5 +192,17 @@
         android:scaleType="centerInside"
         android:tint="?android:textColorPrimary"
         app:srcCompat="@drawable/ic_attribouter_expand" />
+
+    <TextView
+        android:id="@+id/overflow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="4dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="4dp"
+        android:textColor="?android:textColorPrimary"
+        android:textSize="18sp"
+        tools:text="@string/title_attribouter_view_overflow" />
 
 </LinearLayout>

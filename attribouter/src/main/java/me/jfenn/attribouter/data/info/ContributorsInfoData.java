@@ -39,6 +39,8 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
         repo = parser.getAttributeValue(null, "repo");
         contributors = new ArrayList<>();
         contributorsTitle = parser.getAttributeValue(null, "title");
+        if (contributorsTitle == null)
+            contributorsTitle = "@string/title_attribouter_contributors";
         boolean showDefaults = parser.getAttributeBooleanValue(null, "showDefaults", true);
         overflow = parser.getAttributeIntValue(null, "overflow", -1);
         while (parser.next() != XmlResourceParser.END_TAG || parser.getName().equals("contributor")) {
@@ -130,7 +132,27 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
     @Override
     public void bind(Context context, ViewHolder viewHolder) {
         if (overflow == 0) {
+            viewHolder.titleView.setVisibility(View.GONE);
+            viewHolder.recycler.setVisibility(View.GONE);
+            viewHolder.expand.setVisibility(View.GONE);
+            viewHolder.topThreeView.setVisibility(View.GONE);
+
+            viewHolder.overflow.setVisibility(View.VISIBLE);
+            viewHolder.overflow.setText(String.format(context.getString(R.string.title_attribouter_view_overflow), contributorsTitle));
+
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new OverflowDialog(v.getContext(), contributorsTitle, new ArrayList<InfoData>(contributors)).show();
+                }
+            });
             return;
+        } else {
+            viewHolder.titleView.setVisibility(View.VISIBLE);
+            viewHolder.recycler.setVisibility(View.VISIBLE);
+            viewHolder.expand.setVisibility(View.VISIBLE);
+            viewHolder.overflow.setVisibility(View.GONE);
+            viewHolder.itemView.setOnClickListener(null);
         }
 
         if (contributorsTitle != null)
@@ -251,7 +273,7 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
             viewHolder.expand.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new OverflowDialog(v.getContext(), contributorsTitle != null ? contributorsTitle : "@string/title_attribouter_contributors", new ArrayList<InfoData>(contributors)).show();
+                    new OverflowDialog(v.getContext(), contributorsTitle, new ArrayList<InfoData>(contributors)).show();
                 }
             });
         } else viewHolder.expand.setVisibility(View.GONE);
@@ -275,6 +297,7 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
         private TextView thirdNameView;
         private TextView thirdTaskView;
         private View expand;
+        private TextView overflow;
 
         private RecyclerView recycler;
 
@@ -297,6 +320,7 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
             thirdTaskView = v.findViewById(R.id.thirdTask);
             recycler = v.findViewById(R.id.recycler);
             expand = v.findViewById(R.id.expand);
+            overflow = v.findViewById(R.id.overflow);
         }
     }
 
