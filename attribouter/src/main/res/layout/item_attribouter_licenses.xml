@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:background="?android:selectableItemBackground"
+    android:background="?selectableItemBackground"
     android:paddingBottom="8dp"
     android:paddingTop="8dp">
 
@@ -32,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginTop="-12dp"
-        android:background="?android:selectableItemBackground"
+        android:background="?selectableItemBackground"
         android:scaleType="centerInside"
         android:tint="?android:textColorPrimary"
         app:srcCompat="@drawable/ic_attribouter_expand" />
