@@ -9,4 +9,11 @@
     <color name="attribouter_licensePermissionsColor">#00C853</color>
     <color name="attribouter_licenseConditionsColor">#0091EA</color>
     <color name="attribouter_licenseLimitationsColor">#EF5350</color>
+
+    <color name="attribouter_textColorPrimary">#DE000000</color>
+    <color name="attribouter_textColorSecondary">#8A000000</color>
+    <color name="attribouter_textColorTertiary">#61000000</color>
+    <color name="attribouter_textColorPrimaryInverse">#FFFFFF</color>
+    <color name="attribouter_textColorSecondaryInverse">#B3FFFFFF</color>
+    <color name="attribouter_textColorTertiaryInverse">#80FFFFFF</color>
 </resources>
