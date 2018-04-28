@@ -17,7 +17,7 @@ This is just sample data. It is not real. Though Jahir is lazy, so that part is 
 The Gradle dependency is available through jCenter, which is used by default in Android Studio. To add the dependency to your project, copy this line into the dependencies section of your app's build.gradle file.
  
 ```gradle
-compile 'me.jfenn:attribouter:0.0.3'
+compile 'me.jfenn:attribouter:0.0.4'
 ```
 
 #### Starting an Activity
@@ -177,10 +177,14 @@ Couple strings, drawables, themes, etc. If you make any translations, feel free 
 |The thing|What the thing is|What the thing's supposed to do|
 |-----|-----|-----|
 |@style/AttribouterTheme|Extension of `Theme.AppCompat.Light.NoActionBar`|Defines colors and stuff.|
+|@style/AttribouterTheme_ActionBar|Extension of `ThemeOverlay.AppCompat.Dark.ActionBar`|Theme applied to the `ActionBar` widgets.|
+|@style/AttribouterTheme_Dialog_Fullscreen|Extension of `AttribouterTheme`|Theme applied to all fullscreen dialogs (currently just the 'overflow' dialogs).|
+|@style/AttribouterTheme_SlideAnimation|--|Value of `android:windowAnimationStyle` in `@style/AttribouterTheme_Dialog_Fullscreen`.|
 |@string/title_attribouter_about|"About"|Toolbar title.|
 |@string/title_attribouter_version|"Version %1$s"|The app version thing name thing.|
-|@string/title_attribouter_contributors|"Contributors"|Header of the contributors section.|
-|@string/title_attribouter_licenses|"Open Source Licenses"|Header of the licenses section.|
+|@string/title_attribouter_contributors|"Contributors"|Default header of the contributors section.|
+|@string/title_attribouter_translators|"Translators"|Default header of the translators section.|
+|@string/title_attribouter_licenses|"Open Source Licenses"|Default header of the licenses section.|
 |@string/title_attribouter_license|"License"|I can't remember, but this probably does something somewhere.|
 |@string/title_attribouter_license_permissions|"Permissions"|Title of the 'permissions' section of the license dialog.|
 |@string/title_attribouter_license_conditions|"Conditions"|Title of the 'conditions' section of the license dialog.|
@@ -190,10 +194,19 @@ Couple strings, drawables, themes, etc. If you make any translations, feel free 
 |@string/title_attribouter_website|"Website"|Title of the website buttons on... yeah just about everything.|
 |@string/title_attribouter_github|"GitHub"|Title of the GitHub buttons on... also just about everything.|
 |@string/title_attribouter_rate|"Rate"|Title of the Rate button.|
+|@color/attribouter_textColorPrimary|#DE000000|Primary text color.|
+|@color/attribouter_textColorSecondary|#8A000000|Secondary text color.|
+|@color/attribouter_textColorTertiary|#61000000|Tertiary text color.|
+|@color/attribouter_textColorPrimaryInverse|#FFFFFF|Primary inverse text color.|
+|@color/attribouter_textColorSecondaryInverse|#B3FFFFFF|Secondary inverse text color.|
+|@color/attribouter_textColorTertiaryInverse|#80FFFFFF|Tertiary inverse text color.|
+|@color/attribouter_iconColor|#000000|Default color of all the icons (regardless of where they are used).|
+|@color/attribouter_menuIconColor|#FFFFFF|Default color of the toolbar icons (currently only applies to the back button).|
 |@color/attribouter_licensePermissionsColor|#00C853|Color of the 'permissions' header in the license dialog.|
 |@color/attribouter_licenseConditionsColor|#0091EA|Color of the 'conditions' header in the license dialog.|
 |@color/attribouter_licenseLimitationsColor|#EF5350|Color of the 'limitations' header in the license dialog.|
 |@drawable/ic_attribouter_arrow_back|--|Back arrow used in the dialog.|
+|@drawable/ic_attribouter_expand|--|'Expand' arrow shown underneath lists with a non-zero `overflow` attribute smaller than the amount of items.|
 |@drawable/ic_attribouter_copyright|--|Copyright icon. Buttons.|
 |@drawable/ic_attribouter_email|--|Email icon. Buttons.|
 |@drawable/ic_attribouter_github|--|GitHub icon. Buttons.|
