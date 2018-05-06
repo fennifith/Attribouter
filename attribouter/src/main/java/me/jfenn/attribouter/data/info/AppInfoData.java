@@ -20,7 +20,6 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -87,12 +86,14 @@ public class AppInfoData extends InfoData<AppInfoData.ViewHolder> {
             if ((description == null || !description.startsWith("^")) && repository.description != null)
                 description = repository.description;
 
-            List<LinkInfoData> newLinks = Arrays.asList(
-                    new GitHubLinkInfoData(repository.html_url, 0, true),
-                    repository.homepage.startsWith("https://play.google.com/")
-                            ? new PlayStoreLinkInfoData(repository.homepage, 0)
-                            : new WebsiteLinkInfoData(repository.homepage, 0)
-            );
+            List<LinkInfoData> newLinks = new ArrayList<>();
+            if (repository.html_url != null)
+                newLinks.add(new GitHubLinkInfoData(repository.html_url, 0, true));
+            if (repository.homepage != null) {
+                newLinks.add(repository.homepage.startsWith("https://play.google.com/")
+                        ? new PlayStoreLinkInfoData(repository.homepage, 0)
+                        : new WebsiteLinkInfoData(repository.homepage, 0));
+            }
 
             for (LinkInfoData link : newLinks) {
                 if (links.contains(link))
