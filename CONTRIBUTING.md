@@ -4,4 +4,4 @@ As long as your pull request doesn't break the app in any way or conflict with a
 
 ## Branches
 
-I don't use branches because I'm lazy. If you want to make a new branch, feel free to do so, just be aware that I will completely ignore it and push my changes to master anyway, because I'm special.
+I am using the `develop` branch for all changes that will not be immediately available on bintray. Most PRs should be made to the `develop` branch. The only reason that a PR should be made to `master` is when there is a typo/inconsistency in the README or a similar issue is present. If you make a PR to `master` that changes something other than a .md file, I will stare at my screen and make ugly whale noises for approximately 10 minutes before politely asking you to change the branch. Thank you.
