@@ -9,7 +9,7 @@ public class GitHubLinkInfoData extends LinkInfoData {
     }
 
     public GitHubLinkInfoData(@NonNull String item, int priority, boolean isFullUrl) {
-        super("github", "@string/title_attribouter_github", isFullUrl ? item : "https://github.com/" + item, "@drawable/ic_attribouter_github", priority);
+        super("github", "@string/title_attribouter_github", isFullUrl ? item : "https://github.com/" + item, "@drawable/ic_attribouter_github", false, priority);
     }
 
 }

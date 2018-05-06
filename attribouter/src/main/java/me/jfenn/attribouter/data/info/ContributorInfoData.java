@@ -146,7 +146,7 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
         } else {
             LinkInfoData importantLink = null;
             for (LinkInfoData link : links) {
-                if (importantLink == null || link.getPriority() > importantLink.getPriority())
+                if (!link.isHidden() && (importantLink == null || link.getPriority() > importantLink.getPriority()))
                     importantLink = link;
             }
 

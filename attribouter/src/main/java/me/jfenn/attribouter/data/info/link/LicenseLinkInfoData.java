@@ -14,7 +14,7 @@ public class LicenseLinkInfoData extends LinkInfoData {
     private LicenseInfoData license;
 
     public LicenseLinkInfoData(@NonNull LicenseInfoData license, int priority) {
-        super("license", "@string/title_attribouter_license", null, "@drawable/ic_attribouter_copyright", priority);
+        super("license", "@string/title_attribouter_license", null, "@drawable/ic_attribouter_copyright", false, priority);
         this.license = license;
     }
 

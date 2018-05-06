@@ -14,11 +14,13 @@ import com.google.android.flexbox.JustifyContent;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import me.jfenn.attribouter.R;
 import me.jfenn.attribouter.adapters.InfoAdapter;
 import me.jfenn.attribouter.data.info.ContributorInfoData;
 import me.jfenn.attribouter.data.info.InfoData;
+import me.jfenn.attribouter.data.info.link.LinkInfoData;
 import me.jfenn.attribouter.utils.ResourceUtils;
 
 public class UserDialog extends AppCompatDialog {
@@ -52,13 +54,20 @@ public class UserDialog extends AppCompatDialog {
         bioView.setText(ResourceUtils.getString(getContext(), contributor.bio));
         if (contributor.links.size() > 0) {
             Collections.sort(contributor.links);
+
+            List<InfoData> linksList = new ArrayList<>();
+            for (LinkInfoData link : contributor.links) {
+                if (!link.isHidden())
+                    linksList.add(link);
+            }
+
             links.setVisibility(View.VISIBLE);
 
             FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(getContext());
             layoutManager.setFlexDirection(FlexDirection.ROW);
             layoutManager.setJustifyContent(JustifyContent.FLEX_START);
             links.setLayoutManager(layoutManager);
-            links.setAdapter(new InfoAdapter(new ArrayList<InfoData>(contributor.links)));
+            links.setAdapter(new InfoAdapter(linksList));
         } else links.setVisibility(View.GONE);
     }
 }

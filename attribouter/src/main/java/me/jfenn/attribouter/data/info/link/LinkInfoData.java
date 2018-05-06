@@ -23,6 +23,7 @@ public class LinkInfoData extends InfoData<LinkInfoData.ViewHolder> implements C
     private String url;
     @Nullable
     private String icon;
+    private boolean isHidden;
     int priority;
 
     public LinkInfoData(XmlResourceParser parser) {
@@ -30,6 +31,7 @@ public class LinkInfoData extends InfoData<LinkInfoData.ViewHolder> implements C
                 parser.getAttributeValue(null, "name"),
                 parser.getAttributeValue(null, "url"),
                 parser.getAttributeValue(null, "icon"),
+                parser.getAttributeBooleanValue(null, "hidden", false),
                 0);
 
         String priorityString = parser.getAttributeValue(null, "priority");
@@ -37,12 +39,13 @@ public class LinkInfoData extends InfoData<LinkInfoData.ViewHolder> implements C
             priority = Integer.parseInt(priorityString);
     }
 
-    public LinkInfoData(@Nullable String id, @Nullable String name, @Nullable String url, @Nullable String icon, int priority) {
+    public LinkInfoData(@Nullable String id, @Nullable String name, @Nullable String url, @Nullable String icon, boolean isHidden, int priority) {
         super(R.layout.item_attribouter_link);
         this.id = id;
         this.name = name;
         this.url = url;
         this.icon = icon;
+        this.isHidden = isHidden;
         this.priority = priority;
     }
 
@@ -55,6 +58,8 @@ public class LinkInfoData extends InfoData<LinkInfoData.ViewHolder> implements C
             url = link.url;
         if ((icon == null || !icon.startsWith("^")) && link.icon != null)
             icon = link.icon;
+        if (link.isHidden)
+            isHidden = true;
         if (link.priority != 0)
             priority = link.priority;
 
@@ -87,6 +92,10 @@ public class LinkInfoData extends InfoData<LinkInfoData.ViewHolder> implements C
 
     public int getPriority() {
         return priority;
+    }
+
+    public boolean isHidden() {
+        return isHidden;
     }
 
     String getUrl() {
