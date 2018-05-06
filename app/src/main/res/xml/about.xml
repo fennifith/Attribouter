@@ -9,6 +9,9 @@
             name="Documentation"
             icon="https://jfenn.me/favicon.ico"
             url="https://jfenn.me/about/?Attribouter" />
+        <link
+            hidden="true"
+            id="github" />
     </appInfo>
     <text text="@string/html" />
     <!-- <text> elements can be added anywhere directly within the <about> tag -->
@@ -39,7 +42,11 @@
         <contributor
             login="jahirfiquitiva"
             position="3"
-            task="^Lazy Slacker" />
+            task="^Lazy Slacker">
+            <link
+                hidden="true"
+                id="website" />
+        </contributor>
         <!-- For Jahir, the task "Lazy Slacker" will override the default task "Contributor" even after the github data is fetched (starting with the "^"
             character is what tells the library to do this) -->
         <contributor

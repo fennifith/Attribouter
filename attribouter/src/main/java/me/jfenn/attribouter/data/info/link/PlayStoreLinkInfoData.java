@@ -9,7 +9,7 @@ import me.jfenn.attribouter.utils.UrlClickListener;
 public class PlayStoreLinkInfoData extends LinkInfoData {
 
     public PlayStoreLinkInfoData(@Nullable String url, int priority) {
-        super("playStore", "@string/title_attribouter_rate", url, "@drawable/ic_attribouter_rate", priority);
+        super("playStore", "@string/title_attribouter_rate", url, "@drawable/ic_attribouter_rate", false, priority);
     }
 
     @Nullable

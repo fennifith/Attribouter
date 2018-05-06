@@ -255,13 +255,20 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> {
 
         if (links.size() > 0) {
             Collections.sort(links);
+
+            List<InfoData> linksList = new ArrayList<>();
+            for (LinkInfoData link : links) {
+                if (!link.isHidden())
+                    linksList.add(link);
+            }
+
             viewHolder.links.setVisibility(View.VISIBLE);
 
             FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(context);
             layoutManager.setFlexDirection(FlexDirection.ROW);
             layoutManager.setJustifyContent(JustifyContent.FLEX_START);
             viewHolder.links.setLayoutManager(layoutManager);
-            viewHolder.links.setAdapter(new InfoAdapter(new ArrayList<InfoData>(links)));
+            viewHolder.links.setAdapter(new InfoAdapter(linksList));
         } else viewHolder.links.setVisibility(View.GONE);
 
         LinkInfoData importantLink = null;
