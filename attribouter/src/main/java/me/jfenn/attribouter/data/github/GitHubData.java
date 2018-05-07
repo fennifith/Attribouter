@@ -3,10 +3,12 @@ package me.jfenn.attribouter.data.github;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.InstanceCreator;
+import com.google.gson.JsonSyntaxException;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -63,7 +65,12 @@ public abstract class GitHubData {
      * @param json the json string
      */
     protected void initJson(Gson gson, String json) {
-        gson.fromJson(json, getClass());
+        try {
+            gson.fromJson(json, getClass());
+        } catch (JsonSyntaxException e) {
+            e.printStackTrace();
+            Log.e("Attribouter", "Error parsing JSON from " + url);
+        }
     }
 
     /**
