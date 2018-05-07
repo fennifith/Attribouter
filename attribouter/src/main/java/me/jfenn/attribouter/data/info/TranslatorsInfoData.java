@@ -105,32 +105,6 @@ public class TranslatorsInfoData extends InfoData<TranslatorsInfoData.ViewHolder
 
     @Override
     public void bind(Context context, ViewHolder viewHolder) {
-        if (overflow == 0) {
-            viewHolder.titleView.setVisibility(View.GONE);
-            viewHolder.recycler.setVisibility(View.GONE);
-            viewHolder.expand.setVisibility(View.GONE);
-
-            viewHolder.overflow.setVisibility(View.VISIBLE);
-            viewHolder.overflow.setText(String.format(context.getString(R.string.title_attribouter_view_overflow), translatorsTitle));
-
-            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    new OverflowDialog(v.getContext(), translatorsTitle, sortedTranslators).show();
-                }
-            });
-            return;
-        } else {
-            viewHolder.titleView.setVisibility(View.VISIBLE);
-            viewHolder.recycler.setVisibility(View.VISIBLE);
-            viewHolder.expand.setVisibility(View.VISIBLE);
-            viewHolder.overflow.setVisibility(View.GONE);
-            viewHolder.itemView.setOnClickListener(null);
-        }
-
-        if (translatorsTitle != null)
-            viewHolder.titleView.setText(ResourceUtils.getString(context, translatorsTitle));
-
         int remaining = overflow;
         List<InfoData> sortedList = new ArrayList<>();
         sortedTranslators = new ArrayList<>();
@@ -167,6 +141,31 @@ public class TranslatorsInfoData extends InfoData<TranslatorsInfoData.ViewHolder
             }
         }
 
+        if (overflow == 0) {
+            viewHolder.titleView.setVisibility(View.GONE);
+            viewHolder.recycler.setVisibility(View.GONE);
+            viewHolder.expand.setVisibility(View.GONE);
+
+            viewHolder.overflow.setVisibility(View.VISIBLE);
+            viewHolder.overflow.setText(String.format(context.getString(R.string.title_attribouter_view_overflow), ResourceUtils.getString(context, translatorsTitle)));
+
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new OverflowDialog(v.getContext(), translatorsTitle, sortedTranslators).show();
+                }
+            });
+            return;
+        } else {
+            viewHolder.titleView.setVisibility(View.VISIBLE);
+            viewHolder.recycler.setVisibility(View.VISIBLE);
+            viewHolder.expand.setVisibility(View.VISIBLE);
+            viewHolder.overflow.setVisibility(View.GONE);
+            viewHolder.itemView.setOnClickListener(null);
+        }
+
+        if (translatorsTitle != null)
+            viewHolder.titleView.setText(ResourceUtils.getString(context, translatorsTitle));
 
         viewHolder.recycler.setLayoutManager(new LinearLayoutManager(context));
         viewHolder.recycler.setAdapter(new InfoAdapter(sortedList));
