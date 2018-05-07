@@ -107,7 +107,7 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> {
         else token = title;
 
         links = new ArrayList<>();
-        if (websiteUrl != null)
+        if (websiteUrl != null && !websiteUrl.isEmpty())
             links.add(new WebsiteLinkInfoData(websiteUrl, 2));
         if (repo != null)
             links.add(new GitHubLinkInfoData(repo, 1));
@@ -254,7 +254,7 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> {
         } else viewHolder.licenseView.setVisibility(View.GONE);
 
         if (links.size() > 0) {
-            Collections.sort(links);
+            Collections.sort(links, new LinkInfoData.Comparator(context));
 
             List<InfoData> linksList = new ArrayList<>();
             for (LinkInfoData link : links) {

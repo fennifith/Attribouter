@@ -109,7 +109,7 @@ public class AppInfoData extends InfoData<AppInfoData.ViewHolder> {
     }
 
     @Override
-    public void bind(Context context, ViewHolder viewHolder) {
+    public void bind(final Context context, ViewHolder viewHolder) {
         ApplicationInfo info = context.getApplicationInfo();
         ResourceUtils.setImage(context, icon, info.icon, viewHolder.appIconView);
         viewHolder.nameTextView.setText(info.labelRes);
@@ -127,7 +127,7 @@ public class AppInfoData extends InfoData<AppInfoData.ViewHolder> {
         } else viewHolder.descriptionTextView.setVisibility(View.GONE);
 
         if (links.size() > 0) {
-            Collections.sort(links);
+            Collections.sort(links, new LinkInfoData.Comparator(context));
 
             List<InfoData> linksList = new ArrayList<>();
             for (LinkInfoData link : links) {

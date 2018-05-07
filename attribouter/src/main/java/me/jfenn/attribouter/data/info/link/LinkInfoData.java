@@ -13,7 +13,7 @@ import me.jfenn.attribouter.data.info.InfoData;
 import me.jfenn.attribouter.utils.ResourceUtils;
 import me.jfenn.attribouter.utils.UrlClickListener;
 
-public class LinkInfoData extends InfoData<LinkInfoData.ViewHolder> implements Comparable<LinkInfoData> {
+public class LinkInfoData extends InfoData<LinkInfoData.ViewHolder> {
 
     @Nullable
     private String id;
@@ -131,9 +131,10 @@ public class LinkInfoData extends InfoData<LinkInfoData.ViewHolder> implements C
         viewHolder.itemView.setOnClickListener(getListener(context));
     }
 
-    @Override
-    public int compareTo(@NonNull LinkInfoData o) {
-        int comparison = name != null && o.name != null ? name.compareTo(o.name) : 0;
+    public int compareTo(Context context, @NonNull LinkInfoData o) {
+        String name = ResourceUtils.getString(context, this.name);
+        String oname = ResourceUtils.getString(context, o.name);
+        int comparison = name != null && oname != null ? name.compareTo(oname) : 0;
         return ((o.priority - priority) * 2) + (comparison / Math.abs(comparison));
     }
 
@@ -146,6 +147,20 @@ public class LinkInfoData extends InfoData<LinkInfoData.ViewHolder> implements C
             super(v);
             nameView = v.findViewById(R.id.name);
             iconView = v.findViewById(R.id.icon);
+        }
+    }
+
+    public static class Comparator implements java.util.Comparator<LinkInfoData> {
+
+        private Context context;
+
+        public Comparator(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        public int compare(LinkInfoData o1, LinkInfoData o2) {
+            return o1.compareTo(context, o2);
         }
     }
 
