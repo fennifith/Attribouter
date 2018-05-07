@@ -53,7 +53,7 @@ public class UserDialog extends AppCompatDialog {
 
         bioView.setText(ResourceUtils.getString(getContext(), contributor.bio));
         if (contributor.links.size() > 0) {
-            Collections.sort(contributor.links);
+            Collections.sort(contributor.links, new LinkInfoData.Comparator(getContext()));
 
             List<InfoData> linksList = new ArrayList<>();
             for (LinkInfoData link : contributor.links) {
