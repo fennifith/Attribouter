@@ -107,7 +107,7 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> {
         else token = title;
 
         links = new ArrayList<>();
-        if (websiteUrl != null)
+        if (websiteUrl != null && !websiteUrl.isEmpty())
             links.add(new WebsiteLinkInfoData(websiteUrl, 2));
         if (repo != null)
             links.add(new GitHubLinkInfoData(repo, 1));
