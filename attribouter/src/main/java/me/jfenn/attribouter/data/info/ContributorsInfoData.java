@@ -51,6 +51,9 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
                 if (!contributors.contains(contributor))
                     contributors.add(contributor);
                 else contributors.get(contributors.indexOf(contributor)).merge(contributor);
+
+                if (contributor.login != null && !contributor.hasEverything())
+                    addRequest(new UserData(contributor.login));
             }
         }
 
