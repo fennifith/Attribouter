@@ -75,20 +75,17 @@ function nextThing(data) {
 					items.push("Create a new one.");
 					return items;
 				},
+				filter: function(value) {
+					return value.startsWith("index: ") ? Number.parseInt(value.substring(7, value.indexOf(","))) : null;		
+				},
 				when: function(answers) {
 					return answers.repo && appInfoIndexes.length > 0;
-				}
-			},{
-				type: 'confirm',
-				message: "There is no <appInfo> element in your file. Would you like to create one?",
-				default: true,
-				when: function(answers) {
-					return answers.repo && !isNewConfig && appInfoIndexes[0] === null;
 				}
 			}]).then((answers) => {
 				if (answers.repo) {
 					defaultRepo = answers.repo;
 
+					console.log("> Fetching GitHub data...");
 					_request({
 						url: "https://api.github.com/repos/" + answers.repo,
 						headers: {
@@ -105,11 +102,10 @@ function nextThing(data) {
 
 						let jsonBody = JSON.parse(body);
 
-						let index;
-						if (answers.index && answers.index.startsWith("index: ")) {
-							index = Number.parseInt(answers.index.substring(7, answers.index.indexOf(",")));
+						if (answers.index) {
+							appInfoIndexes.splice(appInfoIndexes.indexOf(answers.index), 1);
 						} else {
-							index = data.childNodes.length;
+							answers.index = data.childNodes.length;
 							data.childNodes.push({
 								type: "element",
 								tagName: "appInfo",
@@ -120,38 +116,34 @@ function nextThing(data) {
 							});
 						}
 
-						_inquirer.prompt([{
-							type: 'input',
-							name: 'repo',
-							message: "Change repo attribute from \"" + data.childNodes[index].attributes["repo"] + "\" to... ",
-							default: jsonBody.full_name
-						},{
-							type: 'input',
-							name: 'description',
-							message: "Change description attribute from \"" + data.childNodes[index].attributes["description"] + "\" to... ",
-							default: jsonBody.description,
-							when: jsonBody.description !== null && jsonBody.description.length > 0
-						},{
-							type: 'input',
-							name: 'playStoreUrl',
-							message: "Change playStoreUrl attribute from \"" + data.childNodes[index].attributes["playStoreUrl"] + "\" to... ",
-							default: jsonBody.homepage,
-							when: jsonBody.homepage !== null && jsonBody.homepage.startsWith("https://play.google.com/")
-						},{
-							type: 'input',
-							name: 'websiteUrl',
-							message: "Change websiteUrl attribute from \"" + data.childNodes[index].attributes["websiteUrl"] + "\" to... ",
-							default: jsonBody.homepage,
-							when: jsonBody.homepage !== null && jsonBody.homepage.length > 0 && !jsonBody.homepage.startsWith("https://play.google.com/")
-						},{
-							type: 'input',
-							name: 'gitHubUrl',
-							message: "Change gitHubUrl attribute from \"" + data.childNodes[index].attributes["gitHubUrl"] + "\" to... ",
-							default: jsonBody.html_url
-						}]).then((answers) => {
-							for (let key in answers) {
-								data.childNodes[index].attributes[key] = answers[key];
+						let prompts = [];
+						let map = {
+							"full_name": "repo",
+							"description": "description",
+							"homepage": function() {
+								return jsonBody.homepage.startsWith("https://play.google.com/") ? "playStoreUrl" : "websiteUrl";
+							},
+							"gitHubUrl": "html_url"
+						}
+
+						for (let key in map) {
+							let name = typeof map[key] === "function" ? map[key]() : map[key];
+							let val = data.childNodes[answers.index].attributes[name];
+							if (jsonBody[key] && jsonBody[key].length > 0 && jsonBody[key] != val) {
+								prompts.push({
+									type: 'input',
+									name: name,
+									message: "Change " + name + " attribute from \"" + val + " to...",
+									default: jsonBody[key]
+								});
 							}
+						}
+
+						_inquirer.prompt(prompts).then((answers2) => {
+							for (let key in answers2) {
+								data.childNodes[answers.index].attributes[key] = answers2[key];
+							}
+							
 							console.log("> " + _chalk.green.bold("appInfo element updated."));
 							nextThing(data);
 						});						
@@ -161,6 +153,79 @@ function nextThing(data) {
 		} else if (answers.element == "contributors") {
 			if (contributorsIndexes.length == 1 && contributorsIndexes[0] === null)
 				contributorsIndexes.pop();
+
+				_inquirer.prompt([{
+					type: 'input',
+					name: 'repo',
+					message: "What repository (format: \"login/repo\", or \"null\") would you like to fetch contributors from?",
+					default: defaultRepo,
+					validate: function(value) {
+						return (value == "null" || (value.indexOf("/") > 1 && !value.endsWith("/"))) || "Please specify the repository name in the format \"login/repo\", or type \"null\".";
+					}
+				},{
+					type: 'rawlist',
+					name: 'index',
+					message: "There are multiple <contributors> elements in your file. Which one would you like to edit?",
+					default: contributorsIndexes[0],
+					choices: function() {
+						let items = [];
+						for (let i = 0; i < contributorsIndexes.length; i++) {
+							items.push("index: " + contributorsIndexes[i] + ", title: " + root.childNodes[contributorsIndexes[i]].attributes.title);
+						}
+						items.push("Create a new one.");
+						return items;
+					},
+					filter: function(value) {
+						return value.startsWith("index: ") ? Number.parseInt(value.substring(7, value.indexOf(","))) : null;		
+					},
+					when: function(answers) {
+						return answers.repo && contributorsIndexes.length > 0;
+					}
+				}]).then((answers) => {
+					if (answers.repo) {
+						defaultRepo = answers.repo;
+
+						console.log("> Fetching GitHub data...");
+						_request({
+							url: "https://api.github.com/repos/" + answers.repo + "/contributors?per_page=1000",
+							headers: {
+								Authorization: gitHubToken ? "bearer " + gitHubToken : null,
+								"User-Agent": "Attribouter-cli"
+							}
+						}, (err, res, body) => {
+							if (err) {
+								console.log("> Error fetching data from https://api.github.com/repos/" + answers.repo + "/contributors");
+								console.error(err);
+								nextThing(data);
+								return;
+							}
+
+							let jsonBody = JSON.parse(body);
+
+							if (answers.index) {
+								contributorsIndexes.splice(contributorsIndexes.indexOf(answers.index), 1);
+							} else {
+								answers.index = data.childNodes.length;
+								data.childNodes.push({
+									type: "element",
+									tagName: "contributors",
+									attributes: {},
+									childNodes: [],
+									closing: true,
+									closingChar: null
+								});
+							}
+
+							if (jsonBody.length > 0)
+								nextContributor(data, answers.index, jsonBody);
+							else {
+								console.log("> No contributors were returned from GitHub.");
+								nextThing(data);
+								return;
+							}
+						});
+					} else nextThing(data);
+				});
 		} else if (answers.element == "licenses") {
 			if (licensesIndexes.length == 1 && licensesIndexes[0] === null)
 				licensesIndexes.pop();
@@ -170,16 +235,99 @@ function nextThing(data) {
 	});
 }
 
-function applyAppInfo(data, index, response) {
-	appInfoIndexes.splice(appInfoIndexes.indexOf(index), 1);
-}
+function nextContributor(data, index, contributors) {
+	if (contributors[0]) {
+		_request({
+			url: "https://api.github.com/users/" + contributors[0].login,
+			headers: {
+				Authorization: gitHubToken ? "bearer " + gitHubToken : null,
+				"User-Agent": "Attribouter-cli"
+			}
+		}, (err, res, body) => {
+			if (err) {
+				console.log("> Error fetching data from https://api.github.com/users/" + contributors[csIndex].login);
+				console.error(err);
+				contributors.splice(0, 1);
+				nextContributor(data, index, contributors);
+				return;
+			}
 
-function applyContributors(data, index, response) {
-	contributorsIndexes.splice(contributorsIndexes.indexOf(index), 1);
-}
+			let jsonBody = JSON.parse(body);
+			let contributorChoices = function() {
+				let items = [];
+				for (let i = 0; i < data.childNodes[index].childNodes.length; i++) {
+					items.push("index: " + i + ", login: " + data.childNodes[index].childNodes[i].attributes.login + ", name: " + data.childNodes[index].childNodes[i].attributes.name);
+				}
+				items.push("Create a new one.");
+				return items;
+			};
 
-function applyLicenses(data, index, response) {
-	licensesIndexes.splice(licensesIndexes.indexOf(index), 1);
+			_inquirer.prompt([{
+				type: 'list',
+				name: 'index',
+				message: "Which contributor would you like to modify with the data from [" + jsonBody.login + "]?",
+				choices: contributorChoices,
+				default: function() {
+					let choices = contributorChoices();
+					for (let i = 0; i < choices.length; i++) {
+						if (choices[i].substring(16 + (i + "").length).startsWith(jsonBody.login))
+							return choices[i];
+					}
+
+					return choices[choices.length - 1];
+				},
+				filter: function(value) {
+					return value.startsWith("index: ") ? Number.parseInt(value.substring(7, value.indexOf(","))) : null;		
+				},
+				when: data.childNodes[index].length > 0
+			}]).then((answers) => {
+				if (answers.index) {
+					contributors.splice(answers.index, 1);
+				} else {
+					answers.index = data.childNodes[index].childNodes.length;
+					data.childNodes[index].childNodes.push({
+						type: "element",
+						tagName: "contributors",
+						attributes: {},
+						childNodes: [],
+						closing: true,
+						closingChar: null
+					});
+				}
+
+				let prompts = [];
+				let map = {
+					"login": "login",
+					"name": "name",
+					"avatar_url": "avatar",
+					"bio": "bio",
+					"blog": "blog",
+					"email": "email"
+				}
+
+				for (let key in map) {
+					let val = data.childNodes[index].childNodes[answers.index].attributes[map[key]];
+					if (jsonBody[key] && jsonBody[key].length > 0 && jsonBody[key] != val) {
+						prompts.push({
+							type: 'input',
+							name: map[key],
+							message: "Change " + map[key] + " attribute from \"" + val + " to...",
+							default: jsonBody[key]
+						});
+					}
+				}
+				
+				_inquirer.prompt(prompts).then((answers2) => {
+					for (let key in answers2) {
+						data.childNodes[index].childNodes[answers.index].attributes[key] = answers2[key];
+					}
+												
+					console.log("> " + _chalk.green.bold("contributors element updated."));
+					nextThing(data);
+				});
+			});
+		});
+	} else nextThing(data);
 }
 
 function prompt(token) {
