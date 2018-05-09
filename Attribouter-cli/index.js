@@ -21,8 +21,6 @@ const _program = require('commander'),
 		scope: ''
 	});
 
-console.log(_private._githubClient);
-
 _program.version('1.0.0');
 _program.parse(process.argv);
 
@@ -45,14 +43,14 @@ function nextThing(data) {
 		type: 'list',
 		name: 'element',
 		message: "Which item would you like to edit?",
-		choices: ["appInfo", "contributors", "licenses", "Done."]
+		choices: ["appInfo", "contributors", "licenses", "[done]"]
 	}]).then(answers => {
 		if (answers.element == "appInfo") {
 			let appInfoChoices = function() {
 				let items = [];
 				for (let i = 0; i < data.childNodes.length; i++) {
 					if (data.childNodes[i].tagName == "appInfo")
-						items.push("index: " + i + ", title: " + data.childNodes[i].attributes.title);
+						items.push("index: " + i + ", title: " + data.childNodes[i].attributes.title + ", repo: " + data.childNodes[i].attributes.repo);
 				}
 				items.push("Create a new one.");
 				return items;
@@ -61,20 +59,25 @@ function nextThing(data) {
 			_inquirer.prompt([{
 				type: 'input',
 				name: 'repo',
-				message: "What repository (format: \"login/repo\", or \"null\") would you like to fetch your app\'s info from?",
+				message: "What repository (format: \"login/repo\") would you like to fetch your app\'s info from?",
 				default: defaultRepo,
 				validate: function(value) {
-					return (value == "null" || (value.indexOf("/") > 1 && !value.endsWith("/"))) || "Please specify the repository name in the format \"login/repo\", or type \"null\".";
+					return (value.indexOf("/") > 1 && !value.endsWith("/")) || "Please specify the repository name in the format \"login/repo\".";
 				}
 			},{
 				type: 'list',
 				name: 'index',
 				message: "There are multiple <appInfo> elements in your file. Which one would you like to edit?",
-				default: "Create a new one.",
-				choices: appInfoChoices,
-				filter: function(value) {
-					return value.startsWith("index: ") ? Number.parseInt(value.substring(7, value.indexOf(","))) : null;		
+				default: function(answers) {
+					let choices = appInfoChoices();
+					for (let i = 0; i < choices.length; i++) {
+						if (choices[i].substring(choices[i].indexOf("repo: ") + 6) == answers.repo)
+							return choices[i];
+					}
+
+					return choices[choices.length - 1];
 				},
+				choices: appInfoChoices,
 				when: function(answers) {
 					return answers.repo && appInfoChoices().length > 1;
 				}
@@ -99,7 +102,8 @@ function nextThing(data) {
 
 						let jsonBody = JSON.parse(body);
 
-						if (answers.index) {
+						if (answers.index && answers.index.startsWith("index: ")) {
+							answers.index = Number.parseInt(answers.index.substring(7, answers.index.indexOf(",")));
 							console.log("> " + _chalk.blue.bold("Modifying the <appInfo> element at [" + answers.index + "]."));
 						} else {
 							console.log("> " + _chalk.blue.bold("Creating a new <appInfo> element."));
@@ -181,9 +185,6 @@ function nextThing(data) {
 						return choices[choices.length - 1];
 					},
 					choices: contributorsChoices,
-					filter: function(value) {
-						return value.startsWith("index: ") ? Number.parseInt(value.substring(7, value.indexOf(","))) : null;		
-					},
 					when: function(answers) {
 						return answers.repo && contributorsChoices().length > 1;
 					}
@@ -208,7 +209,8 @@ function nextThing(data) {
 
 							let jsonBody = JSON.parse(body);
 
-							if (answers.index) {
+							if (answers.index && answers.index.startsWith("index: ")) {
+								answers.index = Number.parseInt(answers.index.substring(7, answers.index.indexOf(",")));
 								console.log("> " + _chalk.blue.bold("Modifying the <contributors> element at [" + answers.index + "]."));
 							} else {
 								console.log("> " + _chalk.blue.bold("Creating a new <contributors> element."));
@@ -285,12 +287,10 @@ function nextContributor(data, index, contributors) {
 
 					return choices[choices.length - 1];
 				},
-				filter: function(value) {
-					return value.startsWith("index: ") ? Number.parseInt(value.substring(7, value.indexOf(","))) : null;		
-				},
 				when: contributorChoices().length > 1
 			}]).then((answers) => {
-				if (answers.index) {
+				if (answers.index && answers.index.startsWith("index: ")) {
+					answers.index = Number.parseInt(answers.index.substring(7, answers.index.indexOf(",")));
 					console.log("> " + _chalk.blue.bold("Modifying <contributor> at [" + answers.index + "] for [" + jsonBody.login + "]"));
 				} else {
 					console.log("> " + _chalk.blue.bold("Creating a new <contributor> for [" + jsonBody.login + "]"));
