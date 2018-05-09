@@ -153,7 +153,7 @@ function nextThing(data) {
 					let items = [];
 					for (let i = 0; i < data.childNodes.length; i++) {
 						if (data.childNodes[i].tagName == "contributors")
-							items.push("index: " + i + ", title: " + data.childNodes[i].attributes.title);
+							items.push("index: " + i + ", title: " + data.childNodes[i].attributes.title + ", repo: " + data.childNodes[i].attributes.repo);
 					}
 					items.push("Create a new one.");
 					return items;
@@ -171,7 +171,15 @@ function nextThing(data) {
 					type: 'list',
 					name: 'index',
 					message: "There are multiple <contributors> elements in your file. Which one would you like to edit?",
-					default: "Create a new one.",
+					default: function(answers) {
+						let choices = contributorsChoices();
+						for (let i = 0; i < choices.length; i++) {
+							if (choices[i].startsWith("index: ") && choices[i].substring(choices[i].indexOf("repo: ") + 6) == answers.repo)
+								return choices[i];
+						}
+
+						return choices[choices.length - 1];
+					},
 					choices: contributorsChoices,
 					filter: function(value) {
 						return value.startsWith("index: ") ? Number.parseInt(value.substring(7, value.indexOf(","))) : null;		
@@ -208,7 +216,9 @@ function nextThing(data) {
 								data.childNodes.push({
 									type: "element",
 									tagName: "contributors",
-									attributes: {},
+									attributes: {
+										repo: answers.repo
+									},
 									childNodes: [],
 									closing: true,
 									closingChar: null
