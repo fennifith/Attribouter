@@ -88,7 +88,7 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> {
 
     public LicenseInfoData(@Nullable String repo, @Nullable String title, @Nullable String description, @Nullable String licenseName, @Nullable String websiteUrl, @Nullable String gitHubUrl, @Nullable String licenseUrl, @Nullable String[] licensePermissions, @Nullable String[] licenseConditions, @Nullable String[] licenseLimitations, @Nullable String licenseDescription, @Nullable String licenseBody, @Nullable String licenseKey) {
         super(R.layout.item_attribouter_license);
-        this.repo = repo;
+        this.repo = repo != null ? repo.toLowerCase() : repo;
         this.title = title;
         this.description = description;
         this.licenseName = licenseName;

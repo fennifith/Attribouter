@@ -68,7 +68,7 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
 
     ContributorInfoData(@Nullable String login, @Nullable String name, @Nullable String avatarUrl, @Nullable String task, @Nullable Integer position, @Nullable String bio, @Nullable String blog, @Nullable String email) {
         super(R.layout.item_attribouter_contributor);
-        this.login = login;
+        this.login = login != null ? login.toLowerCase() : null;
         this.name = name;
         this.avatarUrl = avatarUrl;
         this.task = task;
