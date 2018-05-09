@@ -37,9 +37,6 @@ for (let i = 0; i < paths.length - 2; i++) {
 }
 
 var gitHubToken = null;
-var appInfoIndexes = [null];
-var contributorsIndexes = [null];
-var licensesIndexes = [null];
 var isNewConfig = true;
 var defaultRepo = null;
 
@@ -51,8 +48,15 @@ function nextThing(data) {
 		choices: ["appInfo", "contributors", "licenses", "Done."]
 	}]).then(answers => {
 		if (answers.element == "appInfo") {
-			if (appInfoIndexes.length == 1 && appInfoIndexes[0] === null)
-				appInfoIndexes.pop();
+			let appInfoChoices = function() {
+				let items = [];
+				for (let i = 0; i < data.childNodes.length; i++) {
+					if (data.childNodes[i].tagName == "appInfo")
+						items.push("index: " + i + ", title: " + data.childNodes[i].attributes.title);
+				}
+				items.push("Create a new one.");
+				return items;
+			};
 			
 			_inquirer.prompt([{
 				type: 'input',
@@ -66,20 +70,13 @@ function nextThing(data) {
 				type: 'list',
 				name: 'index',
 				message: "There are multiple <appInfo> elements in your file. Which one would you like to edit?",
-				default: appInfoIndexes[0],
-				choices: function() {
-					let items = [];
-					for (let i = 0; i < appInfoIndexes.length; i++) {
-						items.push("index: " + appInfoIndexes[i] + ", title: " + root.childNodes[appInfoIndexes[i]].attributes.title);
-					}
-					items.push("Create a new one.");
-					return items;
-				},
+				default: "Create a new one.",
+				choices: appInfoChoices,
 				filter: function(value) {
 					return value.startsWith("index: ") ? Number.parseInt(value.substring(7, value.indexOf(","))) : null;		
 				},
 				when: function(answers) {
-					return answers.repo && appInfoIndexes.length > 0;
+					return answers.repo && appInfoChoices().length > 1;
 				}
 			}]).then((answers) => {
 				if (answers.repo) {
@@ -104,7 +101,6 @@ function nextThing(data) {
 
 						if (answers.index) {
 							console.log("> " + _chalk.blue.bold("Modifying the <appInfo> element at [" + answers.index + "]."));
-							appInfoIndexes.splice(appInfoIndexes.indexOf(answers.index), 1);
 						} else {
 							console.log("> " + _chalk.blue.bold("Creating a new <appInfo> element."));
 							answers.index = data.childNodes.length;
@@ -153,9 +149,16 @@ function nextThing(data) {
 				} else nextThing(data);
 			});
 		} else if (answers.element == "contributors") {
-			if (contributorsIndexes.length == 1 && contributorsIndexes[0] === null)
-				contributorsIndexes.pop();
-
+				let contributorsChoices = function() {
+					let items = [];
+					for (let i = 0; i < data.childNodes.length; i++) {
+						if (data.childNodes[i].tagName == "contributors")
+							items.push("index: " + i + ", title: " + data.childNodes[i].attributes.title);
+					}
+					items.push("Create a new one.");
+					return items;
+				};
+		
 				_inquirer.prompt([{
 					type: 'input',
 					name: 'repo',
@@ -168,20 +171,13 @@ function nextThing(data) {
 					type: 'list',
 					name: 'index',
 					message: "There are multiple <contributors> elements in your file. Which one would you like to edit?",
-					default: contributorsIndexes[0],
-					choices: function() {
-						let items = [];
-						for (let i = 0; i < contributorsIndexes.length; i++) {
-							items.push("index: " + contributorsIndexes[i] + ", title: " + root.childNodes[contributorsIndexes[i]].attributes.title);
-						}
-						items.push("Create a new one.");
-						return items;
-					},
+					default: "Create a new one.",
+					choices: contributorsChoices,
 					filter: function(value) {
 						return value.startsWith("index: ") ? Number.parseInt(value.substring(7, value.indexOf(","))) : null;		
 					},
 					when: function(answers) {
-						return answers.repo && contributorsIndexes.length > 0;
+						return answers.repo && contributorsChoices().length > 1;
 					}
 				}]).then((answers) => {
 					if (answers.repo) {
@@ -206,7 +202,6 @@ function nextThing(data) {
 
 							if (answers.index) {
 								console.log("> " + _chalk.blue.bold("Modifying the <contributors> element at [" + answers.index + "]."));
-								contributorsIndexes.splice(contributorsIndexes.indexOf(answers.index), 1);
 							} else {
 								console.log("> " + _chalk.blue.bold("Creating a new <contributors> element."));
 								answers.index = data.childNodes.length;
@@ -231,8 +226,6 @@ function nextThing(data) {
 					} else nextThing(data);
 				});
 		} else if (answers.element == "licenses") {
-			if (licensesIndexes.length == 1 && licensesIndexes[0] === null)
-				licensesIndexes.pop();
 		} else {
 			//write to file & exit
 		}
@@ -358,25 +351,6 @@ function prompt(token) {
 			for (let i = 0; i < data.length; i++) {
 				if (data[i].tagName == "about") {
 					data = data[i];
-					for (i = 0; i < data.childNodes.length; i++) {
-						if (data.childNodes[i].tagName == "appInfo") {
-							if (appInfoIndexes[0] === null)
-								appInfoIndexes[0] = i;
-							else appInfoIndexes.push(i);
-						}
-				
-						if (data.childNodes[i].tagName == "contributors") {
-							if (contributorsIndexes[0] === null)
-								contributorsIndexes[0] = i;
-							else contributorsIndexes.push(i);
-						}
-			
-						if (data.childNodes[i].tagName == "licenses") {
-							if (licensesIndexes[0] === null)
-								licensesIndexes[0] = i;
-							else licensesIndexes.push(i);
-						}
-					}
 					break;
 				}
 			}
