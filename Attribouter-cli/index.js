@@ -45,7 +45,7 @@ var defaultRepo = null;
 
 function nextThing(data) {
 	_inquirer.prompt([{
-		type: 'rawlist',
+		type: 'list',
 		name: 'element',
 		message: "Which item would you like to edit?",
 		choices: ["appInfo", "contributors", "licenses", "Done."]
@@ -63,7 +63,7 @@ function nextThing(data) {
 					return (value == "null" || (value.indexOf("/") > 1 && !value.endsWith("/"))) || "Please specify the repository name in the format \"login/repo\", or type \"null\".";
 				}
 			},{
-				type: 'rawlist',
+				type: 'list',
 				name: 'index',
 				message: "There are multiple <appInfo> elements in your file. Which one would you like to edit?",
 				default: appInfoIndexes[0],
@@ -103,8 +103,10 @@ function nextThing(data) {
 						let jsonBody = JSON.parse(body);
 
 						if (answers.index) {
+							console.log("> " + _chalk.blue.bold("Modifying the <appInfo> element at [" + answers.index + "]."));
 							appInfoIndexes.splice(appInfoIndexes.indexOf(answers.index), 1);
 						} else {
+							console.log("> " + _chalk.blue.bold("Creating a new <appInfo> element."));
 							answers.index = data.childNodes.length;
 							data.childNodes.push({
 								type: "element",
@@ -133,7 +135,7 @@ function nextThing(data) {
 								prompts.push({
 									type: 'input',
 									name: name,
-									message: "Change " + name + " attribute from \"" + val + " to...",
+									message: "Change " + name + " attribute from \"" + val + "\" to...",
 									default: jsonBody[key]
 								});
 							}
@@ -163,7 +165,7 @@ function nextThing(data) {
 						return (value == "null" || (value.indexOf("/") > 1 && !value.endsWith("/"))) || "Please specify the repository name in the format \"login/repo\", or type \"null\".";
 					}
 				},{
-					type: 'rawlist',
+					type: 'list',
 					name: 'index',
 					message: "There are multiple <contributors> elements in your file. Which one would you like to edit?",
 					default: contributorsIndexes[0],
@@ -203,8 +205,10 @@ function nextThing(data) {
 							let jsonBody = JSON.parse(body);
 
 							if (answers.index) {
+								console.log("> " + _chalk.blue.bold("Modifying the <contributors> element at [" + answers.index + "]."));
 								contributorsIndexes.splice(contributorsIndexes.indexOf(answers.index), 1);
 							} else {
+								console.log("> " + _chalk.blue.bold("Creating a new <contributors> element."));
 								answers.index = data.childNodes.length;
 								data.childNodes.push({
 									type: "element",
@@ -237,6 +241,8 @@ function nextThing(data) {
 
 function nextContributor(data, index, contributors) {
 	if (contributors[0]) {
+		console.log("> Fetching more GitHub data...");
+		
 		_request({
 			url: "https://api.github.com/users/" + contributors[0].login,
 			headers: {
@@ -279,11 +285,12 @@ function nextContributor(data, index, contributors) {
 				filter: function(value) {
 					return value.startsWith("index: ") ? Number.parseInt(value.substring(7, value.indexOf(","))) : null;		
 				},
-				when: data.childNodes[index].length > 0
+				when: contributorChoices().length > 1
 			}]).then((answers) => {
 				if (answers.index) {
-					contributors.splice(answers.index, 1);
+					console.log("> " + _chalk.blue.bold("Modifying <contributor> at [" + answers.index + "] for [" + jsonBody.login + "]"));
 				} else {
+					console.log("> " + _chalk.blue.bold("Creating a new <contributor> for [" + jsonBody.login + "]"));
 					answers.index = data.childNodes[index].childNodes.length;
 					data.childNodes[index].childNodes.push({
 						type: "element",
@@ -311,7 +318,7 @@ function nextContributor(data, index, contributors) {
 						prompts.push({
 							type: 'input',
 							name: map[key],
-							message: "Change " + map[key] + " attribute from \"" + val + " to...",
+							message: "Change " + map[key] + " attribute from \"" + val + "\" to...",
 							default: jsonBody[key]
 						});
 					}
@@ -322,12 +329,16 @@ function nextContributor(data, index, contributors) {
 						data.childNodes[index].childNodes[answers.index].attributes[key] = answers2[key];
 					}
 												
-					console.log("> " + _chalk.green.bold("contributors element updated."));
-					nextThing(data);
+					console.log("> " + _chalk.green("contributor element for [" + jsonBody.login + "] updated."));
+					contributors.splice(0, 1);
+					nextContributor(data, index, contributors);
 				});
 			});
 		});
-	} else nextThing(data);
+	} else {
+		console.log("> " + _chalk.green.bold("contributors element updated."));
+		nextThing(data);
+	}
 }
 
 function prompt(token) {
