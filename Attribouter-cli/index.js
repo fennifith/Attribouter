@@ -37,6 +37,7 @@ for (let i = 0; i < paths.length - 2; i++) {
 var gitHubToken = null;
 var isNewConfig = true;
 var defaultRepo = null;
+var fileName = "attribouter.xml";
 
 function nextThing(data) {
 	_inquirer.prompt([{
@@ -275,7 +276,51 @@ function nextThing(data) {
 				nextLicense(data, answers.index);
 			});
 		} else {
-			//write to file & exit
+			_inquirer.prompt([{
+				type: 'confirm',
+				name: 'save',
+				message: 'Would you like to save the file?',
+				default: true
+			}]).then((answers) => {	
+				if (answers.save === true) {
+					console.log("> generating XML...");
+					let xml = _xml.stringify([
+						{
+							type: 'element',
+							tagName: '?xml',
+							attributes: {
+								version: '1.0',
+								encoding: 'UTF-8'
+							},
+							childNodes: [],
+							innerXML: '>',
+							closing: false,
+							closingChar: '?'
+						},
+						data
+					], 4);
+					
+					let path = ".";
+					let paths = _path.split("/");
+					for (let i = 0; i < paths.length - 1; i++) {
+						path += "/" + paths[i];
+						if (!_fs.existsSync(path)) {
+							_fs.mkdirSync(path);
+							return;
+						}
+					}
+
+					console.log("> writing to file...");
+					_fs.writeFile(_path.replace('$', fileName), xml, function(err) {
+						if (err) {
+							console.log("> Unable to write to file.");
+							console.error(err);
+						} else console.log("> " + _chalk.green.bold("Successfully saved to file."));
+
+						process.exit();
+					});
+				} else process.exit();
+			});
 		}
 	});
 }
@@ -333,7 +378,7 @@ function nextContributor(data, index, contributors) {
 					answers.index = data.childNodes[index].childNodes.length;
 					data.childNodes[index].childNodes.push({
 						type: "element",
-						tagName: "contributors",
+						tagName: "contributor",
 						attributes: {},
 						childNodes: [],
 						closing: true,
@@ -509,11 +554,12 @@ function prompt(token) {
 		type: 'input',
 		name: 'fileName',
 		message: "What is the name of the XML file to create / modify?",
-		default: "attribouter.xml",
+		default: fileName,
 		filter: function(value) {
 			return value.endsWith(".xml") ? value : value + ".xml";
 		}
 	}]).then(answers => {
+		fileName = answers.fileName;
 		var data = _fs.existsSync(_path.replace("$", answers.fileName)) ? _xml.parse(_fs.readFileSync(_path.replace("$", answers.fileName))) : null;
 		if (data) {
 			console.log("> An existing config file has been found, this tool will now attempt to update the existing data.");
