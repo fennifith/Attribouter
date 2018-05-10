@@ -39,6 +39,15 @@ var isNewConfig = true;
 var defaultRepo = null;
 var fileName = "attribouter.xml";
 
+function formatTitle(repo) {
+	if (repo.indexOf("/") > 0)
+		repo = repo.substring(repo.indexOf("/") + 1);
+
+	repo.replace(/([a-z])([A-Z])/g, "$1 $2");
+	repo.replace(/([A-Z])([A-Z][a-z])/g, "$1 $2");
+	return repo;
+}
+
 function nextThing(data) {
 	_inquirer.prompt([{
 		type: 'list',
@@ -50,7 +59,7 @@ function nextThing(data) {
 			let appInfoChoices = function() {
 				let items = [];
 				for (let i = 0; i < data.childNodes.length; i++) {
-					if (data.childNodes[i].tagName == "appInfo")
+					if (data.childNodes[i].attributes && data.childNodes[i].tagName == "appInfo")
 						items.push("index: " + i + ", title: " + data.childNodes[i].attributes.title + ", repo: " + data.childNodes[i].attributes.repo);
 				}
 				items.push("Create a new one.");
@@ -114,8 +123,8 @@ function nextThing(data) {
 								tagName: "appInfo",
 								attributes: {},
 								childNodes: [],
-								closing: true,
-								closingChar: null
+								closing: false,
+								closingChar: '/'
 							});
 						}
 
@@ -157,7 +166,7 @@ function nextThing(data) {
 				let contributorsChoices = function() {
 					let items = [];
 					for (let i = 0; i < data.childNodes.length; i++) {
-						if (data.childNodes[i].tagName == "contributors")
+						if (data.childNodes[i].attributes && data.childNodes[i].tagName == "contributors")
 							items.push("index: " + i + ", title: " + data.childNodes[i].attributes.title + ", repo: " + data.childNodes[i].attributes.repo);
 					}
 					items.push("Create a new one.");
@@ -242,7 +251,7 @@ function nextThing(data) {
 			let licensesChoices = function() {
 				let items = [];
 				for (let i = 0; i < data.childNodes.length; i++) {
-					if (data.childNodes[i].tagName == "licenses")
+					if (data.childNodes[i].attributes && data.childNodes[i].tagName == "licenses")
 						items.push("index: " + i + ", title: " + data.childNodes[i].attributes.title);
 				}
 				items.push("Create a new one.");
@@ -348,7 +357,8 @@ function nextContributor(data, index, contributors) {
 			let contributorChoices = function() {
 				let items = [];
 				for (let i = 0; i < data.childNodes[index].childNodes.length; i++) {
-					items.push("index: " + i + ", login: " + data.childNodes[index].childNodes[i].attributes.login + ", name: " + data.childNodes[index].childNodes[i].attributes.name);
+					if (data.childNodes[index].childNodes[i].attributes)
+						items.push("index: " + i + ", login: " + data.childNodes[index].childNodes[i].attributes.login + ", name: " + data.childNodes[index].childNodes[i].attributes.name);
 				}
 				items.push("Create a new one.");
 				return items;
@@ -381,8 +391,8 @@ function nextContributor(data, index, contributors) {
 						tagName: "contributor",
 						attributes: {},
 						childNodes: [],
-						closing: true,
-						closingChar: null
+						closing: false,
+						closingChar: '/'
 					});
 				}
 
@@ -433,7 +443,7 @@ function nextLicense(data, index) {
 		choices: function() {
 			let items = [];
 			for (let i = 0; i < data.childNodes[index].childNodes.length; i++) {
-				if (data.childNodes[index].childNodes[i].tagName == "project")
+				if (data.childNodes[index].childNodes[i].attributes)
 					items.push("index: " + i + ", title: " + data.childNodes[index].childNodes[i].attributes.title + ", repo: " + data.childNodes[index].childNodes[i].attributes.repo);
 			}
 			items.push("Create a new one.");
@@ -472,8 +482,8 @@ function nextLicense(data, index) {
 				tagName: "project",
 				attributes: {},
 				childNodes: [],
-				closing: true,
-				closingChar: null
+				closing: false,
+				closingChar: '/'
 			});
 		}
 
@@ -494,7 +504,14 @@ function nextLicense(data, index) {
 
 			let jsonBody = JSON.parse(body);
 
-			let prompts = [];
+			let prompts = [{
+				type: 'input',
+				name: 'title',
+				message: "Change title attribute from \"" + data.childNodes[index].childNodes[answers.index].attributes.title + "\" to...",
+				default: formatTitle(jsonBody.full_name),
+				when: jsonBody.full_name && formatTitle(jsonBody.full_name) != data.childNodes[index].childNodes[answers.index].attributes.title
+			}];
+			
 			let map = {
 				"full_name": "repo",
 				"description": "description",
@@ -560,7 +577,7 @@ function prompt(token) {
 		}
 	}]).then(answers => {
 		fileName = answers.fileName;
-		var data = _fs.existsSync(_path.replace("$", answers.fileName)) ? _xml.parse(_fs.readFileSync(_path.replace("$", answers.fileName))) : null;
+		var data = _fs.existsSync(_path.replace("$", answers.fileName)) ? _xml.parse(_fs.readFileSync(_path.replace("$", fileName), 'utf8')) : null;
 		if (data) {
 			console.log("> An existing config file has been found, this tool will now attempt to update the existing data.");
 			isNewConfig = false;
