@@ -581,7 +581,7 @@ function prompt(token) {
 		let data = null;
 		if (_fs.existsSync(_path.replace("$", answers.fileName))) {
 			console.log("> reading file structure...");
-			data = _xml.parse(_fs.readFileSync(_path.replace("$", fileName), 'utf8').replace(/[\n]/g, "").replace(/(\s)(\s)/g, ""));
+			data = _xml.parse(_fs.readFileSync(_path.replace("$", fileName), 'utf8').replace(/[\n]/g, "").replace(/(\s)(\s)/g, "").replace(/[\t]/g, ""));
 		}
 		
 		if (data) {
