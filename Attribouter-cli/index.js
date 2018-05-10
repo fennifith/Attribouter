@@ -166,10 +166,10 @@ function nextThing(data) {
 				_inquirer.prompt([{
 					type: 'input',
 					name: 'repo',
-					message: "What repository (format: \"login/repo\", or \"null\") would you like to fetch contributors from?",
+					message: "What repository (format: \"login/repo\") would you like to fetch contributors from?",
 					default: defaultRepo,
 					validate: function(value) {
-						return (value == "null" || (value.indexOf("/") > 1 && !value.endsWith("/"))) || "Please specify the repository name in the format \"login/repo\", or type \"null\".";
+						return (value.indexOf("/") > 1 && !value.endsWith("/")) || "Please specify the repository name in the format \"login/repo\".";
 					}
 				},{
 					type: 'list',
@@ -238,6 +238,42 @@ function nextThing(data) {
 					} else nextThing(data);
 				});
 		} else if (answers.element == "licenses") {
+			let licensesChoices = function() {
+				let items = [];
+				for (let i = 0; i < data.childNodes.length; i++) {
+					if (data.childNodes[i].tagName == "licenses")
+						items.push("index: " + i + ", title: " + data.childNodes[i].attributes.title);
+				}
+				items.push("Create a new one.");
+				return items;		
+			};
+		
+			_inquirer.prompt([{
+				type: 'list',
+				name: 'index',
+				message: "There are multiple <licenses> elements in your file. Which would you like to edit?",
+				default: licensesChoices()[0],
+				choices: licensesChoices,
+				when: licensesChoices().length > 1
+			}]).then((answers) => {
+				if (answers.index && answers.index.startsWith("index: ")) {
+					answers.index = Number.parseInt(answers.index.substring(7, answers.index.indexOf(",")));
+					console.log("> " + _chalk.blue.bold("Modifying the <licenses> element at [" + answers.index + "]."));
+				} else {
+					console.log("> " + _chalk.blue.bold("Creating a new <licenses> element."));
+					answers.index = data.childNodes.length;
+					data.childNodes.push({
+						type: "element",
+						tagName: "licenses",
+						attributes: {},
+						childNodes: [],
+						closing: true,
+						closingChar: null
+					});
+				}
+
+				nextLicense(data, answers.index);
+			});
 		} else {
 			//write to file & exit
 		}
@@ -313,7 +349,7 @@ function nextContributor(data, index, contributors) {
 					"bio": "bio",
 					"blog": "blog",
 					"email": "email"
-				}
+				};
 
 				for (let key in map) {
 					let val = data.childNodes[index].childNodes[answers.index].attributes[map[key]];
@@ -342,6 +378,130 @@ function nextContributor(data, index, contributors) {
 		console.log("> " + _chalk.green.bold("contributors element updated."));
 		nextThing(data);
 	}
+}
+
+function nextLicense(data, index) {
+	_inquirer.prompt([{
+		type: 'list',
+		name: 'index',
+		message: "There are multiple <project> tags in this element. Which one would you like to edit?",
+		choices: function() {
+			let items = [];
+			for (let i = 0; i < data.childNodes[index].childNodes.length; i++) {
+				if (data.childNodes[index].childNodes[i].tagName == "project")
+					items.push("index: " + i + ", title: " + data.childNodes[index].childNodes[i].attributes.title + ", repo: " + data.childNodes[index].childNodes[i].attributes.repo);
+			}
+			items.push("Create a new one.");
+			items.push("[done]");
+			return items;
+		}
+	},{
+		type: 'input',
+		name: 'repo',
+		message: "What repository (format: \"login/repo\") would you like to fetch license information from?",
+		default: function(answers) {
+			if (answers.index.startsWith("index: "))
+				return answers.index.substring(answers.index.indexOf("repo: ") + 6);
+			else return null;
+		},
+		validate: function(value) {
+			return (value.indexOf("/") > 1 && !value.endsWith("/")) || "Please specify the repository name in the format \"login/repo\".";
+		},
+		when: function(answers) {
+			return !answers.index.startsWith("[");
+		}
+	}]).then((answers) => {
+		if (answers.index.startsWith("[")) {
+			nextThing(data);
+			return;
+		}
+	
+		if (answers.index && answers.index.startsWith("index: ")) {
+			answers.index = Number.parseInt(answers.index.substring(7, answers.index.indexOf(",")));
+			console.log("> " + _chalk.blue.bold("Modifying <project> at [" + answers.index + "] for [" + answers.repo + "]"));
+		} else {
+			console.log("> " + _chalk.blue.bold("Creating a new <project> for [" + answers.repo + "]"));
+			answers.index = data.childNodes[index].childNodes.length;
+			data.childNodes[index].childNodes.push({
+				type: "element",
+				tagName: "project",
+				attributes: {},
+				childNodes: [],
+				closing: true,
+				closingChar: null
+			});
+		}
+
+		console.log("> Fetching GitHub data...");
+		_request({
+			url: "https://api.github.com/repos/" + answers.repo,
+			headers: {
+				Authorization: gitHubToken ? "bearer " + gitHubToken : null,
+				"User-Agent": "Attribouter-cli"
+			}
+		}, (err, res, body) => {
+			if (err) {
+				console.log("> Error fetching data from https://api.github.com/repos/" + answers.repo);
+				console.error(err);
+				nextLicense(data, index);
+				return;
+			}
+
+			let jsonBody = JSON.parse(body);
+
+			let prompts = [];
+			let map = {
+				"full_name": "repo",
+				"description": "description",
+				"homepage": "website"
+			};
+			
+			for (let key in map) {
+				let val = data.childNodes[index].childNodes[answers.index].attributes[map[key]];
+				if (jsonBody[key] && jsonBody[key].length > 0 && jsonBody[key] != val) {
+					prompts.push({
+						type: 'input',
+						name: map[key],
+						message: "Change " + map[key] + " attribute from \"" + val + "\" to...",
+						default: jsonBody[key]
+					});
+				}
+			}
+
+			if (jsonBody.license) {
+				prompts.push({
+					type: 'input',
+					name: 'license',
+					message: "Change license attribute from \"" + data.childNodes[index].childNodes[answers.index].attributes.license + "\" to...",
+					default: jsonBody.license.key,
+					when: jsonBody.license.key && jsonBody.license.key.length > 0
+				});
+				prompts.push({
+					type: 'input',
+					name: 'licenseName',
+					message: "Change licenseName attribute from \"" + data.childNodes[index].childNodes[answers.index].attributes.licenseName + "\" to...",
+					default: jsonBody.license.name,
+					when: jsonBody.license.name && jsonBody.license.name.length > 0
+				});
+				prompts.push({
+					type: 'input',
+					name: 'licenseUrl',
+					message: "Change licenseUrl attribute from \"" + data.childNodes[index].childNodes[answers.index].attributes.licenseUrl + "\" to...",
+					default: jsonBody.license.url,
+					when: jsonBody.license.url && jsonBody.license.url.length > 0
+				});
+			}
+							
+			_inquirer.prompt(prompts).then((answers2) => {
+				for (let key in answers2) {
+					data.childNodes[index].childNodes[answers.index].attributes[key] = answers2[key];
+				}
+												
+				console.log("> " + _chalk.green("license element for [" + answers.repo + "] updated."));
+				nextLicense(data, index);
+			});
+		});
+	});
 }
 
 function prompt(token) {
