@@ -579,6 +579,7 @@ function prompt(token) {
 		let data = null;
 		if (_fs.existsSync(_path.replace("$", answers.fileName))) {
 			console.log("> reading file structure...");
+			
 			data = _xml.parse(_fs.readFileSync(_path.replace("$", fileName), 'utf8')
 				.replace(/[\n]/g, "")
 				.replace(/(>)(\s{0,})(\s{0,})(<)/g, "><")
@@ -617,7 +618,11 @@ const _server = _http.createServer(function(req, res) {
 		
 	if (req.url.match("/callback?") || req.url.match("/callback/")) {
 		console.log("> " + _chalk.blue.bold("Verifying auth token..."));
-		return _github.callback(req, res);
+		
+		_github.callback(req, res);
+		res.statusCode = 200;
+		res.write("<html><body><p>Your GitHub token has been graciously consumed. You may now obliterate this \"noob\" graphical interface and return to the professional work of art that is your command line.</p></body></html>");
+		return res.end();
 	}
 });
 _server.listen(8080);
