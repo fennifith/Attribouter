@@ -49,14 +49,18 @@ function formatTitle(repo) {
 	return repo;
 }
 
-function addClosings(root) {
-	if (!root.closing)
-		root.closingChar = '/';
+function addClosings(element) {
+	element.innerXML = null;
+	if (element.closing === null || element.closing == false)
+		element.closingChar = '/';
 
-	for (let i = 0; root.childNodes && root.childNodes.length > i; i++) {
-		if (root.childNodes[i].type != "element")
-			root.childNodes.splice(i, 1);
-		else addClosings(root.childNodes[i]);
+	console.log(element);
+	
+	for (let i = 0; i < element.childNodes.length; i++) {
+		if (element.childNodes[i].type != "element")
+			element.childNodes.splice(i, 1);
+		else
+			addClosings(element.childNodes[i]);
 	}
 }
 
@@ -575,8 +579,11 @@ function prompt(token) {
 		let data = null;
 		if (_fs.existsSync(_path.replace("$", answers.fileName))) {
 			console.log("> reading file structure...");
-			data = _xml.parse(_fs.readFileSync(_path.replace("$", fileName), 'utf8').replace(/[\n]/g, ""));
-			console.log(data[1].childNodes);
+			data = _xml.parse(_fs.readFileSync(_path.replace("$", fileName), 'utf8')
+				.replace(/[\n]/g, "")
+				.replace(/(>)(\s{0,})(\s{0,})(<)/g, "><")
+				.replace(/([A-Za-z"])(\s{0,})(\t{0,})([A-Za-z]{1,})(=)(")/g, "$1 $4=\"")
+				.replace(/([A-Za-z])(=)(")([A-Za-z\s]{0,})(")(\s{0,})(\t{0,})(\/{0,1})(>)/g, "$1=\"$4\"$8>"));
 		}
 		
 		if (data) {
