@@ -6,7 +6,7 @@ const _program = require('commander'),
 	_chalk = require('chalk'),
 	_exec = require('child_process').exec,
 	_fs = require('fs'),
-	_path = "src/main/res/values/xml/$",
+	_path = "src/main/res/xml/$",
 	_xml = require('xml-parse'),
 	_http = require('http'),
 	_request = require('request'),
@@ -43,8 +43,9 @@ function formatTitle(repo) {
 	if (repo.indexOf("/") > 0)
 		repo = repo.substring(repo.indexOf("/") + 1);
 
-	repo.replace(/([a-z])([A-Z])/g, "$1 $2");
-	repo.replace(/([A-Z])([A-Z][a-z])/g, "$1 $2");
+	repo = repo.charAt(0).toUpperCase() + repo.substring(1);
+	repo = repo.replace(/([a-z])([A-Z])/g, "$1 $2");
+	repo = repo.replace(/([A-Z])([A-Z][a-z])/g, "$1 $2");
 	return repo;
 }
 
@@ -89,7 +90,7 @@ function nextThing(data) {
 				name: 'repo',
 				message: "What repository (format: \"login/repo\") would you like to fetch your app\'s info from?",
 				default: function(answers) {
-					if (answers.index.startsWith("index: "))
+					if (answers.index && answers.index.startsWith("index: "))
 						return answers.index.substring(answers.index.indexOf("repo: ") + 6);
 					else return defaultRepo;
 				},
@@ -190,7 +191,7 @@ function nextThing(data) {
 					name: 'repo',
 					message: "What repository (format: \"login/repo\") would you like to fetch contributors from?",
 					default: function(answers) {
-						if (answers.index.startsWith("index: "))
+						if (answers.index && answers.index.startsWith("index: "))
 							return answers.index.substring(answers.index.indexOf("repo: ") + 6);
 						else return defaultRepo;
 					},
@@ -546,13 +547,6 @@ function nextLicense(data, index) {
 					default: jsonBody.license.name,
 					when: jsonBody.license.name && jsonBody.license.name.length > 0 && jsonBody.license.name != data.childNodes[index].childNodes[answers.index].attributes.licenseName
 				});
-				prompts.push({
-					type: 'input',
-					name: 'licenseUrl',
-					message: "Change licenseUrl attribute from \"" + data.childNodes[index].childNodes[answers.index].attributes.licenseUrl + "\" to...",
-					default: jsonBody.license.url,
-					when: jsonBody.license.url && jsonBody.license.url.length > 0 && jsonBody.license.url != data.childNodes[index].childNodes[answers.index].attributes.licenseUrl
-				});
 			}
 							
 			_inquirer.prompt(prompts).then((answers2) => {
@@ -581,7 +575,8 @@ function prompt(token) {
 		let data = null;
 		if (_fs.existsSync(_path.replace("$", answers.fileName))) {
 			console.log("> reading file structure...");
-			data = _xml.parse(_fs.readFileSync(_path.replace("$", fileName), 'utf8').replace(/[\n]/g, "").replace(/(\s)(\s)/g, "").replace(/[\t]/g, ""));
+			data = _xml.parse(_fs.readFileSync(_path.replace("$", fileName), 'utf8').replace(/[\n]/g, ""));
+			console.log(data[1].childNodes);
 		}
 		
 		if (data) {
@@ -614,7 +609,7 @@ const _server = _http.createServer(function(req, res) {
 		return _github.login(req, res);
 		
 	if (req.url.match("/callback?") || req.url.match("/callback/")) {
-		console.log("> Verifying auth token...");
+		console.log("> " + _chalk.blue.bold("Verifying auth token..."));
 		return _github.callback(req, res);
 	}
 });
