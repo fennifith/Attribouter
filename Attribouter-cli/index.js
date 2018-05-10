@@ -48,6 +48,17 @@ function formatTitle(repo) {
 	return repo;
 }
 
+function addClosings(root) {
+	if (!root.closing)
+		root.closingChar = '/';
+
+	for (let i = 0; root.childNodes && root.childNodes.length > i; i++) {
+		if (root.childNodes[i].type != "element")
+			root.childNodes.splice(i, 1);
+		else addClosings(root.childNodes[i]);
+	}
+}
+
 function nextThing(data) {
 	_inquirer.prompt([{
 		type: 'list',
@@ -133,7 +144,7 @@ function nextThing(data) {
 							"full_name": "repo",
 							"description": "description",
 							"homepage": function() {
-								return jsonBody.homepage.startsWith("https://play.google.com/") ? "playStoreUrl" : "websiteUrl";
+								return jsonBody.homepage && jsonBody.homepage.startsWith("https://play.google.com/") ? "playStoreUrl" : "websiteUrl";
 							},
 							"gitHubUrl": "html_url"
 						}
@@ -293,6 +304,8 @@ function nextThing(data) {
 			}]).then((answers) => {	
 				if (answers.save === true) {
 					console.log("> generating XML...");
+
+					addClosings(data);
 					let xml = _xml.stringify([
 						{
 							type: 'element',
@@ -577,9 +590,15 @@ function prompt(token) {
 		}
 	}]).then(answers => {
 		fileName = answers.fileName;
-		var data = _fs.existsSync(_path.replace("$", answers.fileName)) ? _xml.parse(_fs.readFileSync(_path.replace("$", fileName), 'utf8')) : null;
+		let data = null;
+		if (_fs.existsSync(_path.replace("$", answers.fileName))) {
+			console.log("> reading file structure...");
+			data = _xml.parse(_fs.readFileSync(_path.replace("$", fileName), 'utf8').replace(/[\n]/g, "").replace(/(\s)(\s)/g, ""));
+			console.log(data);
+		}
+		
 		if (data) {
-			console.log("> An existing config file has been found, this tool will now attempt to update the existing data.");
+			console.log("> " + _chalk.blue.bold("An existing config file has been found, this tool will now attempt to update the existing data."));
 			isNewConfig = false;
 			for (let i = 0; i < data.length; i++) {
 				if (data[i].tagName == "about") {
