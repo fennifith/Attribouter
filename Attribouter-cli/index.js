@@ -78,29 +78,23 @@ function nextThing(data) {
 			};
 			
 			_inquirer.prompt([{
-				type: 'input',
-				name: 'repo',
-				message: "What repository (format: \"login/repo\") would you like to fetch your app\'s info from?",
-				default: defaultRepo,
-				validate: function(value) {
-					return (value.indexOf("/") > 1 && !value.endsWith("/")) || "Please specify the repository name in the format \"login/repo\".";
-				}
-			},{
 				type: 'list',
 				name: 'index',
 				message: "There are multiple <appInfo> elements in your file. Which one would you like to edit?",
-				default: function(answers) {
-					let choices = appInfoChoices();
-					for (let i = 0; i < choices.length; i++) {
-						if (choices[i].substring(choices[i].indexOf("repo: ") + 6) == answers.repo)
-							return choices[i];
-					}
-
-					return choices[choices.length - 1];
-				},
+				default: appInfoChoices()[0],
 				choices: appInfoChoices,
-				when: function(answers) {
-					return answers.repo && appInfoChoices().length > 1;
+				when: appInfoChoices().length > 1
+			},{
+				type: 'input',
+				name: 'repo',
+				message: "What repository (format: \"login/repo\") would you like to fetch your app\'s info from?",
+				default: function(answers) {
+					if (answers.index.startsWith("index: "))
+						return answers.index.substring(answers.index.indexOf("repo: ") + 6);
+					else return defaultRepo;
+				},
+				validate: function(value) {
+					return (value.indexOf("/") > 1 && !value.endsWith("/")) || "Please specify the repository name in the format \"login/repo\".";
 				}
 			}]).then((answers) => {
 				if (answers.repo) {
@@ -110,7 +104,7 @@ function nextThing(data) {
 					_request({
 						url: "https://api.github.com/repos/" + answers.repo,
 						headers: {
-							Authorization: gitHubToken ? "bearer " + gitHubToken : null,
+							Authorization: (gitHubToken ? "token " + gitHubToken : null),
 							"User-Agent": "Attribouter-cli"
 						}
 					}, (err, res, body) => {
@@ -185,29 +179,23 @@ function nextThing(data) {
 				};
 		
 				_inquirer.prompt([{
-					type: 'input',
-					name: 'repo',
-					message: "What repository (format: \"login/repo\") would you like to fetch contributors from?",
-					default: defaultRepo,
-					validate: function(value) {
-						return (value.indexOf("/") > 1 && !value.endsWith("/")) || "Please specify the repository name in the format \"login/repo\".";
-					}
-				},{
 					type: 'list',
 					name: 'index',
 					message: "There are multiple <contributors> elements in your file. Which one would you like to edit?",
-					default: function(answers) {
-						let choices = contributorsChoices();
-						for (let i = 0; i < choices.length; i++) {
-							if (choices[i].startsWith("index: ") && choices[i].substring(choices[i].indexOf("repo: ") + 6) == answers.repo)
-								return choices[i];
-						}
-
-						return choices[choices.length - 1];
-					},
+					default: contributorsChoices()[0],
 					choices: contributorsChoices,
-					when: function(answers) {
-						return answers.repo && contributorsChoices().length > 1;
+					when: contributorsChoices().length > 1
+				},{
+					type: 'input',
+					name: 'repo',
+					message: "What repository (format: \"login/repo\") would you like to fetch contributors from?",
+					default: function(answers) {
+						if (answers.index.startsWith("index: "))
+							return answers.index.substring(answers.index.indexOf("repo: ") + 6);
+						else return defaultRepo;
+					},
+					validate: function(value) {
+						return (value.indexOf("/") > 1 && !value.endsWith("/")) || "Please specify the repository name in the format \"login/repo\".";
 					}
 				}]).then((answers) => {
 					if (answers.repo) {
@@ -217,7 +205,7 @@ function nextThing(data) {
 						_request({
 							url: "https://api.github.com/repos/" + answers.repo + "/contributors?per_page=1000",
 							headers: {
-								Authorization: gitHubToken ? "bearer " + gitHubToken : null,
+								Authorization: (gitHubToken ? "token " + gitHubToken : null),
 								"User-Agent": "Attribouter-cli"
 							}
 						}, (err, res, body) => {
@@ -354,7 +342,7 @@ function nextContributor(data, index, contributors) {
 		_request({
 			url: "https://api.github.com/users/" + contributors[0].login,
 			headers: {
-				Authorization: gitHubToken ? "bearer " + gitHubToken : null,
+				Authorization: (gitHubToken ? "token " + gitHubToken : null),
 				"User-Agent": "Attribouter-cli"
 			}
 		}, (err, res, body) => {
@@ -504,7 +492,7 @@ function nextLicense(data, index) {
 		_request({
 			url: "https://api.github.com/repos/" + answers.repo,
 			headers: {
-				Authorization: gitHubToken ? "bearer " + gitHubToken : null,
+				Authorization: (gitHubToken ? "token " + gitHubToken : null),
 				"User-Agent": "Attribouter-cli"
 			}
 		}, (err, res, body) => {
@@ -594,7 +582,6 @@ function prompt(token) {
 		if (_fs.existsSync(_path.replace("$", answers.fileName))) {
 			console.log("> reading file structure...");
 			data = _xml.parse(_fs.readFileSync(_path.replace("$", fileName), 'utf8').replace(/[\n]/g, "").replace(/(\s)(\s)/g, ""));
-			console.log(data);
 		}
 		
 		if (data) {
@@ -646,5 +633,5 @@ _github.on('token', function(token, response) {
 });
 
 console.log("> On the next page, please sign in with your GitHub account in order to authenticate requests and bypass the rate limits.");
-console.log("> Attempting to open " + _chalk.blue("http://127.0.0.1:8080/login/") + "...");
+console.log("> Attempting to open " + _chalk.bold("http://127.0.0.1:8080/login/") + "...");
 _opn("http://127.0.0.1:8080/login/");
