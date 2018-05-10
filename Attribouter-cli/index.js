@@ -474,21 +474,21 @@ function nextLicense(data, index) {
 					name: 'license',
 					message: "Change license attribute from \"" + data.childNodes[index].childNodes[answers.index].attributes.license + "\" to...",
 					default: jsonBody.license.key,
-					when: jsonBody.license.key && jsonBody.license.key.length > 0
+					when: jsonBody.license.key && jsonBody.license.key.length > 0 && jsonBody.license.key != data.childNodes[index].childNodes[answers.index].attributes.license
 				});
 				prompts.push({
 					type: 'input',
 					name: 'licenseName',
 					message: "Change licenseName attribute from \"" + data.childNodes[index].childNodes[answers.index].attributes.licenseName + "\" to...",
 					default: jsonBody.license.name,
-					when: jsonBody.license.name && jsonBody.license.name.length > 0
+					when: jsonBody.license.name && jsonBody.license.name.length > 0 && jsonBody.license.name != data.childNodes[index].childNodes[answers.index].attributes.licenseName
 				});
 				prompts.push({
 					type: 'input',
 					name: 'licenseUrl',
 					message: "Change licenseUrl attribute from \"" + data.childNodes[index].childNodes[answers.index].attributes.licenseUrl + "\" to...",
 					default: jsonBody.license.url,
-					when: jsonBody.license.url && jsonBody.license.url.length > 0
+					when: jsonBody.license.url && jsonBody.license.url.length > 0 && jsonBody.license.url != data.childNodes[index].childNodes[answers.index].attributes.licenseUrl
 				});
 			}
 							
