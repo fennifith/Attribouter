@@ -1,6 +1,6 @@
 # Attribouter CLI
 
-This is a CLI written in nodejs to somewhat automate the creation of Attribouter's config file from a GitHub project.
+This is a CLI written in nodejs to somewhat automate the creation of [Attribouter](https://jfenn.me/redirects/?t=github&d=Attribouter)'s config file from a GitHub project.
 
 ## Dependencies
 
