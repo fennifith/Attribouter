@@ -17,7 +17,7 @@ This is a CLI written in nodejs to somewhat automate the creation of Attribouter
 Either do:
 
 ```bash
-sudo npm install -g attribouter
+sudo npm install -g attribouter-cli
 ```
 
 or:
