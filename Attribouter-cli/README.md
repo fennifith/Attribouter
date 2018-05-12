@@ -2,6 +2,16 @@
 
 This is a CLI written in nodejs to somewhat automate the creation of Attribouter's config file from a GitHub project.
 
+## Dependencies
+
+- [Chalk](https://npmjs.com/packages/chalk)
+- [Commander](https://npmjs.com/packages/commander)
+- [GitHub-OAuth](https://npmjs.com/packages/github-oauth)
+- [Request](https://npmjs.com/packages/request)
+- [Opn](https://npmjs.com/packages/opn)
+- [Inquirer](https://npmjs.com/packages/inquirer)
+- [XML-Parse](https://npmjs.com/packages/xml-parse)
+
 ## Installation
 
 Either do:
