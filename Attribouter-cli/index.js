@@ -53,8 +53,6 @@ function addClosings(element) {
 	element.innerXML = null;
 	if (element.closing === null || element.closing == false)
 		element.closingChar = '/';
-
-	console.log(element);
 	
 	for (let i = 0; i < element.childNodes.length; i++) {
 		if (element.childNodes[i].type != "element")
@@ -319,10 +317,8 @@ function nextThing(data) {
 					let paths = _path.split("/");
 					for (let i = 0; i < paths.length - 1; i++) {
 						path += "/" + paths[i];
-						if (!_fs.existsSync(path)) {
+						if (!_fs.existsSync(path))
 							_fs.mkdirSync(path);
-							return;
-						}
 					}
 
 					console.log("> writing to file...");
