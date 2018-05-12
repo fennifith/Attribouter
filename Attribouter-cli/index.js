@@ -420,16 +420,6 @@ function nextContributor(data, index, contributors) {
 						});
 					}
 				}
-
-				if (jsonBody.login == gitHubUser.login && (prompts.length < 1 || prompts[prompts.length - 1].name != "email")) {
-					prompts.push({
-						type: 'input',
-						name: 'email',
-						message: "Change email attribute from \"" + data.childNodes[index].childNodes[answers.index].attributes.email + "\" to...",
-						default: gitHubUser.email,
-						when: gitHubUser.email && gitHubUser.email != data.childNodes[index].childNodes[answers.index].attributes.email
-					});
-				}
 				
 				_inquirer.prompt(prompts).then((answers2) => {
 					for (let key in answers2) {
@@ -658,6 +648,15 @@ _github.on('token', function(token, response) {
 	prompt();
 });
 
-console.log("> On the next page, please sign in with your GitHub account in order to authenticate requests and bypass the rate limits.");
-console.log("> Attempting to open " + _chalk.bold("http://127.0.0.1:8080/login/") + "...");
-_opn("http://127.0.0.1:8080/login/");
+console.log("> When using the Attribouter CLI, it is highly reccomended that you sign in with your GitHub account in order to authenticate requests and bypass the rate limits.");
+_inquirer.prompt([{
+	type: 'confirm',
+	name: 'doAuth',
+	message: "Would you like to do that now? Either type \"Y/N\" or press \'enter\' to confirm.",
+	default: true
+}]).then((answers) => {
+	if (answers.doAuth == true) {
+		console.log("> Attempting to open " + _chalk.bold("http://127.0.0.1:8080/login/") + "...");
+		_opn("http://127.0.0.1:8080/login/");
+	} else prompt();
+});

@@ -6,7 +6,9 @@
   "email": "dev@jfenn.me",
   "repository": "TheAndroidMaster/Attribouter",
   "main": "index.js",
-  "bin": "./index.js",
+  "bin": {
+    "attribouter": "./index.js"
+  },
   "scripts": {
     "test": "node index.js"
   },
