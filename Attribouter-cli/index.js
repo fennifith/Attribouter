@@ -35,6 +35,7 @@ for (let i = 0; i < paths.length - 2; i++) {
 }
 
 var gitHubToken = null;
+var gitHubUser = {};
 var isNewConfig = true;
 var defaultRepo = null;
 var fileName = "attribouter.xml";
@@ -419,6 +420,16 @@ function nextContributor(data, index, contributors) {
 						});
 					}
 				}
+
+				if (jsonBody.login == gitHubUser.login && (prompts.length < 1 || prompts[prompts.length - 1].name != "email")) {
+					prompts.push({
+						type: 'input',
+						name: 'email',
+						message: "Change email attribute from \"" + data.childNodes[index].childNodes[answers.index].attributes.email + "\" to...",
+						default: gitHubUser.email,
+						when: gitHubUser.email && gitHubUser.email != data.childNodes[index].childNodes[answers.index].attributes.email
+					});
+				}
 				
 				_inquirer.prompt(prompts).then((answers2) => {
 					for (let key in answers2) {
@@ -561,7 +572,7 @@ function nextLicense(data, index) {
 	});
 }
 
-function prompt(token) {
+function prompt() {
 	_inquirer.prompt([{
 		type: 'input',
 		name: 'fileName',
@@ -617,7 +628,7 @@ const _server = _http.createServer(function(req, res) {
 		
 		_github.callback(req, res);
 		res.statusCode = 200;
-		res.write("<html><body><p>Your GitHub token has been graciously consumed. You may now obliterate this \"noob\" graphical interface and return to the professional work of art that is your command line.</p></body></html>");
+		res.write("<html><body><p>Your GitHub token has been graciously consumed.</p><p>You may now minimize this \"noob\" graphical interface and return to the professional work of art that is your command line.</p><br><p>Documentation and examples of how to use the Attribouter CLI can be found <a href=\"https://jfenn.me/redirects/?t=github&d=Attribouter/blob/master/Attribouter-cli/README.md\">here</a>.</p></body></html>");
 		return res.end();
 	}
 });
@@ -632,7 +643,19 @@ _github.on('error', function(error) {
 _github.on('token', function(token, response) {
 	_server.close();
 	console.log("> " + _chalk.green.bold("You have been successfully signed in. Requests are now authenticated."));
-	prompt(token.access_token);
+	gitHubToken = token.access_token;
+
+	_request({
+		url: "https://api.github.com/user",
+		headers: {
+			Authorization: (gitHubToken ? "token " + gitHubToken : null),
+			"User-Agent": "Attribouter-cli"
+		}
+	}, (err, res, body) => {
+		gitHubUser = JSON.parse(body);
+	});
+
+	prompt();
 });
 
 console.log("> On the next page, please sign in with your GitHub account in order to authenticate requests and bypass the rate limits.");
