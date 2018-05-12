@@ -41,6 +41,9 @@ This library does not use an auth key for the GitHub API by default. It does cac
 ### Configuration
 By default, Attribouter will use the configuration file at [res/xml/attribouter.xml](https://github.com/TheAndroidMaster/Attribouter/blob/master/attribouter/src/main/res/xml/attribouter.xml). You can either name your configuration file "attribouter.xml" to override the resource, or name it differently and call `.withFile(R.xml.[name])` on your instance of `Attribouter` instead.
 
+If you simply want to create/update a configuration file based on a GitHub repository as quickly as possible, the [Attribouter CLI](https://www.npmjs.com/package/attribouter-cli) is an easy solution.
+
+
 The configuration file consists of a single root element, `<about>`, with several possible child elements that can be added any amount of times in any order. You can either make one by looking at the [configuration file](https://github.com/TheAndroidMaster/Attribouter/blob/master/app/src/main/res/xml/about.xml) of the sample app for an example, or by using the list below.
 
 #### `<appInfo>`
