@@ -17,7 +17,7 @@ This is just sample data. It is not real. Though Jahir is lazy, so that part is 
 The Gradle dependency is available through jCenter, which is used by default in Android Studio. To add the dependency to your project, copy this line into the dependencies section of your app's build.gradle file.
  
 ```gradle
-compile 'me.jfenn:attribouter:0.0.6'
+compile 'me.jfenn:attribouter:0.0.7'
 ```
 
 #### Starting an Activity
@@ -38,8 +38,12 @@ Fragment fragment = Attribouter.from(context).toFragment();
 
 This library does not use an auth key for the GitHub API by default. It does cache data for up to 10 days to avoid crossing GitHub's [rate limits](https://developer.github.com/v3/rate_limit/), but if your project has more than a few contributors and libraries *or* you want it to have access to a private repository, you will need to provide an auth token by calling `.withGitHubToken(token)` on your instance of `Attribouter`.
 
+### Quick Configuration
+
+If you simply want to create/update a configuration file based on a GitHub repository as quickly as possible, then the [Attribouter CLI](https://www.npmjs.com/package/attribouter-cli) is an easy solution.
+
 ### Configuration
-By default, Attribouter will use the configuration file at [res/xml/attribouter.xml](https://github.com/TheAndroidMaster/Attribouter/blob/master/attribouter/src/main/res/xml/attribouter.xml). You can either name your configuration file "attribouter.xml" to override the resource, or name it differently and call `.withFile(R.xml.[name])` on your instance of `Attribouter` instead.
+By default, Attribouter will use the configuration file at [res/xml/attribouter.xml](https://github.com/TheAndroidMaster/Attribouter/blob/master/Attribouter-lib/attribouter/src/main/res/xml/attribouter.xml). You can either name your configuration file "attribouter.xml" to override the resource, or name it differently and call `.withFile(R.xml.[name])` on your instance of `Attribouter` instead.
 
 The configuration file consists of a single root element, `<about>`, with several possible child elements that can be added any amount of times in any order. You can either make one by looking at the [configuration file](https://github.com/TheAndroidMaster/Attribouter/blob/master/app/src/main/res/xml/about.xml) of the sample app for an example, or by using the list below.
 

@@ -69,7 +69,10 @@ public class TranslatorInfoData extends InfoData<TranslatorInfoData.ViewHolder> 
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof TranslatorInfoData && (login != null ? login.equals(((TranslatorInfoData) obj).login) : super.equals(obj));
+        if (obj instanceof TranslatorInfoData) {
+            TranslatorInfoData translator = (TranslatorInfoData) obj;
+            return (login != null && translator.login != null && login.toLowerCase().equals(translator.login.toLowerCase())) || super.equals(obj);
+        } else return super.equals(obj);
     }
 
     @Override

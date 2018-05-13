@@ -235,7 +235,12 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> {
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof LicenseInfoData && (repo != null ? repo.equals(((LicenseInfoData) obj).repo) || repo.equals(((LicenseInfoData) obj).title) : (title != null ? title.equals(((LicenseInfoData) obj).repo) : super.equals(obj)));
+        if (obj instanceof LicenseInfoData) {
+            LicenseInfoData license = (LicenseInfoData) obj;
+            return (repo != null && ((license.repo != null && repo.toLowerCase().equals(license.repo.toLowerCase())) || (license.title != null && repo.toLowerCase().equals(license.title.toLowerCase()))))
+                    || (title != null && ((license.repo != null && title.toLowerCase().equals(license.repo.toLowerCase())) || license.title != null && title.toLowerCase().equals(license.title.toLowerCase())))
+                    || super.equals(obj);
+        } else return super.equals(obj);
     }
 
     @Override
