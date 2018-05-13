@@ -21,7 +21,7 @@ const _program = require('commander'),
 		scope: ''
 	});
 
-_program.version('1.0.0');
+_program.version('1.0.1');
 _program.parse(process.argv);
 
 let path = ".";
