@@ -68,7 +68,7 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
 
     ContributorInfoData(@Nullable String login, @Nullable String name, @Nullable String avatarUrl, @Nullable String task, @Nullable Integer position, @Nullable String bio, @Nullable String blog, @Nullable String email) {
         super(R.layout.item_attribouter_contributor);
-        this.login = login != null ? login.toLowerCase() : null;
+        this.login = login;
         this.name = name;
         this.avatarUrl = avatarUrl;
         this.task = task;
@@ -118,7 +118,10 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof ContributorInfoData && (login != null ? login.equals(((ContributorInfoData) obj).login) : super.equals(obj));
+        if (obj instanceof ContributorInfoData) {
+            ContributorInfoData contributor = (ContributorInfoData) obj;
+            return (login != null && contributor.login != null && login.toLowerCase().equals(contributor.login.toLowerCase())) || super.equals(obj);
+        } else return super.equals(obj);
     }
 
     @Override
