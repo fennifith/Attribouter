@@ -163,9 +163,12 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
 
         ContributorInfoData first = null, second = null, third = null;
         List<InfoData> remainingContributors = new ArrayList<>();
+        int hiddenContributors = 0;
         for (ContributorInfoData contributor : contributors) {
-            if (contributor.isHidden)
+            if (contributor.isHidden) {
+                hiddenContributors++;
                 continue;
+            }
 
             if (contributor.position != null) {
                 if (first == null && contributor.position == 1) {
@@ -271,12 +274,18 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
             viewHolder.recycler.setAdapter(new InfoAdapter(remainingContributors));
         } else viewHolder.recycler.setVisibility(View.GONE);
 
-        if (remainingContributors.size() + (first != null && second != null && third != null ? 3 : 0) < contributors.size()) {
+        if (remainingContributors.size() + (first != null && second != null && third != null ? 3 : 0) < contributors.size() - hiddenContributors) {
             viewHolder.expand.setVisibility(View.VISIBLE);
             viewHolder.expand.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new OverflowDialog(v.getContext(), contributorsTitle, new ArrayList<InfoData>(contributors)).show();
+                    ArrayList<InfoData> overflowList = new ArrayList<>();
+                    for (ContributorInfoData contributor : contributors) {
+                        if (!contributor.isHidden)
+                            overflowList.add(contributor);
+                    }
+
+                    new OverflowDialog(v.getContext(), contributorsTitle, overflowList).show();
                 }
             });
         } else viewHolder.expand.setVisibility(View.GONE);
