@@ -135,7 +135,7 @@ public class LinkInfoData extends InfoData<LinkInfoData.ViewHolder> {
         String name = ResourceUtils.getString(context, this.name);
         String oname = ResourceUtils.getString(context, o.name);
         int comparison = name != null && oname != null ? name.compareTo(oname) : 0;
-        return ((o.priority - priority) * 2) + (comparison / Math.abs(comparison));
+        return ((o.priority - priority) * 2) + (comparison != 0 ? comparison / Math.abs(comparison) : 0);
     }
 
     public static class ViewHolder extends InfoData.ViewHolder {
