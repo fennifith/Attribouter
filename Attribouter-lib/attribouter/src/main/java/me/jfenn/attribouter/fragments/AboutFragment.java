@@ -1,5 +1,6 @@
 package me.jfenn.attribouter.fragments;
 
+import android.content.Context;
 import android.content.res.XmlResourceParser;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -139,7 +140,10 @@ public class AboutFragment extends Fragment implements GitHubData.OnInitListener
         if (!requests.contains(request)) {
             requests.add(request);
             request.addOnInitListener(this);
-            request.startInit(getContext(), gitHubToken);
+
+            Context context = getContext();
+            if (context != null)
+                request.startInit(context, gitHubToken);
         } else {
             int i = requests.indexOf(request);
             GitHubData activeRequest = requests.get(i).merge(request);
