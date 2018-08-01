@@ -121,9 +121,10 @@ public class AppInfoData extends InfoData<AppInfoData.ViewHolder> {
             viewHolder.versionTextView.setVisibility(View.GONE);
         }
 
-        if (description != null) {
+        String actualDescription = ResourceUtils.getString(context, description);
+        if (actualDescription != null) {
             viewHolder.descriptionTextView.setVisibility(View.VISIBLE);
-            viewHolder.descriptionTextView.setText(ResourceUtils.getString(context, description));
+            viewHolder.descriptionTextView.setText(actualDescription);
         } else viewHolder.descriptionTextView.setVisibility(View.GONE);
 
         if (links.size() > 0) {
