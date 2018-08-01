@@ -216,7 +216,7 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
             viewHolder.expand.setVisibility(View.GONE);
 
             viewHolder.overflow.setVisibility(View.VISIBLE);
-            viewHolder.overflow.setText(String.format(context.getString(R.string.title_attribouter_view_overflow), title));
+            viewHolder.overflow.setText(String.format(context.getString(R.string.title_attribouter_view_overflow), ResourceUtils.getString(context, title)));
 
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
