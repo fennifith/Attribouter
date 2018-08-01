@@ -16,7 +16,7 @@ public class LicenseDialog extends AppCompatDialog {
     private LicenseInfoData license;
 
     public LicenseDialog(Context context, LicenseInfoData license) {
-        super(context);
+        super(context, ResourceUtils.getThemeResourceAttribute(context, R.attr.licenseDialogTheme, R.style.AttribouterTheme_Dialog));
         this.license = license;
     }
 

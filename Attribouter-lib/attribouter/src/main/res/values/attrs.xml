@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="AttribouterTheme">
+        <attr name="personDialogTheme" format="reference" />
+        <attr name="overflowDialogTheme" format="reference" />
+        <attr name="licenseDialogTheme" format="reference" />
+    </declare-styleable>
+
+</resources>

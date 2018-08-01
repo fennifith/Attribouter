@@ -1,8 +1,11 @@
 package me.jfenn.attribouter.utils;
 
 import android.content.Context;
+import android.support.annotation.AttrRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
+import android.support.annotation.StyleRes;
+import android.util.TypedValue;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -65,6 +68,14 @@ public class ResourceUtils {
         }
 
         return null;
+    }
+
+    @StyleRes
+    public static int getThemeResourceAttribute(Context context, @AttrRes int attr, @StyleRes int defaultTheme) {
+        TypedValue value = new TypedValue();
+        if (context.getTheme().resolveAttribute(attr, value, false))
+            return value.resourceId;
+        else return defaultTheme;
     }
 
 }

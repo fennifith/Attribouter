@@ -28,7 +28,7 @@ public class UserDialog extends AppCompatDialog {
     private ContributorInfoData contributor;
 
     public UserDialog(Context context, ContributorInfoData contributor) {
-        super(context);
+        super(context, ResourceUtils.getThemeResourceAttribute(context, R.attr.personDialogTheme, R.style.AttribouterTheme_Dialog));
         this.contributor = contributor;
     }
 
