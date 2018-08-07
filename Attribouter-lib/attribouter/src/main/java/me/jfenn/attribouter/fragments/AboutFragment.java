@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,8 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,6 +61,29 @@ public class AboutFragment extends Fragment implements GitHubData.OnInitListener
         try {
             while (parser.getEventType() != XmlPullParser.END_DOCUMENT) {
                 if (parser.getEventType() == XmlPullParser.START_TAG) {
+                    try {
+                        Class<?> classy = Class.forName(parser.getName());
+                        Constructor<?> constructor = classy.getConstructor(XmlResourceParser.class);
+                        infos.add((InfoData) constructor.newInstance(parser));
+                        continue;
+                    } catch (ClassNotFoundException e) {
+                        Log.e("Attribouter", "Class name \"" + parser.getName() + "\" not found - you should probably check your configuration file for typos.");
+                        e.printStackTrace();
+                    } catch (NoSuchMethodException e) {
+                        Log.e("Attribouter", "Class \"" + parser.getName() + "\" definitely exists, but doesn't have the correct constructor. Check that you have defined one with a single argument - \'android.content.res.XmlResourceParser\'");
+                        e.printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    } catch (java.lang.InstantiationException e) {
+                        e.printStackTrace();
+                    } catch (InvocationTargetException e) {
+                        e.printStackTrace();
+                    } catch (ClassCastException e) {
+                        Log.e("Attribouter", "Class \"" + parser.getName() + "\" has been instantiated correctly, but it must extend \'me.jfenn.attribouter.data.info.InfoData\' to be worthy of the great RecyclerView adapter.");
+                        e.printStackTrace();
+                    }
+
+                    //TODO: here only for backwards compatibility - remove once obsolete
                     switch (parser.getName()) {
                         case "appInfo":
                             infos.add(new AppInfoData(parser));

@@ -16,9 +16,7 @@
     <text text="@string/html" />
     <!-- <text> elements can be added anywhere directly within the <about> tag -->
     <!-- they support html formatting (<p> <b> <i>) & links (<a href="">) -->
-    <contributors
-        overflow="1"
-        repo="TheAndroidMaster/MediaNotification">
+    <me.jfenn.attribouter.data.info.ContributorsInfoData>
         <contributor
             avatar="^@drawable/me"
             bio="This is a bio. I am a person."
@@ -49,11 +47,14 @@
         </contributor>
         <!-- For Jahir, the task "Lazy Slacker" will override the default task "Contributor" even after the github data is fetched (starting with the "^"
             character is what tells the library to do this) -->
-        <contributor
-            name="@string/alex_name"
-            avatar="https://avatars3.githubusercontent.com/u/6982070"
-            blog="https://github.com/adueppen/"
-            task="Icon Designer">
+        <contributor login="adueppen">
+            <link
+                name="Twitter"
+                icon="@drawable/ic_attribouter_link"
+                priority="5"
+                url="https://twitter.com/adueppen/" />
+        </contributor>
+        <contributor login="joshuabaldassarre">
             <link
                 name="Twitter"
                 icon="@drawable/ic_attribouter_link"
@@ -62,7 +63,7 @@
         </contributor>
         <!-- Alex doesn't have a github account (actually, he does, but let's pretend he doesn't), so his data is simply added to the list of contributors from github -->
         <!-- Note the string resource used in place of a name. You can use string resources. Even though there's no autocompletion. They still work. -->
-    </contributors>
+    </me.jfenn.attribouter.data.info.ContributorsInfoData>
     <translators overflow="5">
         <translator
             name="John Doe"
