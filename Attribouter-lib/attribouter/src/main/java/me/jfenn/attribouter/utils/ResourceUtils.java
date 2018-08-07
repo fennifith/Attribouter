@@ -1,14 +1,16 @@
 package me.jfenn.attribouter.utils;
 
 import android.content.Context;
-import android.support.annotation.AttrRes;
+import android.content.res.TypedArray;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
-import android.util.TypedValue;
+import android.support.annotation.StyleableRes;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+
+import me.jfenn.attribouter.R;
 
 public class ResourceUtils {
 
@@ -71,11 +73,11 @@ public class ResourceUtils {
     }
 
     @StyleRes
-    public static int getThemeResourceAttribute(Context context, @AttrRes int attr, @StyleRes int defaultTheme) {
-        TypedValue value = new TypedValue();
-        if (context.getTheme().resolveAttribute(attr, value, false))
-            return value.resourceId;
-        else return defaultTheme;
+    public static int getThemeResourceAttribute(Context context, @StyleableRes int styleable, @StyleRes int defaultTheme) {
+        TypedArray array = context.obtainStyledAttributes(null, R.styleable.AttribouterTheme, 0, defaultTheme);
+        int id = array.getResourceId(styleable, defaultTheme);
+        array.recycle();
+        return id;
     }
 
 }

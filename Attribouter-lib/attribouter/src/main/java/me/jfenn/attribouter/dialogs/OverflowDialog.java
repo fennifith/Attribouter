@@ -21,7 +21,7 @@ public class OverflowDialog extends AppCompatDialog {
     private List<InfoData> items;
 
     public OverflowDialog(Context context, String title, List<InfoData> items) {
-        super(context, ResourceUtils.getThemeResourceAttribute(context, R.attr.overflowDialogTheme, R.style.AttribouterTheme_Dialog_Fullscreen));
+        super(context, ResourceUtils.getThemeResourceAttribute(context, R.styleable.AttribouterTheme_overflowDialogTheme, R.style.AttribouterTheme_Dialog_Fullscreen));
         this.title = title;
         this.items = items;
     }
