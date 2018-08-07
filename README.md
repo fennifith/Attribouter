@@ -1,14 +1,22 @@
 Attribouter is a lightweight "about screen" for Android apps, built to allow developers to easily give credit to a project's contributors and open source libraries, while matching the style of their app and saving the largest amount of time and effort possible. It is meant to use GitHub's [REST API](https://developer.github.com/v3/) to fetch and display information about open source projects and contributors, but it allows you to define some or all of its data in its configuration file in your app as well.
 
-For demonstration and experimentation, an apk of the sample project can be downloaded [here](https://github.com/TheAndroidMaster/Attribouter/releases/).
+## Screenshots / Demo
 
-## Screenshots
+### Screenshots
 
 This is just sample data. It is not real. Though Jahir is lazy, so that part is (joking).
 
 |Contributors|Contributor|Licenses|License|
 |-----|-----|-----|-----|
 |![img](https://jfenn.me/images/screenshots/Attribouter-Main.png)|![img](https://jfenn.me/images/screenshots/Attribouter-Contributor.png)|![img](https://jfenn.me/images/screenshots/Attribouter-Licenses.png)|![img](https://jfenn.me/images/screenshots/Attribouter-License.png)|
+
+### Implementation (using the [CLI](http://jfenn.me/redirects/?t=github&d=Attribouter/tree/master/Attribouter-cli))
+
+[![img](https://img.youtube.com/vi/nfJJk9Gsyj0/0.jpg)](https://www.youtube.com/watch?v=nfJJk9Gsyj0)
+
+### APK
+
+For demonstration and experimentation, an apk of the sample project can be downloaded [here](https://github.com/TheAndroidMaster/Attribouter/releases/).
 
 ## Usage
 
@@ -17,7 +25,7 @@ This is just sample data. It is not real. Though Jahir is lazy, so that part is 
 The Gradle dependency is available through jCenter, which is used by default in Android Studio. To add the dependency to your project, copy this line into the dependencies section of your app's build.gradle file.
  
 ```gradle
-compile 'me.jfenn:attribouter:0.0.7'
+implementation 'me.jfenn:attribouter:0.0.8'
 ```
 
 #### Starting an Activity

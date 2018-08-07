@@ -2,6 +2,10 @@
 
 This is a CLI written in nodejs to somewhat automate the creation of [Attribouter](https://jfenn.me/redirects/?t=github&d=Attribouter)'s config file from a GitHub project.
 
+## Demo
+
+[![img](https://img.youtube.com/vi/nfJJk9Gsyj0/0.jpg)](https://www.youtube.com/watch?v=nfJJk9Gsyj0)
+
 ## Dependencies
 
 - [Chalk](https://npmjs.com/packages/chalk)
