@@ -88,7 +88,7 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
                     user.login,
                     user.name,
                     user.avatar_url,
-                    null,
+                    task == null ? "Contributor" : null,
                     null,
                     user.bio,
                     user.blog,

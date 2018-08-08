@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <about>
-    <appInfo />
-    <contributors />
-    <licenses />
+    <me.jfenn.attribouter.data.info.AppInfoData />
+    <me.jfenn.attribouter.data.info.ContributorsInfoData />
+    <me.jfenn.attribouter.data.info.LicensesInfoData />
 </about>

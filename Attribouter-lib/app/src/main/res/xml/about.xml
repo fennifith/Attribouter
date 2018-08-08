@@ -11,11 +11,18 @@
             url="https://jfenn.me/about/?Attribouter" />
         <me.jfenn.attribouter.data.info.link.LinkInfoData
             hidden="true"
+            id="playStore" />
+        <me.jfenn.attribouter.data.info.link.LinkInfoData
+            name="^Git Repo"
             id="github" />
     </me.jfenn.attribouter.data.info.AppInfoData>
+
     <text text="@string/html" />
     <!-- <text> elements can be added anywhere directly within the <about> tag -->
     <!-- they support html formatting (<p> <b> <i>) & links (<a href="">) -->
+
+    <me.jfenn.attribouter.data.info.link.PlayStoreLinkInfoData />
+
     <me.jfenn.attribouter.data.info.ContributorsInfoData>
         <me.jfenn.attribouter.data.info.ContributorInfoData
             avatar="^@drawable/me"
