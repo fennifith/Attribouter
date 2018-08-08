@@ -87,35 +87,32 @@ public class TranslatorsInfoData extends InfoData<TranslatorsInfoData.ViewHolder
         sortedTranslators = new ArrayList<>();
         for (String language : Locale.getISOLanguages()) {
             boolean isHeader = false;
-            for (InfoData child : getChildren()) {
-                if (child instanceof TranslatorInfoData) {
-                    TranslatorInfoData translator = (TranslatorInfoData) child;
-                    if (translator.locales == null || translator.locales.length() < 1)
-                        continue;
+            for (TranslatorInfoData translator : getChildren(TranslatorInfoData.class)) {
+                if (translator.locales == null || translator.locales.length() < 1)
+                    continue;
 
-                    boolean isLocale = false;
-                    for (String locale : translator.locales.split(",")) {
-                        if (language.equals(locale)) {
-                            isLocale = true;
-                            break;
-                        }
+                boolean isLocale = false;
+                for (String locale : translator.locales.split(",")) {
+                    if (language.equals(locale)) {
+                        isLocale = true;
+                        break;
+                    }
+                }
+
+                if (isLocale) {
+                    if (!isHeader) {
+                        InfoData header = new HeaderInfoData(new Locale(language).getDisplayLanguage());
+                        sortedTranslators.add(header);
+                        if (remaining != 0)
+                            sortedList.add(header);
+
+                        isHeader = true;
                     }
 
-                    if (isLocale) {
-                        if (!isHeader) {
-                            InfoData header = new HeaderInfoData(new Locale(language).getDisplayLanguage());
-                            sortedTranslators.add(header);
-                            if (remaining != 0)
-                                sortedList.add(header);
-
-                            isHeader = true;
-                        }
-
-                        sortedTranslators.add(translator);
-                        if (remaining != 0) {
-                            sortedList.add(translator);
-                            remaining--;
-                        }
+                    sortedTranslators.add(translator);
+                    if (remaining != 0) {
+                        sortedList.add(translator);
+                        remaining--;
                     }
                 }
             }

@@ -139,31 +139,27 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
         ContributorInfoData first = null, second = null, third = null;
         List<InfoData> remainingContributors = new ArrayList<>();
         int hiddenContributors = 0;
-        for (InfoData info : getChildren()) {
-            if (info instanceof ContributorInfoData) {
-                ContributorInfoData contributor = (ContributorInfoData) info;
+        for (ContributorInfoData contributor : getChildren(ContributorInfoData.class)) {
+            if (contributor.isHidden()) {
+                hiddenContributors++;
+                continue;
+            }
 
-                if (contributor.isHidden()) {
-                    hiddenContributors++;
+            if (contributor.position != null) {
+                if (first == null && contributor.position == 1) {
+                    first = contributor;
                     continue;
-                }
-
-                if (contributor.position != null) {
-                    if (first == null && contributor.position == 1) {
-                        first = contributor;
-                        continue;
-                    } else if (second == null && contributor.position == 2) {
-                        second = contributor;
-                        continue;
-                    } else if (third == null && contributor.position == 3) {
-                        third = contributor;
-                        continue;
-                    }
+                } else if (second == null && contributor.position == 2) {
+                    second = contributor;
+                    continue;
+                } else if (third == null && contributor.position == 3) {
+                    third = contributor;
+                    continue;
                 }
             }
 
             if (remainingContributors.size() < overflow || overflow == -1)
-                remainingContributors.add(info);
+                remainingContributors.add(contributor);
         }
 
         if (first != null && second != null && third != null) {
@@ -259,8 +255,8 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
                 @Override
                 public void onClick(View v) {
                     ArrayList<InfoData> overflowList = new ArrayList<>();
-                    for (InfoData contributor : getChildren()) {
-                        if (!(contributor instanceof Mergeable) || !((Mergeable) contributor).isHidden())
+                    for (ContributorInfoData contributor : getChildren(ContributorInfoData.class)) {
+                        if (!contributor.isHidden())
                             overflowList.add(contributor);
                     }
 

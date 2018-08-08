@@ -11,7 +11,6 @@ import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
 
-import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
@@ -63,7 +62,6 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> implem
     public String licenseBody;
     @Nullable
     String licenseKey;
-    List<LinkInfoData> links;
 
     public LicenseInfoData(XmlResourceParser parser) throws IOException, XmlPullParserException {
         this(parser.getAttributeValue(null, "repo"),
@@ -80,14 +78,7 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> implem
                 parser.getAttributeValue(null, "licenseBody"),
                 parser.getAttributeValue(null, "license"));
 
-        while (parser.next() != XmlPullParser.END_TAG || parser.getName().equals("link")) {
-            if (parser.getEventType() == XmlPullParser.START_TAG && parser.getName().equals("link")) {
-                LinkInfoData link = new LinkInfoData(parser);
-                if (links.contains(link))
-                    links.get(links.indexOf(link)).merge(link);
-                else links.add(link);
-            }
-        }
+        addChildren(parser);
 
         if (repo != null && !hasAllGeneric())
             addRequest(new RepositoryData(repo));
@@ -118,13 +109,12 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> implem
             token = repo;
         else token = title;
 
-        links = new ArrayList<>();
         if (websiteUrl != null && !websiteUrl.isEmpty())
-            links.add(new WebsiteLinkInfoData(websiteUrl, 2));
+            addChild(new WebsiteLinkInfoData(websiteUrl, 2));
         if (repo != null)
-            links.add(new GitHubLinkInfoData(repo, 1));
+            addChild(new GitHubLinkInfoData(repo, 1));
         if (licenseBody != null || licenseUrl != null)
-            links.add(new LicenseLinkInfoData(this, 0));
+            addChild(new LicenseLinkInfoData(this, 0));
     }
 
     @Override
@@ -273,6 +263,7 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> implem
             viewHolder.licenseView.setText(ResourceUtils.getString(context, licenseName));
         } else viewHolder.licenseView.setVisibility(View.GONE);
 
+        List<LinkInfoData> links = getChildren(LinkInfoData.class);
         if (links.size() > 0) {
             Collections.sort(links, new LinkInfoData.Comparator(context));
 
@@ -325,11 +316,8 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> implem
         if ((licenseBody == null || !licenseBody.startsWith("^")) && mergee.licenseBody != null)
             licenseBody = mergee.licenseBody;
 
-        for (LinkInfoData link : mergee.links) {
-            if (links.contains(link))
-                links.get(links.indexOf(link)).merge(link);
-            else links.add(link);
-        }
+        for (InfoData child : mergee.getChildren())
+            addChild(child);
 
         return this;
     }

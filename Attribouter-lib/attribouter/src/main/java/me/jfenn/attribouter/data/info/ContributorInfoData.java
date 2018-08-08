@@ -10,8 +10,6 @@ import android.widget.TextView;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import me.jfenn.attribouter.R;
 import me.jfenn.attribouter.data.github.GitHubData;
@@ -124,16 +122,6 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
         return this;
     }
 
-    public List<LinkInfoData> getLinks() {
-        List<LinkInfoData> links = new ArrayList<>();
-        for (InfoData child : getChildren()) {
-            if (child instanceof LinkInfoData)
-                links.add((LinkInfoData) child);
-        }
-
-        return links;
-    }
-
     @Override
     public boolean hasAll() {
         return name != null && name.startsWith("^") && bio != null && bio.startsWith("^") && blog != null && blog.startsWith("^") && email != null && email.startsWith("^");
@@ -176,12 +164,9 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
             });
         } else {
             LinkInfoData importantLink = null;
-            for (InfoData child : getChildren()) {
-                if (child instanceof LinkInfoData) {
-                    LinkInfoData link = (LinkInfoData) child;
-                    if (!link.isHidden() && (importantLink == null || link.getPriority() > importantLink.getPriority()))
-                        importantLink = link;
-                }
+            for (LinkInfoData link : getChildren(LinkInfoData.class)) {
+                if (!link.isHidden() && (importantLink == null || link.getPriority() > importantLink.getPriority()))
+                    importantLink = link;
             }
 
             viewHolder.itemView.setOnClickListener(importantLink != null ? importantLink.getListener(context) : null);
