@@ -19,9 +19,7 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 public abstract class GitHubData {
@@ -158,19 +156,21 @@ public abstract class GitHubData {
         private GitHubData data;
         private String url;
         private String token;
-        private Gson gson;
 
         private GitHubThread(Context context, String token, GitHubData data, String url) {
             this.data = data;
             this.url = url;
             this.token = token;
-            gson = new GsonBuilder().setLenient().create();
-            cacheFile = new File(context.getCacheDir(), ".attriboutergithubcache");
+            File dir = new File(context.getCacheDir() + "/.attribouter/github");
+            if (!dir.exists())
+                dir.mkdirs();
+
+            cacheFile = new File(dir, url.replace("/", ".") + ".json");
         }
 
         @Override
         public void run() {
-            Map<String, Object> cache = null;
+            String cache = null;
             if (Math.abs(System.currentTimeMillis() - cacheFile.lastModified()) < 864000000) {
                 StringBuilder cacheBuilder = new StringBuilder();
                 Scanner cacheScanner = null;
@@ -180,7 +180,7 @@ public abstract class GitHubData {
                         cacheBuilder.append(cacheScanner.nextLine());
                     }
 
-                    cache = gson.fromJson(cacheBuilder.toString(), new HashMap<String, Object>().getClass());
+                    cache = cacheBuilder.toString();
                 } catch (IOException ignored) {
                 } catch (Exception e) {
                     cacheFile.delete(); //probably a formatting error
@@ -189,12 +189,9 @@ public abstract class GitHubData {
                 if (cacheScanner != null)
                     cacheScanner.close();
 
-                if (cache != null && cache.containsKey(url)) {
-                    Object cached = cache.get(url);
-                    if (cached instanceof String) {
-                        callInit((String) cached);
-                        return;
-                    }
+                if (cache != null) {
+                    callInit(cache);
+                    return;
                 }
             }
 
@@ -235,15 +232,10 @@ public abstract class GitHubData {
                 String json = jsonBuilder.toString();
                 callInit(json);
 
-                if (cache == null)
-                    cache = new HashMap<>();
-
-                cache.put(url, json);
-
                 PrintWriter cacheWriter = null;
                 try {
                     cacheWriter = new PrintWriter(cacheFile);
-                    cacheWriter.println(gson.toJson(cache));
+                    cacheWriter.println(json);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
