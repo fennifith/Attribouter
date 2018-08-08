@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
 
         Attribouter.from(this)
                 .withFile(R.xml.about)
+                .withGitHubToken("8acce9d4520d571a7f8d4b5ec38c1db358cf8880")
                 .show();
 
         finish();
