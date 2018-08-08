@@ -41,7 +41,7 @@ public class UserDialog extends AppCompatDialog {
         TextView taskView = findViewById(R.id.task);
         ImageView imageView = findViewById(R.id.image);
         TextView bioView = findViewById(R.id.description);
-        RecyclerView links = findViewById(R.id.links);
+        RecyclerView recycler = findViewById(R.id.links);
 
         nameView.setText(ResourceUtils.getString(getContext(), contributor.getName()));
         taskView.setText(ResourceUtils.getString(getContext(), contributor.task));
@@ -52,22 +52,24 @@ public class UserDialog extends AppCompatDialog {
         else imageView.setVisibility(View.GONE);
 
         bioView.setText(ResourceUtils.getString(getContext(), contributor.bio));
-        if (contributor.links.size() > 0) {
-            Collections.sort(contributor.links, new LinkInfoData.Comparator(getContext()));
+
+        List<LinkInfoData> links = contributor.getLinks();
+        if (links.size() > 0) {
+            Collections.sort(links, new LinkInfoData.Comparator(getContext()));
 
             List<InfoData> linksList = new ArrayList<>();
-            for (LinkInfoData link : contributor.links) {
+            for (LinkInfoData link : links) {
                 if (!link.isHidden())
                     linksList.add(link);
             }
 
-            links.setVisibility(View.VISIBLE);
+            recycler.setVisibility(View.VISIBLE);
 
             FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(getContext());
             layoutManager.setFlexDirection(FlexDirection.ROW);
             layoutManager.setJustifyContent(JustifyContent.FLEX_START);
-            links.setLayoutManager(layoutManager);
-            links.setAdapter(new InfoAdapter(linksList));
-        } else links.setVisibility(View.GONE);
+            recycler.setLayoutManager(layoutManager);
+            recycler.setAdapter(new InfoAdapter(linksList));
+        } else recycler.setVisibility(View.GONE);
     }
 }

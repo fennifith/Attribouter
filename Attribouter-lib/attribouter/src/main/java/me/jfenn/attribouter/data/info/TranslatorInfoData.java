@@ -7,6 +7,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
+
 import me.jfenn.attribouter.R;
 import me.jfenn.attribouter.data.github.GitHubData;
 import me.jfenn.attribouter.data.github.UserData;
@@ -28,7 +32,7 @@ public class TranslatorInfoData extends InfoData<TranslatorInfoData.ViewHolder> 
     @Nullable
     public String locales;
 
-    TranslatorInfoData(XmlResourceParser parser) {
+    public TranslatorInfoData(XmlResourceParser parser) throws IOException, XmlPullParserException {
         this(parser.getAttributeValue(null, "login"),
                 parser.getAttributeValue(null, "name"),
                 parser.getAttributeValue(null, "avatar"),

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <about>
     <me.jfenn.attribouter.data.info.AppInfoData repo="TheAndroidMaster/Attribouter">
-        <link
+        <me.jfenn.attribouter.data.info.link.LinkInfoData
             name="Bintray"
             icon="https://bintray.com/favicon.ico"
             url="https://bintray.com/18jafenn90/maven/attribouter" />
-        <link
+        <me.jfenn.attribouter.data.info.link.LinkInfoData
             name="Documentation"
             icon="https://jfenn.me/favicon.ico"
             url="https://jfenn.me/about/?Attribouter" />
-        <link
+        <me.jfenn.attribouter.data.info.link.LinkInfoData
             hidden="true"
             id="github" />
     </me.jfenn.attribouter.data.info.AppInfoData>
@@ -24,7 +24,7 @@
             login="TheAndroidMaster"
             position="1"
             task="Owner">
-            <link
+            <me.jfenn.attribouter.data.info.link.LinkInfoData
                 name="Twitter"
                 icon="https://twitter.com/favicon.ico"
                 url="https://twitter.com/idontlikephp" />
@@ -41,21 +41,21 @@
             login="jahirfiquitiva"
             position="3"
             task="^Lazy Slacker">
-            <link
+            <me.jfenn.attribouter.data.info.link.LinkInfoData
                 hidden="true"
                 id="website" />
         </me.jfenn.attribouter.data.info.ContributorInfoData>
         <!-- For Jahir, the task "Lazy Slacker" will override the default task "Contributor" even after the github data is fetched (starting with the "^"
             character is what tells the library to do this) -->
         <me.jfenn.attribouter.data.info.ContributorInfoData login="adueppen">
-            <link
+            <me.jfenn.attribouter.data.info.link.LinkInfoData
                 name="Twitter"
                 icon="@drawable/ic_attribouter_link"
                 priority="5"
                 url="https://twitter.com/adueppen/" />
         </me.jfenn.attribouter.data.info.ContributorInfoData>
         <me.jfenn.attribouter.data.info.ContributorInfoData login="joshuabaldassarre">
-            <link
+            <me.jfenn.attribouter.data.info.link.LinkInfoData
                 name="Twitter"
                 icon="@drawable/ic_attribouter_link"
                 priority="5"

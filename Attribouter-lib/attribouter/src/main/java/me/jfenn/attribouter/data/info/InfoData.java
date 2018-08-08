@@ -76,7 +76,9 @@ public abstract class InfoData<T extends InfoData.ViewHolder> implements GitHubD
             }
         }
 
-        child.setOnRequestListener(listener);
+        if (listener != null)
+            child.setOnRequestListener(listener);
+
         return child;
     }
 
@@ -93,8 +95,13 @@ public abstract class InfoData<T extends InfoData.ViewHolder> implements GitHubD
 
     public final void setOnRequestListener(OnRequestListener listener) {
         this.listener = listener;
-        for (GitHubData request : requests)
-            listener.onRequest(this, request);
+        if (listener != null) {
+            for (GitHubData request : requests)
+                listener.onRequest(this, request);
+        }
+
+        for (InfoData child : children)
+            child.setOnRequestListener(listener);
     }
 
     public final List<GitHubData> getRequests() {

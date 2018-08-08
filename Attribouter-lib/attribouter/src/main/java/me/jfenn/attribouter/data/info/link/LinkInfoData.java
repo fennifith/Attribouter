@@ -10,10 +10,11 @@ import android.widget.TextView;
 
 import me.jfenn.attribouter.R;
 import me.jfenn.attribouter.data.info.InfoData;
+import me.jfenn.attribouter.interfaces.Mergeable;
 import me.jfenn.attribouter.utils.ResourceUtils;
 import me.jfenn.attribouter.utils.UrlClickListener;
 
-public class LinkInfoData extends InfoData<LinkInfoData.ViewHolder> {
+public class LinkInfoData extends InfoData<LinkInfoData.ViewHolder> implements Mergeable<LinkInfoData> {
 
     @Nullable
     private String id;
@@ -49,23 +50,6 @@ public class LinkInfoData extends InfoData<LinkInfoData.ViewHolder> {
         this.priority = priority;
     }
 
-    public LinkInfoData merge(LinkInfoData link) {
-        if (id == null && link.id != null)
-            id = link.id;
-        if ((name == null || !name.startsWith("^")) && link.name != null)
-            name = link.name;
-        if ((url == null || !url.startsWith("^")) && link.url != null)
-            url = link.url;
-        if ((icon == null || !icon.startsWith("^")) && link.icon != null)
-            icon = link.icon;
-        if (link.isHidden)
-            isHidden = true;
-        if (link.priority != 0)
-            priority = link.priority;
-
-        return this;
-    }
-
     /**
      * Returns the human-readable "name" of the link.
      *
@@ -92,6 +76,29 @@ public class LinkInfoData extends InfoData<LinkInfoData.ViewHolder> {
 
     public int getPriority() {
         return priority;
+    }
+
+    @Override
+    public LinkInfoData merge(LinkInfoData mergee) {
+        if (id == null && mergee.id != null)
+            id = mergee.id;
+        if ((name == null || !name.startsWith("^")) && mergee.name != null)
+            name = mergee.name;
+        if ((url == null || !url.startsWith("^")) && mergee.url != null)
+            url = mergee.url;
+        if ((icon == null || !icon.startsWith("^")) && mergee.icon != null)
+            icon = mergee.icon;
+        if (mergee.isHidden)
+            isHidden = true;
+        if (mergee.priority != 0)
+            priority = mergee.priority;
+
+        return this;
+    }
+
+    @Override
+    public boolean hasAll() {
+        return true;
     }
 
     public boolean isHidden() {

@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
@@ -43,11 +42,10 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
     Integer position;
     @Nullable
     public String task;
-    public List<LinkInfoData> links;
 
     private boolean isHidden;
 
-    ContributorInfoData(XmlResourceParser parser) throws XmlPullParserException, IOException {
+    public ContributorInfoData(XmlResourceParser parser) throws XmlPullParserException, IOException {
         this(parser.getAttributeValue(null, "login"),
                 parser.getAttributeValue(null, "name"),
                 parser.getAttributeValue(null, "avatar"),
@@ -59,14 +57,7 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
 
         isHidden = parser.getAttributeBooleanValue(null, "hidden", false);
 
-        while (parser.next() != XmlPullParser.END_TAG || parser.getName().equals("link")) {
-            if (parser.getEventType() == XmlPullParser.START_TAG && parser.getName().equals("link")) {
-                LinkInfoData link = new LinkInfoData(parser);
-                if (links.contains(link))
-                    links.get(links.indexOf(link)).merge(link);
-                else links.add(link);
-            }
-        }
+        addChildren(parser);
 
         if (login != null && !hasAll())
             addRequest(new UserData(login));
@@ -83,13 +74,12 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
         this.blog = blog;
         this.email = email;
 
-        links = new ArrayList<>();
         if (login != null)
-            links.add(new GitHubLinkInfoData(login, 1));
+            addChild(new GitHubLinkInfoData(login, 1));
         if (blog != null)
-            links.add(new WebsiteLinkInfoData(blog, 2));
+            addChild(new WebsiteLinkInfoData(blog, 2));
         if (email != null)
-            links.add(new EmailLinkInfoData(email, -1));
+            addChild(new EmailLinkInfoData(email, -1));
     }
 
     @Override
@@ -128,13 +118,20 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
         if ((task == null || !task.startsWith("^")) && contributor.task != null)
             task = contributor.task;
 
-        for (LinkInfoData link : contributor.links) {
-            if (links.contains(link))
-                links.get(links.indexOf(link)).merge(link);
-            else links.add(link);
-        }
+        for (InfoData child : contributor.getChildren())
+            addChild(child);
 
         return this;
+    }
+
+    public List<LinkInfoData> getLinks() {
+        List<LinkInfoData> links = new ArrayList<>();
+        for (InfoData child : getChildren()) {
+            if (child instanceof LinkInfoData)
+                links.add((LinkInfoData) child);
+        }
+
+        return links;
     }
 
     @Override
@@ -179,9 +176,12 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
             });
         } else {
             LinkInfoData importantLink = null;
-            for (LinkInfoData link : links) {
-                if (!link.isHidden() && (importantLink == null || link.getPriority() > importantLink.getPriority()))
-                    importantLink = link;
+            for (InfoData child : getChildren()) {
+                if (child instanceof LinkInfoData) {
+                    LinkInfoData link = (LinkInfoData) child;
+                    if (!link.isHidden() && (importantLink == null || link.getPriority() > importantLink.getPriority()))
+                        importantLink = link;
+                }
             }
 
             viewHolder.itemView.setOnClickListener(importantLink != null ? importantLink.getListener(context) : null);
