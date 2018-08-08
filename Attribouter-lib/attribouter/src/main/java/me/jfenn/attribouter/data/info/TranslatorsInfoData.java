@@ -21,19 +21,18 @@ import me.jfenn.attribouter.data.github.ContributorsData;
 import me.jfenn.attribouter.data.github.GitHubData;
 import me.jfenn.attribouter.data.github.UserData;
 import me.jfenn.attribouter.dialogs.OverflowDialog;
+import me.jfenn.attribouter.interfaces.Mergeable;
 import me.jfenn.attribouter.utils.ResourceUtils;
 
 public class TranslatorsInfoData extends InfoData<TranslatorsInfoData.ViewHolder> {
 
     @Nullable
     private String translatorsTitle;
-    private List<TranslatorInfoData> translators;
     private List<InfoData> sortedTranslators;
     private int overflow;
 
     public TranslatorsInfoData(XmlResourceParser parser) throws XmlPullParserException, IOException {
         super(R.layout.item_attribouter_translators);
-        translators = new ArrayList<>();
         translatorsTitle = parser.getAttributeValue(null, "title");
         if (translatorsTitle == null)
             translatorsTitle = "@string/title_attribouter_translators";
@@ -50,40 +49,29 @@ public class TranslatorsInfoData extends InfoData<TranslatorsInfoData.ViewHolder
                     if (contributor.login == null)
                         continue;
 
-                    TranslatorInfoData mergeTranslator = new TranslatorInfoData(
+                    InfoData child = addChild(new TranslatorInfoData(
                             contributor.login,
                             null,
                             contributor.avatar_url,
                             null,
                             null,
                             null
-                    );
+                    ));
 
-                    TranslatorInfoData translatorInfo = mergeTranslator;
-
-                    if (translators.contains(mergeTranslator)) {
-                        translatorInfo = translators.get(translators.indexOf(mergeTranslator));
-                        translatorInfo.merge(mergeTranslator);
-                    } else translators.add(translatorInfo);
-
-                    if (!translatorInfo.hasEverything())
+                    if (child instanceof Mergeable && !((Mergeable) child).hasAll())
                         addRequest(new UserData(contributor.login));
                 }
             }
         } else if (data instanceof UserData) {
             UserData user = (UserData) data;
-            TranslatorInfoData translator = new TranslatorInfoData(
+            addChild(0, new TranslatorInfoData(
                     user.login,
                     user.name,
                     user.avatar_url,
                     null,
                     user.blog,
                     user.email
-            );
-
-            if (!translators.contains(translator))
-                translators.add(0, translator);
-            else translators.get(translators.indexOf(translator)).merge(translator);
+            ));
         }
     }
 
@@ -99,32 +87,35 @@ public class TranslatorsInfoData extends InfoData<TranslatorsInfoData.ViewHolder
         sortedTranslators = new ArrayList<>();
         for (String language : Locale.getISOLanguages()) {
             boolean isHeader = false;
-            for (TranslatorInfoData translator : translators) {
-                if (translator.locales == null)
-                    continue;
+            for (InfoData child : getChildren()) {
+                if (child instanceof TranslatorInfoData) {
+                    TranslatorInfoData translator = (TranslatorInfoData) child;
+                    if (translator.locales == null || translator.locales.length() < 1)
+                        continue;
 
-                boolean isLocale = false;
-                for (String locale : translator.locales.split(",")) {
-                    if (language.equals(locale)) {
-                        isLocale = true;
-                        break;
-                    }
-                }
-
-                if (isLocale) {
-                    if (!isHeader) {
-                        InfoData header = new HeaderInfoData(new Locale(language).getDisplayLanguage());
-                        sortedTranslators.add(header);
-                        if (remaining != 0)
-                            sortedList.add(header);
-
-                        isHeader = true;
+                    boolean isLocale = false;
+                    for (String locale : translator.locales.split(",")) {
+                        if (language.equals(locale)) {
+                            isLocale = true;
+                            break;
+                        }
                     }
 
-                    sortedTranslators.add(translator);
-                    if (remaining != 0) {
-                        sortedList.add(translator);
-                        remaining--;
+                    if (isLocale) {
+                        if (!isHeader) {
+                            InfoData header = new HeaderInfoData(new Locale(language).getDisplayLanguage());
+                            sortedTranslators.add(header);
+                            if (remaining != 0)
+                                sortedList.add(header);
+
+                            isHeader = true;
+                        }
+
+                        sortedTranslators.add(translator);
+                        if (remaining != 0) {
+                            sortedList.add(translator);
+                            remaining--;
+                        }
                     }
                 }
             }

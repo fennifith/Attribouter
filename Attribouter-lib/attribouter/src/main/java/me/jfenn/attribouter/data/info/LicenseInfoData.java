@@ -33,7 +33,7 @@ import me.jfenn.attribouter.data.info.link.WebsiteLinkInfoData;
 import me.jfenn.attribouter.interfaces.Mergeable;
 import me.jfenn.attribouter.utils.ResourceUtils;
 
-public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> implements Mergeable {
+public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> implements Mergeable<LicenseInfoData> {
 
     @Nullable
     String token;
@@ -248,37 +248,6 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> implem
         }
     }
 
-    public void merge(LicenseInfoData license) {
-        if ((title == null || !title.startsWith("^")) && license.title != null && !license.title.isEmpty())
-            title = license.title;
-        if ((description == null || !description.startsWith("^")) && license.description != null && !license.description.isEmpty())
-            description = license.description;
-        if ((licenseName == null || !licenseName.startsWith("^")) && license.licenseName != null)
-            licenseName = license.licenseName;
-        if ((websiteUrl == null || !websiteUrl.startsWith("^")) && license.websiteUrl != null && !license.websiteUrl.isEmpty())
-            websiteUrl = license.websiteUrl;
-        if ((gitHubUrl == null || !gitHubUrl.startsWith("^")) && license.gitHubUrl != null)
-            gitHubUrl = license.gitHubUrl;
-        if ((licenseUrl == null || !licenseUrl.startsWith("^")) && license.licenseUrl != null)
-            licenseUrl = license.licenseUrl;
-        if (license.licensePermissions != null)
-            licensePermissions = license.licensePermissions;
-        if (license.licenseConditions != null)
-            licenseConditions = license.licenseConditions;
-        if (license.licenseLimitations != null)
-            licenseLimitations = license.licenseLimitations;
-        if (license.licenseDescription != null)
-            licenseDescription = license.licenseDescription;
-        if ((licenseBody == null || !licenseBody.startsWith("^")) && license.licenseBody != null)
-            licenseBody = license.licenseBody;
-
-        for (LinkInfoData link : license.links) {
-            if (links.contains(link))
-                links.get(links.indexOf(link)).merge(link);
-            else links.add(link);
-        }
-    }
-
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof LicenseInfoData) {
@@ -332,8 +301,37 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> implem
     }
 
     @Override
-    public Object merge(Object mergee) {
-        return null;
+    public LicenseInfoData merge(LicenseInfoData mergee) {
+        if ((title == null || !title.startsWith("^")) && mergee.title != null && !mergee.title.isEmpty())
+            title = mergee.title;
+        if ((description == null || !description.startsWith("^")) && mergee.description != null && !mergee.description.isEmpty())
+            description = mergee.description;
+        if ((licenseName == null || !licenseName.startsWith("^")) && mergee.licenseName != null)
+            licenseName = mergee.licenseName;
+        if ((websiteUrl == null || !websiteUrl.startsWith("^")) && mergee.websiteUrl != null && !mergee.websiteUrl.isEmpty())
+            websiteUrl = mergee.websiteUrl;
+        if ((gitHubUrl == null || !gitHubUrl.startsWith("^")) && mergee.gitHubUrl != null)
+            gitHubUrl = mergee.gitHubUrl;
+        if ((licenseUrl == null || !licenseUrl.startsWith("^")) && mergee.licenseUrl != null)
+            licenseUrl = mergee.licenseUrl;
+        if (mergee.licensePermissions != null)
+            licensePermissions = mergee.licensePermissions;
+        if (mergee.licenseConditions != null)
+            licenseConditions = mergee.licenseConditions;
+        if (mergee.licenseLimitations != null)
+            licenseLimitations = mergee.licenseLimitations;
+        if (mergee.licenseDescription != null)
+            licenseDescription = mergee.licenseDescription;
+        if ((licenseBody == null || !licenseBody.startsWith("^")) && mergee.licenseBody != null)
+            licenseBody = mergee.licenseBody;
+
+        for (LinkInfoData link : mergee.links) {
+            if (links.contains(link))
+                links.get(links.indexOf(link)).merge(link);
+            else links.add(link);
+        }
+
+        return this;
     }
 
     @Override

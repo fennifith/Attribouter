@@ -33,7 +33,7 @@ public abstract class InfoData<T extends InfoData.ViewHolder> implements GitHubD
     }
 
     void addChildren(XmlResourceParser parser) throws IOException, XmlPullParserException {
-        while (parser.next() != XmlResourceParser.END_TAG) {
+        while (parser.next() != XmlResourceParser.END_TAG || !parser.getName().equals(getClass().getName())) {
             if (parser.getEventType() == XmlResourceParser.START_TAG) {
                 try {
                     Class<?> classy = Class.forName(parser.getName());
@@ -83,6 +83,16 @@ public abstract class InfoData<T extends InfoData.ViewHolder> implements GitHubD
     }
 
     public List<InfoData> getChildren() {
+        return children;
+    }
+
+    public <X extends InfoData> List<X> getChildren(Class<X> type) {
+        List<X> children = new ArrayList<>();
+        for (InfoData info : getChildren()) {
+            if (type.isInstance(info))
+                children.add((X) info);
+        }
+
         return children;
     }
 

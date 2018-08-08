@@ -15,7 +15,6 @@ import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
 
-import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
@@ -46,8 +45,6 @@ public class AppInfoData extends InfoData<AppInfoData.ViewHolder> {
     @Nullable
     private String gitHubUrl;
 
-    private List<LinkInfoData> links;
-
     public AppInfoData(XmlResourceParser parser) throws IOException, XmlPullParserException {
         super(R.layout.item_attribouter_app_info);
         icon = parser.getAttributeValue(null, "icon");
@@ -60,22 +57,13 @@ public class AppInfoData extends InfoData<AppInfoData.ViewHolder> {
         if (gitHubUrl == null && repo != null)
             gitHubUrl = "https://github.com/" + repo;
 
-        links = new ArrayList<>();
         if (repo != null || gitHubUrl != null)
-            links.add(new GitHubLinkInfoData(gitHubUrl != null ? gitHubUrl : repo, 0, gitHubUrl != null));
+            addChild(new GitHubLinkInfoData(gitHubUrl != null ? gitHubUrl : repo, 0, gitHubUrl != null));
         if (websiteUrl != null)
-            links.add(new WebsiteLinkInfoData(websiteUrl, 0));
-        links.add(new PlayStoreLinkInfoData(playStoreUrl, 0));
+            addChild(new WebsiteLinkInfoData(websiteUrl, 0));
+        addChild(new PlayStoreLinkInfoData(playStoreUrl, 0));
 
-        while (parser.next() != XmlPullParser.END_TAG || parser.getName().equals("link")) {
-            if (parser.getEventType() == XmlPullParser.START_TAG && parser.getName().equals("link")) {
-                LinkInfoData link = new LinkInfoData(parser);
-                if (links.contains(link))
-                    links.get(links.indexOf(link)).merge(link);
-                else links.add(link);
-            }
-        }
-
+        addChildren(parser);
         addRequest(new RepositoryData(repo));
     }
 
@@ -95,11 +83,8 @@ public class AppInfoData extends InfoData<AppInfoData.ViewHolder> {
                         : new WebsiteLinkInfoData(repository.homepage, 0));
             }
 
-            for (LinkInfoData link : newLinks) {
-                if (links.contains(link))
-                    links.get(links.indexOf(link)).merge(link);
-                else links.add(link);
-            }
+            for (LinkInfoData link : newLinks)
+                addChild(link);
         }
     }
 
@@ -127,6 +112,7 @@ public class AppInfoData extends InfoData<AppInfoData.ViewHolder> {
             viewHolder.descriptionTextView.setText(actualDescription);
         } else viewHolder.descriptionTextView.setVisibility(View.GONE);
 
+        List<LinkInfoData> links = getChildren(LinkInfoData.class);
         if (links.size() > 0) {
             Collections.sort(links, new LinkInfoData.Comparator(context));
 

@@ -65,6 +65,7 @@ public class AboutFragment extends Fragment implements GitHubData.OnInitListener
                         Class<?> classy = Class.forName(parser.getName());
                         Constructor<?> constructor = classy.getConstructor(XmlResourceParser.class);
                         infos.add((InfoData) constructor.newInstance(parser));
+                        parser.next();
                         continue;
                     } catch (ClassNotFoundException e) {
                         Log.e("Attribouter", "Class name \"" + parser.getName() + "\" not found - you should probably check your configuration file for typos.");

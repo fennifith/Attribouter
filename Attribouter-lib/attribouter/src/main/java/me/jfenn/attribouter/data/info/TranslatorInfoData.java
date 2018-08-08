@@ -14,10 +14,11 @@ import java.io.IOException;
 import me.jfenn.attribouter.R;
 import me.jfenn.attribouter.data.github.GitHubData;
 import me.jfenn.attribouter.data.github.UserData;
+import me.jfenn.attribouter.interfaces.Mergeable;
 import me.jfenn.attribouter.utils.ResourceUtils;
 import me.jfenn.attribouter.utils.UrlClickListener;
 
-public class TranslatorInfoData extends InfoData<TranslatorInfoData.ViewHolder> {
+public class TranslatorInfoData extends InfoData<TranslatorInfoData.ViewHolder> implements Mergeable<TranslatorInfoData> {
 
     @Nullable
     public String login;
@@ -74,7 +75,8 @@ public class TranslatorInfoData extends InfoData<TranslatorInfoData.ViewHolder> 
         return name != null ? name : login;
     }
 
-    public void merge(TranslatorInfoData contributor) {
+    @Override
+    public TranslatorInfoData merge(TranslatorInfoData contributor) {
         if ((name == null || !name.startsWith("^")) && contributor.name != null)
             name = contributor.name;
         if ((avatarUrl == null || !avatarUrl.startsWith("^")) && contributor.avatarUrl != null)
@@ -85,6 +87,18 @@ public class TranslatorInfoData extends InfoData<TranslatorInfoData.ViewHolder> 
             email = contributor.email;
         if ((locales == null || !locales.startsWith("^")) && contributor.locales != null)
             locales = contributor.locales;
+
+        return this;
+    }
+
+    @Override
+    public boolean hasAll() {
+        return false;
+    }
+
+    @Override
+    public boolean isHidden() {
+        return false;
     }
 
     public boolean hasEverything() {
