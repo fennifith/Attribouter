@@ -38,19 +38,8 @@ public class TranslatorsInfoData extends InfoData<TranslatorsInfoData.ViewHolder
         if (translatorsTitle == null)
             translatorsTitle = "@string/title_attribouter_translators";
         overflow = parser.getAttributeIntValue(null, "overflow", -1);
-        while (parser.getEventType() != XmlResourceParser.END_TAG || parser.getName().equals("translator")) {
-            parser.next();
-            if (parser.getEventType() == XmlResourceParser.START_TAG && parser.getName().equals("translator")) {
-                TranslatorInfoData translator = new TranslatorInfoData(parser);
 
-                if (!translators.contains(translator))
-                    translators.add(translator);
-                else translators.get(translators.indexOf(translator)).merge(translator);
-
-                if (translator.login != null && !translator.hasEverything())
-                    addRequest(new UserData(translator.login));
-            }
-        }
+        addChildren(parser);
     }
 
     @Override

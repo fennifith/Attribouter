@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <about>
-    <appInfo repo="TheAndroidMaster/Attribouter">
+    <me.jfenn.attribouter.data.info.AppInfoData repo="TheAndroidMaster/Attribouter">
         <link
             name="Bintray"
             icon="https://bintray.com/favicon.ico"
@@ -12,12 +12,12 @@
         <link
             hidden="true"
             id="github" />
-    </appInfo>
+    </me.jfenn.attribouter.data.info.AppInfoData>
     <text text="@string/html" />
     <!-- <text> elements can be added anywhere directly within the <about> tag -->
     <!-- they support html formatting (<p> <b> <i>) & links (<a href="">) -->
     <me.jfenn.attribouter.data.info.ContributorsInfoData>
-        <contributor
+        <me.jfenn.attribouter.data.info.ContributorInfoData
             avatar="^@drawable/me"
             bio="This is a bio. I am a person."
             email="dev@jfenn.me"
@@ -28,78 +28,78 @@
                 name="Twitter"
                 icon="https://twitter.com/favicon.ico"
                 url="https://twitter.com/idontlikephp" />
-        </contributor>
+        </me.jfenn.attribouter.data.info.ContributorInfoData>
         <!-- the "avatar" attribute can take either a url or a resource -->
         <!-- setting the "position" attribute makes me appear in the center of a row of three items above the list, instead of in the list like normal -->
         <!-- there must be position attributes for 1, 2, and 3 for this to work, otherwise setting "position=1" will just move me to the top of the list -->
-        <contributor
+        <me.jfenn.attribouter.data.info.ContributorInfoData
             login="BrianValente"
             position="2"
             task="Contributor" />
         <!-- Brian's task, "Contributor", will be displayed while the app is loading the github data, or if it cannot be loaded / the device is offline -->
-        <contributor
+        <me.jfenn.attribouter.data.info.ContributorInfoData
             login="jahirfiquitiva"
             position="3"
             task="^Lazy Slacker">
             <link
                 hidden="true"
                 id="website" />
-        </contributor>
+        </me.jfenn.attribouter.data.info.ContributorInfoData>
         <!-- For Jahir, the task "Lazy Slacker" will override the default task "Contributor" even after the github data is fetched (starting with the "^"
             character is what tells the library to do this) -->
-        <contributor login="adueppen">
+        <me.jfenn.attribouter.data.info.ContributorInfoData login="adueppen">
             <link
                 name="Twitter"
                 icon="@drawable/ic_attribouter_link"
                 priority="5"
                 url="https://twitter.com/adueppen/" />
-        </contributor>
-        <contributor login="joshuabaldassarre">
+        </me.jfenn.attribouter.data.info.ContributorInfoData>
+        <me.jfenn.attribouter.data.info.ContributorInfoData login="joshuabaldassarre">
             <link
                 name="Twitter"
                 icon="@drawable/ic_attribouter_link"
                 priority="5"
                 url="https://twitter.com/adueppen/" />
-        </contributor>
+        </me.jfenn.attribouter.data.info.ContributorInfoData>
         <!-- Alex doesn't have a github account (actually, he does, but let's pretend he doesn't), so his data is simply added to the list of contributors from github -->
         <!-- Note the string resource used in place of a name. You can use string resources. Even though there's no autocompletion. They still work. -->
     </me.jfenn.attribouter.data.info.ContributorsInfoData>
-    <translators overflow="5">
-        <translator
+    <me.jfenn.attribouter.data.info.TranslatorsInfoData overflow="5">
+        <me.jfenn.attribouter.data.info.TranslatorInfoData
             name="John Doe"
             avatar="https://raw.githubusercontent.com/TheAndroidMaster/TheAndroidMaster.github.io/master/images/headers/rocks.jpg"
             blog="https://example.com/"
             locales="zh,rn,sn" />
         <!-- locales are comma separated, no whitespace -->
-        <translator
+        <me.jfenn.attribouter.data.info.TranslatorInfoData
             name="Jenny Doe"
             avatar="https://raw.githubusercontent.com/TheAndroidMaster/TheAndroidMaster.github.io/master/images/headers/vukheader.jpg"
             blog="https://example.com/"
             locales="zh,sn" />
-        <translator
+        <me.jfenn.attribouter.data.info.TranslatorInfoData
             name="Joe Doe"
             avatar="https://raw.githubusercontent.com/TheAndroidMaster/TheAndroidMaster.github.io/master/images/headers/highway.jpg"
             blog="https://example.com/"
             locales="rn,cy" />
-        <translator
+        <me.jfenn.attribouter.data.info.TranslatorInfoData
             locales="en"
             login="TheAndroidMaster" />
-    </translators>
-    <licenses
+    </me.jfenn.attribouter.data.info.TranslatorsInfoData>
+    <me.jfenn.attribouter.data.info.LicensesInfoData
         overflow="1"
         showDefaults="false">
-        <project repo="TheAndroidMaster/ColorPickerDialog" />
+        <me.jfenn.attribouter.data.info.LicenseInfoData repo="TheAndroidMaster/ColorPickerDialog" />
         <!-- all of ColorPickerDialog's info is fetched from github -->
-        <project
+        <me.jfenn.attribouter.data.info.LicenseInfoData
             description="Something Does Stuff With Things"
             licenseName="This Is A License"
             title="Library Something Or Other"
             website="https://jfenn.me/" />
         <!-- this data is not fetched from github, and works exactly the same as the contributors -->
         <!-- some license identifiers can be found here https://developer.github.com/v3/licenses/ -->
-    </licenses>
+    </me.jfenn.attribouter.data.info.LicensesInfoData>
 
-    <licenses
+    <me.jfenn.attribouter.data.info.LicensesInfoData
         overflow="0"
         title="Library Licenses" />
 

@@ -118,15 +118,6 @@ public class AboutFragment extends Fragment implements GitHubData.OnInitListener
 
         requests = new ArrayList<>();
         for (InfoData info : infos) {
-            for (GitHubData request : (List<GitHubData>) info.getRequests()) {
-                if (!requests.contains(request))
-                    requests.add(request);
-                else {
-                    int i = requests.indexOf(request);
-                    requests.set(i, request.merge(requests.get(i)));
-                }
-            }
-
             info.setOnRequestListener(this);
         }
 
@@ -143,9 +134,24 @@ public class AboutFragment extends Fragment implements GitHubData.OnInitListener
         for (int i = 0; i < infos.size(); i++) {
             if (infos.get(i).hasRequest(data))
                 adapter.notifyItemChanged(i);
+            else notifyChildren(i, infos.get(i).getChildren(), data);
         }
 
         recycler.smoothScrollToPosition(0);
+    }
+
+    private void notifyChildren(int index, List<InfoData> children, GitHubData data) {
+        if (children.size() < 1)
+            return;
+
+        for (InfoData child : children) {
+            if (child.hasRequest(data)) {
+                adapter.notifyItemChanged(index);
+                return;
+            }
+
+            notifyChildren(index, child.getChildren(), data);
+        }
     }
 
     @Override

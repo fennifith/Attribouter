@@ -11,9 +11,6 @@ import android.widget.TextView;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import me.jfenn.attribouter.R;
 import me.jfenn.attribouter.adapters.InfoAdapter;
@@ -27,7 +24,6 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
 
     @Nullable
     private String title;
-    private List<LicenseInfoData> licenses;
     private int overflow;
 
     public LicensesInfoData(XmlResourceParser parser) throws XmlPullParserException, IOException {
@@ -38,20 +34,10 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
         boolean showDefaults = parser.getAttributeBooleanValue(null, "showDefaults", true);
         overflow = parser.getAttributeIntValue(null, "overflow", -1);
 
-        licenses = new ArrayList<>();
-        while (parser.next() != XmlResourceParser.END_TAG || parser.getName().equals("project")) {
-            if (parser.getEventType() == XmlResourceParser.START_TAG && parser.getName().equals("project")) {
-                LicenseInfoData license = new LicenseInfoData(parser);
-
-                if (!licenses.contains(license))
-                    licenses.add(license);
-                else licenses.get(licenses.indexOf(license)).merge(license);
-            }
-        }
+        addChildren(parser);
 
         if (showDefaults) {
-            List<LicenseInfoData> defaultLicenses = new ArrayList<>(Arrays.asList(
-                    new LicenseInfoData(
+            addChild(new LicenseInfoData(
                             "TheAndroidMaster/Attribouter",
                             "Attribouter",
                             "A lightweight \"about screen\" library to allow quick but customizable attribution in Android apps.",
@@ -64,9 +50,8 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
                             null,
                             null,
                             null,
-                            "apache-2.0"
-                    ),
-                    new LicenseInfoData(
+                            "apache-2.0"));
+            addChild(new LicenseInfoData(
                             "google/gson",
                             "Gson",
                             "A Java serialization/deserialization library to convert Java Objects into JSON and back",
@@ -79,9 +64,8 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
                             null,
                             null,
                             null,
-                            "apache-2.0"
-                    ),
-                    new LicenseInfoData(
+                            "apache-2.0"));
+            addChild(new LicenseInfoData(
                             "google/flexbox-layout",
                             "FlexBox Layout",
                             "FlexboxLayout is a library that brings similar capabilities to the CSS Flexible Box Layout to Android.",
@@ -94,9 +78,8 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
                             null,
                             null,
                             null,
-                            "apache-2.0"
-                    ),
-                    new LicenseInfoData(
+                            "apache-2.0"));
+            addChild(new LicenseInfoData(
                             "bumptech/glide",
                             "Glide",
                             "An image loading and caching library for Android focused on smooth scrolling",
@@ -109,9 +92,8 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
                             null,
                             null,
                             null,
-                            null
-                    ),
-                    new LicenseInfoData(
+                            null));
+            addChild(new LicenseInfoData(
                             null,
                             "Android Open Source Project",
                             "Android is an open source software stack for a wide range of mobile devices and a corresponding open source project led by Google.",
@@ -124,25 +106,7 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
                             null,
                             null,
                             null,
-                            "apache-2.0"
-                    )
-            ));
-
-            for (LicenseInfoData license : defaultLicenses) {
-                if (licenses.contains(license))
-                    licenses.get(licenses.indexOf(license)).merge(license);
-                else licenses.add(license);
-            }
-        }
-
-        for (LicenseInfoData license : licenses) {
-            if (license.repo != null && !license.hasEverythingGeneric())
-                addRequest(new RepositoryData(license.repo));
-            if (license.licenseKey != null && (license.repo != null || license.title != null) && !license.hasEverythingLicense()) {
-                LicenseData request = new LicenseData(license.licenseKey);
-                request.addTag(license.token);
-                addRequest(request);
-            }
+                            "apache-2.0"));
         }
     }
 
@@ -167,13 +131,16 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
                         null
                 );
 
-                if (licenses.contains(mergeLicense)) {
-                    LicenseInfoData license = licenses.get(licenses.indexOf(mergeLicense));
-                    license.merge(mergeLicense);
-                    if (repo.license != null && repo.license.key != null && !license.hasEverythingLicense()) {
-                        LicenseData request = new LicenseData(repo.license.key);
-                        request.addTag(tag);
-                        addRequest(request);
+                if (getChildren().contains(mergeLicense)) {
+                    InfoData info = getChildren().get(getChildren().indexOf(mergeLicense));
+                    if (info instanceof LicenseInfoData) {
+                        LicenseInfoData license = (LicenseInfoData) info;
+                        license.merge(mergeLicense);
+                        if (repo.license != null && repo.license.key != null && !license.hasAllLicense()) {
+                            LicenseData request = new LicenseData(repo.license.key);
+                            request.addTag(tag);
+                            addRequest(request);
+                        }
                     }
 
                     break;
@@ -181,23 +148,27 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
             }
         } else if (data instanceof LicenseData) {
             LicenseData license = (LicenseData) data;
-            for (LicenseInfoData licenseInfo : licenses) {
-                if (license.getTags().contains(licenseInfo.token)) {
-                    licenseInfo.merge(new LicenseInfoData(
-                            null,
-                            null,
-                            null,
-                            license.name,
-                            null,
-                            "https://github.com/" + licenseInfo.repo,
-                            license.html_url,
-                            license.permissions,
-                            license.conditions,
-                            license.limitations,
-                            license.description,
-                            license.body,
-                            license.key
-                    ));
+            for (InfoData info : getChildren()) {
+                if (info instanceof LicenseInfoData) {
+                    LicenseInfoData licenseInfo = (LicenseInfoData) info;
+
+                    if (license.getTags().contains(licenseInfo.token)) {
+                        licenseInfo.merge(new LicenseInfoData(
+                                null,
+                                null,
+                                null,
+                                license.name,
+                                null,
+                                "https://github.com/" + licenseInfo.repo,
+                                license.html_url,
+                                license.permissions,
+                                license.conditions,
+                                license.limitations,
+                                license.description,
+                                license.body,
+                                license.key
+                        ));
+                    }
                 }
             }
         }
@@ -221,7 +192,7 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new OverflowDialog(v.getContext(), title, new ArrayList<InfoData>(licenses)).show();
+                    new OverflowDialog(v.getContext(), title, getChildren()).show();
                 }
             });
             return;
@@ -237,15 +208,14 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
             viewHolder.titleView.setText(ResourceUtils.getString(context, title));
 
         viewHolder.recycler.setLayoutManager(new LinearLayoutManager(context));
-        viewHolder.recycler.setAdapter(new InfoAdapter(new ArrayList<InfoData>(
-                licenses.subList(0, overflow > licenses.size() || overflow < 0 ? licenses.size() : overflow))));
+        viewHolder.recycler.setAdapter(new InfoAdapter(getChildren().subList(0, overflow > getChildren().size() || overflow < 0 ? getChildren().size() : overflow)));
 
-        if (overflow > 0 && overflow < licenses.size()) {
+        if (overflow > 0 && overflow < getChildren().size()) {
             viewHolder.expand.setVisibility(View.VISIBLE);
             viewHolder.expand.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new OverflowDialog(v.getContext(), title, new ArrayList<InfoData>(licenses)).show();
+                    new OverflowDialog(v.getContext(), title, getChildren()).show();
                 }
             });
         } else viewHolder.expand.setVisibility(View.GONE);

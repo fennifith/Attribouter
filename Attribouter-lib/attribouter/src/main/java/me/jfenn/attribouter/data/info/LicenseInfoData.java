@@ -23,13 +23,17 @@ import java.util.regex.Pattern;
 
 import me.jfenn.attribouter.R;
 import me.jfenn.attribouter.adapters.InfoAdapter;
+import me.jfenn.attribouter.data.github.GitHubData;
+import me.jfenn.attribouter.data.github.LicenseData;
+import me.jfenn.attribouter.data.github.RepositoryData;
 import me.jfenn.attribouter.data.info.link.GitHubLinkInfoData;
 import me.jfenn.attribouter.data.info.link.LicenseLinkInfoData;
 import me.jfenn.attribouter.data.info.link.LinkInfoData;
 import me.jfenn.attribouter.data.info.link.WebsiteLinkInfoData;
+import me.jfenn.attribouter.interfaces.Mergeable;
 import me.jfenn.attribouter.utils.ResourceUtils;
 
-public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> {
+public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> implements Mergeable {
 
     @Nullable
     String token;
@@ -84,6 +88,14 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> {
                 else links.add(link);
             }
         }
+
+        if (repo != null && !hasAllGeneric())
+            addRequest(new RepositoryData(repo));
+        if (licenseKey != null && (repo != null || title != null) && !hasAllLicense()) {
+            LicenseData request = new LicenseData(licenseKey);
+            request.addTag(token);
+            addRequest(request);
+        }
     }
 
     public LicenseInfoData(@Nullable String repo, @Nullable String title, @Nullable String description, @Nullable String licenseName, @Nullable String websiteUrl, @Nullable String gitHubUrl, @Nullable String licenseUrl, @Nullable String[] licensePermissions, @Nullable String[] licenseConditions, @Nullable String[] licenseLimitations, @Nullable String licenseDescription, @Nullable String licenseBody, @Nullable String licenseKey) {
@@ -113,6 +125,48 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> {
             links.add(new GitHubLinkInfoData(repo, 1));
         if (licenseBody != null || licenseUrl != null)
             links.add(new LicenseLinkInfoData(this, 0));
+    }
+
+    @Override
+    public void onInit(GitHubData data) {
+        if (data instanceof RepositoryData) {
+            RepositoryData repo = (RepositoryData) data;
+            merge(new LicenseInfoData(
+                    null,
+                    null,
+                    repo.description,
+                    repo.license != null ? repo.license.name : null,
+                    repo.homepage,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            ));
+
+            if (repo.license != null && repo.license.key != null && !hasAllLicense())
+                addRequest(new LicenseData(repo.license.key));
+        } else if (data instanceof LicenseData) {
+            LicenseData license = (LicenseData) data;
+            merge(new LicenseInfoData(
+                    null,
+                    null,
+                    null,
+                    license.name,
+                    null,
+                    null,
+                    license.html_url,
+                    license.permissions,
+                    license.conditions,
+                    license.limitations,
+                    license.description,
+                    license.body,
+                    license.key
+            ));
+        }
     }
 
     public String getName() {
@@ -225,14 +279,6 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> {
         }
     }
 
-    public boolean hasEverythingGeneric() {
-        return description != null && description.startsWith("^") && websiteUrl != null && websiteUrl.startsWith("^") && licenseName != null && licenseName.startsWith("^");
-    }
-
-    public boolean hasEverythingLicense() {
-        return licenseName != null && licenseName.startsWith("^") && licenseUrl != null && licenseUrl.startsWith("^") && licenseBody != null && licenseBody.startsWith("^");
-    }
-
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof LicenseInfoData) {
@@ -283,6 +329,29 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> {
         }
 
         viewHolder.itemView.setOnClickListener(importantLink != null ? importantLink.getListener(context) : null);
+    }
+
+    @Override
+    public Object merge(Object mergee) {
+        return null;
+    }
+
+    @Override
+    public boolean hasAll() {
+        return hasAllGeneric() && hasAllLicense();
+    }
+
+    public boolean hasAllGeneric() {
+        return description != null && description.startsWith("^") && websiteUrl != null && websiteUrl.startsWith("^") && licenseName != null && licenseName.startsWith("^");
+    }
+
+    public boolean hasAllLicense() {
+        return licenseName != null && licenseName.startsWith("^") && licenseUrl != null && licenseUrl.startsWith("^") && licenseBody != null && licenseBody.startsWith("^");
+    }
+
+    @Override
+    public boolean isHidden() {
+        return false;
     }
 
     static class ViewHolder extends InfoData.ViewHolder {

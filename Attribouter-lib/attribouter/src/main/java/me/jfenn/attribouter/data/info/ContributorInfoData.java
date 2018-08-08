@@ -15,14 +15,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.jfenn.attribouter.R;
+import me.jfenn.attribouter.data.github.GitHubData;
+import me.jfenn.attribouter.data.github.UserData;
 import me.jfenn.attribouter.data.info.link.EmailLinkInfoData;
 import me.jfenn.attribouter.data.info.link.GitHubLinkInfoData;
 import me.jfenn.attribouter.data.info.link.LinkInfoData;
 import me.jfenn.attribouter.data.info.link.WebsiteLinkInfoData;
 import me.jfenn.attribouter.dialogs.UserDialog;
+import me.jfenn.attribouter.interfaces.Mergeable;
 import me.jfenn.attribouter.utils.ResourceUtils;
 
-public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder> {
+public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder> implements Mergeable<ContributorInfoData> {
 
     @Nullable
     public String login;
@@ -42,14 +45,14 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
     public String task;
     public List<LinkInfoData> links;
 
-    boolean isHidden;
+    private boolean isHidden;
 
-    ContributorInfoData(XmlResourceParser parser, @Nullable Integer position) throws XmlPullParserException, IOException {
+    ContributorInfoData(XmlResourceParser parser) throws XmlPullParserException, IOException {
         this(parser.getAttributeValue(null, "login"),
                 parser.getAttributeValue(null, "name"),
                 parser.getAttributeValue(null, "avatar"),
                 parser.getAttributeValue(null, "task"),
-                position,
+                parser.getAttributeIntValue(null, "position", -1),
                 parser.getAttributeValue(null, "bio"),
                 parser.getAttributeValue(null, "blog"),
                 parser.getAttributeValue(null, "email"));
@@ -64,6 +67,9 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
                 else links.add(link);
             }
         }
+
+        if (login != null && !hasAll())
+            addRequest(new UserData(login));
     }
 
     ContributorInfoData(@Nullable String login, @Nullable String name, @Nullable String avatarUrl, @Nullable String task, @Nullable Integer position, @Nullable String bio, @Nullable String blog, @Nullable String email) {
@@ -72,7 +78,7 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
         this.name = name;
         this.avatarUrl = avatarUrl;
         this.task = task;
-        this.position = position;
+        this.position = position != null && position >= 0 ? position : null;
         this.bio = bio;
         this.blog = blog;
         this.email = email;
@@ -86,12 +92,29 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
             links.add(new EmailLinkInfoData(email, -1));
     }
 
+    @Override
+    public void onInit(GitHubData data) {
+        if (data instanceof UserData) {
+            UserData user = (UserData) data;
+            merge(new ContributorInfoData(
+                    user.login,
+                    user.name,
+                    user.avatar_url,
+                    null,
+                    null,
+                    user.bio,
+                    user.blog,
+                    user.email
+            ));
+        }
+    }
+
     @Nullable
     public String getName() {
         return name != null ? name : login;
     }
 
-    public void merge(ContributorInfoData contributor) {
+    public ContributorInfoData merge(ContributorInfoData contributor) {
         if ((name == null || !name.startsWith("^")) && contributor.name != null)
             name = contributor.name;
         if ((avatarUrl == null || !avatarUrl.startsWith("^")) && contributor.avatarUrl != null)
@@ -110,10 +133,18 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
                 links.get(links.indexOf(link)).merge(link);
             else links.add(link);
         }
+
+        return this;
     }
 
-    public boolean hasEverything() {
+    @Override
+    public boolean hasAll() {
         return name != null && name.startsWith("^") && bio != null && bio.startsWith("^") && blog != null && blog.startsWith("^") && email != null && email.startsWith("^");
+    }
+
+    @Override
+    public boolean isHidden() {
+        return isHidden;
     }
 
     @Override

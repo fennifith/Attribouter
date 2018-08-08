@@ -22,6 +22,7 @@ import me.jfenn.attribouter.data.github.GitHubData;
 import me.jfenn.attribouter.data.github.UserData;
 import me.jfenn.attribouter.dialogs.OverflowDialog;
 import me.jfenn.attribouter.dialogs.UserDialog;
+import me.jfenn.attribouter.interfaces.Mergeable;
 import me.jfenn.attribouter.utils.ResourceUtils;
 import me.jfenn.attribouter.utils.UrlClickListener;
 
@@ -32,30 +33,17 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
     @Nullable
     private String contributorsTitle;
     private int overflow;
-    private List<ContributorInfoData> contributors;
 
     public ContributorsInfoData(XmlResourceParser parser) throws XmlPullParserException, IOException {
         super(R.layout.item_attribouter_contributors);
         repo = parser.getAttributeValue(null, "repo");
-        contributors = new ArrayList<>();
         contributorsTitle = parser.getAttributeValue(null, "title");
         if (contributorsTitle == null)
             contributorsTitle = "@string/title_attribouter_contributors";
         boolean showDefaults = parser.getAttributeBooleanValue(null, "showDefaults", true);
         overflow = parser.getAttributeIntValue(null, "overflow", -1);
-        while (parser.next() != XmlResourceParser.END_TAG || parser.getName().equals("contributor")) {
-            if (parser.getEventType() == XmlResourceParser.START_TAG && parser.getName().equals("contributor")) {
-                int position = parser.getAttributeIntValue(null, "position", -1);
-                ContributorInfoData contributor = new ContributorInfoData(parser, position != -1 ? position : null);
 
-                if (!contributors.contains(contributor))
-                    contributors.add(contributor);
-                else contributors.get(contributors.indexOf(contributor)).merge(contributor);
-
-                if (contributor.login != null && !contributor.hasEverything())
-                    addRequest(new UserData(contributor.login));
-            }
-        }
+        addChildren(parser);
 
         if (showDefaults) {
             ContributorInfoData me = new ContributorInfoData(
@@ -69,9 +57,7 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
                     "dev@jfenn.me"
             );
 
-            if (!contributors.contains(me))
-                contributors.add(me);
-
+            addChild(me);
             addRequest(new ContributorsData("TheAndroidMaster/Attribouter"));
         }
 
@@ -86,7 +72,7 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
                     if (contributor.login == null)
                         continue;
 
-                    ContributorInfoData mergeContributor = new ContributorInfoData(
+                    InfoData info = addChild(new ContributorInfoData(
                             contributor.login,
                             null,
                             contributor.avatar_url,
@@ -95,22 +81,15 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
                             null,
                             null,
                             null
-                    );
+                    ));
 
-                    ContributorInfoData contributorInfo = mergeContributor;
-
-                    if (contributors.contains(mergeContributor)) {
-                        contributorInfo = contributors.get(contributors.indexOf(mergeContributor));
-                        contributorInfo.merge(mergeContributor);
-                    } else contributors.add(contributorInfo);
-
-                    if (!contributorInfo.hasEverything())
+                    if (info instanceof Mergeable && !((Mergeable) info).hasAll())
                         addRequest(new UserData(contributor.login));
                 }
             }
         } else if (data instanceof UserData) {
             UserData user = (UserData) data;
-            ContributorInfoData contributor = new ContributorInfoData(
+            addChild(0, new ContributorInfoData(
                     user.login,
                     user.name,
                     user.avatar_url,
@@ -119,11 +98,7 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
                     user.bio,
                     user.blog,
                     user.email
-            );
-
-            if (!contributors.contains(contributor))
-                contributors.add(0, contributor);
-            else contributors.get(contributors.indexOf(contributor)).merge(contributor);
+            ));
         }
     }
 
@@ -146,7 +121,7 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new OverflowDialog(v.getContext(), contributorsTitle, new ArrayList<InfoData>(contributors)).show();
+                    new OverflowDialog(v.getContext(), contributorsTitle, getChildren()).show();
                 }
             });
             return;
@@ -164,27 +139,31 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
         ContributorInfoData first = null, second = null, third = null;
         List<InfoData> remainingContributors = new ArrayList<>();
         int hiddenContributors = 0;
-        for (ContributorInfoData contributor : contributors) {
-            if (contributor.isHidden) {
-                hiddenContributors++;
-                continue;
-            }
+        for (InfoData info : getChildren()) {
+            if (info instanceof ContributorInfoData) {
+                ContributorInfoData contributor = (ContributorInfoData) info;
 
-            if (contributor.position != null) {
-                if (first == null && contributor.position == 1) {
-                    first = contributor;
+                if (contributor.isHidden()) {
+                    hiddenContributors++;
                     continue;
-                } else if (second == null && contributor.position == 2) {
-                    second = contributor;
-                    continue;
-                } else if (third == null && contributor.position == 3) {
-                    third = contributor;
-                    continue;
+                }
+
+                if (contributor.position != null) {
+                    if (first == null && contributor.position == 1) {
+                        first = contributor;
+                        continue;
+                    } else if (second == null && contributor.position == 2) {
+                        second = contributor;
+                        continue;
+                    } else if (third == null && contributor.position == 3) {
+                        third = contributor;
+                        continue;
+                    }
                 }
             }
 
             if (remainingContributors.size() < overflow || overflow == -1)
-                remainingContributors.add(contributor);
+                remainingContributors.add(info);
         }
 
         if (first != null && second != null && third != null) {
@@ -274,14 +253,14 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
             viewHolder.recycler.setAdapter(new InfoAdapter(remainingContributors));
         } else viewHolder.recycler.setVisibility(View.GONE);
 
-        if (remainingContributors.size() + (first != null && second != null && third != null ? 3 : 0) < contributors.size() - hiddenContributors) {
+        if (remainingContributors.size() + (first != null && second != null && third != null ? 3 : 0) < getChildren().size() - hiddenContributors) {
             viewHolder.expand.setVisibility(View.VISIBLE);
             viewHolder.expand.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     ArrayList<InfoData> overflowList = new ArrayList<>();
-                    for (ContributorInfoData contributor : contributors) {
-                        if (!contributor.isHidden)
+                    for (InfoData contributor : getChildren()) {
+                        if (!(contributor instanceof Mergeable) || !((Mergeable) contributor).isHidden())
                             overflowList.add(contributor);
                     }
 

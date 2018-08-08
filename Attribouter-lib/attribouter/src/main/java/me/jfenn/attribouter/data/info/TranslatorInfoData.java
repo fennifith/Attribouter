@@ -8,6 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import me.jfenn.attribouter.R;
+import me.jfenn.attribouter.data.github.GitHubData;
+import me.jfenn.attribouter.data.github.UserData;
 import me.jfenn.attribouter.utils.ResourceUtils;
 import me.jfenn.attribouter.utils.UrlClickListener;
 
@@ -33,6 +35,9 @@ public class TranslatorInfoData extends InfoData<TranslatorInfoData.ViewHolder> 
                 parser.getAttributeValue(null, "locales"),
                 parser.getAttributeValue(null, "blog"),
                 parser.getAttributeValue(null, "email"));
+
+        if (login != null && !hasEverything())
+            addRequest(new UserData(login));
     }
 
     TranslatorInfoData(@Nullable String login, @Nullable String name, @Nullable String avatarUrl, @Nullable String locales, @Nullable String blog, @Nullable String email) {
@@ -43,6 +48,21 @@ public class TranslatorInfoData extends InfoData<TranslatorInfoData.ViewHolder> 
         this.locales = locales;
         this.blog = blog;
         this.email = email;
+    }
+
+    @Override
+    public void onInit(GitHubData data) {
+        if (data instanceof UserData) {
+            UserData user = (UserData) data;
+            merge(new TranslatorInfoData(
+                    user.login,
+                    user.name,
+                    user.avatar_url,
+                    null,
+                    user.blog,
+                    user.email
+            ));
+        }
     }
 
     @Nullable
