@@ -1,3 +1,18 @@
+The `TranslatorWedge` displays information about a translator in an only slightly more concise layout than the [`ContributorWedge`](./CONTRIBUTOR.md).
+
+## Example
+
+```xml
+<me.jfenn.attribouter.wedges.TranslatorWedge
+        login="TheAndroidMaster"
+        name="James Fenn"
+        avatar="https://avatars3.githubusercontent.com/u/13000407"
+        locales="en,fr"
+        blog="https://jfenn.me/" />
+```
+
+## Attributes
+
 |Attribute|Type|Description|
 |-----|-----|-----|
 |login|String|The GitHub username/login of the translator.|
