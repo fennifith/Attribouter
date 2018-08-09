@@ -1,4 +1,17 @@
-Shows a list of the contributors of a project on github, merged with a list of child `<contributor>` elements defined in the configuration file. For example, if a user with the login "TheAndroidMaster" is both in GitHub and the configuration file, its attributes will be merged so that any attributes beginning with a "^" character will override the information from GitHub, and any attributes not beginning with a "^" character will be used while the GitHub information is loading, or if the information from GitHub is not present or unavailable.
+A `ContributorsWedge` displays a list of child [`ContributorWedge`](./CONTRIBUTOR.md)s under a title, sorted by their `position` attributes. If the `repo` attribute is specified, this list will be merged with contributors from GitHub. If the `showDefaults` attribute is unspecified ot `true`, it will also merge it with contributors to this repository. 
+
+If a user with the login "TheAndroidMaster" is both in GitHub and the configuration file, its attributes will be merged so that any attributes beginning with a "^" character will override the information from GitHub, and any attributes not beginning with a "^" character will be used while the GitHub information is loading, or if the information from GitHub is not present or unavailable. See ["Overriding Resources and Providing Translations"](../RESOURCES.md) for more information on how merges work.
+
+## Example
+
+```xml
+<me.jfenn.attribouter.wedges.ContributorsWedge
+        repo="TheAndroidMaster/Attribouter"
+        title="Library Developers"
+        overflow="-1" />
+```
+
+## Attributes
 
 |Attribute|Type|Description|
 |-----|-----|-----|
