@@ -1,3 +1,21 @@
+The `ContributorWedge` displays a set of information about a person in a small layout. If the `bio` attribute is defined, a dialog will appear upon interaction displaying more information, such as... um... their biography... and links. If it is not defined, it will open the highest priority [`LinkWedge`](./LINK.md) child instead.
+
+## Example
+
+```xml
+<me.jfenn.attribouter.wedges.ContributorWedge
+    login="TheAndroidMaster"
+    name="James Fenn"
+    avatar="https://avatars3.githubusercontent.com/u/13000407"
+    task="Developer"
+    bio="An idiot."
+    blog="https://jfenn.me/"
+    email="dev@jfenn.me"
+    position="1" />
+```
+
+## Attributes
+
 |Attribute|Type|Description|
 |-----|-----|-----|
 |login|String|The GitHub username/login of the contributor (especially useful for overriding specific attributes of certain contributors.|
@@ -10,7 +28,9 @@
 |position|Integer|If this attribute is given to three contributors with values between 1 and 3 (one each), they will be displayed in a row at the top of the list (1 in the middle, slightly bigger, 2 on the left, 3 on the right).|
 |hidden|Boolean|Whether to remove the contributor from the list. This is only really useful if you want to remove certain contributors that are fetched from GitHub. Default value is 'false', obviously.|
 
-Auto-generated links for the `<contributor>` tag are as follows:
+## Auto-generated Links
+
+The links that are automatically created by this wedge are as follows. See [`LinkWedge`](./LINKS.md) for more information.
 
 |ID|Description|Required Attributes|
 |-----|-----|-----|
