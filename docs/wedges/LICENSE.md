@@ -1,3 +1,22 @@
+The `LicenseWedge` is intended to display information about libraries used by your project. Simply displaying this wedge does not guarantee that you are following all of the conditions of the project's license, but it is a good start.
+
+If only the `repo` attribute is specified, this wedge can fetch all of its necessary information from the GitHub API, however it is a good idea to include all of the information in the configuration file as well, so that it is still displayed if the user is offline or there is an issue with the GitHub API.
+
+## Example
+
+```xml
+<me.jfenn.attribouter.wedges.LicenseWedge
+        repo="TheAndroidMaster/Attribouter"
+        description="I'm pickle riiiiiiiiiiiiiiiiiiiiiiiiick!"
+        website="https://jfenn.me/about/?Attribouter"
+        license="apache-2.0"
+        licenseName="Apache License 2.0"
+        licenseBody="@string/license_body_apache2"
+        licenseUrl="https://choosealicense.com/licenses/apache-2.0/" />
+```
+
+## Attributes
+
 |Attribute|Type|Description|
 |-----|-----|-----|
 |repo|String (name/repository)|The GitHub repository to fetch the license's information from.|
@@ -9,7 +28,9 @@
 |licenseBody|String / String Resource|The content of the license.|
 |licenseUrl|String / String Resource|The URL of the license.|
 
-Auto-generated links for the `<project>` tag are as follows:
+## Auto-generated Links
+
+The links that are automatically created by this wedge are as follows. See [`LinkWedge`](./LINKS.md) for more information.
 
 |ID|Description|Required Attributes|
 |-----|-----|-----|
