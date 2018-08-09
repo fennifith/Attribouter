@@ -1,5 +1,18 @@
-A list of the open source licenses used by the project. Child elements are `<project>` tags with attributes that function similar to the `<contributor>`s ("^" overrides GitHub values, otherwise they're replaced by the GitHub data), except the repository is defined by a `repo` attribute (starting a value with "^" is obsolete if the `repo` attribute is not defined).
+The `LicensesWedge` displays a list of child [`LicenseWedge`](./LICENSE.md)s with a title at the top. If the `showDefaults` attribute is undefined or `true`, this list will be merged with the licenses used by Attribouter. See ["Overriding Resources and Providing Translations"](../RESOURCES.md) for more information on how merges work.
 
+## Example
+
+```xml
+<me.jfenn.attribouter.wedges.LicensesWedge
+        title="OSS Licenses"
+        overflow="-1" >
+  
+    <!-- licenses -->
+  
+</me.jfenn.attribouter.wedges.LicensesWedge>
+```
+
+## Attributes
 
 |Attribute|Type|Description|
 |-----|-----|-----|
