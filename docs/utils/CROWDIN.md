@@ -64,7 +64,7 @@ for translator in translators:
     if languages == "":
         continue
 
-    xml += f'''<me.jfenn.attribouter.widgets.TranslatorWidget
+    xml += f'''<me.jfenn.attribouter.wedges.TranslatorWedge
 avatar="https://i2.wp.com/crowdin.com/images/user-picture.png"
 name="{name}"
 locales="{languages}" />
