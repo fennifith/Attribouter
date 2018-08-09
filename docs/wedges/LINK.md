@@ -4,6 +4,16 @@ If you wish to remove an auto-generated link, you can simply define a `LinkWedge
 
 By default, `AppWedge` links are displayed below the app description, `ContributorWedge` links are displayed in a dialog (that only appears if the contributor has a `bio`), and `LicenseWedge` links are displayed below the description.
 
+## Example
+
+```xml
+<me.jfenn.attribouter.wedges.link.LinkWedge
+    name="Documentation"
+    url="https://jfenn.me/Attribouter/"
+    icon="@drawable/ic_book"
+    priority="7" />
+```
+
 ## Attributes
 
 |Attribute|Type|Description|
@@ -23,6 +33,14 @@ The `LinkWedge` also has various "sub-wedges" that extend its functionality for 
 
 The `EmailLinkWedge` accepts only two attributes: `priority` (inherited from `LinkWedge`) and `email`.
 
+#### Example
+
+```xml
+<me.jfenn.attribouter.wedges.link.EmailLinkWedge
+    email="dev@jfenn.me"
+    priority="6" />
+```
+
 ### License
 
 Unfinished.
@@ -30,3 +48,10 @@ Unfinished.
 ### Play Store
 
 The `PlayStoreLinkWedge` accepts one attribute (`priority`) and determines the package name at runtime to open its play store page.
+
+#### Example
+
+```xml
+<me.jfenn.attribouter.wedges.link.PlayStoreLinkWedge
+    priority="5" />
+```
