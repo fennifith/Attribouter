@@ -19,8 +19,9 @@ Welcome to Attribouter's in-depth documentation page! It provides several exampl
 - [HeaderWedge](./wedges/HEADER.md)
 - [TextWedge](./wedges/TEXT.md)
 - [LinkWedge](./wedges/LINK.md)
-	- [EmailLinkWedge](./wedges/LINK.md#Email)
-	- [PlayStoreLinkWedge](./wedges/LINK.md#PlayStore)
+	- [EmailLinkWedge](./wedges/LINK.md#email)
+	- [LicenseLinkWedge](./wedges/LINK.md#license)
+	- [PlayStoreLinkWedge](./wedges/LINK.md#play-store)
 
 ## Automation
 
