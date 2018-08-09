@@ -1,4 +1,18 @@
-A list of the translators of this app, sorted into sections by the language(s) that they have translated. Child elements are `<translator>` tags.
+The `TranslatorsWedge` displays a list of [`TranslatorWedge`](./TRANSLATOR.md)s in sections, sorted by locale. If a translator has translated multiple locales, they will appear under every locale that they have translated.
+
+## Example
+
+```xml
+<me.jfenn.attribouter.wedges.TranslatorsWedge
+        title="Translators"
+        overflow="10" >
+  
+    <!-- translators -->
+  
+</me.jfenn.attribouter.wedges.TranslatorsWedge>
+```
+
+## Attributes
 
 |Attribute|Type|Description|
 |-----|-----|-----|
