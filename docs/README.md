@@ -4,24 +4,24 @@ Welcome to Attribouter's in-depth documentation page! It provides several exampl
 
 - [The Configuration File](./CONFIGURATION.md)
 - [Overriding Resources and Providing Translations](./RESOURCES.md)
-- [Extending A Class](./SUBCLASSING.md)
+- [Extending A Wedge](./SUBWEDGING.md)
 - [Custom Themes](./THEMING.md)
 
 ## Docs
 
-- [AppInfoData]
-- [ContributorsInfoData]
-	- [ContributorInfoData]
-- [LicensesInfoData]
-	- [LicenseInfoData]
-- [TranslatorsInfoData]
-	- [TranslatorInfoData]
-- [HeaderInfoData]
-- [TextInfoData]
-- [LinkInfoData]
-	- [EmailLinkInfoData]
-	- [PlayStoreLinkInfoData]
+- [AppWedge](./wedges/APP.md)
+- [ContributorsWedge](./wedges/CONTRIBUTORS.md)
+	- [ContributorWedge](./wedges/CONTRIBUTOR.md)
+- [LicensesWedge](./wedges/LICENSES.md)
+	- [LicenseWedge](./wedges/LICENSE.md)
+- [TranslatorsWedge](./wedges/TRANSLATORS.md)
+	- [TranslatorWedge](./wedges/TRANSLATOR.md)
+- [HeaderWedge](./wedges/HEADER.md)
+- [TextWedge](./wedges/TEXT.md)
+- [LinkWedge](./wedges/LINK.md)
+	- [EmailLinkWedge](./wedges/LINK.md#Email)
+	- [PlayStoreLinkWedge](./wedges/LINK.md#PlayStore)
 
 ## Automation
 
-- [Fetching CrowdIn Translations] by [@deletescape](https://github.com/deletescape)
+- [Fetching CrowdIn Translations](./utils/CROWDIN.md) by [@deletescape](https://github.com/deletescape)
