@@ -1,4 +1,6 @@
-Displays the app icon, name, version, and links to the project on github and its website if available.
+The `AppWedge` displays the app icon, name, version, and links to the project sites in a centered layout. By default, the icon and app name are fetched from your app's `AndroidManifest.xml`, and all other information is fetched from the GitHub API if the `repo` attribute has been specified.
+
+## Attributes
 
 |Attribute|Type|Description|
 |-----|-----|-----|
@@ -9,7 +11,9 @@ Displays the app icon, name, version, and links to the project on github and its
 |websiteUrl|String / String Resource (URL)| The website of the project.|
 |gitHubUrl|String / String Resource (URL)|The URL for the open source GitHub project. You do not need to define this if it is the same as `repo`.|
 
-Auto-generated links for the `<appInfo>` tag are as follows:
+## Auto-generated Links
+
+The links that are automatically created by this wedge are as follows. See [Links](./LINKS.md) for more information.
 
 |ID|Description|Required Attributes|
 |-----|-----|-----|
