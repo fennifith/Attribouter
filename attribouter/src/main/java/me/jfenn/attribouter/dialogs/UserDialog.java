@@ -18,16 +18,16 @@ import java.util.List;
 
 import me.jfenn.attribouter.R;
 import me.jfenn.attribouter.adapters.InfoAdapter;
-import me.jfenn.attribouter.data.info.ContributorInfoData;
-import me.jfenn.attribouter.data.info.InfoData;
-import me.jfenn.attribouter.data.info.link.LinkInfoData;
+import me.jfenn.attribouter.wedges.ContributorWedge;
+import me.jfenn.attribouter.wedges.Wedge;
+import me.jfenn.attribouter.wedges.link.LinkWedge;
 import me.jfenn.attribouter.utils.ResourceUtils;
 
 public class UserDialog extends AppCompatDialog {
 
-    private ContributorInfoData contributor;
+    private ContributorWedge contributor;
 
-    public UserDialog(Context context, ContributorInfoData contributor) {
+    public UserDialog(Context context, ContributorWedge contributor) {
         super(context, ResourceUtils.getThemeResourceAttribute(context, R.styleable.AttribouterTheme_personDialogTheme, R.style.AttribouterTheme_Dialog));
         this.contributor = contributor;
     }
@@ -53,12 +53,12 @@ public class UserDialog extends AppCompatDialog {
 
         bioView.setText(ResourceUtils.getString(getContext(), contributor.bio));
 
-        List<LinkInfoData> links = contributor.getChildren(LinkInfoData.class);
+        List<LinkWedge> links = contributor.getChildren(LinkWedge.class);
         if (links.size() > 0) {
-            Collections.sort(links, new LinkInfoData.Comparator(getContext()));
+            Collections.sort(links, new LinkWedge.Comparator(getContext()));
 
-            List<InfoData> linksList = new ArrayList<>();
-            for (LinkInfoData link : links) {
+            List<Wedge> linksList = new ArrayList<>();
+            for (LinkWedge link : links) {
                 if (!link.isHidden())
                     linksList.add(link);
             }

@@ -1,10 +1,10 @@
-package me.jfenn.attribouter.data.info.link;
+package me.jfenn.attribouter.wedges.link;
 
 import android.support.annotation.NonNull;
 
-public class WebsiteLinkInfoData extends LinkInfoData {
+public class WebsiteLinkWedge extends LinkWedge {
 
-    public WebsiteLinkInfoData(@NonNull String url, int priority) {
+    public WebsiteLinkWedge(@NonNull String url, int priority) {
         super("website", "@string/title_attribouter_website", url, "@drawable/ic_attribouter_link", false, priority);
     }
 

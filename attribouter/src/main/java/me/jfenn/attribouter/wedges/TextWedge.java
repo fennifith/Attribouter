@@ -1,4 +1,4 @@
-package me.jfenn.attribouter.data.info;
+package me.jfenn.attribouter.wedges;
 
 import android.content.Context;
 import android.content.res.XmlResourceParser;
@@ -13,16 +13,16 @@ import org.xmlpull.v1.XmlPullParserException;
 import me.jfenn.attribouter.R;
 import me.jfenn.attribouter.utils.ResourceUtils;
 
-public class TextInfoData extends InfoData {
+public class TextWedge extends Wedge {
 
     private String text;
     private boolean isCentered;
 
-    public TextInfoData(XmlResourceParser parser) throws XmlPullParserException {
+    public TextWedge(XmlResourceParser parser) throws XmlPullParserException {
         this(parser.getAttributeValue(null, "text"), parser.getAttributeBooleanValue(null, "centered", false));
     }
 
-    public TextInfoData(String text, boolean isCentered) {
+    public TextWedge(String text, boolean isCentered) {
         super(R.layout.item_attribouter_text);
         this.text = text;
         this.isCentered = isCentered;

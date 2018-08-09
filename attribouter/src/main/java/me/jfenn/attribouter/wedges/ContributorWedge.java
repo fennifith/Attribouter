@@ -1,4 +1,4 @@
-package me.jfenn.attribouter.data.info;
+package me.jfenn.attribouter.wedges;
 
 import android.content.Context;
 import android.content.res.XmlResourceParser;
@@ -14,15 +14,15 @@ import java.io.IOException;
 import me.jfenn.attribouter.R;
 import me.jfenn.attribouter.data.github.GitHubData;
 import me.jfenn.attribouter.data.github.UserData;
-import me.jfenn.attribouter.data.info.link.EmailLinkInfoData;
-import me.jfenn.attribouter.data.info.link.GitHubLinkInfoData;
-import me.jfenn.attribouter.data.info.link.LinkInfoData;
-import me.jfenn.attribouter.data.info.link.WebsiteLinkInfoData;
+import me.jfenn.attribouter.wedges.link.EmailLinkWedge;
+import me.jfenn.attribouter.wedges.link.GitHubLinkWedge;
+import me.jfenn.attribouter.wedges.link.LinkWedge;
+import me.jfenn.attribouter.wedges.link.WebsiteLinkWedge;
 import me.jfenn.attribouter.dialogs.UserDialog;
 import me.jfenn.attribouter.interfaces.Mergeable;
 import me.jfenn.attribouter.utils.ResourceUtils;
 
-public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder> implements Mergeable<ContributorInfoData> {
+public class ContributorWedge extends Wedge<ContributorWedge.ViewHolder> implements Mergeable<ContributorWedge> {
 
     @Nullable
     public String login;
@@ -43,7 +43,7 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
 
     private boolean isHidden;
 
-    public ContributorInfoData(XmlResourceParser parser) throws XmlPullParserException, IOException {
+    public ContributorWedge(XmlResourceParser parser) throws XmlPullParserException, IOException {
         this(parser.getAttributeValue(null, "login"),
                 parser.getAttributeValue(null, "name"),
                 parser.getAttributeValue(null, "avatar"),
@@ -61,7 +61,7 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
             addRequest(new UserData(login));
     }
 
-    ContributorInfoData(@Nullable String login, @Nullable String name, @Nullable String avatarUrl, @Nullable String task, @Nullable Integer position, @Nullable String bio, @Nullable String blog, @Nullable String email) {
+    ContributorWedge(@Nullable String login, @Nullable String name, @Nullable String avatarUrl, @Nullable String task, @Nullable Integer position, @Nullable String bio, @Nullable String blog, @Nullable String email) {
         super(R.layout.item_attribouter_contributor);
         this.login = login;
         this.name = name;
@@ -73,18 +73,18 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
         this.email = email;
 
         if (login != null)
-            addChild(new GitHubLinkInfoData(login, 1));
+            addChild(new GitHubLinkWedge(login, 1));
         if (blog != null)
-            addChild(new WebsiteLinkInfoData(blog, 2));
+            addChild(new WebsiteLinkWedge(blog, 2));
         if (email != null)
-            addChild(new EmailLinkInfoData(email, -1));
+            addChild(new EmailLinkWedge(email, -1));
     }
 
     @Override
     public void onInit(GitHubData data) {
         if (data instanceof UserData) {
             UserData user = (UserData) data;
-            merge(new ContributorInfoData(
+            merge(new ContributorWedge(
                     user.login,
                     user.name,
                     user.avatar_url,
@@ -102,7 +102,7 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
         return name != null ? name : login;
     }
 
-    public ContributorInfoData merge(ContributorInfoData contributor) {
+    public ContributorWedge merge(ContributorWedge contributor) {
         if ((name == null || !name.startsWith("^")) && contributor.name != null)
             name = contributor.name;
         if ((avatarUrl == null || !avatarUrl.startsWith("^")) && contributor.avatarUrl != null)
@@ -116,7 +116,7 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
         if ((task == null || !task.startsWith("^")) && contributor.task != null)
             task = contributor.task;
 
-        for (InfoData child : contributor.getChildren())
+        for (Wedge child : contributor.getChildren())
             addChild(child);
 
         return this;
@@ -134,8 +134,8 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof ContributorInfoData) {
-            ContributorInfoData contributor = (ContributorInfoData) obj;
+        if (obj instanceof ContributorWedge) {
+            ContributorWedge contributor = (ContributorWedge) obj;
             return (login != null && contributor.login != null && login.toLowerCase().equals(contributor.login.toLowerCase())) || super.equals(obj);
         } else return super.equals(obj);
     }
@@ -158,13 +158,13 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    new UserDialog(view.getContext(), ContributorInfoData.this)
+                    new UserDialog(view.getContext(), ContributorWedge.this)
                             .show();
                 }
             });
         } else {
-            LinkInfoData importantLink = null;
-            for (LinkInfoData link : getChildren(LinkInfoData.class)) {
+            LinkWedge importantLink = null;
+            for (LinkWedge link : getChildren(LinkWedge.class)) {
                 if (!link.isHidden() && (importantLink == null || link.getPriority() > importantLink.getPriority()))
                     importantLink = link;
             }
@@ -173,7 +173,7 @@ public class ContributorInfoData extends InfoData<ContributorInfoData.ViewHolder
         }
     }
 
-    static class ViewHolder extends InfoData.ViewHolder {
+    static class ViewHolder extends Wedge.ViewHolder {
 
         private ImageView imageView;
         private TextView nameView;

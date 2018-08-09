@@ -1,4 +1,4 @@
-package me.jfenn.attribouter.data.info;
+package me.jfenn.attribouter.wedges;
 
 import android.content.Context;
 import android.content.res.XmlResourceParser;
@@ -24,14 +24,14 @@ import me.jfenn.attribouter.dialogs.OverflowDialog;
 import me.jfenn.attribouter.interfaces.Mergeable;
 import me.jfenn.attribouter.utils.ResourceUtils;
 
-public class TranslatorsInfoData extends InfoData<TranslatorsInfoData.ViewHolder> {
+public class TranslatorsWedge extends Wedge<TranslatorsWedge.ViewHolder> {
 
     @Nullable
     private String translatorsTitle;
-    private List<InfoData> sortedTranslators;
+    private List<Wedge> sortedTranslators;
     private int overflow;
 
-    public TranslatorsInfoData(XmlResourceParser parser) throws XmlPullParserException, IOException {
+    public TranslatorsWedge(XmlResourceParser parser) throws XmlPullParserException, IOException {
         super(R.layout.item_attribouter_translators);
         translatorsTitle = parser.getAttributeValue(null, "title");
         if (translatorsTitle == null)
@@ -49,7 +49,7 @@ public class TranslatorsInfoData extends InfoData<TranslatorsInfoData.ViewHolder
                     if (contributor.login == null)
                         continue;
 
-                    InfoData child = addChild(new TranslatorInfoData(
+                    Wedge child = addChild(new TranslatorWedge(
                             contributor.login,
                             null,
                             contributor.avatar_url,
@@ -64,7 +64,7 @@ public class TranslatorsInfoData extends InfoData<TranslatorsInfoData.ViewHolder
             }
         } else if (data instanceof UserData) {
             UserData user = (UserData) data;
-            addChild(0, new TranslatorInfoData(
+            addChild(0, new TranslatorWedge(
                     user.login,
                     user.name,
                     user.avatar_url,
@@ -83,11 +83,11 @@ public class TranslatorsInfoData extends InfoData<TranslatorsInfoData.ViewHolder
     @Override
     public void bind(Context context, ViewHolder viewHolder) {
         int remaining = overflow;
-        List<InfoData> sortedList = new ArrayList<>();
+        List<Wedge> sortedList = new ArrayList<>();
         sortedTranslators = new ArrayList<>();
         for (String language : Locale.getISOLanguages()) {
             boolean isHeader = false;
-            for (TranslatorInfoData translator : getChildren(TranslatorInfoData.class)) {
+            for (TranslatorWedge translator : getChildren(TranslatorWedge.class)) {
                 if (translator.locales == null || translator.locales.length() < 1)
                     continue;
 
@@ -101,7 +101,7 @@ public class TranslatorsInfoData extends InfoData<TranslatorsInfoData.ViewHolder
 
                 if (isLocale) {
                     if (!isHeader) {
-                        InfoData header = new HeaderInfoData(new Locale(language).getDisplayLanguage());
+                        Wedge header = new HeaderWedge(new Locale(language).getDisplayLanguage());
                         sortedTranslators.add(header);
                         if (remaining != 0)
                             sortedList.add(header);
@@ -158,7 +158,7 @@ public class TranslatorsInfoData extends InfoData<TranslatorsInfoData.ViewHolder
         } else viewHolder.expand.setVisibility(View.GONE);
     }
 
-    class ViewHolder extends InfoData.ViewHolder {
+    class ViewHolder extends Wedge.ViewHolder {
 
         private TextView titleView;
         private RecyclerView recycler;

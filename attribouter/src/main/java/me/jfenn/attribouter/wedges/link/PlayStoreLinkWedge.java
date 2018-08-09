@@ -1,4 +1,4 @@
-package me.jfenn.attribouter.data.info.link;
+package me.jfenn.attribouter.wedges.link;
 
 import android.content.Context;
 import android.content.res.XmlResourceParser;
@@ -7,9 +7,9 @@ import android.view.View;
 
 import me.jfenn.attribouter.utils.UrlClickListener;
 
-public class PlayStoreLinkInfoData extends LinkInfoData {
+public class PlayStoreLinkWedge extends LinkWedge {
 
-    public PlayStoreLinkInfoData(XmlResourceParser parser) {
+    public PlayStoreLinkWedge(XmlResourceParser parser) {
         this(null, 0);
 
         String priorityString = parser.getAttributeValue(null, "priority");
@@ -17,7 +17,7 @@ public class PlayStoreLinkInfoData extends LinkInfoData {
             priority = Integer.parseInt(priorityString);
     }
 
-    public PlayStoreLinkInfoData(@Nullable String url, int priority) {
+    public PlayStoreLinkWedge(@Nullable String url, int priority) {
         super("playStore", "@string/title_attribouter_rate", url, "@drawable/ic_attribouter_rate", false, priority);
     }
 

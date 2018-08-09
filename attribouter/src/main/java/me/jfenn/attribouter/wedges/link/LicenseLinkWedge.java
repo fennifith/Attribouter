@@ -1,19 +1,19 @@
-package me.jfenn.attribouter.data.info.link;
+package me.jfenn.attribouter.wedges.link;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import me.jfenn.attribouter.data.info.LicenseInfoData;
+import me.jfenn.attribouter.wedges.LicenseWedge;
 import me.jfenn.attribouter.dialogs.LicenseDialog;
 import me.jfenn.attribouter.utils.UrlClickListener;
 
-public class LicenseLinkInfoData extends LinkInfoData {
+public class LicenseLinkWedge extends LinkWedge {
 
-    private LicenseInfoData license;
+    private LicenseWedge license;
 
-    public LicenseLinkInfoData(@NonNull LicenseInfoData license, int priority) {
+    public LicenseLinkWedge(@NonNull LicenseWedge license, int priority) {
         super("license", "@string/title_attribouter_license", null, "@drawable/ic_attribouter_copyright", false, priority);
         this.license = license;
     }

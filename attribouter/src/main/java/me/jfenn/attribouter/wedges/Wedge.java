@@ -1,4 +1,4 @@
-package me.jfenn.attribouter.data.info;
+package me.jfenn.attribouter.wedges;
 
 import android.content.Context;
 import android.content.res.XmlResourceParser;
@@ -18,15 +18,15 @@ import java.util.List;
 import me.jfenn.attribouter.data.github.GitHubData;
 import me.jfenn.attribouter.interfaces.Mergeable;
 
-public abstract class InfoData<T extends InfoData.ViewHolder> implements GitHubData.OnInitListener {
+public abstract class Wedge<T extends Wedge.ViewHolder> implements GitHubData.OnInitListener {
 
     private int layoutRes;
-    private List<InfoData> children;
+    private List<Wedge> children;
     private List<GitHubData> requests;
 
     private OnRequestListener listener;
 
-    public InfoData(@LayoutRes int layoutRes) {
+    public Wedge(@LayoutRes int layoutRes) {
         this.layoutRes = layoutRes;
         requests = new ArrayList<>();
         children = new ArrayList<>();
@@ -38,7 +38,7 @@ public abstract class InfoData<T extends InfoData.ViewHolder> implements GitHubD
                 try {
                     Class<?> classy = Class.forName(parser.getName());
                     Constructor constructor = classy.getConstructor(XmlResourceParser.class);
-                    addChild((InfoData) constructor.newInstance(parser));
+                    addChild((Wedge) constructor.newInstance(parser));
                 } catch (ClassNotFoundException e) {
                     Log.e("Attribouter", "Class name \"" + parser.getName() + "\" not found - you should probably check your configuration file for typos.");
                     e.printStackTrace();
@@ -59,15 +59,15 @@ public abstract class InfoData<T extends InfoData.ViewHolder> implements GitHubD
         }
     }
 
-    InfoData addChild(InfoData child) {
+    Wedge addChild(Wedge child) {
         return addChild(children.size(), child);
     }
 
-    InfoData addChild(int index, InfoData child) {
+    Wedge addChild(int index, Wedge child) {
         if (!children.contains(child)) {
             children.add(index, child);
         } else {
-            InfoData merger = children.get(children.indexOf(child));
+            Wedge merger = children.get(children.indexOf(child));
             if (merger instanceof Mergeable) {
                 ((Mergeable) merger).merge(child);
                 return merger;
@@ -82,13 +82,13 @@ public abstract class InfoData<T extends InfoData.ViewHolder> implements GitHubD
         return child;
     }
 
-    public List<InfoData> getChildren() {
+    public List<Wedge> getChildren() {
         return children;
     }
 
-    public <X extends InfoData> List<X> getChildren(Class<X> type) {
+    public <X extends Wedge> List<X> getChildren(Class<X> type) {
         List<X> children = new ArrayList<>();
-        for (InfoData info : getChildren()) {
+        for (Wedge info : getChildren()) {
             if (type.isInstance(info))
                 children.add((X) info);
         }
@@ -110,7 +110,7 @@ public abstract class InfoData<T extends InfoData.ViewHolder> implements GitHubD
                 listener.onRequest(this, request);
         }
 
-        for (InfoData child : children)
+        for (Wedge child : children)
             child.setOnRequestListener(listener);
     }
 
@@ -147,7 +147,7 @@ public abstract class InfoData<T extends InfoData.ViewHolder> implements GitHubD
     }
 
     public interface OnRequestListener {
-        void onRequest(InfoData info, GitHubData request);
+        void onRequest(Wedge info, GitHubData request);
     }
 
 }

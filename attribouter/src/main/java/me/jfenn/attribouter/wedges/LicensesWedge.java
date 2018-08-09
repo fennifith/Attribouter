@@ -1,4 +1,4 @@
-package me.jfenn.attribouter.data.info;
+package me.jfenn.attribouter.wedges;
 
 import android.content.Context;
 import android.content.res.XmlResourceParser;
@@ -20,13 +20,13 @@ import me.jfenn.attribouter.data.github.RepositoryData;
 import me.jfenn.attribouter.dialogs.OverflowDialog;
 import me.jfenn.attribouter.utils.ResourceUtils;
 
-public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
+public class LicensesWedge extends Wedge<LicensesWedge.ViewHolder> {
 
     @Nullable
     private String title;
     private int overflow;
 
-    public LicensesInfoData(XmlResourceParser parser) throws XmlPullParserException, IOException {
+    public LicensesWedge(XmlResourceParser parser) throws XmlPullParserException, IOException {
         super(R.layout.item_attribouter_licenses);
         title = parser.getAttributeValue(null, "title");
         if (title == null)
@@ -37,7 +37,7 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
         addChildren(parser);
 
         if (showDefaults) {
-            addChild(new LicenseInfoData(
+            addChild(new LicenseWedge(
                             "TheAndroidMaster/Attribouter",
                             "Attribouter",
                             "A lightweight \"about screen\" library to allow quick but customizable attribution in Android apps.",
@@ -51,7 +51,7 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
                             null,
                             null,
                             "apache-2.0"));
-            addChild(new LicenseInfoData(
+            addChild(new LicenseWedge(
                             "google/gson",
                             "Gson",
                             "A Java serialization/deserialization library to convert Java Objects into JSON and back",
@@ -65,7 +65,7 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
                             null,
                             null,
                             "apache-2.0"));
-            addChild(new LicenseInfoData(
+            addChild(new LicenseWedge(
                             "google/flexbox-layout",
                             "FlexBox Layout",
                             "FlexboxLayout is a library that brings similar capabilities to the CSS Flexible Box Layout to Android.",
@@ -79,7 +79,7 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
                             null,
                             null,
                             "apache-2.0"));
-            addChild(new LicenseInfoData(
+            addChild(new LicenseWedge(
                             "bumptech/glide",
                             "Glide",
                             "An image loading and caching library for Android focused on smooth scrolling",
@@ -93,7 +93,7 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
                             null,
                             null,
                             null));
-            addChild(new LicenseInfoData(
+            addChild(new LicenseWedge(
                             null,
                             "Android Open Source Project",
                             "Android is an open source software stack for a wide range of mobile devices and a corresponding open source project led by Google.",
@@ -115,7 +115,7 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
         if (data instanceof RepositoryData) {
             RepositoryData repo = (RepositoryData) data;
             for (String tag : repo.getTags()) {
-                LicenseInfoData mergeLicense = new LicenseInfoData(
+                LicenseWedge mergeLicense = new LicenseWedge(
                         tag,
                         null,
                         repo.description,
@@ -132,9 +132,9 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
                 );
 
                 if (getChildren().contains(mergeLicense)) {
-                    InfoData info = getChildren().get(getChildren().indexOf(mergeLicense));
-                    if (info instanceof LicenseInfoData) {
-                        LicenseInfoData license = (LicenseInfoData) info;
+                    Wedge info = getChildren().get(getChildren().indexOf(mergeLicense));
+                    if (info instanceof LicenseWedge) {
+                        LicenseWedge license = (LicenseWedge) info;
                         license.merge(mergeLicense);
                         if (repo.license != null && repo.license.key != null && !license.hasAllLicense()) {
                             LicenseData request = new LicenseData(repo.license.key);
@@ -148,12 +148,12 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
             }
         } else if (data instanceof LicenseData) {
             LicenseData license = (LicenseData) data;
-            for (InfoData info : getChildren()) {
-                if (info instanceof LicenseInfoData) {
-                    LicenseInfoData licenseInfo = (LicenseInfoData) info;
+            for (Wedge info : getChildren()) {
+                if (info instanceof LicenseWedge) {
+                    LicenseWedge licenseInfo = (LicenseWedge) info;
 
                     if (license.getTags().contains(licenseInfo.token)) {
-                        licenseInfo.merge(new LicenseInfoData(
+                        licenseInfo.merge(new LicenseWedge(
                                 null,
                                 null,
                                 null,
@@ -221,7 +221,7 @@ public class LicensesInfoData extends InfoData<LicensesInfoData.ViewHolder> {
         } else viewHolder.expand.setVisibility(View.GONE);
     }
 
-    static class ViewHolder extends InfoData.ViewHolder {
+    static class ViewHolder extends Wedge.ViewHolder {
 
         private TextView titleView;
         private RecyclerView recycler;

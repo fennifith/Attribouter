@@ -1,4 +1,4 @@
-package me.jfenn.attribouter.data.info;
+package me.jfenn.attribouter.wedges;
 
 import android.content.Context;
 import android.content.res.XmlResourceParser;
@@ -25,14 +25,14 @@ import me.jfenn.attribouter.adapters.InfoAdapter;
 import me.jfenn.attribouter.data.github.GitHubData;
 import me.jfenn.attribouter.data.github.LicenseData;
 import me.jfenn.attribouter.data.github.RepositoryData;
-import me.jfenn.attribouter.data.info.link.GitHubLinkInfoData;
-import me.jfenn.attribouter.data.info.link.LicenseLinkInfoData;
-import me.jfenn.attribouter.data.info.link.LinkInfoData;
-import me.jfenn.attribouter.data.info.link.WebsiteLinkInfoData;
+import me.jfenn.attribouter.wedges.link.GitHubLinkWedge;
+import me.jfenn.attribouter.wedges.link.LicenseLinkWedge;
+import me.jfenn.attribouter.wedges.link.LinkWedge;
+import me.jfenn.attribouter.wedges.link.WebsiteLinkWedge;
 import me.jfenn.attribouter.interfaces.Mergeable;
 import me.jfenn.attribouter.utils.ResourceUtils;
 
-public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> implements Mergeable<LicenseInfoData> {
+public class LicenseWedge extends Wedge<LicenseWedge.ViewHolder> implements Mergeable<LicenseWedge> {
 
     @Nullable
     String token;
@@ -63,7 +63,7 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> implem
     @Nullable
     String licenseKey;
 
-    public LicenseInfoData(XmlResourceParser parser) throws IOException, XmlPullParserException {
+    public LicenseWedge(XmlResourceParser parser) throws IOException, XmlPullParserException {
         this(parser.getAttributeValue(null, "repo"),
                 parser.getAttributeValue(null, "title"),
                 parser.getAttributeValue(null, "description"),
@@ -89,7 +89,7 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> implem
         }
     }
 
-    public LicenseInfoData(@Nullable String repo, @Nullable String title, @Nullable String description, @Nullable String licenseName, @Nullable String websiteUrl, @Nullable String gitHubUrl, @Nullable String licenseUrl, @Nullable String[] licensePermissions, @Nullable String[] licenseConditions, @Nullable String[] licenseLimitations, @Nullable String licenseDescription, @Nullable String licenseBody, @Nullable String licenseKey) {
+    public LicenseWedge(@Nullable String repo, @Nullable String title, @Nullable String description, @Nullable String licenseName, @Nullable String websiteUrl, @Nullable String gitHubUrl, @Nullable String licenseUrl, @Nullable String[] licensePermissions, @Nullable String[] licenseConditions, @Nullable String[] licenseLimitations, @Nullable String licenseDescription, @Nullable String licenseBody, @Nullable String licenseKey) {
         super(R.layout.item_attribouter_license);
         this.repo = repo;
         this.title = title;
@@ -110,18 +110,18 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> implem
         else token = title;
 
         if (websiteUrl != null && !websiteUrl.isEmpty())
-            addChild(new WebsiteLinkInfoData(websiteUrl, 2));
+            addChild(new WebsiteLinkWedge(websiteUrl, 2));
         if (repo != null)
-            addChild(new GitHubLinkInfoData(repo, 1));
+            addChild(new GitHubLinkWedge(repo, 1));
         if (licenseBody != null || licenseUrl != null)
-            addChild(new LicenseLinkInfoData(this, 0));
+            addChild(new LicenseLinkWedge(this, 0));
     }
 
     @Override
     public void onInit(GitHubData data) {
         if (data instanceof RepositoryData) {
             RepositoryData repo = (RepositoryData) data;
-            merge(new LicenseInfoData(
+            merge(new LicenseWedge(
                     null,
                     null,
                     repo.description,
@@ -141,7 +141,7 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> implem
                 addRequest(new LicenseData(repo.license.key));
         } else if (data instanceof LicenseData) {
             LicenseData license = (LicenseData) data;
-            merge(new LicenseInfoData(
+            merge(new LicenseWedge(
                     null,
                     null,
                     null,
@@ -240,8 +240,8 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> implem
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof LicenseInfoData) {
-            LicenseInfoData license = (LicenseInfoData) obj;
+        if (obj instanceof LicenseWedge) {
+            LicenseWedge license = (LicenseWedge) obj;
             return (repo != null && ((license.repo != null && repo.toLowerCase().equals(license.repo.toLowerCase())) || (license.title != null && repo.toLowerCase().equals(license.title.toLowerCase()))))
                     || (title != null && ((license.repo != null && title.toLowerCase().equals(license.repo.toLowerCase())) || license.title != null && title.toLowerCase().equals(license.title.toLowerCase())))
                     || super.equals(obj);
@@ -263,12 +263,12 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> implem
             viewHolder.licenseView.setText(ResourceUtils.getString(context, licenseName));
         } else viewHolder.licenseView.setVisibility(View.GONE);
 
-        List<LinkInfoData> links = getChildren(LinkInfoData.class);
+        List<LinkWedge> links = getChildren(LinkWedge.class);
         if (links.size() > 0) {
-            Collections.sort(links, new LinkInfoData.Comparator(context));
+            Collections.sort(links, new LinkWedge.Comparator(context));
 
-            List<InfoData> linksList = new ArrayList<>();
-            for (LinkInfoData link : links) {
+            List<Wedge> linksList = new ArrayList<>();
+            for (LinkWedge link : links) {
                 if (!link.isHidden())
                     linksList.add(link);
             }
@@ -282,8 +282,8 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> implem
             viewHolder.links.setAdapter(new InfoAdapter(linksList));
         } else viewHolder.links.setVisibility(View.GONE);
 
-        LinkInfoData importantLink = null;
-        for (LinkInfoData link : links) {
+        LinkWedge importantLink = null;
+        for (LinkWedge link : links) {
             if (importantLink == null || link.getPriority() > importantLink.getPriority())
                 importantLink = link;
         }
@@ -292,7 +292,7 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> implem
     }
 
     @Override
-    public LicenseInfoData merge(LicenseInfoData mergee) {
+    public LicenseWedge merge(LicenseWedge mergee) {
         if ((title == null || !title.startsWith("^")) && mergee.title != null && !mergee.title.isEmpty())
             title = mergee.title;
         if ((description == null || !description.startsWith("^")) && mergee.description != null && !mergee.description.isEmpty())
@@ -316,7 +316,7 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> implem
         if ((licenseBody == null || !licenseBody.startsWith("^")) && mergee.licenseBody != null)
             licenseBody = mergee.licenseBody;
 
-        for (InfoData child : mergee.getChildren())
+        for (Wedge child : mergee.getChildren())
             addChild(child);
 
         return this;
@@ -340,7 +340,7 @@ public class LicenseInfoData extends InfoData<LicenseInfoData.ViewHolder> implem
         return false;
     }
 
-    static class ViewHolder extends InfoData.ViewHolder {
+    static class ViewHolder extends Wedge.ViewHolder {
 
         private TextView titleView;
         private TextView descriptionView;

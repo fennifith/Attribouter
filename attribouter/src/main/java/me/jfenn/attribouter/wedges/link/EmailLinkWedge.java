@@ -1,11 +1,11 @@
-package me.jfenn.attribouter.data.info.link;
+package me.jfenn.attribouter.wedges.link;
 
 import android.content.res.XmlResourceParser;
 import android.support.annotation.NonNull;
 
-public class EmailLinkInfoData extends LinkInfoData {
+public class EmailLinkWedge extends LinkWedge {
 
-    public EmailLinkInfoData(XmlResourceParser parser) {
+    public EmailLinkWedge(XmlResourceParser parser) {
         this(parser.getAttributeValue(null, "email"), 0);
 
         String priorityString = parser.getAttributeValue(null, "priority");
@@ -13,7 +13,7 @@ public class EmailLinkInfoData extends LinkInfoData {
             priority = Integer.parseInt(priorityString);
     }
 
-    public EmailLinkInfoData(@NonNull String address, int priority) {
+    public EmailLinkWedge(@NonNull String address, int priority) {
         super("email", "@string/title_attribouter_email", "mailto:" + address, "@drawable/ic_attribouter_email", false, priority);
     }
 

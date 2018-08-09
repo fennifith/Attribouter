@@ -7,15 +7,15 @@ import android.view.View;
 import android.widget.TextView;
 
 import me.jfenn.attribouter.R;
-import me.jfenn.attribouter.data.info.LicenseInfoData;
+import me.jfenn.attribouter.wedges.LicenseWedge;
 import me.jfenn.attribouter.utils.ResourceUtils;
 import me.jfenn.attribouter.utils.UrlClickListener;
 
 public class LicenseDialog extends AppCompatDialog {
 
-    private LicenseInfoData license;
+    private LicenseWedge license;
 
-    public LicenseDialog(Context context, LicenseInfoData license) {
+    public LicenseDialog(Context context, LicenseWedge license) {
         super(context, ResourceUtils.getThemeResourceAttribute(context, R.styleable.AttribouterTheme_licenseDialogTheme, R.style.AttribouterTheme_Dialog));
         this.license = license;
     }

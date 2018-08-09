@@ -12,15 +12,15 @@ import java.util.List;
 
 import me.jfenn.attribouter.R;
 import me.jfenn.attribouter.adapters.InfoAdapter;
-import me.jfenn.attribouter.data.info.InfoData;
+import me.jfenn.attribouter.wedges.Wedge;
 import me.jfenn.attribouter.utils.ResourceUtils;
 
 public class OverflowDialog extends AppCompatDialog {
 
     private String title;
-    private List<InfoData> items;
+    private List<Wedge> items;
 
-    public OverflowDialog(Context context, String title, List<InfoData> items) {
+    public OverflowDialog(Context context, String title, List<Wedge> items) {
         super(context, ResourceUtils.getThemeResourceAttribute(context, R.styleable.AttribouterTheme_overflowDialogTheme, R.style.AttribouterTheme_Dialog_Fullscreen));
         this.title = title;
         this.items = items;

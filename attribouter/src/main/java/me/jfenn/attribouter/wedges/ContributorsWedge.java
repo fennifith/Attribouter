@@ -1,4 +1,4 @@
-package me.jfenn.attribouter.data.info;
+package me.jfenn.attribouter.wedges;
 
 import android.content.Context;
 import android.content.res.XmlResourceParser;
@@ -26,7 +26,7 @@ import me.jfenn.attribouter.interfaces.Mergeable;
 import me.jfenn.attribouter.utils.ResourceUtils;
 import me.jfenn.attribouter.utils.UrlClickListener;
 
-public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHolder> {
+public class ContributorsWedge extends Wedge<ContributorsWedge.ViewHolder> {
 
     @Nullable
     private String repo;
@@ -34,7 +34,7 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
     private String contributorsTitle;
     private int overflow;
 
-    public ContributorsInfoData(XmlResourceParser parser) throws XmlPullParserException, IOException {
+    public ContributorsWedge(XmlResourceParser parser) throws XmlPullParserException, IOException {
         super(R.layout.item_attribouter_contributors);
         repo = parser.getAttributeValue(null, "repo");
         contributorsTitle = parser.getAttributeValue(null, "title");
@@ -46,7 +46,7 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
         addChildren(parser);
 
         if (showDefaults) {
-            ContributorInfoData me = new ContributorInfoData(
+            ContributorWedge me = new ContributorWedge(
                     "TheAndroidMaster",
                     "James Fenn",
                     "https://avatars1.githubusercontent.com/u/13000407",
@@ -72,7 +72,7 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
                     if (contributor.login == null)
                         continue;
 
-                    InfoData info = addChild(new ContributorInfoData(
+                    Wedge info = addChild(new ContributorWedge(
                             contributor.login,
                             null,
                             contributor.avatar_url,
@@ -89,7 +89,7 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
             }
         } else if (data instanceof UserData) {
             UserData user = (UserData) data;
-            addChild(0, new ContributorInfoData(
+            addChild(0, new ContributorWedge(
                     user.login,
                     user.name,
                     user.avatar_url,
@@ -136,10 +136,10 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
         if (contributorsTitle != null)
             viewHolder.titleView.setText(ResourceUtils.getString(context, contributorsTitle));
 
-        ContributorInfoData first = null, second = null, third = null;
-        List<InfoData> remainingContributors = new ArrayList<>();
+        ContributorWedge first = null, second = null, third = null;
+        List<Wedge> remainingContributors = new ArrayList<>();
         int hiddenContributors = 0;
-        for (ContributorInfoData contributor : getChildren(ContributorInfoData.class)) {
+        for (ContributorWedge contributor : getChildren(ContributorWedge.class)) {
             if (contributor.isHidden()) {
                 hiddenContributors++;
                 continue;
@@ -177,7 +177,7 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
                 viewHolder.firstView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        new UserDialog(view.getContext(), (ContributorInfoData) view.getTag())
+                        new UserDialog(view.getContext(), (ContributorWedge) view.getTag())
                                 .show();
                     }
                 });
@@ -199,7 +199,7 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
                 viewHolder.secondView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        new UserDialog(view.getContext(), (ContributorInfoData) view.getTag())
+                        new UserDialog(view.getContext(), (ContributorWedge) view.getTag())
                                 .show();
                     }
                 });
@@ -221,7 +221,7 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
                 viewHolder.thirdView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        new UserDialog(view.getContext(), (ContributorInfoData) view.getTag())
+                        new UserDialog(view.getContext(), (ContributorWedge) view.getTag())
                                 .show();
                     }
                 });
@@ -254,8 +254,8 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
             viewHolder.expand.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ArrayList<InfoData> overflowList = new ArrayList<>();
-                    for (ContributorInfoData contributor : getChildren(ContributorInfoData.class)) {
+                    ArrayList<Wedge> overflowList = new ArrayList<>();
+                    for (ContributorWedge contributor : getChildren(ContributorWedge.class)) {
                         if (!contributor.isHidden())
                             overflowList.add(contributor);
                     }
@@ -266,7 +266,7 @@ public class ContributorsInfoData extends InfoData<ContributorsInfoData.ViewHold
         } else viewHolder.expand.setVisibility(View.GONE);
     }
 
-    class ViewHolder extends InfoData.ViewHolder {
+    class ViewHolder extends Wedge.ViewHolder {
 
         private TextView titleView;
 

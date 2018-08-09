@@ -1,4 +1,4 @@
-package me.jfenn.attribouter.data.info;
+package me.jfenn.attribouter.wedges;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -26,13 +26,13 @@ import me.jfenn.attribouter.R;
 import me.jfenn.attribouter.adapters.InfoAdapter;
 import me.jfenn.attribouter.data.github.GitHubData;
 import me.jfenn.attribouter.data.github.RepositoryData;
-import me.jfenn.attribouter.data.info.link.GitHubLinkInfoData;
-import me.jfenn.attribouter.data.info.link.LinkInfoData;
-import me.jfenn.attribouter.data.info.link.PlayStoreLinkInfoData;
-import me.jfenn.attribouter.data.info.link.WebsiteLinkInfoData;
+import me.jfenn.attribouter.wedges.link.GitHubLinkWedge;
+import me.jfenn.attribouter.wedges.link.LinkWedge;
+import me.jfenn.attribouter.wedges.link.PlayStoreLinkWedge;
+import me.jfenn.attribouter.wedges.link.WebsiteLinkWedge;
 import me.jfenn.attribouter.utils.ResourceUtils;
 
-public class AppInfoData extends InfoData<AppInfoData.ViewHolder> {
+public class AppWedge extends Wedge<AppWedge.ViewHolder> {
 
     @Nullable
     private String icon;
@@ -45,7 +45,7 @@ public class AppInfoData extends InfoData<AppInfoData.ViewHolder> {
     @Nullable
     private String gitHubUrl;
 
-    public AppInfoData(XmlResourceParser parser) throws IOException, XmlPullParserException {
+    public AppWedge(XmlResourceParser parser) throws IOException, XmlPullParserException {
         super(R.layout.item_attribouter_app_info);
         icon = parser.getAttributeValue(null, "icon");
         description = parser.getAttributeValue(null, "description");
@@ -58,10 +58,10 @@ public class AppInfoData extends InfoData<AppInfoData.ViewHolder> {
             gitHubUrl = "https://github.com/" + repo;
 
         if (repo != null || gitHubUrl != null)
-            addChild(new GitHubLinkInfoData(gitHubUrl != null ? gitHubUrl : repo, 0, gitHubUrl != null));
+            addChild(new GitHubLinkWedge(gitHubUrl != null ? gitHubUrl : repo, 0, gitHubUrl != null));
         if (websiteUrl != null)
-            addChild(new WebsiteLinkInfoData(websiteUrl, 0));
-        addChild(new PlayStoreLinkInfoData(playStoreUrl, 0));
+            addChild(new WebsiteLinkWedge(websiteUrl, 0));
+        addChild(new PlayStoreLinkWedge(playStoreUrl, 0));
 
         addChildren(parser);
         addRequest(new RepositoryData(repo));
@@ -74,16 +74,16 @@ public class AppInfoData extends InfoData<AppInfoData.ViewHolder> {
             if ((description == null || !description.startsWith("^")) && repository.description != null)
                 description = repository.description;
 
-            List<LinkInfoData> newLinks = new ArrayList<>();
+            List<LinkWedge> newLinks = new ArrayList<>();
             if (repository.html_url != null)
-                newLinks.add(new GitHubLinkInfoData(repository.html_url, 0, true));
+                newLinks.add(new GitHubLinkWedge(repository.html_url, 0, true));
             if (repository.homepage != null) {
                 newLinks.add(repository.homepage.startsWith("https://play.google.com/")
-                        ? new PlayStoreLinkInfoData(repository.homepage, 0)
-                        : new WebsiteLinkInfoData(repository.homepage, 0));
+                        ? new PlayStoreLinkWedge(repository.homepage, 0)
+                        : new WebsiteLinkWedge(repository.homepage, 0));
             }
 
-            for (LinkInfoData link : newLinks)
+            for (LinkWedge link : newLinks)
                 addChild(link);
         }
     }
@@ -112,12 +112,12 @@ public class AppInfoData extends InfoData<AppInfoData.ViewHolder> {
             viewHolder.descriptionTextView.setText(actualDescription);
         } else viewHolder.descriptionTextView.setVisibility(View.GONE);
 
-        List<LinkInfoData> links = getChildren(LinkInfoData.class);
+        List<LinkWedge> links = getChildren(LinkWedge.class);
         if (links.size() > 0) {
-            Collections.sort(links, new LinkInfoData.Comparator(context));
+            Collections.sort(links, new LinkWedge.Comparator(context));
 
-            List<InfoData> linksList = new ArrayList<>();
-            for (LinkInfoData link : links) {
+            List<Wedge> linksList = new ArrayList<>();
+            for (LinkWedge link : links) {
                 if (!link.isHidden())
                     linksList.add(link);
             }
@@ -132,7 +132,7 @@ public class AppInfoData extends InfoData<AppInfoData.ViewHolder> {
         } else viewHolder.links.setVisibility(View.GONE);
     }
 
-    static class ViewHolder extends InfoData.ViewHolder {
+    static class ViewHolder extends Wedge.ViewHolder {
 
         ImageView appIconView;
         TextView nameTextView;

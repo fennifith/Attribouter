@@ -1,4 +1,4 @@
-package me.jfenn.attribouter.data.info.link;
+package me.jfenn.attribouter.wedges.link;
 
 import android.content.Context;
 import android.content.res.XmlResourceParser;
@@ -9,12 +9,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import me.jfenn.attribouter.R;
-import me.jfenn.attribouter.data.info.InfoData;
+import me.jfenn.attribouter.wedges.Wedge;
 import me.jfenn.attribouter.interfaces.Mergeable;
 import me.jfenn.attribouter.utils.ResourceUtils;
 import me.jfenn.attribouter.utils.UrlClickListener;
 
-public class LinkInfoData extends InfoData<LinkInfoData.ViewHolder> implements Mergeable<LinkInfoData> {
+public class LinkWedge extends Wedge<LinkWedge.ViewHolder> implements Mergeable<LinkWedge> {
 
     @Nullable
     private String id;
@@ -27,7 +27,7 @@ public class LinkInfoData extends InfoData<LinkInfoData.ViewHolder> implements M
     private boolean isHidden;
     int priority;
 
-    public LinkInfoData(XmlResourceParser parser) {
+    public LinkWedge(XmlResourceParser parser) {
         this(parser.getAttributeValue(null, "id"),
                 parser.getAttributeValue(null, "name"),
                 parser.getAttributeValue(null, "url"),
@@ -40,7 +40,7 @@ public class LinkInfoData extends InfoData<LinkInfoData.ViewHolder> implements M
             priority = Integer.parseInt(priorityString);
     }
 
-    public LinkInfoData(@Nullable String id, @Nullable String name, @Nullable String url, @Nullable String icon, boolean isHidden, int priority) {
+    public LinkWedge(@Nullable String id, @Nullable String name, @Nullable String url, @Nullable String icon, boolean isHidden, int priority) {
         super(R.layout.item_attribouter_link);
         this.id = id;
         this.name = name;
@@ -79,7 +79,7 @@ public class LinkInfoData extends InfoData<LinkInfoData.ViewHolder> implements M
     }
 
     @Override
-    public LinkInfoData merge(LinkInfoData mergee) {
+    public LinkWedge merge(LinkWedge mergee) {
         if (id == null && mergee.id != null)
             id = mergee.id;
         if ((name == null || !name.startsWith("^")) && mergee.name != null)
@@ -121,9 +121,9 @@ public class LinkInfoData extends InfoData<LinkInfoData.ViewHolder> implements M
 
     @Override
     public boolean equals(Object obj) {
-        return obj != null && obj instanceof LinkInfoData
-                && ((id != null && id.equals(((LinkInfoData) obj).id))
-                || (url != null ? url.equals(((LinkInfoData) obj).url) : super.equals(obj)));
+        return obj != null && obj instanceof LinkWedge
+                && ((id != null && id.equals(((LinkWedge) obj).id))
+                || (url != null ? url.equals(((LinkWedge) obj).url) : super.equals(obj)));
     }
 
     @Override
@@ -138,14 +138,14 @@ public class LinkInfoData extends InfoData<LinkInfoData.ViewHolder> implements M
         viewHolder.itemView.setOnClickListener(getListener(context));
     }
 
-    public int compareTo(Context context, @NonNull LinkInfoData o) {
+    public int compareTo(Context context, @NonNull LinkWedge o) {
         String name = ResourceUtils.getString(context, this.name);
         String oname = ResourceUtils.getString(context, o.name);
         int comparison = name != null && oname != null ? name.compareTo(oname) : 0;
         return ((o.priority - priority) * 2) + (comparison != 0 ? comparison / Math.abs(comparison) : 0);
     }
 
-    public static class ViewHolder extends InfoData.ViewHolder {
+    public static class ViewHolder extends Wedge.ViewHolder {
 
         private TextView nameView;
         private ImageView iconView;
@@ -157,7 +157,7 @@ public class LinkInfoData extends InfoData<LinkInfoData.ViewHolder> implements M
         }
     }
 
-    public static class Comparator implements java.util.Comparator<LinkInfoData> {
+    public static class Comparator implements java.util.Comparator<LinkWedge> {
 
         private Context context;
 
@@ -166,7 +166,7 @@ public class LinkInfoData extends InfoData<LinkInfoData.ViewHolder> implements M
         }
 
         @Override
-        public int compare(LinkInfoData o1, LinkInfoData o2) {
+        public int compare(LinkWedge o1, LinkWedge o2) {
             return o1.compareTo(context, o2);
         }
     }

@@ -27,19 +27,19 @@ import me.jfenn.attribouter.Attribouter;
 import me.jfenn.attribouter.R;
 import me.jfenn.attribouter.adapters.InfoAdapter;
 import me.jfenn.attribouter.data.github.GitHubData;
-import me.jfenn.attribouter.data.info.AppInfoData;
-import me.jfenn.attribouter.data.info.ContributorsInfoData;
-import me.jfenn.attribouter.data.info.InfoData;
-import me.jfenn.attribouter.data.info.LicensesInfoData;
-import me.jfenn.attribouter.data.info.TextInfoData;
-import me.jfenn.attribouter.data.info.TranslatorsInfoData;
+import me.jfenn.attribouter.wedges.AppWedge;
+import me.jfenn.attribouter.wedges.ContributorsWedge;
+import me.jfenn.attribouter.wedges.Wedge;
+import me.jfenn.attribouter.wedges.LicensesWedge;
+import me.jfenn.attribouter.wedges.TextWedge;
+import me.jfenn.attribouter.wedges.TranslatorsWedge;
 
-public class AboutFragment extends Fragment implements GitHubData.OnInitListener, InfoData.OnRequestListener {
+public class AboutFragment extends Fragment implements GitHubData.OnInitListener, Wedge.OnRequestListener {
 
     private RecyclerView recycler;
     private InfoAdapter adapter;
 
-    private List<InfoData> infos;
+    private List<Wedge> infos;
     private List<GitHubData> requests;
     private String gitHubToken;
 
@@ -64,7 +64,7 @@ public class AboutFragment extends Fragment implements GitHubData.OnInitListener
                     try {
                         Class<?> classy = Class.forName(parser.getName());
                         Constructor<?> constructor = classy.getConstructor(XmlResourceParser.class);
-                        infos.add((InfoData) constructor.newInstance(parser));
+                        infos.add((Wedge) constructor.newInstance(parser));
                         parser.next();
                         continue;
                     } catch (ClassNotFoundException e) {
@@ -87,19 +87,19 @@ public class AboutFragment extends Fragment implements GitHubData.OnInitListener
                     //TODO: here only for backwards compatibility - remove once obsolete
                     switch (parser.getName()) {
                         case "appInfo":
-                            infos.add(new AppInfoData(parser));
+                            infos.add(new AppWedge(parser));
                             break;
                         case "contributors":
-                            infos.add(new ContributorsInfoData(parser));
+                            infos.add(new ContributorsWedge(parser));
                             break;
                         case "translators":
-                            infos.add(new TranslatorsInfoData(parser));
+                            infos.add(new TranslatorsWedge(parser));
                             break;
                         case "licenses":
-                            infos.add(new LicensesInfoData(parser));
+                            infos.add(new LicensesWedge(parser));
                             break;
                         case "text":
-                            infos.add(new TextInfoData(parser));
+                            infos.add(new TextWedge(parser));
                             break;
                     }
                 }
@@ -118,7 +118,7 @@ public class AboutFragment extends Fragment implements GitHubData.OnInitListener
         recycler.setAdapter(adapter);
 
         requests = new ArrayList<>();
-        for (InfoData info : infos) {
+        for (Wedge info : infos) {
             info.setOnRequestListener(this);
         }
 
@@ -141,11 +141,11 @@ public class AboutFragment extends Fragment implements GitHubData.OnInitListener
         recycler.smoothScrollToPosition(0);
     }
 
-    private void notifyChildren(int index, List<InfoData> children, GitHubData data) {
+    private void notifyChildren(int index, List<Wedge> children, GitHubData data) {
         if (children.size() < 1)
             return;
 
-        for (InfoData child : children) {
+        for (Wedge child : children) {
             if (child.hasRequest(data)) {
                 adapter.notifyItemChanged(index);
                 return;
@@ -169,7 +169,7 @@ public class AboutFragment extends Fragment implements GitHubData.OnInitListener
     }
 
     @Override
-    public void onRequest(InfoData info, GitHubData request) {
+    public void onRequest(Wedge info, GitHubData request) {
         if (!requests.contains(request)) {
             requests.add(request);
             request.addOnInitListener(this);

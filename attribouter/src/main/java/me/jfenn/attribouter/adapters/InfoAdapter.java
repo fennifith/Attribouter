@@ -7,25 +7,25 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-import me.jfenn.attribouter.data.info.InfoData;
+import me.jfenn.attribouter.wedges.Wedge;
 
-public class InfoAdapter extends RecyclerView.Adapter<InfoData.ViewHolder> {
+public class InfoAdapter extends RecyclerView.Adapter<Wedge.ViewHolder> {
 
-    private List<InfoData> infos;
+    private List<Wedge> infos;
 
-    public InfoAdapter(List<InfoData> infos) {
+    public InfoAdapter(List<Wedge> infos) {
         this.infos = infos;
     }
 
     @NonNull
     @Override
-    public InfoData.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        InfoData info = infos.get(viewType);
+    public Wedge.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        Wedge info = infos.get(viewType);
         return info.getViewHolder(LayoutInflater.from(parent.getContext()).inflate(info.getLayoutRes(), parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull InfoData.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull Wedge.ViewHolder holder, int position) {
         infos.get(position).bind(holder.itemView.getContext(), holder);
     }
 

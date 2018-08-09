@@ -1,4 +1,4 @@
-package me.jfenn.attribouter.data.info;
+package me.jfenn.attribouter.wedges;
 
 import android.content.Context;
 import android.content.res.XmlResourceParser;
@@ -18,7 +18,7 @@ import me.jfenn.attribouter.interfaces.Mergeable;
 import me.jfenn.attribouter.utils.ResourceUtils;
 import me.jfenn.attribouter.utils.UrlClickListener;
 
-public class TranslatorInfoData extends InfoData<TranslatorInfoData.ViewHolder> implements Mergeable<TranslatorInfoData> {
+public class TranslatorWedge extends Wedge<TranslatorWedge.ViewHolder> implements Mergeable<TranslatorWedge> {
 
     @Nullable
     public String login;
@@ -33,7 +33,7 @@ public class TranslatorInfoData extends InfoData<TranslatorInfoData.ViewHolder> 
     @Nullable
     public String locales;
 
-    public TranslatorInfoData(XmlResourceParser parser) throws IOException, XmlPullParserException {
+    public TranslatorWedge(XmlResourceParser parser) throws IOException, XmlPullParserException {
         this(parser.getAttributeValue(null, "login"),
                 parser.getAttributeValue(null, "name"),
                 parser.getAttributeValue(null, "avatar"),
@@ -45,7 +45,7 @@ public class TranslatorInfoData extends InfoData<TranslatorInfoData.ViewHolder> 
             addRequest(new UserData(login));
     }
 
-    TranslatorInfoData(@Nullable String login, @Nullable String name, @Nullable String avatarUrl, @Nullable String locales, @Nullable String blog, @Nullable String email) {
+    TranslatorWedge(@Nullable String login, @Nullable String name, @Nullable String avatarUrl, @Nullable String locales, @Nullable String blog, @Nullable String email) {
         super(R.layout.item_attribouter_translator);
         this.login = login;
         this.name = name;
@@ -59,7 +59,7 @@ public class TranslatorInfoData extends InfoData<TranslatorInfoData.ViewHolder> 
     public void onInit(GitHubData data) {
         if (data instanceof UserData) {
             UserData user = (UserData) data;
-            merge(new TranslatorInfoData(
+            merge(new TranslatorWedge(
                     user.login,
                     user.name,
                     user.avatar_url,
@@ -76,7 +76,7 @@ public class TranslatorInfoData extends InfoData<TranslatorInfoData.ViewHolder> 
     }
 
     @Override
-    public TranslatorInfoData merge(TranslatorInfoData contributor) {
+    public TranslatorWedge merge(TranslatorWedge contributor) {
         if ((name == null || !name.startsWith("^")) && contributor.name != null)
             name = contributor.name;
         if ((avatarUrl == null || !avatarUrl.startsWith("^")) && contributor.avatarUrl != null)
@@ -107,8 +107,8 @@ public class TranslatorInfoData extends InfoData<TranslatorInfoData.ViewHolder> 
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof TranslatorInfoData) {
-            TranslatorInfoData translator = (TranslatorInfoData) obj;
+        if (obj instanceof TranslatorWedge) {
+            TranslatorWedge translator = (TranslatorWedge) obj;
             return (login != null && translator.login != null && login.toLowerCase().equals(translator.login.toLowerCase())) || super.equals(obj);
         } else return super.equals(obj);
     }
@@ -131,7 +131,7 @@ public class TranslatorInfoData extends InfoData<TranslatorInfoData.ViewHolder> 
         } else viewHolder.itemView.setOnClickListener(null);
     }
 
-    static class ViewHolder extends InfoData.ViewHolder {
+    static class ViewHolder extends Wedge.ViewHolder {
 
         private ImageView imageView;
         private TextView nameView;
