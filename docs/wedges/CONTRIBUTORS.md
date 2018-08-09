@@ -8,7 +8,11 @@ If a user with the login "TheAndroidMaster" is both in GitHub and the configurat
 <me.jfenn.attribouter.wedges.ContributorsWedge
         repo="TheAndroidMaster/Attribouter"
         title="Library Developers"
-        overflow="-1" />
+        overflow="-1" >
+        
+    <!-- contributors -->
+        
+</me.jfenn.attribouter.wedges.ContributorsWedge>
 ```
 
 ## Attributes
