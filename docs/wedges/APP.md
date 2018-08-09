@@ -1,5 +1,15 @@
 The `AppWedge` displays the app icon, name, version, and links to the project sites in a centered layout. By default, the icon and app name are fetched from your app's `AndroidManifest.xml`, and all other information is fetched from the GitHub API if the `repo` attribute has been specified.
 
+## Example
+
+```xml
+<me.jfenn.attribouter.wedges.AppWedge
+    repo="TheAndroidMaster/Attribouter"
+    icon="@mipmap/ic_launcher"
+    description="Attribouter is a library that does things."
+    websiteUrl="https://jfenn.me/Attribouter/" />
+```
+
 ## Attributes
 
 |Attribute|Type|Description|
