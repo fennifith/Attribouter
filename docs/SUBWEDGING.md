@@ -1,4 +1,8 @@
-# Subwedging
+---
+title: Extending a Wedge
+---
+
+# Extending a Wedge
 
 Since the wedges used in the layout file are referenced by their corresponding class name, you may have guessed that it is possible to create your own wedge similarly to how one would create a custom view. You would be correct in that assumption. That said, because there are so many different use cases for this, I'm not going to provide a full "tutorial", but rather explain the basics of how wedges can be created.
 

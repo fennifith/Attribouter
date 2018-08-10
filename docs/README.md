@@ -16,7 +16,6 @@ Welcome to Attribouter's in-depth documentation page! It provides several exampl
 	- [LicenseWedge](./wedges/LICENSE.md)
 - [TranslatorsWedge](./wedges/TRANSLATORS.md)
 	- [TranslatorWedge](./wedges/TRANSLATOR.md)
-- [HeaderWedge](./wedges/HEADER.md)
 - [TextWedge](./wedges/TEXT.md)
 - [LinkWedge](./wedges/LINK.md)
 	- [EmailLinkWedge](./wedges/LINK.md#email)

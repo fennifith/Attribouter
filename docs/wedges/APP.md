@@ -1,3 +1,7 @@
+---
+title: AppWedge
+---
+
 The `AppWedge` displays the app icon, name, version, and links to the project sites in a centered layout. By default, the icon and app name are fetched from your app's `AndroidManifest.xml`, and all other information is fetched from the GitHub API if the `repo` attribute has been specified.
 
 ## Example
