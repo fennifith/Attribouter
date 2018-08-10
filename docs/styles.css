@@ -9,6 +9,13 @@ div#main {
 	margin-right: 10vw;
 }
 
+pre {
+    background-color: #E0E0E0;
+    border: 1px solid #BDBDBD;
+    overflow-x: auto;
+    padding: 16px;
+}
+
 code {
 	font-family: 'Roboto Mono', monospace;
 	background-color: #E0E0E0;
@@ -17,15 +24,17 @@ code {
 	font-size: 0.9em;
 }
 
-pre {
-    background-color: #E0E0E0;
-    border: 1px solid #BDBDBD;
-    overflow-x: auto;
-    padding: 16px;
+code * {
+	font-family: 'Roboto Mono', monospace;
+	font-size: 0.9em;
 }
 
 pre > code {
 	padding-left: 0px;
 	padding-right: 0px;
+	font-size: 1em;
+}
+
+pre > code * {
 	font-size: 1em;
 }
