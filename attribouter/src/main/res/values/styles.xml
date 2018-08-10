@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AttribouterTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/attribouter_textColorPrimary</item>
+        <item name="android:textColorSecondary">@color/attribouter_textColorSecondary</item>
+        <item name="android:textColorTertiary">@color/attribouter_textColorTertiary</item>
+        <item name="android:textColorPrimaryInverse">@color/attribouter_textColorPrimaryInverse</item>
+        <item name="android:textColorSecondaryInverse">@color/attribouter_textColorSecondaryInverse</item>
+        <item name="android:textColorTertiaryInverse">@color/attribouter_textColorTertiaryInverse</item>
+    </style>
+
+    <style name="AttribouterTheme.ActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AttribouterTheme.Dialog" parent="ThemeOverlay.AppCompat.Dialog" />
+
+    <style name="AttribouterTheme.Dialog.Fullscreen" parent="AttribouterTheme">
+        <item name="android:windowAnimationStyle">@style/AttribouterTheme.SlideAnimation</item>
+    </style>
+
+    <style name="AttribouterTheme.SlideAnimation">
+        <item name="android:windowEnterAnimation">@anim/attribouter_slide_in</item>
+        <item name="android:windowExitAnimation">@anim/attribouter_slide_out</item>
+    </style>
+
+</resources>
