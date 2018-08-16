@@ -1,4 +1,6 @@
-# Theming
+---
+title: Custom Themes
+---
 
 ## Activity / Dialog Themes
 

@@ -1,3 +1,7 @@
+---
+title: TextWedge
+---
+
 A `TextWedge` is a block of text. Fairly simple.
 
 ## Example

@@ -1,3 +1,7 @@
+---
+title: Automating CrowdIn Translations
+---
+
 As stated in [issue #23](https://jfenn.me/redirects/?t=github&d=Attribouter/issues/23), no kind of "proper" support for CrowdIn will be added to Attribouter for a while because [their API does not look very fun](https://support.crowdin.com/api/api-integration-setup/). However, [@deletescape](https://github.com/deletescape) has written [a python script](https://github.com/deletescape/dscripts/blob/8b261226deda604df7405708e6e7ae67b6d2e480/gettranslators.py) (below, slightly modified to update the syntax) that uses their API to fetch translators and output them to a file in the correct syntax, which you may find useful for handling large amounts of translators.
 
 ```python

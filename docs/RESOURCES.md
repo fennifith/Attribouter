@@ -1,3 +1,7 @@
+---
+title: Overriding Resources and Providing Translations
+---
+
 # Overriding Resources and Providing Translations
 
 ## Problem

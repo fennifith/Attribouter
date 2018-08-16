@@ -1,3 +1,7 @@
+---
+title: The Configuration File
+---
+
 # The Configuration File
 
 The great File of Configuration is truly a mighty hurdle to overcome when implementing this library. It contains many confusing and difficult concepts such as "tags" and "attributes". However, when it comes down to it, it is really just a weird form of layout file that specifies the information to display instead of how to display it.

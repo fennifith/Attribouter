@@ -1,3 +1,7 @@
+---
+title: LicenseWedge
+---
+
 The `LicenseWedge` is intended to display information about libraries used by your project. Simply displaying this wedge does not guarantee that you are following all of the conditions of the project's license, but it is a good start.
 
 If only the `repo` attribute is specified, this wedge can fetch all of its necessary information from the GitHub API, however it is a good idea to include all of the information in the configuration file as well, so that it is still displayed if the user is offline or there is an issue with the GitHub API.
@@ -30,7 +34,7 @@ If only the `repo` attribute is specified, this wedge can fetch all of its neces
 
 ## Auto-generated Links
 
-The links that are automatically created by this wedge are as follows. See [`LinkWedge`](./LINKS.md) for more information.
+The links that are automatically created by this wedge are as follows. See [`LinkWedge`](./LINK.md) for more information.
 
 |ID|Description|Required Attributes|
 |-----|-----|-----|

@@ -1,3 +1,7 @@
+---
+title: ContributorWedge
+---
+
 The `ContributorWedge` displays a set of information about a person in a small layout. If the `bio` attribute is defined, a dialog will appear upon interaction displaying more information, such as... um... their biography... and links. If it is not defined, it will open the highest priority [`LinkWedge`](./LINK.md) child instead.
 
 ## Example
