@@ -178,7 +178,7 @@ public abstract class GitHubData {
                 cacheToHttpSemaphore.acquire();
 
                 //in the event cache thread did not run before http thread (current thread)
-                if(cacheThread.isAlive()) {
+                if (cacheThread.isAlive()) {
                     try {
                         //release lock so cache thread can run
                         cacheToHttpSemaphore.release();
@@ -194,9 +194,10 @@ public abstract class GitHubData {
                 e.printStackTrace();
             }
 
-            try{
-               if(continueHttpThread) doHttpConnection();
-            }finally {
+            try {
+               if (continueHttpThread)
+                   doHttpConnection();
+            } finally {
                 cacheToHttpSemaphore.release();
             }
         }
@@ -213,7 +214,7 @@ public abstract class GitHubData {
 
                     try {
                         doCacheInspection();
-                    }finally {
+                    } finally {
                         cacheToHttpSemaphore.release();
                     }
                 }
@@ -223,7 +224,7 @@ public abstract class GitHubData {
             return thread;
         }
 
-        private void doCacheInspection(){
+        private void doCacheInspection() {
             File dir = new File(context.getCacheDir() + "/.attribouter/github");
             if (!dir.exists())
                 dir.mkdirs();
@@ -252,7 +253,7 @@ public abstract class GitHubData {
                 if (cache != null) {
                     callInit(cache);
                 } else continueHttpThread = true;
-            }
+            } else continueHttpThread = true;
         }
 
         private void doHttpConnection(){
