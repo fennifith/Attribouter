@@ -187,7 +187,7 @@ public class LicensesWedge extends Wedge<LicensesWedge.ViewHolder> {
             viewHolder.expand.setVisibility(View.GONE);
 
             viewHolder.overflow.setVisibility(View.VISIBLE);
-            viewHolder.overflow.setText(String.format(context.getString(R.string.title_attribouter_view_overflow), ResourceUtils.getString(context, title)));
+            viewHolder.overflow.setText(ResourceUtils.getString(context, title));
 
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

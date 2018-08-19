@@ -13,6 +13,5 @@
     <string name="title_attribouter_license_conditions">Conditions</string>
     <string name="title_attribouter_license_limitations">Limitations</string>
     <string name="title_attribouter_more_info">More Info</string>
-    <string name="title_attribouter_view_overflow">View %s</string>
     <string name="desc_attribouter_licenses_legal">This is not legal advice. The above information is intended solely to inform the user of general information about open source licenses. Open source licenses allow software to be freely used, modified, and shared. However, they do not come without exceptions. Please be aware of the restrictions of the licenses that you are using before publishing your software.</string>
 </resources>
