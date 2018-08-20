@@ -21,6 +21,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.Semaphore;
 
 public abstract class GitHubData {
 
@@ -151,25 +152,85 @@ public abstract class GitHubData {
     }
 
     private static class GitHubThread extends Thread {
-
         private File cacheFile;
         private GitHubData data;
         private String url;
         private String token;
+        private Context context;
+
+        private static final int NUM_OF_PERMITS = 1;
+        private Semaphore cacheToHttpSemaphore;
+        private boolean continueHttpThread = false;
+        private Thread cacheThread;
 
         private GitHubThread(Context context, String token, GitHubData data, String url) {
             this.data = data;
             this.url = url;
             this.token = token;
+            this.context = context;
+            cacheToHttpSemaphore = new Semaphore(NUM_OF_PERMITS, true);
+            cacheThread = startCacheThread();
+        }
+
+        @Override
+        public void run() {
+            try {
+                cacheToHttpSemaphore.acquire();
+
+                //in the event cache thread did not run before http thread (current thread)
+                if (cacheThread.isAlive()) {
+                    try {
+                        //release lock so cache thread can run
+                        cacheToHttpSemaphore.release();
+                        //wait for cache thread to finish
+                        cacheThread.join();
+                        //get lock for this thread
+                        cacheToHttpSemaphore.acquire();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            try {
+               if (continueHttpThread)
+                   doHttpConnection();
+            } finally {
+                cacheToHttpSemaphore.release();
+            }
+        }
+
+        private Thread startCacheThread() {
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        cacheToHttpSemaphore.acquire();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        doCacheInspection();
+                    } finally {
+                        cacheToHttpSemaphore.release();
+                    }
+                }
+            });
+            thread.setPriority(Thread.MAX_PRIORITY);
+            thread.start();
+            return thread;
+        }
+
+        private void doCacheInspection() {
             File dir = new File(context.getCacheDir() + "/.attribouter/github");
             if (!dir.exists())
                 dir.mkdirs();
 
             cacheFile = new File(dir, url.replace("/", ".") + ".json");
-        }
 
-        @Override
-        public void run() {
             String cache = null;
             if (Math.abs(System.currentTimeMillis() - cacheFile.lastModified()) < 864000000) {
                 StringBuilder cacheBuilder = new StringBuilder();
@@ -191,10 +252,11 @@ public abstract class GitHubData {
 
                 if (cache != null) {
                     callInit(cache);
-                    return;
-                }
-            }
+                } else continueHttpThread = true;
+            } else continueHttpThread = true;
+        }
 
+        private void doHttpConnection(){
             HttpURLConnection connection = null;
             BufferedReader jsonReader = null;
             StringBuilder jsonBuilder = new StringBuilder();
@@ -206,12 +268,19 @@ public abstract class GitHubData {
                 jsonReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 if (connection.getResponseCode() == 403) {
                     jsonReader.close();
+                    connection.disconnect();
                     return;
                 }
 
                 String line;
-                while ((line = jsonReader.readLine()) != null)
+                while ((line = jsonReader.readLine()) != null) {
+                    if(isInterrupted()){
+                        connection.disconnect();
+                        jsonReader.close();
+                        return;
+                    }
                     jsonBuilder.append(line);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
                 jsonBuilder = null;

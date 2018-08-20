@@ -47,6 +47,6 @@
         android:paddingBottom="4dp"
         android:textSize="18sp"
         android:textColor="?android:textColorPrimary"
-        tools:text="@string/title_attribouter_view_overflow" />
+        tools:text="View Licenses" />
 
 </LinearLayout>

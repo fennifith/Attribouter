@@ -40,9 +40,6 @@ public class TranslatorWedge extends Wedge<TranslatorWedge.ViewHolder> implement
                 parser.getAttributeValue(null, "locales"),
                 parser.getAttributeValue(null, "blog"),
                 parser.getAttributeValue(null, "email"));
-
-        if (login != null && !hasEverything())
-            addRequest(new UserData(login));
     }
 
     TranslatorWedge(@Nullable String login, @Nullable String name, @Nullable String avatarUrl, @Nullable String locales, @Nullable String blog, @Nullable String email) {
@@ -53,6 +50,9 @@ public class TranslatorWedge extends Wedge<TranslatorWedge.ViewHolder> implement
         this.locales = locales;
         this.blog = blog;
         this.email = email;
+
+        if (login != null && !hasEverything())
+            addRequest(new UserData(login));
     }
 
     @Override

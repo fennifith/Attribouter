@@ -47,6 +47,6 @@
         android:paddingTop="4dp"
         android:textColor="?android:textColorPrimary"
         android:textSize="18sp"
-        tools:text="@string/title_attribouter_view_overflow" />
+        tools:text="View Translators" />
 
 </LinearLayout>

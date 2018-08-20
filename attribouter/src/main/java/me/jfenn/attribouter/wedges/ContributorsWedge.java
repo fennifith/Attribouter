@@ -116,7 +116,7 @@ public class ContributorsWedge extends Wedge<ContributorsWedge.ViewHolder> {
             viewHolder.topThreeView.setVisibility(View.GONE);
 
             viewHolder.overflow.setVisibility(View.VISIBLE);
-            viewHolder.overflow.setText(String.format(context.getString(R.string.title_attribouter_view_overflow), ResourceUtils.getString(context, contributorsTitle)));
+            viewHolder.overflow.setText(ResourceUtils.getString(context, contributorsTitle));
 
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

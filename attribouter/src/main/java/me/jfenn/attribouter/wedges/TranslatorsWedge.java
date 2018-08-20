@@ -124,7 +124,7 @@ public class TranslatorsWedge extends Wedge<TranslatorsWedge.ViewHolder> {
             viewHolder.expand.setVisibility(View.GONE);
 
             viewHolder.overflow.setVisibility(View.VISIBLE);
-            viewHolder.overflow.setText(String.format(context.getString(R.string.title_attribouter_view_overflow), ResourceUtils.getString(context, translatorsTitle)));
+            viewHolder.overflow.setText(ResourceUtils.getString(context, translatorsTitle));
 
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
