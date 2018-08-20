@@ -14,13 +14,13 @@ import java.io.IOException;
 import me.jfenn.attribouter.R;
 import me.jfenn.attribouter.data.github.GitHubData;
 import me.jfenn.attribouter.data.github.UserData;
+import me.jfenn.attribouter.dialogs.UserDialog;
+import me.jfenn.attribouter.interfaces.Mergeable;
+import me.jfenn.attribouter.utils.ResourceUtils;
 import me.jfenn.attribouter.wedges.link.EmailLinkWedge;
 import me.jfenn.attribouter.wedges.link.GitHubLinkWedge;
 import me.jfenn.attribouter.wedges.link.LinkWedge;
 import me.jfenn.attribouter.wedges.link.WebsiteLinkWedge;
-import me.jfenn.attribouter.dialogs.UserDialog;
-import me.jfenn.attribouter.interfaces.Mergeable;
-import me.jfenn.attribouter.utils.ResourceUtils;
 
 public class ContributorWedge extends Wedge<ContributorWedge.ViewHolder> implements Mergeable<ContributorWedge> {
 
@@ -54,11 +54,7 @@ public class ContributorWedge extends Wedge<ContributorWedge.ViewHolder> impleme
                 parser.getAttributeValue(null, "email"));
 
         isHidden = parser.getAttributeBooleanValue(null, "hidden", false);
-
         addChildren(parser);
-
-        if (login != null && !hasAll())
-            addRequest(new UserData(login));
     }
 
     ContributorWedge(@Nullable String login, @Nullable String name, @Nullable String avatarUrl, @Nullable String task, @Nullable Integer position, @Nullable String bio, @Nullable String blog, @Nullable String email) {
@@ -78,6 +74,9 @@ public class ContributorWedge extends Wedge<ContributorWedge.ViewHolder> impleme
             addChild(new WebsiteLinkWedge(blog, 2));
         if (email != null)
             addChild(new EmailLinkWedge(email, -1));
+
+        if (login != null && !hasAll())
+            addRequest(new UserData(login));
     }
 
     @Override
