@@ -25,12 +25,12 @@ import me.jfenn.attribouter.adapters.InfoAdapter;
 import me.jfenn.attribouter.data.github.GitHubData;
 import me.jfenn.attribouter.data.github.LicenseData;
 import me.jfenn.attribouter.data.github.RepositoryData;
+import me.jfenn.attribouter.interfaces.Mergeable;
+import me.jfenn.attribouter.utils.ResourceUtils;
 import me.jfenn.attribouter.wedges.link.GitHubLinkWedge;
 import me.jfenn.attribouter.wedges.link.LicenseLinkWedge;
 import me.jfenn.attribouter.wedges.link.LinkWedge;
 import me.jfenn.attribouter.wedges.link.WebsiteLinkWedge;
-import me.jfenn.attribouter.interfaces.Mergeable;
-import me.jfenn.attribouter.utils.ResourceUtils;
 
 public class LicenseWedge extends Wedge<LicenseWedge.ViewHolder> implements Mergeable<LicenseWedge> {
 
@@ -79,14 +79,6 @@ public class LicenseWedge extends Wedge<LicenseWedge.ViewHolder> implements Merg
                 parser.getAttributeValue(null, "license"));
 
         addChildren(parser);
-
-        if (repo != null && !hasAllGeneric())
-            addRequest(new RepositoryData(repo));
-        if (licenseKey != null && (repo != null || title != null) && !hasAllLicense()) {
-            LicenseData request = new LicenseData(licenseKey);
-            request.addTag(token);
-            addRequest(request);
-        }
     }
 
     public LicenseWedge(@Nullable String repo, @Nullable String title, @Nullable String description, @Nullable String licenseName, @Nullable String websiteUrl, @Nullable String gitHubUrl, @Nullable String licenseUrl, @Nullable String[] licensePermissions, @Nullable String[] licenseConditions, @Nullable String[] licenseLimitations, @Nullable String licenseDescription, @Nullable String licenseBody, @Nullable String licenseKey) {
@@ -115,6 +107,14 @@ public class LicenseWedge extends Wedge<LicenseWedge.ViewHolder> implements Merg
             addChild(new GitHubLinkWedge(repo, 1));
         if (licenseBody != null || licenseUrl != null)
             addChild(new LicenseLinkWedge(this, 0));
+
+        if (repo != null && !hasAllGeneric())
+            addRequest(new RepositoryData(repo));
+        if (licenseKey != null && (repo != null || title != null) && !hasAllLicense()) {
+            LicenseData request = new LicenseData(licenseKey);
+            request.addTag(token);
+            addRequest(request);
+        }
     }
 
     @Override
