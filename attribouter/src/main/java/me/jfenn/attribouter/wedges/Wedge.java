@@ -32,7 +32,7 @@ public abstract class Wedge<T extends Wedge.ViewHolder> implements GitHubData.On
         children = new ArrayList<>();
     }
 
-    void addChildren(XmlResourceParser parser) throws IOException, XmlPullParserException {
+    protected void addChildren(XmlResourceParser parser) throws IOException, XmlPullParserException {
         while (parser.next() != XmlResourceParser.END_TAG || !parser.getName().equals(getClass().getName())) {
             if (parser.getEventType() == XmlResourceParser.START_TAG) {
                 try {

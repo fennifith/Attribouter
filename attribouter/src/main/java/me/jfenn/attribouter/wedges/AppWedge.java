@@ -132,15 +132,15 @@ public class AppWedge extends Wedge<AppWedge.ViewHolder> {
         } else viewHolder.links.setVisibility(View.GONE);
     }
 
-    static class ViewHolder extends Wedge.ViewHolder {
+    protected static class ViewHolder extends Wedge.ViewHolder {
 
-        ImageView appIconView;
-        TextView nameTextView;
-        TextView versionTextView;
-        TextView descriptionTextView;
-        RecyclerView links;
+        protected ImageView appIconView;
+        protected TextView nameTextView;
+        protected TextView versionTextView;
+        protected TextView descriptionTextView;
+        protected RecyclerView links;
 
-        private ViewHolder(View v) {
+        protected ViewHolder(View v) {
             super(v);
             appIconView = v.findViewById(R.id.appIcon);
             nameTextView = v.findViewById(R.id.appName);

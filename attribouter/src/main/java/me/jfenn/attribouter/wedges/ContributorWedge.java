@@ -57,7 +57,7 @@ public class ContributorWedge extends Wedge<ContributorWedge.ViewHolder> impleme
         addChildren(parser);
     }
 
-    ContributorWedge(@Nullable String login, @Nullable String name, @Nullable String avatarUrl, @Nullable String task, @Nullable Integer position, @Nullable String bio, @Nullable String blog, @Nullable String email) {
+    protected ContributorWedge(@Nullable String login, @Nullable String name, @Nullable String avatarUrl, @Nullable String task, @Nullable Integer position, @Nullable String bio, @Nullable String blog, @Nullable String email) {
         super(R.layout.item_attribouter_contributor);
         this.login = login;
         this.name = name;
@@ -172,11 +172,11 @@ public class ContributorWedge extends Wedge<ContributorWedge.ViewHolder> impleme
         }
     }
 
-    static class ViewHolder extends Wedge.ViewHolder {
+    protected static class ViewHolder extends Wedge.ViewHolder {
 
-        private ImageView imageView;
-        private TextView nameView;
-        private TextView taskView;
+        protected ImageView imageView;
+        protected TextView nameView;
+        protected TextView taskView;
 
         ViewHolder(View v) {
             super(v);
