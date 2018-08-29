@@ -3,7 +3,7 @@ apply plugin: 'com.android.library'
 ext {
     PUBLISH_GROUP_ID = 'me.jfenn'
     PUBLISH_ARTIFACT_ID = 'attribouter'
-    PUBLISH_VERSION = '0.1.1'
+    PUBLISH_VERSION = '0.1.2'
 }
 
 android {
@@ -12,8 +12,8 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 10
-        versionName "0.1.1"
+        versionCode 11
+        versionName "0.1.2"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
