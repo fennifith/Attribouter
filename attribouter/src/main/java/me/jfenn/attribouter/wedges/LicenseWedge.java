@@ -81,7 +81,7 @@ public class LicenseWedge extends Wedge<LicenseWedge.ViewHolder> implements Merg
         addChildren(parser);
     }
 
-    public LicenseWedge(@Nullable String repo, @Nullable String title, @Nullable String description, @Nullable String licenseName, @Nullable String websiteUrl, @Nullable String gitHubUrl, @Nullable String licenseUrl, @Nullable String[] licensePermissions, @Nullable String[] licenseConditions, @Nullable String[] licenseLimitations, @Nullable String licenseDescription, @Nullable String licenseBody, @Nullable String licenseKey) {
+    protected LicenseWedge(@Nullable String repo, @Nullable String title, @Nullable String description, @Nullable String licenseName, @Nullable String websiteUrl, @Nullable String gitHubUrl, @Nullable String licenseUrl, @Nullable String[] licensePermissions, @Nullable String[] licenseConditions, @Nullable String[] licenseLimitations, @Nullable String licenseDescription, @Nullable String licenseBody, @Nullable String licenseKey) {
         super(R.layout.item_attribouter_license);
         this.repo = repo;
         this.title = title;
@@ -340,14 +340,14 @@ public class LicenseWedge extends Wedge<LicenseWedge.ViewHolder> implements Merg
         return false;
     }
 
-    static class ViewHolder extends Wedge.ViewHolder {
+    protected static class ViewHolder extends Wedge.ViewHolder {
 
-        private TextView titleView;
-        private TextView descriptionView;
-        private TextView licenseView;
-        private RecyclerView links;
+        protected TextView titleView;
+        protected TextView descriptionView;
+        protected TextView licenseView;
+        protected RecyclerView links;
 
-        ViewHolder(View v) {
+        protected ViewHolder(View v) {
             super(v);
 
             titleView = v.findViewById(R.id.title);

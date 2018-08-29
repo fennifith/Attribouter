@@ -266,29 +266,29 @@ public class ContributorsWedge extends Wedge<ContributorsWedge.ViewHolder> {
         } else viewHolder.expand.setVisibility(View.GONE);
     }
 
-    class ViewHolder extends Wedge.ViewHolder {
+    protected class ViewHolder extends Wedge.ViewHolder {
 
-        private TextView titleView;
+        protected TextView titleView;
 
-        private View topThreeView;
-        private View firstView;
-        private ImageView firstImageView;
-        private TextView firstNameView;
-        private TextView firstTaskView;
-        private View secondView;
-        private ImageView secondImageView;
-        private TextView secondNameView;
-        private TextView secondTaskView;
-        private View thirdView;
-        private ImageView thirdImageView;
-        private TextView thirdNameView;
-        private TextView thirdTaskView;
-        private View expand;
-        private TextView overflow;
+        protected View topThreeView;
+        protected View firstView;
+        protected ImageView firstImageView;
+        protected TextView firstNameView;
+        protected TextView firstTaskView;
+        protected View secondView;
+        protected ImageView secondImageView;
+        protected TextView secondNameView;
+        protected TextView secondTaskView;
+        protected View thirdView;
+        protected ImageView thirdImageView;
+        protected TextView thirdNameView;
+        protected TextView thirdTaskView;
+        protected View expand;
+        protected TextView overflow;
 
-        private RecyclerView recycler;
+        protected RecyclerView recycler;
 
-        ViewHolder(View v) {
+        protected ViewHolder(View v) {
             super(v);
 
             titleView = v.findViewById(R.id.contributorsTitle);

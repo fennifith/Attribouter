@@ -178,7 +178,7 @@ public class ContributorWedge extends Wedge<ContributorWedge.ViewHolder> impleme
         protected TextView nameView;
         protected TextView taskView;
 
-        ViewHolder(View v) {
+        protected ViewHolder(View v) {
             super(v);
             imageView = v.findViewById(R.id.image);
             nameView = v.findViewById(R.id.name);
