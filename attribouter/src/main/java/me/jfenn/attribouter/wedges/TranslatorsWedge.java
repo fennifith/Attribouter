@@ -158,14 +158,14 @@ public class TranslatorsWedge extends Wedge<TranslatorsWedge.ViewHolder> {
         } else viewHolder.expand.setVisibility(View.GONE);
     }
 
-    class ViewHolder extends Wedge.ViewHolder {
+    protected class ViewHolder extends Wedge.ViewHolder {
 
-        private TextView titleView;
-        private RecyclerView recycler;
-        private View expand;
-        private TextView overflow;
+        protected TextView titleView;
+        protected RecyclerView recycler;
+        protected View expand;
+        protected TextView overflow;
 
-        ViewHolder(View v) {
+        protected ViewHolder(View v) {
             super(v);
 
             titleView = v.findViewById(R.id.contributorsTitle);

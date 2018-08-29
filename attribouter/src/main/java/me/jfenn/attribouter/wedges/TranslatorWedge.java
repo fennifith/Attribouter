@@ -42,7 +42,7 @@ public class TranslatorWedge extends Wedge<TranslatorWedge.ViewHolder> implement
                 parser.getAttributeValue(null, "email"));
     }
 
-    TranslatorWedge(@Nullable String login, @Nullable String name, @Nullable String avatarUrl, @Nullable String locales, @Nullable String blog, @Nullable String email) {
+    protected TranslatorWedge(@Nullable String login, @Nullable String name, @Nullable String avatarUrl, @Nullable String locales, @Nullable String blog, @Nullable String email) {
         super(R.layout.item_attribouter_translator);
         this.login = login;
         this.name = name;
@@ -131,12 +131,12 @@ public class TranslatorWedge extends Wedge<TranslatorWedge.ViewHolder> implement
         } else viewHolder.itemView.setOnClickListener(null);
     }
 
-    static class ViewHolder extends Wedge.ViewHolder {
+    protected static class ViewHolder extends Wedge.ViewHolder {
 
-        private ImageView imageView;
-        private TextView nameView;
+        protected ImageView imageView;
+        protected TextView nameView;
 
-        ViewHolder(View v) {
+        protected ViewHolder(View v) {
             super(v);
             imageView = v.findViewById(R.id.image);
             nameView = v.findViewById(R.id.name);

@@ -9,10 +9,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import me.jfenn.attribouter.R;
-import me.jfenn.attribouter.wedges.Wedge;
 import me.jfenn.attribouter.interfaces.Mergeable;
 import me.jfenn.attribouter.utils.ResourceUtils;
 import me.jfenn.attribouter.utils.UrlClickListener;
+import me.jfenn.attribouter.wedges.Wedge;
 
 public class LinkWedge extends Wedge<LinkWedge.ViewHolder> implements Mergeable<LinkWedge> {
 
@@ -145,12 +145,12 @@ public class LinkWedge extends Wedge<LinkWedge.ViewHolder> implements Mergeable<
         return ((o.priority - priority) * 2) + (comparison != 0 ? comparison / Math.abs(comparison) : 0);
     }
 
-    public static class ViewHolder extends Wedge.ViewHolder {
+    protected static class ViewHolder extends Wedge.ViewHolder {
 
-        private TextView nameView;
-        private ImageView iconView;
+        protected TextView nameView;
+        protected ImageView iconView;
 
-        ViewHolder(View v) {
+        protected ViewHolder(View v) {
             super(v);
             nameView = v.findViewById(R.id.name);
             iconView = v.findViewById(R.id.icon);
