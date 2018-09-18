@@ -2,7 +2,6 @@ package me.jfenn.attribouter.wedges;
 
 import android.content.Context;
 import android.content.res.XmlResourceParser;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,6 +10,7 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 
+import androidx.annotation.Nullable;
 import me.jfenn.attribouter.R;
 import me.jfenn.attribouter.data.github.GitHubData;
 import me.jfenn.attribouter.data.github.UserData;
@@ -163,12 +163,18 @@ public class ContributorWedge extends Wedge<ContributorWedge.ViewHolder> impleme
             });
         } else {
             LinkWedge importantLink = null;
+            View.OnClickListener clickListener = null;
             for (LinkWedge link : getChildren(LinkWedge.class)) {
-                if (!link.isHidden() && (importantLink == null || link.getPriority() > importantLink.getPriority()))
-                    importantLink = link;
+                if (!link.isHidden() && (importantLink == null || link.getPriority() > importantLink.getPriority())) {
+                    View.OnClickListener listener = link.getListener(context);
+                    if (listener != null) {
+                        importantLink = link;
+                        clickListener = listener;
+                    }
+                }
             }
 
-            viewHolder.itemView.setOnClickListener(importantLink != null ? importantLink.getListener(context) : null);
+            viewHolder.itemView.setOnClickListener(clickListener);
         }
     }
 

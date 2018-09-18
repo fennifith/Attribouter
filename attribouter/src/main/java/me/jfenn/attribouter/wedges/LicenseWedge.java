@@ -2,8 +2,6 @@ package me.jfenn.attribouter.wedges;
 
 import android.content.Context;
 import android.content.res.XmlResourceParser;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
@@ -20,6 +18,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 import me.jfenn.attribouter.R;
 import me.jfenn.attribouter.adapters.InfoAdapter;
 import me.jfenn.attribouter.data.github.GitHubData;
@@ -283,12 +283,18 @@ public class LicenseWedge extends Wedge<LicenseWedge.ViewHolder> implements Merg
         } else viewHolder.links.setVisibility(View.GONE);
 
         LinkWedge importantLink = null;
+        View.OnClickListener clickListener = null;
         for (LinkWedge link : links) {
-            if (importantLink == null || link.getPriority() > importantLink.getPriority())
-                importantLink = link;
+            if (importantLink == null || link.getPriority() > importantLink.getPriority()) {
+                View.OnClickListener listener = link.getListener(context);
+                if (listener != null) {
+                    clickListener = listener;
+                    importantLink = link;
+                }
+            }
         }
 
-        viewHolder.itemView.setOnClickListener(importantLink != null ? importantLink.getListener(context) : null);
+        viewHolder.itemView.setOnClickListener(clickListener);
     }
 
     @Override

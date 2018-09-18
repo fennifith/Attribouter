@@ -2,12 +2,12 @@ package me.jfenn.attribouter.wedges.link;
 
 import android.content.Context;
 import android.content.res.XmlResourceParser;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import me.jfenn.attribouter.R;
 import me.jfenn.attribouter.interfaces.Mergeable;
 import me.jfenn.attribouter.utils.ResourceUtils;
@@ -69,7 +69,7 @@ public class LinkWedge extends Wedge<LinkWedge.ViewHolder> implements Mergeable<
      */
     @Nullable
     public View.OnClickListener getListener(Context context) {
-        if (url != null)
+        if (url != null && url.length() > 0)
             return new UrlClickListener(ResourceUtils.getString(context, url));
         else return null;
     }

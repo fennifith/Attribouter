@@ -2,10 +2,10 @@ package me.jfenn.attribouter.utils;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.Nullable;
-import android.support.annotation.StyleRes;
-import android.support.annotation.StyleableRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.Nullable;
+import androidx.annotation.StyleRes;
+import androidx.annotation.StyleableRes;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
