@@ -1,7 +1,7 @@
 package me.jfenn.attribouter.wedges.link;
 
 import android.content.res.XmlResourceParser;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 public class EmailLinkWedge extends LinkWedge {
 

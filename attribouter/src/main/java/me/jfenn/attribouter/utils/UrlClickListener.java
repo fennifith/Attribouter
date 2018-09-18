@@ -1,7 +1,7 @@
 package me.jfenn.attribouter.utils;
 
 import android.net.Uri;
-import android.support.customtabs.CustomTabsIntent;
+import androidx.browser.customtabs.CustomTabsIntent;
 import android.view.View;
 
 public class UrlClickListener implements View.OnClickListener {
