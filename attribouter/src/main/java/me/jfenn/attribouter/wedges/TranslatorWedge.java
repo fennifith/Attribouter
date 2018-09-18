@@ -2,7 +2,7 @@ package me.jfenn.attribouter.wedges;
 
 import android.content.Context;
 import android.content.res.XmlResourceParser;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
