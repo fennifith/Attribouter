@@ -38,4 +38,4 @@ Yep, that works.
 
 ## Overriding Layouts
 
-While this is partially obsolete since [subwedging](./SUBWEDGING.md) is a far cleaner and better solution, it is possible to override some of Attribouter's [layout files](../attribouter/src/main/res/layout/) for small changes (ex: making the circular avatars square). Most of the custom views used in these layout files are only casted to their superclasses (me.jfenn.attribouter.views.CircleImageView is only referenced as an ImageView), so as long as the ids remain the same there should not be any problems.
+While this is partially obsolete since [subwedging](./subwedging) is a far cleaner and better solution, it is possible to override some of Attribouter's [layout files](../attribouter/src/main/res/layout/) for small changes (ex: making the circular avatars square). Most of the custom views used in these layout files are only casted to their superclasses (me.jfenn.attribouter.views.CircleImageView is only referenced as an ImageView), so as long as the ids remain the same there should not be any problems.

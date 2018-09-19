@@ -34,7 +34,7 @@ If only the `repo` attribute is specified, this wedge can fetch all of its neces
 
 ## Auto-generated Links
 
-The links that are automatically created by this wedge are as follows. See [`LinkWedge`](./LINK.md) for more information.
+The links that are automatically created by this wedge are as follows. See [`LinkWedge`](./link) for more information.
 
 |ID|Description|Required Attributes|
 |-----|-----|-----|
