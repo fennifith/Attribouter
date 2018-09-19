@@ -2,7 +2,7 @@
 title: TranslatorWedge
 ---
 
-The `TranslatorWedge` displays information about a translator in an only slightly more concise layout than the [`ContributorWedge`](./contributor).
+The `TranslatorWedge` displays information about a translator in an only slightly more concise layout than the [`ContributorWedge`](./contributor.md).
 
 ## Example
 

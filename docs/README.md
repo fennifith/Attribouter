@@ -2,26 +2,26 @@ Welcome to Attribouter's in-depth documentation page! It provides several exampl
 
 ## Tutorials
 
-- [The Configuration File](./configuration)
-- [Overriding Resources and Providing Translations](./resources)
-- [Extending A Wedge](./subwedging)
-- [Custom Themes](./theming)
+- [The Configuration File](./configuration.md)
+- [Overriding Resources and Providing Translations](./resources.md)
+- [Extending A Wedge](./subwedging.md)
+- [Custom Themes](./theming.md)
 
 ## Docs
 
-- [AppWedge](./wedges/app)
-- [ContributorsWedge](./wedges/contributors)
-	- [ContributorWedge](./wedges/contributor)
-- [LicensesWedge](./wedges/licenses)
-	- [LicenseWedge](./wedges/license)
-- [TranslatorsWedge](./wedges/translators)
-	- [TranslatorWedge](./wedges/translator)
-- [TextWedge](./wedges/text)
-- [LinkWedge](./wedges/link)
-	- [EmailLinkWedge](./wedges/link#email)
-	- [LicenseLinkWedge](./wedges/link#license)
-	- [PlayStoreLinkWedge](./wedges/link#play-store)
+- [AppWedge](./wedges/app.md)
+- [ContributorsWedge](./wedges/contributors.md)
+	- [ContributorWedge](./wedges/contributor.md)
+- [LicensesWedge](./wedges/licenses.md)
+	- [LicenseWedge](./wedges/license.md)
+- [TranslatorsWedge](./wedges/translators.md)
+	- [TranslatorWedge](./wedges/translator.md)
+- [TextWedge](./wedges/text.md)
+- [LinkWedge](./wedges/link.md)
+	- [EmailLinkWedge](./wedges/link.md#email)
+	- [LicenseLinkWedge](./wedges/link.md#license)
+	- [PlayStoreLinkWedge](./wedges/link.md#play-store)
 
 ## Automation
 
-- [Fetching CrowdIn Translations](./utils/crowdin) by [@deletescape](https://github.com/deletescape)
+- [Fetching CrowdIn Translations](./utils/crowdin.md) by [@deletescape](https://github.com/deletescape)

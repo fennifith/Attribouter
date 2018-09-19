@@ -10,7 +10,7 @@ For no specific reason, each configuration file must have an `<about>` tag as it
 
 Because wedge classes are instantiated from the configruation file, the wedge's tag in the file must be the class name of the wedge that should be instantiated, including the package name. This is the same as adding a custom view to a layout file.
 
-With this information, we can now create a simple configuration file using the [`App`](./wedges/app), [`Contributors`](./wedges/contributors), and [`Licenses`](./wedges/licenses) wedges as follows.
+With this information, we can now create a simple configuration file using the [`App`](./wedges/app.md), [`Contributors`](./wedges/contributors.md), and [`Licenses`](./wedges/licenses.md) wedges as follows.
 
 ```xml
 <about>
@@ -28,7 +28,7 @@ This will create a screen that displays information about your app, followed by 
 
 ## Option 1: The GitHub API
 
-As stated in their documentation, both the [`AppWedge`](./wedges/app) and the [`ContributorsWedge`](./wedges/contributors) have an attribute titled `repo` that accepts the full name of a GitHub repository. Let's say that the repository for your app is [TheAndroidMaster/Pasta-for-Spotify](https://jfenn.me/redirects/?t=github&d=Pasta-for-Spotify). In that case, you can modify the file as follows:
+As stated in their documentation, both the [`AppWedge`](./wedges/app.md) and the [`ContributorsWedge`](./wedges/contributors.md) have an attribute titled `repo` that accepts the full name of a GitHub repository. Let's say that the repository for your app is [TheAndroidMaster/Pasta-for-Spotify](https://jfenn.me/redirects/?t=github&d=Pasta-for-Spotify). In that case, you can modify the file as follows:
 
 ```xml
 <about>
@@ -91,7 +91,7 @@ If your project does not have a GitHub repository or you want some information t
 
 > "This should be fairly easy. All that you need to do is combine the two previous options, right?"
 
-Actually, there is one extra step - if you do not define the `login` attribute on all of the [`ContributorWedge`](./wedges/contributor)s, you will end up with two sets of contributors - one from the configuration file and one from the GitHub API. Similar attributes are used to merge duplicate wedges like [`LinkWedge`](./wedges/link)s and [`LicenseWedge`](./wedges/license)s, so you should check out ["Overriding Resources and Providing Translations"](../resources) if the results of this option confuse you. When you are done, the end result should look something like this:
+Actually, there is one extra step - if you do not define the `login` attribute on all of the [`ContributorWedge`](./wedges/contributor.md)s, you will end up with two sets of contributors - one from the configuration file and one from the GitHub API. Similar attributes are used to merge duplicate wedges like [`LinkWedge`](./wedges/link.md)s and [`LicenseWedge`](./wedges/license.md)s, so you should check out ["Overriding Resources and Providing Translations"](../resources.md) if the results of this option confuse you. When you are done, the end result should look something like this:
 
 ```xml
 <about>
