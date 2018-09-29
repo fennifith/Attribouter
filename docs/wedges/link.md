@@ -2,9 +2,9 @@
 title: LinkWedge
 ---
 
-Link tags can exist as children of the [App](./APP.md), [Contributor](./CONTRIBUTOR.md), and [License](./LICENSE.md) wedges. They can also be added as children of the root tag, though that is not their intended use. A few links are generated automatically by these wedges, such as links to the github profile of contributors for which the `login` attribute has been specified, and so on. These auto-generated links are specified in the wedges' individual documentation pages. 
+Link tags can exist as children of the [App](./app), [Contributor](./contributor.md), and [License](./license.md) wedges. They can also be added as children of the root tag, though that is not their intended use. A few links are generated automatically by these wedges, such as links to the github profile of contributors for which the `login` attribute has been specified, and so on. These auto-generated links are specified in the wedges' individual documentation pages. 
 
-If you wish to remove an auto-generated link, you can simply define a `LinkWedge` with the same `id` and the `hidden` attribute. However, if you want to modify another value of an auto-generated link, such as the title or icon, you may need to specify that you want to override consecutive merges as well so that it is not overwritten if the wedge receives more information from the GitHub API. See ["Overriding Resources and Providing Translations"](../RESOURCES.md) for more information on overriding merges.
+If you wish to remove an auto-generated link, you can simply define a `LinkWedge` with the same `id` and the `hidden` attribute. However, if you want to modify another value of an auto-generated link, such as the title or icon, you may need to specify that you want to override consecutive merges as well so that it is not overwritten if the wedge receives more information from the GitHub API. See ["Overriding Resources and Providing Translations"](../resources.md) for more information on overriding merges.
 
 By default, `AppWedge` links are displayed below the app description, `ContributorWedge` links are displayed in a dialog (that only appears if the contributor has a `bio`), and `LicenseWedge` links are displayed below the description.
 

@@ -2,7 +2,7 @@
 title: TranslatorsWedge
 ---
 
-The `TranslatorsWedge` displays a list of [`TranslatorWedge`](./TRANSLATOR.md)s in sections, sorted by locale. If a translator has translated multiple locales, they will appear under every locale that they have translated.
+The `TranslatorsWedge` displays a list of [`TranslatorWedge`](./translator.md)s in sections, sorted by locale. If a translator has translated multiple locales, they will appear under every locale that they have translated.
 
 ## Example
 

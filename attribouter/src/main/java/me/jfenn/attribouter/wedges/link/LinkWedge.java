@@ -3,6 +3,7 @@ package me.jfenn.attribouter.wedges.link;
 import android.content.Context;
 import android.content.res.XmlResourceParser;
 import android.view.View;
+import android.webkit.URLUtil;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -44,7 +45,8 @@ public class LinkWedge extends Wedge<LinkWedge.ViewHolder> implements Mergeable<
         super(R.layout.item_attribouter_link);
         this.id = id;
         this.name = name;
-        this.url = url;
+        if (url != null && url.length() > 0)
+            this.url = url.startsWith("http") ? url : "http://" + url;
         this.icon = icon;
         this.isHidden = isHidden;
         this.priority = priority;
@@ -69,7 +71,7 @@ public class LinkWedge extends Wedge<LinkWedge.ViewHolder> implements Mergeable<
      */
     @Nullable
     public View.OnClickListener getListener(Context context) {
-        if (url != null && url.length() > 0)
+        if (url != null && url.length() > 0 && URLUtil.isValidUrl(url))
             return new UrlClickListener(ResourceUtils.getString(context, url));
         else return null;
     }

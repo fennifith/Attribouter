@@ -15,21 +15,13 @@ For demonstration and experimentation, an apk of the sample project can be downl
 ## Usage
 
 The Gradle dependency is available through jCenter, which is used by default in Android Studio. To add the dependency to your project, copy this line into the dependencies section of your app's build.gradle file.
- 
-##### AndroidX
-
-The Android support libraries are being refactored from `android.support.*` to `androidx.*` as detailed [here](https://developer.android.com/topic/libraries/support-library/androidx-overview). Until the refactored libraries reach version `1.0.0` (as of the time of writing the latest verison is `1.0.0-rc02`), two versions of Attribouter will be released - one for AndroidX, and one for old support libraries.
- 
-```gradle
-implementation 'me.jfenn:attribouter:0.1.3'
-```
-
-##### Old Support Libraries
 
 ```gradle
-implementation 'me.jfenn:attribouter:0.1.2'
+implementation 'me.jfenn:attribouter:0.1.4'
 ```
+##### Support Libraries
 
+The Android support libraries have been refactored from `android.support.*` to `androidx.*` as detailed [here](https://developer.android.com/topic/libraries/support-library/androidx-overview). As such, Attribouter only uses the new dependencies. If your project still uses the older support libraries for some reason, you may either compile your own version of Attribouter or use the last version to use the old support libraries, `0.1.2`.
 
 ### Starting an Activity
 This is pretty simple.
