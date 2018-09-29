@@ -2,7 +2,7 @@
 title: ContributorWedge
 ---
 
-The `ContributorWedge` displays a set of information about a person in a small layout. If the `bio` attribute is defined, a dialog will appear upon interaction displaying more information, such as... um... their biography... and links. If it is not defined, it will open the highest priority [`LinkWedge`](./LINK.md) child instead.
+The `ContributorWedge` displays a set of information about a person in a small layout. If the `bio` attribute is defined, a dialog will appear upon interaction displaying more information, such as... um... their biography... and links. If it is not defined, it will open the highest priority [`LinkWedge`](./link.md) child instead.
 
 ## Example
 
@@ -34,7 +34,7 @@ The `ContributorWedge` displays a set of information about a person in a small l
 
 ## Auto-generated Links
 
-The links that are automatically created by this wedge are as follows. See [`LinkWedge`](./LINKS.md) for more information.
+The links that are automatically created by this wedge are as follows. See [`LinkWedge`](./link.md) for more information.
 
 |ID|Description|Required Attributes|
 |-----|-----|-----|

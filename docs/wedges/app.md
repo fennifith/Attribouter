@@ -27,7 +27,7 @@ The `AppWedge` displays the app icon, name, version, and links to the project si
 
 ## Auto-generated Links
 
-The links that are automatically created by this wedge are as follows. See [Links](./LINKS.md) for more information.
+The links that are automatically created by this wedge are as follows. See [Links](./links.md) for more information.
 
 |ID|Description|Required Attributes|
 |-----|-----|-----|

@@ -2,7 +2,7 @@
 title: LicensesWedge
 ---
 
-The `LicensesWedge` displays a list of child [`LicenseWedge`](./LICENSE.md)s with a title at the top. If the `showDefaults` attribute is undefined or `true`, this list will be merged with the licenses used by Attribouter. See ["Overriding Resources and Providing Translations"](../RESOURCES.md) for more information on how merges work.
+The `LicensesWedge` displays a list of child [`LicenseWedge`](./license.md)s with a title at the top. If the `showDefaults` attribute is undefined or `true`, this list will be merged with the licenses used by Attribouter. See ["Overriding Resources and Providing Translations"](../resources.md) for more information on how merges work.
 
 ## Example
 
