@@ -74,18 +74,18 @@
     <me.jfenn.attribouter.wedges.TranslatorsWedge overflow="5">
         <me.jfenn.attribouter.wedges.TranslatorWedge
             name="John Doe"
-            avatar="https://raw.githubusercontent.com/TheAndroidMaster/TheAndroidMaster.github.io/master/images/headers/rocks.jpg"
+            avatar="https://jfenn.me/images/headers/rocks.jpg"
             blog="https://example.com/"
             locales="zh,rn,sn" />
         <!-- locales are comma separated, no whitespace -->
         <me.jfenn.attribouter.wedges.TranslatorWedge
             name="Jenny Doe"
-            avatar="https://raw.githubusercontent.com/TheAndroidMaster/TheAndroidMaster.github.io/master/images/headers/vukheader.jpg"
+            avatar="https://jfenn.me/images/headers/vukheader.jpg"
             blog="https://example.com/"
             locales="zh,sn" />
         <me.jfenn.attribouter.wedges.TranslatorWedge
             name="Joe Doe"
-            avatar="https://raw.githubusercontent.com/TheAndroidMaster/TheAndroidMaster.github.io/master/images/headers/highway.jpg"
+            avatar="https://jfenn.me/images/headers/highway.jpg"
             blog="https://example.com/"
             locales="rn,cy" />
         <me.jfenn.attribouter.wedges.TranslatorWedge
