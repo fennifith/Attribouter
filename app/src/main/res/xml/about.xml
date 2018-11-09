@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <about>
-    <me.jfenn.attribouter.wedges.AppWedge repo="TheAndroidMaster/Attribouter">
+    <me.jfenn.attribouter.wedges.AppWedge repo="fennifith/Attribouter">
         <me.jfenn.attribouter.wedges.link.LinkWedge
             name="Bintray"
             icon="https://bintray.com/favicon.ico"
@@ -28,7 +28,7 @@
             avatar="^@drawable/me"
             bio="This is a bio. I am a person."
             email="dev@jfenn.me"
-            login="TheAndroidMaster"
+            login="fennifith"
             position="1"
             task="Owner">
             <me.jfenn.attribouter.wedges.link.LinkWedge
@@ -90,12 +90,12 @@
             locales="rn,cy" />
         <me.jfenn.attribouter.wedges.TranslatorWedge
             locales="en"
-            login="TheAndroidMaster" />
+            login="fennifith" />
     </me.jfenn.attribouter.wedges.TranslatorsWedge>
     <me.jfenn.attribouter.wedges.LicensesWedge
         overflow="1"
         showDefaults="false">
-        <me.jfenn.attribouter.wedges.LicenseWedge repo="TheAndroidMaster/ColorPickerDialog" />
+        <me.jfenn.attribouter.wedges.LicenseWedge repo="fennifith/ColorPickerDialog" />
         <!-- all of ColorPickerDialog's info is fetched from github -->
         <me.jfenn.attribouter.wedges.LicenseWedge
             description="Something Does Stuff With Things"

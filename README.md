@@ -10,7 +10,7 @@ This is just sample data. It is not real. Though Jahir is lazy, so that part is 
 
 ### APK
 
-For demonstration and experimentation, an apk of the sample project can be downloaded [here](https://github.com/TheAndroidMaster/Attribouter/releases/).
+For demonstration and experimentation, an apk of the sample project can be downloaded [here](https://github.com/fennifith/Attribouter/releases/).
 
 ## Usage
 

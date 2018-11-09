@@ -2,9 +2,6 @@ package me.jfenn.attribouter.wedges;
 
 import android.content.Context;
 import android.content.res.XmlResourceParser;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
@@ -12,6 +9,9 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import me.jfenn.attribouter.R;
 import me.jfenn.attribouter.adapters.InfoAdapter;
 import me.jfenn.attribouter.data.github.GitHubData;
@@ -38,12 +38,12 @@ public class LicensesWedge extends Wedge<LicensesWedge.ViewHolder> {
 
         if (showDefaults) {
             addChild(new LicenseWedge(
-                            "TheAndroidMaster/Attribouter",
+                            "fennifith/Attribouter",
                             "Attribouter",
                             "A lightweight \"about screen\" library to allow quick but customizable attribution in Android apps.",
                             "Apache License 2.0",
                             null,
-                            "https://github.com/TheAndroidMaster/Attribouter",
+                            "https://github.com/fennifith/Attribouter",
                             null,
                             null,
                             null,

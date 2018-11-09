@@ -2,9 +2,6 @@ package me.jfenn.attribouter.wedges;
 
 import android.content.Context;
 import android.content.res.XmlResourceParser;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,6 +12,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import me.jfenn.attribouter.R;
 import me.jfenn.attribouter.adapters.InfoAdapter;
 import me.jfenn.attribouter.data.github.ContributorsData;
@@ -47,7 +47,7 @@ public class ContributorsWedge extends Wedge<ContributorsWedge.ViewHolder> {
 
         if (showDefaults) {
             ContributorWedge me = new ContributorWedge(
-                    "TheAndroidMaster",
+                    "fennifith",
                     "James Fenn",
                     "https://avatars1.githubusercontent.com/u/13000407",
                     "^Library Developer",
@@ -58,7 +58,7 @@ public class ContributorsWedge extends Wedge<ContributorsWedge.ViewHolder> {
             );
 
             addChild(me);
-            addRequest(new ContributorsData("TheAndroidMaster/Attribouter"));
+            addRequest(new ContributorsData("fennifith/Attribouter"));
         }
 
         addRequest(new ContributorsData(repo));
