@@ -3,7 +3,7 @@ Attribouter is a lightweight "about screen" for Android apps, built to allow dev
 [![](https://jitpack.io/v/me.jfenn/Attribouter.svg)](https://jitpack.io/#me.jfenn/Attribouter)
 [![Build Status](https://travis-ci.com/fennifith/Attribouter.svg)](https://travis-ci.com/fennifith/Attribouter)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/91f0d7f732be4668aa428d5c634a531d)](https://www.codacy.com/app/fennifith/Attribouter?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=fennifith/Attribouter&amp;utm_campaign=Badge_Grade)
-[![Discord](https://img.shields.io/discord/514625116706177035.svg)](https://discord.gg/amDKN6A)
+[![Discord](https://img.shields.io/discord/514625116706177035.svg?logo=discord&colorB=7289da)](https://discord.gg/amDKN6A)
 [![Liberapay](https://img.shields.io/badge/liberapay-donate-yellow.svg?logo=liberapay)](https://liberapay.com/fennifith/donate)
 
 ### Screenshots
