@@ -4,14 +4,15 @@ Attribouter is a lightweight "about screen" for Android apps, built to allow dev
 [![Build Status](https://travis-ci.com/fennifith/Attribouter.svg)](https://travis-ci.com/fennifith/Attribouter)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/91f0d7f732be4668aa428d5c634a531d)](https://www.codacy.com/app/fennifith/Attribouter?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=fennifith/Attribouter&amp;utm_campaign=Badge_Grade)
 [![Discord](https://img.shields.io/discord/514625116706177035.svg)](https://discord.gg/amDKN6A)
+[![Liberapay](https://img.shields.io/badge/liberapay-donate-yellow.svg?logo=liberapay)](https://liberapay.com/fennifith/donate)
 
 ### Screenshots
 
 This is just sample data. It is not real. Though Jahir is lazy, so that part is (joking).
 
-|Contributors|Contributor|Licenses|License|
-|-----|-----|-----|-----|
-|![img](https://jfenn.me/images/screenshots/Attribouter-Main.png)|![img](https://jfenn.me/images/screenshots/Attribouter-Contributor.png)|![img](https://jfenn.me/images/screenshots/Attribouter-Licenses.png)|![img](https://jfenn.me/images/screenshots/Attribouter-License.png)|
+| Contributors | Contributor | Licenses | License |
+|--------------|-------------|----------|---------|
+| ![img](https://jfenn.me/images/screenshots/Attribouter-Main.png) | ![img](https://jfenn.me/images/screenshots/Attribouter-Contributor.png) | ![img](https://jfenn.me/images/screenshots/Attribouter-Licenses.png) | ![img](https://jfenn.me/images/screenshots/Attribouter-License.png) |
 
 ### APK
 
