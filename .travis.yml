@@ -10,3 +10,16 @@ android:
     - extra-android-m2repository
 jdk:
   - oraclejdk8
+before_deploy:
+  - if ! [ -e bintray.json ]; then
+      chmod +x .scripts/gen-bintray-descriptor.sh;
+      ./.scripts/gen-bintray-descriptor.sh;
+    fi
+deploy:
+  - provider: bintray
+    skip_cleanup: true
+    file: "bintray.json"
+    user: "18jafenn90"
+    key: $BINTRAY_KEY
+    on:
+      all_branches: true
