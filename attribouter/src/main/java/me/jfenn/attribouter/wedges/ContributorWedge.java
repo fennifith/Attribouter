@@ -146,7 +146,7 @@ public class ContributorWedge extends Wedge<ContributorWedge.ViewHolder> impleme
 
     @Override
     public void bind(Context context, ViewHolder viewHolder) {
-        ResourceUtils.setImage(context, avatarUrl, viewHolder.imageView);
+        ResourceUtils.setImage(context, avatarUrl, R.drawable.ic_attribouter_avatar, viewHolder.imageView);
         viewHolder.nameView.setText(ResourceUtils.getString(context, getName()));
         if (task != null) {
             viewHolder.taskView.setVisibility(View.VISIBLE);

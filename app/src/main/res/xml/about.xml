@@ -34,7 +34,7 @@
             <me.jfenn.attribouter.wedges.link.LinkWedge
                 name="Twitter"
                 icon="https://twitter.com/favicon.ico"
-                url="https://twitter.com/idontlikephp" />
+                url="https://jfenn.me/links/twitter" />
         </me.jfenn.attribouter.wedges.ContributorWedge>
         <!-- the "avatar" attribute can take either a url or a resource -->
         <!-- setting the "position" attribute makes me appear in the center of a row of three items above the list, instead of in the list like normal -->
@@ -57,14 +57,12 @@
         <me.jfenn.attribouter.wedges.ContributorWedge login="adueppen">
             <me.jfenn.attribouter.wedges.link.LinkWedge
                 name="Twitter"
-                icon="@drawable/ic_attribouter_link"
                 priority="5"
                 url="https://twitter.com/adueppen/" />
         </me.jfenn.attribouter.wedges.ContributorWedge>
         <me.jfenn.attribouter.wedges.ContributorWedge login="joshuabaldassarre">
             <me.jfenn.attribouter.wedges.link.LinkWedge
                 name="Twitter"
-                icon="@drawable/ic_attribouter_link"
                 priority="5"
                 url="https://twitter.com/adueppen/" />
         </me.jfenn.attribouter.wedges.ContributorWedge>
@@ -80,7 +78,7 @@
         <!-- locales are comma separated, no whitespace -->
         <me.jfenn.attribouter.wedges.TranslatorWedge
             name="Jenny Doe"
-            avatar="https://jfenn.me/images/headers/vukheader.jpg"
+            avatar="https://example.com/broken_link.png"
             blog="https://example.com/"
             locales="zh,sn" />
         <me.jfenn.attribouter.wedges.TranslatorWedge

@@ -2,14 +2,15 @@ package me.jfenn.attribouter.utils;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
 import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.annotation.StyleableRes;
-import android.widget.ImageView;
-
-import com.bumptech.glide.Glide;
-
 import me.jfenn.attribouter.R;
 
 public class ResourceUtils {
@@ -19,7 +20,9 @@ public class ResourceUtils {
         if (resInt != null) {
             imageView.setImageResource(resInt);
         } else {
-            Glide.with(context).load(identifier).into(imageView);
+            Glide.with(context)
+                    .load(identifier)
+                    .into(imageView);
         }
     }
 
@@ -28,7 +31,12 @@ public class ResourceUtils {
         if (resInt != null) {
             imageView.setImageResource(resInt);
         } else if (identifier != null) {
-            Glide.with(context).load(identifier).into(imageView);
+            Glide.with(context)
+                    .load(identifier)
+                    .apply(new RequestOptions()
+                            .placeholder(defaultRes)
+                            .error(defaultRes))
+                    .into(imageView);
         } else {
             imageView.setImageResource(defaultRes);
         }

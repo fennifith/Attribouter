@@ -2,7 +2,6 @@ package me.jfenn.attribouter.wedges;
 
 import android.content.Context;
 import android.content.res.XmlResourceParser;
-import androidx.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,6 +10,7 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 
+import androidx.annotation.Nullable;
 import me.jfenn.attribouter.R;
 import me.jfenn.attribouter.data.github.GitHubData;
 import me.jfenn.attribouter.data.github.UserData;
@@ -120,7 +120,7 @@ public class TranslatorWedge extends Wedge<TranslatorWedge.ViewHolder> implement
 
     @Override
     public void bind(Context context, ViewHolder viewHolder) {
-        ResourceUtils.setImage(context, avatarUrl, viewHolder.imageView);
+        ResourceUtils.setImage(context, avatarUrl, R.drawable.ic_attribouter_avatar, viewHolder.imageView);
         viewHolder.nameView.setText(ResourceUtils.getString(context, getName()));
 
         String blog = ResourceUtils.getString(context, this.blog);

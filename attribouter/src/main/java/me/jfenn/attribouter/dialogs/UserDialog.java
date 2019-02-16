@@ -2,8 +2,6 @@ package me.jfenn.attribouter.dialogs;
 
 import android.content.Context;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatDialog;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,12 +14,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import androidx.appcompat.app.AppCompatDialog;
+import androidx.recyclerview.widget.RecyclerView;
 import me.jfenn.attribouter.R;
 import me.jfenn.attribouter.adapters.InfoAdapter;
+import me.jfenn.attribouter.utils.ResourceUtils;
 import me.jfenn.attribouter.wedges.ContributorWedge;
 import me.jfenn.attribouter.wedges.Wedge;
 import me.jfenn.attribouter.wedges.link.LinkWedge;
-import me.jfenn.attribouter.utils.ResourceUtils;
 
 public class UserDialog extends AppCompatDialog {
 
@@ -48,7 +48,7 @@ public class UserDialog extends AppCompatDialog {
 
         String url = ResourceUtils.getString(getContext(), contributor.avatarUrl);
         if (url != null)
-            ResourceUtils.setImage(getContext(), contributor.avatarUrl, imageView);
+            ResourceUtils.setImage(getContext(), contributor.avatarUrl, R.drawable.ic_attribouter_avatar, imageView);
         else imageView.setVisibility(View.GONE);
 
         bioView.setText(ResourceUtils.getString(getContext(), contributor.bio));

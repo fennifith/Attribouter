@@ -166,7 +166,7 @@ public class ContributorsWedge extends Wedge<ContributorsWedge.ViewHolder> {
             viewHolder.topThreeView.setVisibility(View.VISIBLE);
 
             viewHolder.firstNameView.setText(ResourceUtils.getString(context, first.getName()));
-            ResourceUtils.setImage(context, first.avatarUrl, viewHolder.firstImageView);
+            ResourceUtils.setImage(context, first.avatarUrl, R.drawable.ic_attribouter_avatar, viewHolder.firstImageView);
             if (first.task != null) {
                 viewHolder.firstTaskView.setVisibility(View.VISIBLE);
                 viewHolder.firstTaskView.setText(ResourceUtils.getString(context, first.task));
@@ -188,7 +188,7 @@ public class ContributorsWedge extends Wedge<ContributorsWedge.ViewHolder> {
             } else viewHolder.firstView.setOnClickListener(null);
 
             viewHolder.secondNameView.setText(ResourceUtils.getString(context, second.getName()));
-            ResourceUtils.setImage(context, second.avatarUrl, viewHolder.secondImageView);
+            ResourceUtils.setImage(context, second.avatarUrl, R.drawable.ic_attribouter_avatar, viewHolder.secondImageView);
             if (second.task != null) {
                 viewHolder.secondTaskView.setVisibility(View.VISIBLE);
                 viewHolder.secondTaskView.setText(ResourceUtils.getString(context, second.task));
@@ -210,7 +210,7 @@ public class ContributorsWedge extends Wedge<ContributorsWedge.ViewHolder> {
             } else viewHolder.secondView.setOnClickListener(null);
 
             viewHolder.thirdNameView.setText(ResourceUtils.getString(context, third.getName()));
-            ResourceUtils.setImage(context, third.avatarUrl, viewHolder.thirdImageView);
+            ResourceUtils.setImage(context, third.avatarUrl, R.drawable.ic_attribouter_avatar, viewHolder.thirdImageView);
             if (third.task != null) {
                 viewHolder.thirdTaskView.setVisibility(View.VISIBLE);
                 viewHolder.thirdTaskView.setText(ResourceUtils.getString(context, third.task));

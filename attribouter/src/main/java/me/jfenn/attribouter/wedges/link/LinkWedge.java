@@ -118,7 +118,7 @@ public class LinkWedge extends Wedge<LinkWedge.ViewHolder> implements Mergeable<
      * @param imageView the image view to load the icon into
      */
     public void loadIcon(ImageView imageView) {
-        ResourceUtils.setImage(imageView.getContext(), icon, imageView);
+        ResourceUtils.setImage(imageView.getContext(), icon, R.drawable.ic_attribouter_link, imageView);
     }
 
     @Override
