@@ -6,6 +6,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatDialog;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
@@ -14,10 +17,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import androidx.appcompat.app.AppCompatDialog;
-import androidx.recyclerview.widget.RecyclerView;
 import me.jfenn.attribouter.R;
-import me.jfenn.attribouter.adapters.InfoAdapter;
+import me.jfenn.attribouter.adapters.WedgeAdapter;
 import me.jfenn.attribouter.utils.ResourceUtils;
 import me.jfenn.attribouter.wedges.ContributorWedge;
 import me.jfenn.attribouter.wedges.Wedge;
@@ -69,7 +70,7 @@ public class UserDialog extends AppCompatDialog {
             layoutManager.setFlexDirection(FlexDirection.ROW);
             layoutManager.setJustifyContent(JustifyContent.FLEX_START);
             recycler.setLayoutManager(layoutManager);
-            recycler.setAdapter(new InfoAdapter(linksList));
+            recycler.setAdapter(new WedgeAdapter(linksList));
         } else recycler.setVisibility(View.GONE);
     }
 }

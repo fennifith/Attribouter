@@ -18,7 +18,7 @@ import java.util.List;
 
 import me.jfenn.attribouter.Attribouter;
 import me.jfenn.attribouter.R;
-import me.jfenn.attribouter.adapters.InfoAdapter;
+import me.jfenn.attribouter.adapters.WedgeAdapter;
 import me.jfenn.attribouter.data.github.GitHubData;
 import me.jfenn.attribouter.provider.wedge.XMLWedgeProvider;
 import me.jfenn.attribouter.wedges.Wedge;
@@ -26,7 +26,7 @@ import me.jfenn.attribouter.wedges.Wedge;
 public class AboutFragment extends Fragment implements GitHubData.OnInitListener, Wedge.OnRequestListener {
 
     private RecyclerView recycler;
-    private InfoAdapter adapter;
+    private WedgeAdapter adapter;
 
     private List<Wedge> wedges;
     private List<GitHubData> requests;
@@ -46,7 +46,7 @@ public class AboutFragment extends Fragment implements GitHubData.OnInitListener
 
         wedges = new XMLWedgeProvider(fileRes).getWedges(getContext());
 
-        adapter = new InfoAdapter(wedges);
+        adapter = new WedgeAdapter(wedges);
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
         recycler.addItemDecoration(new DividerItemDecoration(recycler.getContext(), DividerItemDecoration.VERTICAL));
         recycler.setAdapter(adapter);

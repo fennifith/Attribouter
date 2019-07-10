@@ -5,15 +5,16 @@ import android.content.res.XmlResourceParser;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import me.jfenn.attribouter.R;
-import me.jfenn.attribouter.adapters.InfoAdapter;
+import me.jfenn.attribouter.adapters.WedgeAdapter;
 import me.jfenn.attribouter.data.github.GitHubData;
 import me.jfenn.attribouter.data.github.LicenseData;
 import me.jfenn.attribouter.data.github.RepositoryData;
@@ -208,7 +209,7 @@ public class LicensesWedge extends Wedge<LicensesWedge.ViewHolder> {
             viewHolder.titleView.setText(ResourceUtils.getString(context, title));
 
         viewHolder.recycler.setLayoutManager(new LinearLayoutManager(context));
-        viewHolder.recycler.setAdapter(new InfoAdapter(getChildren().subList(0, overflow > getChildren().size() || overflow < 0 ? getChildren().size() : overflow)));
+        viewHolder.recycler.setAdapter(new WedgeAdapter(getChildren().subList(0, overflow > getChildren().size() || overflow < 0 ? getChildren().size() : overflow)));
 
         if (overflow > 0 && overflow < getChildren().size()) {
             viewHolder.expand.setVisibility(View.VISIBLE);

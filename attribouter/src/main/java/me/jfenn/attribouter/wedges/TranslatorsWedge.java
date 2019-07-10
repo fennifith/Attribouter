@@ -2,11 +2,12 @@ package me.jfenn.attribouter.wedges;
 
 import android.content.Context;
 import android.content.res.XmlResourceParser;
+import android.view.View;
+import android.widget.TextView;
+
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.View;
-import android.widget.TextView;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -16,7 +17,7 @@ import java.util.List;
 import java.util.Locale;
 
 import me.jfenn.attribouter.R;
-import me.jfenn.attribouter.adapters.InfoAdapter;
+import me.jfenn.attribouter.adapters.WedgeAdapter;
 import me.jfenn.attribouter.data.github.ContributorsData;
 import me.jfenn.attribouter.data.github.GitHubData;
 import me.jfenn.attribouter.data.github.UserData;
@@ -145,7 +146,7 @@ public class TranslatorsWedge extends Wedge<TranslatorsWedge.ViewHolder> {
             viewHolder.titleView.setText(ResourceUtils.getString(context, translatorsTitle));
 
         viewHolder.recycler.setLayoutManager(new LinearLayoutManager(context));
-        viewHolder.recycler.setAdapter(new InfoAdapter(sortedList));
+        viewHolder.recycler.setAdapter(new WedgeAdapter(sortedList));
 
         if (sortedTranslators.size() > sortedList.size()) {
             viewHolder.expand.setVisibility(View.VISIBLE);

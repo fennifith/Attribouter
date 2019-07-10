@@ -6,17 +6,18 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import me.jfenn.attribouter.R;
-import me.jfenn.attribouter.adapters.InfoAdapter;
+import me.jfenn.attribouter.adapters.WedgeAdapter;
 import me.jfenn.attribouter.data.github.ContributorsData;
 import me.jfenn.attribouter.data.github.GitHubData;
 import me.jfenn.attribouter.data.github.UserData;
@@ -246,7 +247,7 @@ public class ContributorsWedge extends Wedge<ContributorsWedge.ViewHolder> {
         if (remainingContributors.size() > 0) {
             viewHolder.recycler.setVisibility(View.VISIBLE);
             viewHolder.recycler.setLayoutManager(new LinearLayoutManager(context));
-            viewHolder.recycler.setAdapter(new InfoAdapter(remainingContributors));
+            viewHolder.recycler.setAdapter(new WedgeAdapter(remainingContributors));
         } else viewHolder.recycler.setVisibility(View.GONE);
 
         if (remainingContributors.size() + (first != null && second != null && third != null ? 3 : 0) < getChildren().size() - hiddenContributors) {

@@ -5,6 +5,9 @@ import android.content.res.XmlResourceParser;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
@@ -18,10 +21,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
 import me.jfenn.attribouter.R;
-import me.jfenn.attribouter.adapters.InfoAdapter;
+import me.jfenn.attribouter.adapters.WedgeAdapter;
 import me.jfenn.attribouter.data.github.GitHubData;
 import me.jfenn.attribouter.data.github.LicenseData;
 import me.jfenn.attribouter.data.github.RepositoryData;
@@ -279,7 +280,7 @@ public class LicenseWedge extends Wedge<LicenseWedge.ViewHolder> implements Merg
             layoutManager.setFlexDirection(FlexDirection.ROW);
             layoutManager.setJustifyContent(JustifyContent.FLEX_START);
             viewHolder.links.setLayoutManager(layoutManager);
-            viewHolder.links.setAdapter(new InfoAdapter(linksList));
+            viewHolder.links.setAdapter(new WedgeAdapter(linksList));
         } else viewHolder.links.setVisibility(View.GONE);
 
         LinkWedge importantLink = null;
