@@ -50,6 +50,9 @@ class XMLWedgeProvider(private val parser: XmlResourceParser) : WedgeProvider {
 
         try {
             while (parser.next() != XmlResourceParser.END_TAG || parser.name != parent?.javaClass?.name) {
+                if (parser.name == "about")
+                    continue
+
                 if (parser.eventType == XmlPullParser.START_TAG) {
                     val wedge = getWedge(parser.name)?.withProvider(this)
                     if (wedge != null)

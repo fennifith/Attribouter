@@ -121,7 +121,7 @@ abstract class Wedge<T : Wedge.ViewHolder>(@param:LayoutRes val layoutRes: Int) 
         }
 
         open fun withProvider(provider: WedgeProvider) {
-            property = provider.getAttribute(this@Wedge, attribute, property)
+            property = provider.getAttribute(this@Wedge, attribute, property) ?: property
         }
 
         operator fun getValue(thisRef: R?, prop: KProperty<*>): T? {

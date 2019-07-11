@@ -99,7 +99,7 @@ class ContributorsWedge : Wedge<ContributorsWedge.ViewHolder>(R.layout.item_attr
 
     public override fun bind(context: Context, viewHolder: ViewHolder) {
         viewHolder.titleView?.apply {
-            visibility = if (overflow != 0) {
+            visibility = if (overflow!! > 0) {
                 contributorsTitle?.let { text = ResourceUtils.getString(context, contributorsTitle) }
                 View.VISIBLE
             } else View.GONE
@@ -149,7 +149,7 @@ class ContributorsWedge : Wedge<ContributorsWedge.ViewHolder>(R.layout.item_attr
         }
 
         viewHolder.expand?.apply {
-            visibility = if (remainingContributors.size + (if (first != null && second != null && third != null) 3 else 0) < getChildren().size - hiddenContributors) {
+            visibility = if (overflow != 0 && remainingContributors.size + (if (first != null && second != null && third != null) 3 else 0) < getChildren().size - hiddenContributors) {
                 setOnClickListener { v ->
                     OverflowDialog(
                             v.context,
