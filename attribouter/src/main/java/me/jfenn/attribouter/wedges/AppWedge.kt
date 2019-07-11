@@ -2,7 +2,6 @@ package me.jfenn.attribouter.wedges
 
 import android.content.Context
 import android.content.pm.PackageManager
-import android.content.res.XmlResourceParser
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -19,33 +18,29 @@ import me.jfenn.attribouter.wedges.link.GitHubLinkWedge
 import me.jfenn.attribouter.wedges.link.LinkWedge
 import me.jfenn.attribouter.wedges.link.PlayStoreLinkWedge
 import me.jfenn.attribouter.wedges.link.WebsiteLinkWedge
-import org.xmlpull.v1.XmlPullParserException
-import java.io.IOException
 import java.util.*
 
-class AppWedge @Throws(IOException::class, XmlPullParserException::class)
-constructor(parser: XmlResourceParser) : Wedge<AppWedge.ViewHolder>(R.layout.item_attribouter_app_info) {
+class AppWedge: Wedge<AppWedge.ViewHolder>(R.layout.item_attribouter_app_info) {
 
-    private val icon: String? = parser.getAttributeValue(null, "icon")
-    private var description: String? = parser.getAttributeValue(null, "description")
+    private val icon: String? by attr("icon")
+    private var description: String? by attr("description")
+    private val repo: String? by attr("repo")
+    private val gitHubUrl: String? by attr("gitHubUrl")
+    private val websiteUrl: String? by attr("websiteUrl")
+    private val playStoreUrl: String? by attr("playStoreUrl")
 
-    init {
-        val repo: String? = parser.getAttributeValue(null, "repo")
-
-        (parser.getAttributeValue(null, "gitHubUrl")
-                ?: repo?.let { "https://github.com/$it" })?.let {
-            addChild(GitHubLinkWedge(it, 0))
+    override fun onCreate() {
+        (gitHubUrl ?: repo?.let { "https://github.com/$it" })?.let {
+            addChild(GitHubLinkWedge(it, 0).create())
         }
 
-        parser.getAttributeValue(null, "websiteUrl")?.let {
-            addChild(WebsiteLinkWedge(it, 0))
+        websiteUrl?.let {
+            addChild(WebsiteLinkWedge(it, 0).create())
         }
 
-        parser.getAttributeValue(null, "playStoreUrl")?.let {
-            addChild(PlayStoreLinkWedge(it, 0))
+        playStoreUrl?.let {
+            addChild(PlayStoreLinkWedge(it, 0).create())
         }
-
-        addChildren(parser)
 
         repo?.let { addRequest(RepositoryData(it)) }
     }
@@ -58,14 +53,14 @@ constructor(parser: XmlResourceParser) : Wedge<AppWedge.ViewHolder>(R.layout.ite
             }
 
             repo.html_url?.let { repoUrl ->
-                addChild(GitHubLinkWedge(repoUrl, 0, true))
+                addChild(GitHubLinkWedge(repoUrl, 0, true).create())
             }
 
             repo.homepage?.let { repoHomepage ->
                 addChild(
                         if (repoHomepage.startsWith("https://play.google.com/"))
-                            PlayStoreLinkWedge(repoHomepage, 0)
-                        else WebsiteLinkWedge(repoHomepage, 0)
+                            PlayStoreLinkWedge(repoHomepage, 0).create()
+                        else WebsiteLinkWedge(repoHomepage, 0).create()
                 )
             }
         }

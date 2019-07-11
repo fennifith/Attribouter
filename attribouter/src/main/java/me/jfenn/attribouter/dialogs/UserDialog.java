@@ -44,15 +44,15 @@ public class UserDialog extends AppCompatDialog {
         TextView bioView = findViewById(R.id.description);
         RecyclerView recycler = findViewById(R.id.links);
 
-        nameView.setText(ResourceUtils.getString(getContext(), contributor.getName()));
-        taskView.setText(ResourceUtils.getString(getContext(), contributor.task));
+        nameView.setText(ResourceUtils.getString(getContext(), contributor.getCanonicalName()));
+        taskView.setText(ResourceUtils.getString(getContext(), contributor.getTask()));
 
-        String url = ResourceUtils.getString(getContext(), contributor.avatarUrl);
+        String url = ResourceUtils.getString(getContext(), contributor.getAvatarUrl());
         if (url != null)
-            ResourceUtils.setImage(getContext(), contributor.avatarUrl, R.drawable.ic_attribouter_avatar, imageView);
+            ResourceUtils.setImage(getContext(), contributor.getAvatarUrl(), R.drawable.ic_attribouter_avatar, imageView);
         else imageView.setVisibility(View.GONE);
 
-        bioView.setText(ResourceUtils.getString(getContext(), contributor.bio));
+        bioView.setText(ResourceUtils.getString(getContext(), contributor.getBio()));
 
         List<LinkWedge> links = contributor.getChildren(LinkWedge.class);
         if (links.size() > 0) {

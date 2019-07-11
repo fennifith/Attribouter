@@ -1,7 +1,9 @@
 package me.jfenn.attribouter.fragments;
 
 import android.content.Context;
+import android.content.res.XmlResourceParser;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +46,12 @@ public class AboutFragment extends Fragment implements GitHubData.OnInitListener
             fileRes = args.getInt(Attribouter.EXTRA_FILE_RES, fileRes);
         }
 
-        wedges = new XMLWedgeProvider(fileRes).getWedges(getContext());
+        wedges = new ArrayList<>();
+        XmlResourceParser parser = getResources().getXml(fileRes);
+        wedges.addAll(new XMLWedgeProvider(parser).getAllWedges());
+        parser.close();
+
+        Log.d("Attribouter/WedgeParser", wedges.size() + " wedges found");
 
         adapter = new WedgeAdapter(wedges);
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
