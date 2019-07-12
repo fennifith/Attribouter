@@ -8,9 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import me.jfenn.attribouter.R
 import me.jfenn.attribouter.adapters.WedgeAdapter
 import me.jfenn.attribouter.addDefaults
-import me.jfenn.attribouter.data.github.GitHubData
-import me.jfenn.attribouter.data.github.LicenseData
-import me.jfenn.attribouter.data.github.RepositoryData
 import me.jfenn.attribouter.dialogs.OverflowDialog
 import me.jfenn.attribouter.utils.ResourceUtils
 
@@ -25,7 +22,7 @@ class LicensesWedge : Wedge<LicensesWedge.ViewHolder>(R.layout.item_attribouter_
             addDefaults()
     }
 
-    override fun onInit(data: GitHubData) {
+    /*override fun onInit(data: GitHubData) {
         (data as? RepositoryData)?.let { repo ->
             for (tag in data.tags) {
                 val mergeLicense = LicenseWedge(
@@ -63,7 +60,7 @@ class LicensesWedge : Wedge<LicensesWedge.ViewHolder>(R.layout.item_attribouter_
                 ).create())
             }
         }
-    }
+    }*/
 
     override fun getViewHolder(v: View): ViewHolder {
         return ViewHolder(v)

@@ -1,6 +1,6 @@
 package me.jfenn.attribouter.data.github;
 
-public class LicenseData extends GitHubData {
+public class LicenseData {
 
     public String key;
     public String name;
@@ -10,8 +10,4 @@ public class LicenseData extends GitHubData {
     public String[] conditions;
     public String[] limitations;
     public String body;
-
-    public LicenseData(String key) {
-        super("https://api.github.com/licenses/" + key);
-    }
 }

@@ -1,6 +1,5 @@
 package me.jfenn.attribouter.fragments;
 
-import android.content.Context;
 import android.content.res.XmlResourceParser;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,18 +19,20 @@ import java.util.List;
 import me.jfenn.attribouter.Attribouter;
 import me.jfenn.attribouter.R;
 import me.jfenn.attribouter.adapters.WedgeAdapter;
-import me.jfenn.attribouter.data.github.GitHubData;
+import me.jfenn.attribouter.provider.data.RequestProvider;
+import me.jfenn.attribouter.provider.data.github.GitHubService;
 import me.jfenn.attribouter.provider.wedge.XMLWedgeProvider;
 import me.jfenn.attribouter.wedges.Wedge;
 
-public class AboutFragment extends Fragment implements GitHubData.OnInitListener, Wedge.OnRequestListener {
+public class AboutFragment extends Fragment {
 
     private RecyclerView recycler;
     private WedgeAdapter adapter;
 
     private List<Wedge> wedges;
-    private List<GitHubData> requests;
     private String gitHubToken;
+
+    private RequestProvider[] providers;
 
     @Nullable
     @Override
@@ -45,6 +46,10 @@ public class AboutFragment extends Fragment implements GitHubData.OnInitListener
             fileRes = args.getInt(Attribouter.EXTRA_FILE_RES, fileRes);
         }
 
+        providers = new RequestProvider[]{
+                GitHubService.Companion.withToken(gitHubToken).create()
+        };
+
         wedges = new ArrayList<>();
         XmlResourceParser parser = getResources().getXml(fileRes);
         wedges.addAll(new XMLWedgeProvider(parser).getAllWedges());
@@ -55,71 +60,15 @@ public class AboutFragment extends Fragment implements GitHubData.OnInitListener
         recycler.addItemDecoration(new DividerItemDecoration(recycler.getContext(), DividerItemDecoration.VERTICAL));
         recycler.setAdapter(adapter);
 
-        requests = new ArrayList<>();
-        for (Wedge info : wedges) {
-            info.setOnRequestListener(this);
-        }
-
-        for (GitHubData request : requests) {
-            request.addOnInitListener(this);
-            request.startInit(getContext(), gitHubToken);
-        }
-
         return recycler;
-    }
-
-    @Override
-    public void onInit(GitHubData data) {
-        for (int i = 0; i < wedges.size(); i++) {
-            if (wedges.get(i).hasRequest(data))
-                adapter.notifyItemChanged(i);
-            else notifyChildren(i, wedges.get(i).getChildren(), data);
-        }
-
-        recycler.smoothScrollToPosition(0);
-    }
-
-    private void notifyChildren(int index, List<Wedge> children, GitHubData data) {
-        if (children.size() < 1)
-            return;
-
-        for (Wedge child : children) {
-            if (child.hasRequest(data)) {
-                adapter.notifyItemChanged(index);
-                return;
-            }
-
-            notifyChildren(index, child.getChildren(), data);
-        }
-    }
-
-    @Override
-    public void onFailure(GitHubData data) {
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (requests != null) {
-            for (GitHubData request : requests)
-                request.interruptThread();
-        }
-    }
 
-    @Override
-    public void onRequest(Wedge info, GitHubData request) {
-        if (!requests.contains(request)) {
-            requests.add(request);
-            request.addOnInitListener(this);
-
-            Context context = getContext();
-            if (context != null)
-                request.startInit(context, gitHubToken);
-        } else {
-            int i = requests.indexOf(request);
-            GitHubData activeRequest = requests.get(i).merge(request);
-            if (activeRequest.isInitialized())
-                info.onInit(activeRequest);
+        for (RequestProvider provider : providers) {
+            provider.destroy();
         }
     }
 }

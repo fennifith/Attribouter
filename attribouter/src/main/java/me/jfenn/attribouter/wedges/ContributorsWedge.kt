@@ -10,7 +10,6 @@ import me.jfenn.attribouter.R
 import me.jfenn.attribouter.adapters.WedgeAdapter
 import me.jfenn.attribouter.addDefaults
 import me.jfenn.attribouter.data.github.ContributorsData
-import me.jfenn.attribouter.data.github.GitHubData
 import me.jfenn.attribouter.data.github.UserData
 import me.jfenn.attribouter.dialogs.OverflowDialog
 import me.jfenn.attribouter.dialogs.UserDialog
@@ -30,32 +29,34 @@ class ContributorsWedge : Wedge<ContributorsWedge.ViewHolder>(R.layout.item_attr
         if (showDefaults != false)
             addDefaults()
 
-        addRequest(ContributorsData(repo))
+        repo?.let {
+            getProvider()?.getContributors(it)?.subscribe { data -> onContributors(data) }
+        }
     }
 
-    public override fun onInit(data: GitHubData) {
-        (data as? ContributorsData)?.let { obj ->
-            if (!obj.contributors.isNullOrEmpty()) for (contributor in obj.contributors.filter { it.login != null }) {
-                val info = addChild(ContributorWedge(
-                        login = contributor.login,
-                        avatarUrl = contributor.avatar_url,
-                        task = if (repo?.startsWith(contributor.login) == true) "Owner" else "Contributor"
-                ).create())
-
-                if (info is Mergeable<*> && !info.hasAll())
-                    addRequest(UserData(contributor.login))
-            }
-        } ?: (data as? UserData)?.let {
-            addChild(0, ContributorWedge(
-                    login = it.login,
-                    name = it.name,
-                    avatarUrl = it.avatar_url,
-                    task = if (repo?.startsWith(it.login) == true) "Owner" else "Contributor",
-                    bio = it.bio,
-                    blog = it.blog,
-                    email = it.email
+    fun onContributors(data: ContributorsData) {
+        if (!data.contributors.isNullOrEmpty()) for (contributor in data.contributors.filter { it.login != null }) {
+            val info = addChild(ContributorWedge(
+                    login = contributor.login,
+                    avatarUrl = contributor.avatar_url,
+                    task = if (repo?.startsWith(contributor.login) == true) "Owner" else "Contributor"
             ).create())
+
+            if (info is Mergeable<*> && !info.hasAll())
+                getProvider()?.getUser(contributor.login)?.subscribe { onContributor(it) }
         }
+    }
+
+    fun onContributor(data: UserData) {
+        addChild(0, ContributorWedge(
+                login = data.login,
+                name = data.name,
+                avatarUrl = data.avatar_url,
+                task = if (repo?.startsWith(data.login) == true) "Owner" else "Contributor",
+                bio = data.bio,
+                blog = data.blog,
+                email = data.email
+        ).create())
     }
 
     public override fun getViewHolder(v: View): ViewHolder {

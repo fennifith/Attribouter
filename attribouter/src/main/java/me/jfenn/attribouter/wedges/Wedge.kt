@@ -4,29 +4,30 @@ import android.content.Context
 import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
-import me.jfenn.attribouter.data.github.GitHubData
 import me.jfenn.attribouter.interfaces.Mergeable
+import me.jfenn.attribouter.provider.data.RequestProvider
 import me.jfenn.attribouter.provider.wedge.WedgeProvider
-import java.util.*
 import kotlin.reflect.KProperty
 
-abstract class Wedge<T : Wedge.ViewHolder>(@param:LayoutRes val layoutRes: Int) : GitHubData.OnInitListener {
+abstract class Wedge<T : Wedge.ViewHolder>(@param:LayoutRes val layoutRes: Int) {
     private val children: MutableList<Wedge<*>> = ArrayList()
-    private val requests: MutableList<GitHubData> = ArrayList()
     private val attributes: ArrayList<attr<*,*>> = ArrayList()
+    private val providers: ArrayList<RequestProvider> = ArrayList()
 
-    private var listener: OnRequestListener? = null
-
-    fun withProvider(provider: WedgeProvider): Wedge<T> {
+    fun <R: Wedge<*>> withProvider(provider: WedgeProvider): R {
         for (attribute in attributes)
             attribute.withProvider(provider)
 
         addChildren(provider.getWedges(this))
-        onCreate()
-        return this
+        return this as R
     }
 
-    fun <R : Wedge<T>> create() : R {
+    fun <R: Wedge<*>> withProvider(provider: RequestProvider): R {
+        providers.add(provider)
+        return this as R
+    }
+
+    fun <R: Wedge<*>> create() : R {
         onCreate()
         return this as R
     }
@@ -52,9 +53,6 @@ abstract class Wedge<T : Wedge.ViewHolder>(@param:LayoutRes val layoutRes: Int) 
             } ?: run { children.add(index, child) }
         }
 
-        if (listener != null)
-            child.setOnRequestListener(listener)
-
         return child
     }
 
@@ -64,52 +62,23 @@ abstract class Wedge<T : Wedge.ViewHolder>(@param:LayoutRes val layoutRes: Int) 
 
     fun <X : Wedge<*>> getChildren(type: Class<X>): List<X> {
         val children = ArrayList<X>()
-        for (info in getChildren()) {
-            if (type.isInstance(info))
-                children.add(info as X)
-        }
+        for (info in getChildren().filter { type.isInstance(it) })
+            children.add(info as X)
 
         return children
     }
 
-    fun addRequest(request: GitHubData) {
-        request.addOnInitListener(this)
-        requests.add(request)
-        listener?.onRequest(this, request)
-    }
-
-    fun setOnRequestListener(listener: OnRequestListener?) {
-        this.listener = listener
-        if (listener != null) {
-            for (request in requests)
-                listener.onRequest(this, request)
-        }
-
-        for (child in children)
-            child.setOnRequestListener(listener)
-    }
-
-    fun getRequests(): List<GitHubData> {
-        return requests
-    }
-
-    fun hasRequest(request: GitHubData): Boolean {
-        return requests.contains(request)
+    internal fun getProvider(id: String? = null): RequestProvider? {
+        return id?.let {
+            providers.firstOrNull { it.id == id }
+        } ?: providers.firstOrNull()
     }
 
     abstract fun getViewHolder(v: View): T
 
     abstract fun bind(context: Context, viewHolder: T)
 
-    override fun onInit(data: GitHubData) {}
-
-    override fun onFailure(data: GitHubData) {}
-
     open class ViewHolder(v: View) : RecyclerView.ViewHolder(v)
-
-    interface OnRequestListener {
-        fun onRequest(info: Wedge<*>, request: GitHubData)
-    }
 
     open inner class attr<in R : Wedge<*>, T>(
             val attribute: String,

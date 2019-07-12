@@ -11,7 +11,6 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import me.jfenn.attribouter.R
 import me.jfenn.attribouter.adapters.WedgeAdapter
-import me.jfenn.attribouter.data.github.GitHubData
 import me.jfenn.attribouter.data.github.RepositoryData
 import me.jfenn.attribouter.utils.ResourceUtils
 import me.jfenn.attribouter.wedges.link.GitHubLinkWedge
@@ -42,27 +41,25 @@ class AppWedge: Wedge<AppWedge.ViewHolder>(R.layout.item_attribouter_app_info) {
             addChild(PlayStoreLinkWedge(it, 0).create())
         }
 
-        repo?.let { addRequest(RepositoryData(it)) }
+        repo?.let { getProvider()?.getRepository(it)?.subscribe { data -> onRepository(data) } }
     }
 
-    override fun onInit(data: GitHubData) {
-        (data as? RepositoryData)?.let { repo ->
-            repo.description?.let { repoDescription ->
-                if ((description == null || !description!!.startsWith("^")))
-                    description = repoDescription
-            }
+    fun onRepository(repo: RepositoryData) {
+        repo.description?.let { repoDescription ->
+            if ((description == null || !description!!.startsWith("^")))
+                description = repoDescription
+        }
 
-            repo.html_url?.let { repoUrl ->
-                addChild(GitHubLinkWedge(repoUrl, 0, true).create())
-            }
+        repo.html_url?.let { repoUrl ->
+            addChild(GitHubLinkWedge(repoUrl, 0, true).create())
+        }
 
-            repo.homepage?.let { repoHomepage ->
-                addChild(
-                        if (repoHomepage.startsWith("https://play.google.com/"))
-                            PlayStoreLinkWedge(repoHomepage, 0).create()
-                        else WebsiteLinkWedge(repoHomepage, 0).create()
-                )
-            }
+        repo.homepage?.let { repoHomepage ->
+            addChild(
+                    if (repoHomepage.startsWith("https://play.google.com/"))
+                        PlayStoreLinkWedge(repoHomepage, 0).create()
+                    else WebsiteLinkWedge(repoHomepage, 0).create()
+            )
         }
     }
 

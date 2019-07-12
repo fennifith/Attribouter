@@ -1,6 +1,5 @@
 package me.jfenn.attribouter
 
-import me.jfenn.attribouter.data.github.ContributorsData
 import me.jfenn.attribouter.wedges.ContributorWedge
 import me.jfenn.attribouter.wedges.ContributorsWedge
 import me.jfenn.attribouter.wedges.LicenseWedge
@@ -18,7 +17,7 @@ fun ContributorsWedge.addDefaults() {
             email = "dev@jfenn.me"
     ).create())
 
-    addRequest(ContributorsData("fennifith/Attribouter"))
+    //addRequest(ContributorsData("fennifith/Attribouter"))
 }
 
 fun LicensesWedge.addDefaults() {

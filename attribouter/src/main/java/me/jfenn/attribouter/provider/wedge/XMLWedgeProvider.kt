@@ -2,6 +2,7 @@ package me.jfenn.attribouter.provider.wedge
 
 import android.content.res.XmlResourceParser
 import android.util.Log
+import me.jfenn.attribouter.provider.data.RequestProvider
 import me.jfenn.attribouter.provider.reflect.ClassInstantiator
 import me.jfenn.attribouter.wedges.Wedge
 import org.xmlpull.v1.XmlPullParser
@@ -10,7 +11,7 @@ import java.io.IOException
 import java.lang.reflect.InvocationTargetException
 import java.util.*
 
-class XMLWedgeProvider(private val parser: XmlResourceParser) : WedgeProvider {
+class XMLWedgeProvider(private val parser: XmlResourceParser, private vararg val providers: RequestProvider) : WedgeProvider {
 
     private fun getWedge(className: String): Wedge<*>? {
         val instantiator: ClassInstantiator<*>
@@ -26,7 +27,7 @@ class XMLWedgeProvider(private val parser: XmlResourceParser) : WedgeProvider {
         try {
             return instantiator.instantiate() as Wedge<*>
         } catch (e: NoSuchMethodException) {
-            Log.e("Attribouter", "Class \"$className\" definitely exists, but doesn't have the correct constructor. Check that you have defined one with a single argument - \'${XmlResourceParser::class.java.name}\'.")
+            Log.e("Attribouter", "Class \"$className\" definitely exists, but doesn't have the correct constructor. Check that you have defined one that accepts no arguments.")
             e.printStackTrace()
         } catch (e: InstantiationException) {
             e.printStackTrace()
@@ -54,9 +55,13 @@ class XMLWedgeProvider(private val parser: XmlResourceParser) : WedgeProvider {
                     continue
 
                 if (parser.eventType == XmlPullParser.START_TAG) {
-                    val wedge = getWedge(parser.name)?.withProvider(this)
-                    if (wedge != null)
-                        wedges.add(wedge)
+                    getWedge(parser.name)?.let {
+                        for (provider in providers)
+                            it.withProvider<Wedge<*>>(provider)
+
+                        wedges.add(it.withProvider<Wedge<*>>(this)
+                                .create())
+                    }
                 }
 
                 if (parser.eventType == XmlPullParser.END_DOCUMENT)

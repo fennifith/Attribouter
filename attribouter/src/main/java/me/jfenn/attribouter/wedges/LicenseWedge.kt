@@ -9,29 +9,16 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import me.jfenn.attribouter.R
 import me.jfenn.attribouter.adapters.WedgeAdapter
-import me.jfenn.attribouter.data.github.GitHubData
 import me.jfenn.attribouter.data.github.LicenseData
 import me.jfenn.attribouter.data.github.RepositoryData
 import me.jfenn.attribouter.interfaces.Mergeable
 import me.jfenn.attribouter.utils.ResourceUtils
+import me.jfenn.attribouter.utils.toListString
 import me.jfenn.attribouter.wedges.link.GitHubLinkWedge
 import me.jfenn.attribouter.wedges.link.LicenseLinkWedge
 import me.jfenn.attribouter.wedges.link.LinkWedge
 import me.jfenn.attribouter.wedges.link.WebsiteLinkWedge
 import java.util.regex.Pattern
-
-fun Array<String>.toListString(): String {
-    val builder = StringBuilder()
-    for (str in this) {
-        if (str.length > 1) {
-            builder.append(str[0].toString().toUpperCase())
-                    .append(str.replace('-', ' ').substring(1))
-                    .append("\n")
-        }
-    }
-
-    return builder.substring(0, builder.length - 1)
-}
 
 class LicenseWedge(
         repo: String? = null,
@@ -73,39 +60,37 @@ class LicenseWedge(
             addChild(LicenseLinkWedge(this, 0))
 
         if (!hasAllGeneric())
-            repo?.let { addRequest(RepositoryData(it)) }
+            repo?.let { getProvider()?.getRepository(it)?.subscribe { data -> onRepository(data) } }
 
         licenseKey?.let { key ->
-            val request = LicenseData(key)
-            token?.let { tag ->
-                request.addTag(tag)
-                addRequest(request)
-            }
+            getProvider()?.getLicense(key)?.subscribe { onLicense(it) }
         }
     }
 
-    override fun onInit(data: GitHubData) {
-        (data as? RepositoryData)?.let {
-            merge(LicenseWedge(null, null,
-                    description = data.description,
-                    licenseName = if (data.license != null) data.license.name else null,
-                    websiteUrl = data.homepage
-            ).create())
+    private fun onRepository(data: RepositoryData) {
+        merge(LicenseWedge(null, null,
+                description = data.description,
+                licenseName = if (data.license != null) data.license.name else null,
+                websiteUrl = data.homepage
+        ).create())
 
-            if (data.license != null && data.license.key != null && !hasAllLicense())
-                addRequest(LicenseData(data.license.key))
-        } ?: (data as? LicenseData)?.let {
-            merge(LicenseWedge(
-                    licenseName = data.name,
-                    licenseUrl = data.html_url,
-                    licensePermissions = data.permissions,
-                    licenseConditions = data.conditions,
-                    licenseLimitations = data.limitations,
-                    licenseDescription = data.description,
-                    licenseBody = data.body,
-                    licenseKey = data.key
-            ).create())
+        data.license?.key?.let { key ->
+            if (!hasAllLicense())
+                getProvider()?.getLicense(key)?.subscribe { onLicense(it) }
         }
+    }
+
+    private fun onLicense(data: LicenseData) {
+        merge(LicenseWedge(
+                licenseName = data.name,
+                licenseUrl = data.html_url,
+                licensePermissions = data.permissions,
+                licenseConditions = data.conditions,
+                licenseLimitations = data.limitations,
+                licenseDescription = data.description,
+                licenseBody = data.body,
+                licenseKey = data.key
+        ).create())
     }
 
     private fun getFormattedName(): String? {

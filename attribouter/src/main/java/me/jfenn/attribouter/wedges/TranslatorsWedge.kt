@@ -7,11 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import me.jfenn.attribouter.R
 import me.jfenn.attribouter.adapters.WedgeAdapter
-import me.jfenn.attribouter.data.github.ContributorsData
-import me.jfenn.attribouter.data.github.GitHubData
-import me.jfenn.attribouter.data.github.UserData
 import me.jfenn.attribouter.dialogs.OverflowDialog
-import me.jfenn.attribouter.interfaces.Mergeable
 import me.jfenn.attribouter.utils.ResourceUtils
 import java.util.*
 
@@ -21,7 +17,7 @@ class TranslatorsWedge : Wedge<TranslatorsWedge.ViewHolder>(R.layout.item_attrib
     private val overflow: Int? by attr("overflow", -1)
     private var sortedTranslators: MutableList<Wedge<*>>? = null
 
-    override fun onInit(data: GitHubData) {
+    /*override fun onInit(data: GitHubData) {
         if (data is ContributorsData) {
             if (!data.contributors.isNullOrEmpty()) for (contributor in data.contributors.filter { !it.login.isNullOrEmpty() }) {
                 val child = addChild(TranslatorWedge(
@@ -41,7 +37,7 @@ class TranslatorsWedge : Wedge<TranslatorsWedge.ViewHolder>(R.layout.item_attrib
                     email = data.email
             ).create())
         }
-    }
+    }*/
 
     override fun getViewHolder(v: View): ViewHolder {
         return ViewHolder(v)

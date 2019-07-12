@@ -5,7 +5,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import me.jfenn.attribouter.R
-import me.jfenn.attribouter.data.github.GitHubData
 import me.jfenn.attribouter.data.github.UserData
 import me.jfenn.attribouter.dialogs.UserDialog
 import me.jfenn.attribouter.interfaces.Mergeable
@@ -43,25 +42,23 @@ class ContributorWedge(
         email?.let { addChild(EmailLinkWedge(it, -1)) }
 
         if (!hasAll()) login?.let {
-            addRequest(UserData(it))
+            getProvider()?.getUser(it)?.subscribe { user -> onContributor(user) }
         }
     }
 
     fun getAbsolutePosition(): Int? = position?.let { if (it >= 0) it else null }
 
-    override fun onInit(data: GitHubData) {
-        (data as? UserData)?.let {
-            merge(ContributorWedge(
-                    it.login,
-                    it.name,
-                    it.avatar_url,
-                    if (task == null) "Contributor" else null,
-                    -1,
-                    it.bio,
-                    it.blog,
-                    it.email
-            ).create())
-        }
+    fun onContributor(data: UserData) {
+        merge(ContributorWedge(
+                data.login,
+                data.name,
+                data.avatar_url,
+                if (task == null) "Contributor" else null,
+                -1,
+                data.bio,
+                data.blog,
+                data.email
+        ).create())
     }
 
     fun getCanonicalName(): String? {

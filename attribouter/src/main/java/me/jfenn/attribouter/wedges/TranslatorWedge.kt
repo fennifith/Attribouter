@@ -5,7 +5,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import me.jfenn.attribouter.R
-import me.jfenn.attribouter.data.github.GitHubData
 import me.jfenn.attribouter.data.github.UserData
 import me.jfenn.attribouter.interfaces.Mergeable
 import me.jfenn.attribouter.utils.ResourceUtils
@@ -30,22 +29,21 @@ class TranslatorWedge(
 
     override fun onCreate() {
         login?.let {
-            if (!hasEverything())
-                addRequest(UserData(it))
+            if (!hasEverything()) getProvider()?.getUser(it)?.subscribe { user ->
+                onTranslator(user)
+            }
         }
     }
 
-    override fun onInit(data: GitHubData) {
-        (data as? UserData)?.let {
-            merge(TranslatorWedge(
-                    it.login,
-                    it.name,
-                    it.avatar_url,
-                    null,
-                    it.blog,
-                    it.email
-            ).create())
-        }
+    internal fun onTranslator(data: UserData) {
+        merge(TranslatorWedge(
+                data.login,
+                data.name,
+                data.avatar_url,
+                null,
+                data.blog,
+                data.email
+        ).create())
     }
 
     fun getCanonicalName(): String? {
