@@ -5,3 +5,19 @@ fun String?.isResourceMutable() : Boolean {
         !it.startsWith('^')
     } ?: true
 }
+
+fun String.getProvider() : String {
+    return if (contains(':'))
+        split(':')[0]
+    else throw RuntimeException("String service provider not specified: \"$this\".")
+}
+
+fun String?.getProviderOrNull() : String? {
+    return this?.let {
+        try {
+            getProvider()
+        } catch (e : RuntimeException) {
+            null
+        }
+    }
+}

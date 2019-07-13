@@ -1,4 +1,4 @@
-package me.jfenn.attribouter.provider.data
+package me.jfenn.attribouter.provider.net
 
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient

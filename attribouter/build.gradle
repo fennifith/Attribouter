@@ -42,6 +42,7 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$deps.retrofit"
 
     implementation "io.reactivex.rxjava2:rxandroid:$deps.rxandroid"
+    implementation "io.reactivex.rxjava2:rxjava:$deps.rxjava"
 }
 
 apply from: "../versions.gradle"

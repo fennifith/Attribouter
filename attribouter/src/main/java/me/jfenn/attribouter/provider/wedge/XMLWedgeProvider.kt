@@ -2,7 +2,6 @@ package me.jfenn.attribouter.provider.wedge
 
 import android.content.res.XmlResourceParser
 import android.util.Log
-import me.jfenn.attribouter.provider.data.RequestProvider
 import me.jfenn.attribouter.provider.reflect.ClassInstantiator
 import me.jfenn.attribouter.wedges.Wedge
 import org.xmlpull.v1.XmlPullParser
@@ -11,7 +10,14 @@ import java.io.IOException
 import java.lang.reflect.InvocationTargetException
 import java.util.*
 
-class XMLWedgeProvider(private val parser: XmlResourceParser, private vararg val providers: RequestProvider) : WedgeProvider {
+class XMLWedgeProvider(private val parser: XmlResourceParser) : WedgeProvider {
+
+    private var map: (WedgeProvider, Wedge<*>) -> Wedge<*> = { _, i -> i }
+
+    override fun map(map: (WedgeProvider, Wedge<*>) -> Wedge<*>): XMLWedgeProvider {
+        this.map = map
+        return this
+    }
 
     private fun getWedge(className: String): Wedge<*>? {
         val instantiator: ClassInstantiator<*>
@@ -56,11 +62,7 @@ class XMLWedgeProvider(private val parser: XmlResourceParser, private vararg val
 
                 if (parser.eventType == XmlPullParser.START_TAG) {
                     getWedge(parser.name)?.let {
-                        for (provider in providers)
-                            it.withProvider<Wedge<*>>(provider)
-
-                        wedges.add(it.withProvider<Wedge<*>>(this)
-                                .create())
+                        wedges.add(map(this, it).create())
                     }
                 }
 

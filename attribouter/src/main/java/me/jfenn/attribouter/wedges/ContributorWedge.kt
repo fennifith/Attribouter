@@ -5,9 +5,9 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import me.jfenn.attribouter.R
-import me.jfenn.attribouter.data.github.UserData
 import me.jfenn.attribouter.dialogs.UserDialog
 import me.jfenn.attribouter.interfaces.Mergeable
+import me.jfenn.attribouter.provider.net.data.UserData
 import me.jfenn.attribouter.utils.ResourceUtils
 import me.jfenn.attribouter.utils.isResourceMutable
 import me.jfenn.attribouter.wedges.link.EmailLinkWedge
@@ -52,13 +52,15 @@ class ContributorWedge(
         merge(ContributorWedge(
                 data.login,
                 data.name,
-                data.avatar_url,
+                data.avatarUrl,
                 if (task == null) "Contributor" else null,
                 -1,
                 data.bio,
-                data.blog,
+                data.websiteUrl,
                 data.email
         ).create())
+
+        notifyItemChanged()
     }
 
     fun getCanonicalName(): String? {

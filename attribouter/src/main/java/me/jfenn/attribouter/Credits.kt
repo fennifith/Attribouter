@@ -17,7 +17,7 @@ fun ContributorsWedge.addDefaults() {
             email = "dev@jfenn.me"
     ).create())
 
-    //addRequest(ContributorsData("fennifith/Attribouter"))
+    requestContributors("github:fennifith/Attribouter")
 }
 
 fun LicensesWedge.addDefaults() {
@@ -50,6 +50,27 @@ fun LicensesWedge.addDefaults() {
             websiteUrl = "https://bumptech.github.io/glide/",
             gitHubUrl = "https://github.com/bumptech/glide",
             licenseUrl = "https://raw.githubusercontent.com/bumptech/glide/master/LICENSE"
+    ).create(), LicenseWedge(
+            repo = "square/retrofit",
+            title = "Retrofit",
+            description = "Type-safe HTTP client for Android and Java by Square, Inc.",
+            licenseName = "Apache License 2.0",
+            websiteUrl = "https://square.github.io/retrofit/",
+            licenseKey = "apache-2.0"
+    ).create(), LicenseWedge(
+            repo = "ReactiveX/RxAndroid",
+            title = "^RxAndroid",
+            description = "RxJava bindings for Android.",
+            licenseName = "Apache License 2.0",
+            websiteUrl = "http://reactivex.io/",
+            licenseKey = "apache-2.0"
+    ).create(), LicenseWedge(
+            repo = "ReactiveX/RxJava",
+            title = "^RxJava",
+            description = "RxJava – Reactive Extensions for the JVM – a library for composing asynchronous and event-based programs using observable sequences for the Java VM.",
+            licenseName = "Apache License 2.0",
+            websiteUrl = "http://reactivex.io/",
+            licenseKey = "apache-2.0"
     ).create(), LicenseWedge(
             title = "Android Open Source Project",
             description = "Android is an open source software stack for a wide range of mobile devices and a corresponding open source project led by Google.",

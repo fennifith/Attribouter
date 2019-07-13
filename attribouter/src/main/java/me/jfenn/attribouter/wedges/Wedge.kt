@@ -5,7 +5,8 @@ import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import me.jfenn.attribouter.interfaces.Mergeable
-import me.jfenn.attribouter.provider.data.RequestProvider
+import me.jfenn.attribouter.interfaces.Notifiable
+import me.jfenn.attribouter.provider.net.RequestProvider
 import me.jfenn.attribouter.provider.wedge.WedgeProvider
 import kotlin.reflect.KProperty
 
@@ -13,6 +14,13 @@ abstract class Wedge<T : Wedge.ViewHolder>(@param:LayoutRes val layoutRes: Int) 
     private val children: MutableList<Wedge<*>> = ArrayList()
     private val attributes: ArrayList<attr<*,*>> = ArrayList()
     private val providers: ArrayList<RequestProvider> = ArrayList()
+
+    internal var notifiable: Notifiable? = null
+
+    fun <R: Wedge<*>> withProviders(providers: List<RequestProvider>): R {
+        this.providers.addAll(providers)
+        return this as R
+    }
 
     fun <R: Wedge<*>> withProvider(provider: WedgeProvider): R {
         for (attribute in attributes)
@@ -27,12 +35,21 @@ abstract class Wedge<T : Wedge.ViewHolder>(@param:LayoutRes val layoutRes: Int) 
         return this as R
     }
 
+    fun <R: Wedge<*>> withNotifiable(notifiable: Notifiable?): R {
+        this.notifiable = notifiable
+        return this as R
+    }
+
     fun <R: Wedge<*>> create() : R {
         onCreate()
         return this as R
     }
 
     open fun onCreate() {}
+
+    internal fun notifyItemChanged() {
+        notifiable?.onItemChanged(this)
+    }
 
     internal fun addChildren(children: Collection<Wedge<*>>) {
         for (c in children) addChild(c)
@@ -66,6 +83,10 @@ abstract class Wedge<T : Wedge.ViewHolder>(@param:LayoutRes val layoutRes: Int) 
             children.add(info as X)
 
         return children
+    }
+
+    internal fun getProviders(): List<RequestProvider> {
+        return providers
     }
 
     internal fun getProvider(id: String? = null): RequestProvider? {

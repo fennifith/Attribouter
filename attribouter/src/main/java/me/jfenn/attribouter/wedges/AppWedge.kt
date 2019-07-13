@@ -11,8 +11,9 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import me.jfenn.attribouter.R
 import me.jfenn.attribouter.adapters.WedgeAdapter
-import me.jfenn.attribouter.data.github.RepositoryData
+import me.jfenn.attribouter.provider.net.data.RepoData
 import me.jfenn.attribouter.utils.ResourceUtils
+import me.jfenn.attribouter.utils.getProviderOrNull
 import me.jfenn.attribouter.wedges.link.GitHubLinkWedge
 import me.jfenn.attribouter.wedges.link.LinkWedge
 import me.jfenn.attribouter.wedges.link.PlayStoreLinkWedge
@@ -41,20 +42,20 @@ class AppWedge: Wedge<AppWedge.ViewHolder>(R.layout.item_attribouter_app_info) {
             addChild(PlayStoreLinkWedge(it, 0).create())
         }
 
-        repo?.let { getProvider()?.getRepository(it)?.subscribe { data -> onRepository(data) } }
+        repo?.let { getProvider(it.getProviderOrNull())?.getRepository(it)?.subscribe { data -> onRepository(data) } }
     }
 
-    fun onRepository(repo: RepositoryData) {
+    fun onRepository(repo: RepoData) {
         repo.description?.let { repoDescription ->
             if ((description == null || !description!!.startsWith("^")))
                 description = repoDescription
         }
 
-        repo.html_url?.let { repoUrl ->
+        repo.source.url?.let { repoUrl ->
             addChild(GitHubLinkWedge(repoUrl, 0, true).create())
         }
 
-        repo.homepage?.let { repoHomepage ->
+        repo.websiteUrl?.let { repoHomepage ->
             addChild(
                     if (repoHomepage.startsWith("https://play.google.com/"))
                         PlayStoreLinkWedge(repoHomepage, 0).create()

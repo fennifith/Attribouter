@@ -9,10 +9,11 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import me.jfenn.attribouter.R
 import me.jfenn.attribouter.adapters.WedgeAdapter
-import me.jfenn.attribouter.data.github.LicenseData
-import me.jfenn.attribouter.data.github.RepositoryData
 import me.jfenn.attribouter.interfaces.Mergeable
+import me.jfenn.attribouter.provider.net.data.LicenseData
+import me.jfenn.attribouter.provider.net.data.RepoData
 import me.jfenn.attribouter.utils.ResourceUtils
+import me.jfenn.attribouter.utils.getProviderOrNull
 import me.jfenn.attribouter.utils.toListString
 import me.jfenn.attribouter.wedges.link.GitHubLinkWedge
 import me.jfenn.attribouter.wedges.link.LicenseLinkWedge
@@ -60,30 +61,32 @@ class LicenseWedge(
             addChild(LicenseLinkWedge(this, 0))
 
         if (!hasAllGeneric())
-            repo?.let { getProvider()?.getRepository(it)?.subscribe { data -> onRepository(data) } }
+            repo?.let { getProvider(it.getProviderOrNull())?.getRepository(it)?.subscribe { data -> onRepository(data) } }
 
         licenseKey?.let { key ->
-            getProvider()?.getLicense(key)?.subscribe { onLicense(it) }
+            getProvider("github")?.getLicense(key)?.subscribe { onLicense(it) }
         }
     }
 
-    private fun onRepository(data: RepositoryData) {
-        merge(LicenseWedge(null, null,
+    private fun onRepository(data: RepoData) {
+        merge(LicenseWedge(
                 description = data.description,
                 licenseName = if (data.license != null) data.license.name else null,
-                websiteUrl = data.homepage
+                websiteUrl = data.websiteUrl
         ).create())
 
         data.license?.key?.let { key ->
             if (!hasAllLicense())
-                getProvider()?.getLicense(key)?.subscribe { onLicense(it) }
+                getProvider("github")?.getLicense(key)?.subscribe { onLicense(it) }
         }
+
+        notifyItemChanged()
     }
 
     private fun onLicense(data: LicenseData) {
         merge(LicenseWedge(
                 licenseName = data.name,
-                licenseUrl = data.html_url,
+                licenseUrl = data.infoUrl,
                 licensePermissions = data.permissions,
                 licenseConditions = data.conditions,
                 licenseLimitations = data.limitations,
@@ -91,6 +94,8 @@ class LicenseWedge(
                 licenseBody = data.body,
                 licenseKey = data.key
         ).create())
+
+        notifyItemChanged()
     }
 
     private fun getFormattedName(): String? {

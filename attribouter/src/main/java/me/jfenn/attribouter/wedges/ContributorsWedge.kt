@@ -6,16 +6,17 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import io.reactivex.disposables.Disposable
 import me.jfenn.attribouter.R
 import me.jfenn.attribouter.adapters.WedgeAdapter
 import me.jfenn.attribouter.addDefaults
-import me.jfenn.attribouter.data.github.ContributorsData
-import me.jfenn.attribouter.data.github.UserData
 import me.jfenn.attribouter.dialogs.OverflowDialog
 import me.jfenn.attribouter.dialogs.UserDialog
 import me.jfenn.attribouter.interfaces.Mergeable
+import me.jfenn.attribouter.provider.net.data.UserData
 import me.jfenn.attribouter.utils.ResourceUtils
 import me.jfenn.attribouter.utils.UrlClickListener
+import me.jfenn.attribouter.utils.getProviderOrNull
 import java.util.*
 
 class ContributorsWedge : Wedge<ContributorsWedge.ViewHolder>(R.layout.item_attribouter_contributors) {
@@ -29,34 +30,36 @@ class ContributorsWedge : Wedge<ContributorsWedge.ViewHolder>(R.layout.item_attr
         if (showDefaults != false)
             addDefaults()
 
-        repo?.let {
-            getProvider()?.getContributors(it)?.subscribe { data -> onContributors(data) }
+        repo?.let { requestContributors(it) }
+    }
+
+    fun requestContributors(repo: String): Disposable? {
+        return getProvider(repo.getProviderOrNull())?.getContributors(repo)?.subscribe { contributors ->
+            for (contributor in contributors)
+                onContributor(contributor)
         }
     }
 
-    fun onContributors(data: ContributorsData) {
-        if (!data.contributors.isNullOrEmpty()) for (contributor in data.contributors.filter { it.login != null }) {
-            val info = addChild(ContributorWedge(
-                    login = contributor.login,
-                    avatarUrl = contributor.avatar_url,
-                    task = if (repo?.startsWith(contributor.login) == true) "Owner" else "Contributor"
-            ).create())
-
-            if (info is Mergeable<*> && !info.hasAll())
-                getProvider()?.getUser(contributor.login)?.subscribe { onContributor(it) }
-        }
-    }
-
-    fun onContributor(data: UserData) {
-        addChild(0, ContributorWedge(
+    fun onContributor(data: UserData, pass: Int = 0) {
+        val contributor = ContributorWedge(
                 login = data.login,
                 name = data.name,
-                avatarUrl = data.avatar_url,
-                task = if (repo?.startsWith(data.login) == true) "Owner" else "Contributor",
+                avatarUrl = data.avatarUrl,
+                task = if (data.login?.let { repo?.startsWith(it) } == true) "Owner" else "Contributor",
                 bio = data.bio,
-                blog = data.blog,
+                blog = data.websiteUrl,
                 email = data.email
-        ).create())
+        )
+
+        val info = addChild(0, contributor.withProviders<ContributorWedge>(getProviders())
+                .withNotifiable<ContributorWedge>(notifiable)
+                .create())
+
+        if (info is Mergeable<*> && !info.hasAll() && pass < 3) data.login?.let { login ->
+            getProvider()?.getUser(login)?.subscribe { onContributor(it, pass + 1) }
+        }
+
+        notifyItemChanged()
     }
 
     public override fun getViewHolder(v: View): ViewHolder {

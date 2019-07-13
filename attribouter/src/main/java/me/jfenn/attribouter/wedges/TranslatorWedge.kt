@@ -5,8 +5,8 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import me.jfenn.attribouter.R
-import me.jfenn.attribouter.data.github.UserData
 import me.jfenn.attribouter.interfaces.Mergeable
+import me.jfenn.attribouter.provider.net.data.UserData
 import me.jfenn.attribouter.utils.ResourceUtils
 import me.jfenn.attribouter.utils.UrlClickListener
 import me.jfenn.attribouter.utils.isResourceMutable
@@ -39,11 +39,13 @@ class TranslatorWedge(
         merge(TranslatorWedge(
                 data.login,
                 data.name,
-                data.avatar_url,
+                data.avatarUrl,
                 null,
-                data.blog,
+                data.websiteUrl,
                 data.email
         ).create())
+
+        notifyItemChanged()
     }
 
     fun getCanonicalName(): String? {
