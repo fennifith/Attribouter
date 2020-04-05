@@ -5,6 +5,7 @@ import me.jfenn.attribouter.provider.net.github.data.ContributorData
 import me.jfenn.attribouter.provider.net.github.data.LicenseData
 import me.jfenn.attribouter.provider.net.github.data.RepositoryData
 import me.jfenn.attribouter.provider.net.github.data.UserData
+import okhttp3.Cache
 import retrofit2.http.GET
 import retrofit2.http.Path
 
@@ -23,6 +24,7 @@ interface GitHubService {
     suspend fun getLicense(@Path("key") key: String): LicenseData
 
     companion object: ServiceBuilder<GitHubProvider> {
+        override var cache: Cache? = null
         override var headers: MutableMap<String, String> = HashMap()
 
         fun withToken(token: String?): ServiceBuilder<GitHubProvider> {

@@ -39,7 +39,11 @@ class AboutFragment : Fragment(), Notifiable {
         val provider = XMLWedgeProvider(parser)
         val lifecycle = LifecycleInstance(
                 providers = listOf(
-                        GitHubService.withToken(gitHubToken).create()
+                        GitHubService.let { service ->
+                            service.withToken(gitHubToken)
+                            context?.let { ctx -> service.withCache(ctx.cacheDir) }
+                            service.create()
+                        }
                 ),
                 notifiable = this
         )
