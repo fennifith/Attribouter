@@ -69,7 +69,7 @@
         <!-- Alex doesn't have a github account (actually, he does, but let's pretend he doesn't), so his data is simply added to the list of contributors from github -->
         <!-- Note the string resource used in place of a name. You can use string resources. Even though there's no autocompletion. They still work. -->
     </ContributorsWedge>
-    <TranslatorsWedge overflow="-1">
+    <TranslatorsWedge overflow="5">
         <TranslatorWedge
             name="John Doe"
             avatar="https://jfenn.me/images/headers/rocks.jpg"
