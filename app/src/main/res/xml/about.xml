@@ -47,7 +47,7 @@
         <ContributorWedge
             login="jahirfiquitiva"
             position="3"
-            task="^Lazy Slacker">
+            task="Contributor">
             <LinkWedge
                 hidden="true"
                 id="website" />

@@ -15,7 +15,6 @@ import me.jfenn.attribouter.adapters.WedgeAdapter
 import me.jfenn.attribouter.addDefaults
 import me.jfenn.attribouter.dialogs.OverflowDialog
 import me.jfenn.attribouter.dialogs.UserDialog
-import me.jfenn.attribouter.interfaces.Mergeable
 import me.jfenn.attribouter.provider.net.data.UserData
 import me.jfenn.attribouter.utils.ResourceUtils
 import me.jfenn.attribouter.utils.UrlClickListener
@@ -48,7 +47,7 @@ class ContributorsWedge : Wedge<ContributorsWedge.ViewHolder>(R.layout.item_attr
         }
     }
 
-    fun onContributor(data: UserData, pass: Int = 0) {
+    fun onContributor(data: UserData) {
         val contributor = ContributorWedge(
                 login = data.login,
                 name = data.name,
@@ -59,17 +58,8 @@ class ContributorsWedge : Wedge<ContributorsWedge.ViewHolder>(R.layout.item_attr
                 email = data.email
         )
 
-        val info = addChild(0, contributor.create(lifecycle))
-
-        if (info is Mergeable<*> && !info.hasAll() && pass < 3) data.login?.let { login ->
-            GlobalScope.launch { // TODO: use, err, the non-global scope...
-                withContext(Dispatchers.IO) {
-                    lifecycle?.getProvider()?.getUser(login)
-                }?.let { onContributor(it, pass + 1) }
-            }
-        }
-
-        lifecycle?.notifyItemChanged(this)
+        addChild(0, contributor.create(lifecycle))
+        notifyItemChanged()
     }
 
     public override fun getViewHolder(v: View): ViewHolder {

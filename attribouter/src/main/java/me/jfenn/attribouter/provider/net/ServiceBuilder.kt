@@ -1,6 +1,5 @@
 package me.jfenn.attribouter.provider.net
 
-import android.util.Log
 import okhttp3.*
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -29,10 +28,7 @@ interface ServiceBuilder<T: RequestProvider> {
         httpClient.addInterceptor(object: Interceptor {
 
             override fun intercept(chain: Interceptor.Chain): Response {
-                Log.e("Attribouter", "request ${chain.request().url().encodedPath()}")
                 val request = chain.request().newBuilder()
-
-                request.header("Cache-Control", "public, max-age=3600")
 
                 request.cacheControl(CacheControl.Builder()
                         .maxAge(60, TimeUnit.SECONDS)
