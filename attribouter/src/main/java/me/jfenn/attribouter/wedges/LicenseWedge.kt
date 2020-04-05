@@ -82,7 +82,7 @@ class LicenseWedge(
                 description = data.description,
                 licenseName = if (data.license != null) data.license.name else null,
                 websiteUrl = data.websiteUrl
-        ).create(lifecycle))
+        ).create())
 
         data.license?.key?.let { key ->
             if (!hasAllLicense()) GlobalScope.launch { // TODO: use, err, the non-global scope...
@@ -105,7 +105,7 @@ class LicenseWedge(
                 licenseDescription = data.description,
                 licenseBody = data.body,
                 licenseKey = data.key
-        ).create(lifecycle))
+        ).create())
 
         notifyItemChanged()
     }

@@ -14,7 +14,7 @@ abstract class Wedge<T : Wedge.ViewHolder>(@param:LayoutRes val layoutRes: Int) 
     private val attributes: ArrayList<attr<*,*>> = ArrayList()
     internal var lifecycle: LifecycleInstance? = null
 
-    fun <R: Wedge<*>> create(lifecycle: LifecycleInstance?) : R {
+    fun <R: Wedge<*>> create(lifecycle: LifecycleInstance? = null) : R {
         this.lifecycle = lifecycle
 
         onCreate()

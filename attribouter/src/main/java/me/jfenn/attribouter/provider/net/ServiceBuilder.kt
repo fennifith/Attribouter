@@ -1,12 +1,11 @@
 package me.jfenn.attribouter.provider.net
 
-import okhttp3.Cache
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
-import okhttp3.Response
+import android.util.Log
+import okhttp3.*
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
+import java.util.concurrent.TimeUnit
 
 interface ServiceBuilder<T: RequestProvider> {
 
@@ -30,9 +29,15 @@ interface ServiceBuilder<T: RequestProvider> {
         httpClient.addInterceptor(object: Interceptor {
 
             override fun intercept(chain: Interceptor.Chain): Response {
+                Log.e("Attribouter", "request ${chain.request().url().encodedPath()}")
                 val request = chain.request().newBuilder()
 
                 request.header("Cache-Control", "public, max-age=3600")
+
+                request.cacheControl(CacheControl.Builder()
+                        .maxAge(60, TimeUnit.SECONDS)
+                        .maxStale(365, TimeUnit.DAYS)
+                        .build())
 
                 for ((key, value) in headers)
                     request.addHeader(key, value)

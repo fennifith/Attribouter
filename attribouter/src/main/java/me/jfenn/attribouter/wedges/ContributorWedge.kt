@@ -62,7 +62,7 @@ class ContributorWedge(
                 data.bio,
                 data.websiteUrl,
                 data.email
-        ).create(lifecycle))
+        ).create())
 
         lifecycle?.notifyItemChanged(this)
     }

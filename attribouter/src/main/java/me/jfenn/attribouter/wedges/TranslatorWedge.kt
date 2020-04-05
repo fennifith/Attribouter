@@ -50,7 +50,7 @@ class TranslatorWedge(
                 null,
                 data.websiteUrl,
                 data.email
-        ).create(lifecycle))
+        ).create())
 
         notifyItemChanged()
     }
