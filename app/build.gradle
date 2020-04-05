@@ -5,13 +5,18 @@ android {
 
     defaultConfig {
         applicationId "me.jfenn.attriboutersample"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     buildTypes {
@@ -24,8 +29,8 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'com.google.android.material:material:1.0.0'
+    implementation "androidx.appcompat:appcompat:$deps.android.appcompat"
+    implementation "com.google.android.material:material:$deps.google.material"
 
     implementation project(':attribouter')
 }

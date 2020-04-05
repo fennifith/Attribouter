@@ -6,7 +6,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import io.reactivex.disposables.Disposable
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.jfenn.attribouter.R
 import me.jfenn.attribouter.adapters.WedgeAdapter
 import me.jfenn.attribouter.addDefaults
@@ -30,13 +33,18 @@ class ContributorsWedge : Wedge<ContributorsWedge.ViewHolder>(R.layout.item_attr
         if (showDefaults != false)
             addDefaults()
 
-        repo?.let { requestContributors(it) }
+        repo?.let {
+            requestContributors(it)
+        }
     }
 
-    fun requestContributors(repo: String): Disposable? {
-        return getProvider(repo.getProviderOrNull())?.getContributors(repo)?.subscribe { contributors ->
-            for (contributor in contributors)
+    fun requestContributors(repo: String) {
+        GlobalScope.launch { // TODO: use, err, the non-global scope...
+            withContext(Dispatchers.IO) {
+                getProvider(repo.getProviderOrNull())?.getContributors(repo)
+            }?.forEach { contributor ->
                 onContributor(contributor)
+            }
         }
     }
 
@@ -56,7 +64,11 @@ class ContributorsWedge : Wedge<ContributorsWedge.ViewHolder>(R.layout.item_attr
                 .create())
 
         if (info is Mergeable<*> && !info.hasAll() && pass < 3) data.login?.let { login ->
-            getProvider()?.getUser(login)?.subscribe { onContributor(it, pass + 1) }
+            GlobalScope.launch { // TODO: use, err, the non-global scope...
+                withContext(Dispatchers.IO) {
+                    getProvider()?.getUser(login)
+                }?.let { onContributor(it, pass + 1) }
+            }
         }
 
         notifyItemChanged()

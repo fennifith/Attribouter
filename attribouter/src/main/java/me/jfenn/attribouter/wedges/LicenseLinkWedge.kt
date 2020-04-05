@@ -1,10 +1,9 @@
-package me.jfenn.attribouter.wedges.link
+package me.jfenn.attribouter.wedges
 
 import android.content.Context
 import android.view.View
 import me.jfenn.attribouter.dialogs.LicenseDialog
 import me.jfenn.attribouter.utils.UrlClickListener
-import me.jfenn.attribouter.wedges.LicenseWedge
 
 class LicenseLinkWedge(
         private val license: LicenseWedge, priority: Int

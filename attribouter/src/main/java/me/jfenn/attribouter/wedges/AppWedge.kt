@@ -9,15 +9,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.jfenn.attribouter.R
 import me.jfenn.attribouter.adapters.WedgeAdapter
 import me.jfenn.attribouter.provider.net.data.RepoData
 import me.jfenn.attribouter.utils.ResourceUtils
 import me.jfenn.attribouter.utils.getProviderOrNull
-import me.jfenn.attribouter.wedges.link.GitHubLinkWedge
-import me.jfenn.attribouter.wedges.link.LinkWedge
-import me.jfenn.attribouter.wedges.link.PlayStoreLinkWedge
-import me.jfenn.attribouter.wedges.link.WebsiteLinkWedge
 import java.util.*
 
 class AppWedge: Wedge<AppWedge.ViewHolder>(R.layout.item_attribouter_app_info) {
@@ -31,7 +31,7 @@ class AppWedge: Wedge<AppWedge.ViewHolder>(R.layout.item_attribouter_app_info) {
 
     override fun onCreate() {
         (gitHubUrl ?: repo?.let { "https://github.com/$it" })?.let {
-            addChild(GitHubLinkWedge(it, 0).create())
+            addChild(GitHubLinkWedge(it, 0, true).create())
         }
 
         websiteUrl?.let {
@@ -42,7 +42,13 @@ class AppWedge: Wedge<AppWedge.ViewHolder>(R.layout.item_attribouter_app_info) {
             addChild(PlayStoreLinkWedge(it, 0).create())
         }
 
-        repo?.let { getProvider(it.getProviderOrNull())?.getRepository(it)?.subscribe { data -> onRepository(data) } }
+        repo?.let {
+            GlobalScope.launch { // TODO: use, err, the non-global scope...
+                withContext(Dispatchers.IO) {
+                    getProvider(it.getProviderOrNull())?.getRepository(it)
+                }?.let { data -> onRepository(data) }
+            }
+        }
     }
 
     fun onRepository(repo: RepoData) {

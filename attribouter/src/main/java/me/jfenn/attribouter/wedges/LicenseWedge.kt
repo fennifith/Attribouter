@@ -7,6 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.jfenn.attribouter.R
 import me.jfenn.attribouter.adapters.WedgeAdapter
 import me.jfenn.attribouter.interfaces.Mergeable
@@ -15,10 +19,6 @@ import me.jfenn.attribouter.provider.net.data.RepoData
 import me.jfenn.attribouter.utils.ResourceUtils
 import me.jfenn.attribouter.utils.getProviderOrNull
 import me.jfenn.attribouter.utils.toListString
-import me.jfenn.attribouter.wedges.link.GitHubLinkWedge
-import me.jfenn.attribouter.wedges.link.LicenseLinkWedge
-import me.jfenn.attribouter.wedges.link.LinkWedge
-import me.jfenn.attribouter.wedges.link.WebsiteLinkWedge
 import java.util.regex.Pattern
 
 class LicenseWedge(
@@ -60,11 +60,20 @@ class LicenseWedge(
         if (!licenseBody.isNullOrEmpty() && !licenseUrl.isNullOrEmpty())
             addChild(LicenseLinkWedge(this, 0))
 
-        if (!hasAllGeneric())
-            repo?.let { getProvider(it.getProviderOrNull())?.getRepository(it)?.subscribe { data -> onRepository(data) } }
+        if (!hasAllGeneric()) repo?.let {
+            GlobalScope.launch { // TODO: use, err, the non-global scope...
+                withContext(Dispatchers.IO) {
+                    getProvider(it.getProviderOrNull())?.getRepository(it)
+                }?.let { data -> onRepository(data) }
+            }
+        }
 
         licenseKey?.let { key ->
-            getProvider("github")?.getLicense(key)?.subscribe { onLicense(it) }
+            GlobalScope.launch { // TODO: use, err, the non-global scope...
+                withContext(Dispatchers.IO) {
+                    getProvider("github")?.getLicense(key)
+                }?.let { onLicense(it) }
+            }
         }
     }
 
@@ -76,8 +85,11 @@ class LicenseWedge(
         ).create())
 
         data.license?.key?.let { key ->
-            if (!hasAllLicense())
-                getProvider("github")?.getLicense(key)?.subscribe { onLicense(it) }
+            if (!hasAllLicense()) GlobalScope.launch { // TODO: use, err, the non-global scope...
+                withContext(Dispatchers.IO) {
+                    getProvider("github")?.getLicense(key)
+                }?.let { onLicense(it) }
+            }
         }
 
         notifyItemChanged()

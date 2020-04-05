@@ -1,110 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
 <about>
-    <me.jfenn.attribouter.wedges.AppWedge repo="fennifith/Attribouter">
-        <me.jfenn.attribouter.wedges.link.LinkWedge
+    <AppWedge repo="fennifith/Attribouter">
+        <LinkWedge
             name="Bintray"
             icon="https://bintray.com/favicon.ico"
             url="https://bintray.com/18jafenn90/maven/attribouter" />
-        <me.jfenn.attribouter.wedges.link.LinkWedge
+        <LinkWedge
             name="Documentation"
             icon="https://jfenn.me/favicon.ico"
             url="https://jfenn.me/about/?Attribouter" />
-        <me.jfenn.attribouter.wedges.link.LinkWedge
+        <LinkWedge
             hidden="true"
             id="playStore" />
-        <me.jfenn.attribouter.wedges.link.LinkWedge
+        <LinkWedge
             name="^Git Repo"
             id="github" />
-    </me.jfenn.attribouter.wedges.AppWedge>
+    </AppWedge>
 
-    <me.jfenn.attribouter.wedges.TextWedge text="@string/html" />
+    <TextWedge text="@string/html" />
     <!-- <text> elements can be added anywhere directly within the <about> tag -->
     <!-- they support html formatting (<p> <b> <i>) & links (<a href="">) -->
 
-    <me.jfenn.attribouter.wedges.link.PlayStoreLinkWedge />
+    <PlayStoreLinkWedge />
 
-    <me.jfenn.attribouter.wedges.ContributorsWedge>
-        <me.jfenn.attribouter.wedges.ContributorWedge
+    <ContributorsWedge>
+        <ContributorWedge
             avatar="^@drawable/me"
             bio="This is a bio. I am a person."
             email="dev@jfenn.me"
             login="fennifith"
             position="1"
             task="Owner">
-            <me.jfenn.attribouter.wedges.link.LinkWedge
+            <LinkWedge
                 name="Twitter"
                 icon="https://twitter.com/favicon.ico"
                 url="https://jfenn.me/links/twitter" />
-        </me.jfenn.attribouter.wedges.ContributorWedge>
+        </ContributorWedge>
         <!-- the "avatar" attribute can take either a url or a resource -->
         <!-- setting the "position" attribute makes me appear in the center of a row of three items above the list, instead of in the list like normal -->
         <!-- there must be position attributes for 1, 2, and 3 for this to work, otherwise setting "position=1" will just move me to the top of the list -->
-        <me.jfenn.attribouter.wedges.ContributorWedge
+        <ContributorWedge
             login="BrianValente"
             position="2"
             task="Contributor" />
         <!-- Brian's task, "Contributor", will be displayed while the app is loading the github data, or if it cannot be loaded / the device is offline -->
-        <me.jfenn.attribouter.wedges.ContributorWedge
+        <ContributorWedge
             login="jahirfiquitiva"
             position="3"
             task="^Lazy Slacker">
-            <me.jfenn.attribouter.wedges.link.LinkWedge
+            <LinkWedge
                 hidden="true"
                 id="website" />
-        </me.jfenn.attribouter.wedges.ContributorWedge>
+        </ContributorWedge>
         <!-- For Jahir, the task "Lazy Slacker" will override the default task "Contributor" even after the github data is fetched (starting with the "^"
             character is what tells the library to do this) -->
-        <me.jfenn.attribouter.wedges.ContributorWedge login="adueppen">
-            <me.jfenn.attribouter.wedges.link.LinkWedge
+        <ContributorWedge login="adueppen">
+            <LinkWedge
                 name="Twitter"
                 priority="5"
                 url="https://twitter.com/adueppen/" />
-        </me.jfenn.attribouter.wedges.ContributorWedge>
-        <me.jfenn.attribouter.wedges.ContributorWedge login="joshuabaldassarre">
-            <me.jfenn.attribouter.wedges.link.LinkWedge
-                name="Twitter"
+        </ContributorWedge>
+        <ContributorWedge login="exampleuserthatdoesntexist">
+            <LinkWedge
+                name="Website"
                 priority="5"
-                url="https://twitter.com/adueppen/" />
-        </me.jfenn.attribouter.wedges.ContributorWedge>
+                url="https://example.com/" />
+        </ContributorWedge>
         <!-- Alex doesn't have a github account (actually, he does, but let's pretend he doesn't), so his data is simply added to the list of contributors from github -->
         <!-- Note the string resource used in place of a name. You can use string resources. Even though there's no autocompletion. They still work. -->
-    </me.jfenn.attribouter.wedges.ContributorsWedge>
-    <me.jfenn.attribouter.wedges.TranslatorsWedge overflow="5">
-        <me.jfenn.attribouter.wedges.TranslatorWedge
+    </ContributorsWedge>
+    <TranslatorsWedge overflow="5">
+        <TranslatorWedge
             name="John Doe"
             avatar="https://jfenn.me/images/headers/rocks.jpg"
             blog="https://example.com/"
             locales="zh,rn,sn" />
         <!-- locales are comma separated, no whitespace -->
-        <me.jfenn.attribouter.wedges.TranslatorWedge
+        <TranslatorWedge
             name="Jenny Doe"
             avatar="https://example.com/broken_link.png"
             blog="https://example.com/"
             locales="zh,sn" />
-        <me.jfenn.attribouter.wedges.TranslatorWedge
+        <TranslatorWedge
             name="Joe Doe"
             avatar="https://jfenn.me/images/headers/highway.jpg"
             blog="https://example.com/"
             locales="rn,cy" />
-        <me.jfenn.attribouter.wedges.TranslatorWedge
+        <TranslatorWedge
             locales="en"
             login="fennifith" />
-    </me.jfenn.attribouter.wedges.TranslatorsWedge>
-    <me.jfenn.attribouter.wedges.LicensesWedge
+    </TranslatorsWedge>
+    <LicensesWedge
         overflow="1"
         showDefaults="false">
-        <me.jfenn.attribouter.wedges.LicenseWedge repo="fennifith/ColorPickerDialog" />
+        <LicenseWedge repo="fennifith/ColorPickerDialog" />
         <!-- all of ColorPickerDialog's info is fetched from github -->
-        <me.jfenn.attribouter.wedges.LicenseWedge
+        <LicenseWedge
             description="Something Does Stuff With Things"
             licenseName="This Is A License"
             title="Library Something Or Other"
             website="https://jfenn.me/" />
         <!-- this data is not fetched from github, and works exactly the same as the contributors -->
         <!-- some license identifiers can be found here https://developer.github.com/v3/licenses/ -->
-    </me.jfenn.attribouter.wedges.LicensesWedge>
+    </LicensesWedge>
 
-    <me.jfenn.attribouter.wedges.LicensesWedge
+    <LicensesWedge
         overflow="0"
         title="Library Licenses" />
 

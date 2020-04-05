@@ -1,4 +1,4 @@
-package me.jfenn.attribouter.wedges.link
+package me.jfenn.attribouter.wedges
 
 class EmailLinkWedge(
         address: String, priority: Int

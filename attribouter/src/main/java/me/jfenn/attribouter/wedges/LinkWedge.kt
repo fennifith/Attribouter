@@ -1,4 +1,4 @@
-package me.jfenn.attribouter.wedges.link
+package me.jfenn.attribouter.wedges
 
 import android.content.Context
 import android.view.View
@@ -10,7 +10,6 @@ import me.jfenn.attribouter.interfaces.Mergeable
 import me.jfenn.attribouter.utils.ResourceUtils
 import me.jfenn.attribouter.utils.UrlClickListener
 import me.jfenn.attribouter.utils.isResourceMutable
-import me.jfenn.attribouter.wedges.Wedge
 
 open class LinkWedge(
         id: String? = null,

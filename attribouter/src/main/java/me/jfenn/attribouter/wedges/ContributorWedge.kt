@@ -4,16 +4,16 @@ import android.content.Context
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.jfenn.attribouter.R
 import me.jfenn.attribouter.dialogs.UserDialog
 import me.jfenn.attribouter.interfaces.Mergeable
 import me.jfenn.attribouter.provider.net.data.UserData
 import me.jfenn.attribouter.utils.ResourceUtils
 import me.jfenn.attribouter.utils.isResourceMutable
-import me.jfenn.attribouter.wedges.link.EmailLinkWedge
-import me.jfenn.attribouter.wedges.link.GitHubLinkWedge
-import me.jfenn.attribouter.wedges.link.LinkWedge
-import me.jfenn.attribouter.wedges.link.WebsiteLinkWedge
 
 class ContributorWedge(
         login: String? = null,
@@ -42,7 +42,11 @@ class ContributorWedge(
         email?.let { addChild(EmailLinkWedge(it, -1)) }
 
         if (!hasAll()) login?.let {
-            getProvider()?.getUser(it)?.subscribe { user -> onContributor(user) }
+            GlobalScope.launch { // TODO: use, err, the non-global scope...
+                withContext(Dispatchers.IO) {
+                    getProvider()?.getUser(it)
+                }?.let { user -> onContributor(user) }
+            }
         }
     }
 

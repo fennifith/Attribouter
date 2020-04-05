@@ -2,16 +2,21 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
 
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 28
+        minSdkVersion 16
+        targetSdkVersion 29
         versionCode 14
         versionName "0.1.5"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     buildTypes {
@@ -26,13 +31,14 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$deps.kotlin"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$deps.kotlinx.coroutines"
 
     implementation "androidx.appcompat:appcompat:$deps.android.appcompat"
     implementation "androidx.browser:browser:$deps.android.browser"
 
     implementation "com.google.android.material:material:$deps.google.material"
     implementation "com.google.android:flexbox:$deps.google.flexbox"
-    implementation 'com.google.code.gson:gson:2.8.4'
+    implementation 'com.google.code.gson:gson:2.8.5'
 
     implementation "com.github.bumptech.glide:glide:$deps.glide"
     annotationProcessor "com.github.bumptech.glide:compiler:$deps.glide"

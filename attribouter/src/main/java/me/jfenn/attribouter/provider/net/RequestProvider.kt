@@ -1,6 +1,5 @@
 package me.jfenn.attribouter.provider.net
 
-import io.reactivex.Observable
 import me.jfenn.attribouter.provider.net.data.LicenseData
 import me.jfenn.attribouter.provider.net.data.RepoData
 import me.jfenn.attribouter.provider.net.data.UserData
@@ -9,13 +8,13 @@ interface RequestProvider {
 
     val id: String
 
-    fun getUser(id: String): Observable<UserData>
+    suspend fun getUser(id: String): UserData?
 
-    fun getRepository(id: String): Observable<RepoData>
+    suspend fun getRepository(id: String): RepoData?
 
-    fun getContributors(id: String): Observable<Array<UserData>>
+    suspend fun getContributors(id: String): List<UserData>?
 
-    fun getLicense(id: String): Observable<LicenseData>
+    suspend fun getLicense(id: String): LicenseData?
 
     fun destroy()
 

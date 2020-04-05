@@ -1,8 +1,7 @@
 package me.jfenn.attribouter.provider.net.github
 
-import io.reactivex.Observable
 import me.jfenn.attribouter.provider.net.ServiceBuilder
-import me.jfenn.attribouter.provider.net.github.data.ContributorsData
+import me.jfenn.attribouter.provider.net.github.data.ContributorData
 import me.jfenn.attribouter.provider.net.github.data.LicenseData
 import me.jfenn.attribouter.provider.net.github.data.RepositoryData
 import me.jfenn.attribouter.provider.net.github.data.UserData
@@ -12,16 +11,16 @@ import retrofit2.http.Path
 interface GitHubService {
 
     @GET("users/{user}")
-    fun getUser(@Path("user") user: String): Observable<UserData>
+    suspend fun getUser(@Path("user") user: String): UserData
 
-    @GET("repos/{repo}")
-    fun getRepo(@Path("repo") repo: String): Observable<RepositoryData>
+    @GET("repos/{user}/{repo}")
+    suspend fun getRepo(@Path("user") user: String, @Path("repo") repo: String): RepositoryData
 
-    @GET("repos/{repo}/contributors")
-    fun getRepoContributors(@Path("repo") repo: String): Observable<ContributorsData>
+    @GET("repos/{user}/{repo}/contributors")
+    suspend fun getRepoContributors(@Path("user") user: String, @Path("repo") repo: String): List<ContributorData>
 
     @GET("licenses/{key}")
-    fun getLicense(@Path("key") key: String): Observable<LicenseData>
+    suspend fun getLicense(@Path("key") key: String): LicenseData
 
     companion object: ServiceBuilder<GitHubProvider> {
         override var headers: MutableMap<String, String> = HashMap()

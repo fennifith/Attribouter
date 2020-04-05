@@ -64,7 +64,9 @@ class AboutFragment : Fragment(), Notifiable {
     }
 
     override fun onItemChanged(changed: Wedge<*>) {
-        wedges?.indexOf(changed)?.let { adapter?.notifyItemChanged(it) }
+        wedges?.indexOf(changed)?.let {
+            recycler?.post { adapter?.notifyItemChanged(it) }
+        }
     }
 
     override fun onDestroyView() {

@@ -21,8 +21,8 @@ import me.jfenn.attribouter.R;
 import me.jfenn.attribouter.adapters.WedgeAdapter;
 import me.jfenn.attribouter.utils.ResourceUtils;
 import me.jfenn.attribouter.wedges.ContributorWedge;
+import me.jfenn.attribouter.wedges.LinkWedge;
 import me.jfenn.attribouter.wedges.Wedge;
-import me.jfenn.attribouter.wedges.link.LinkWedge;
 
 public class UserDialog extends AppCompatDialog {
 

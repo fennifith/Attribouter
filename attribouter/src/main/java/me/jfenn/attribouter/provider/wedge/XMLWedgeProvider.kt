@@ -19,13 +19,21 @@ class XMLWedgeProvider(private val parser: XmlResourceParser) : WedgeProvider {
         return this
     }
 
+    private fun className(name: String): String {
+        return if (name.contains("."))
+            name
+        else "me.jfenn.attribouter.wedges.$name"
+    }
+
     private fun getWedge(className: String): Wedge<*>? {
+        val name = className(className)
+
         val instantiator: ClassInstantiator<*>
 
         try {
-            instantiator = ClassInstantiator.fromString(className) ?: run { return null }
+            instantiator = ClassInstantiator.fromString(name) ?: run { return null }
         } catch (e: ClassNotFoundException) {
-            Log.e("Attribouter", "Class name \"$className\" not found - you should probably check your configuration file for typos.")
+            Log.e("Attribouter", "Class name \"$name\" not found - you should probably check your configuration file for typos.")
             e.printStackTrace()
             return null
         }
@@ -33,7 +41,7 @@ class XMLWedgeProvider(private val parser: XmlResourceParser) : WedgeProvider {
         try {
             return instantiator.instantiate() as Wedge<*>
         } catch (e: NoSuchMethodException) {
-            Log.e("Attribouter", "Class \"$className\" definitely exists, but doesn't have the correct constructor. Check that you have defined one that accepts no arguments.")
+            Log.e("Attribouter", "Class \"$name\" definitely exists, but doesn't have the correct constructor. Check that you have defined one that accepts no arguments.")
             e.printStackTrace()
         } catch (e: InstantiationException) {
             e.printStackTrace()
@@ -42,7 +50,7 @@ class XMLWedgeProvider(private val parser: XmlResourceParser) : WedgeProvider {
         } catch (e: InvocationTargetException) {
             e.printStackTrace()
         } catch (e: ClassCastException) {
-            Log.e("Attribouter", "Class \"$className\" has been instantiated correctly, but it must extend \'${Wedge::class.java.name}\' to be worthy of the great RecyclerView adapter.")
+            Log.e("Attribouter", "Class \"$name\" has been instantiated correctly, but it must extend \'${Wedge::class.java.name}\' to be worthy of the great RecyclerView adapter.")
             e.printStackTrace()
         }
 
@@ -56,7 +64,7 @@ class XMLWedgeProvider(private val parser: XmlResourceParser) : WedgeProvider {
         val wedges = ArrayList<Wedge<*>>()
 
         try {
-            while (parser.next() != XmlResourceParser.END_TAG || parser.name != parent?.javaClass?.name) {
+            while (parser.next() != XmlResourceParser.END_TAG || className(parser.name) != parent?.javaClass?.name) {
                 if (parser.name == "about")
                     continue
 

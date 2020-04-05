@@ -1,4 +1,4 @@
-package me.jfenn.attribouter.wedges.link
+package me.jfenn.attribouter.wedges
 
 class GitHubLinkWedge(
         item: String, priority: Int, isFullUrl: Boolean = false
