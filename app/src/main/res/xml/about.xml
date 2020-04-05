@@ -58,7 +58,7 @@
             <LinkWedge
                 name="Twitter"
                 priority="5"
-                url="https://twitter.com/adueppen/" />
+                url="https://twitter.com/AlexDueppen/" />
         </ContributorWedge>
         <ContributorWedge login="exampleuserthatdoesntexist">
             <LinkWedge
