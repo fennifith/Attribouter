@@ -88,7 +88,7 @@ class TranslatorWedge(
 
     override fun equals(obj: Any?): Boolean {
         return (obj as? TranslatorWedge)?.let {
-            login?.toLowerCase()?.equals(it.login?.toLowerCase())
+            login?.equals(it.login, ignoreCase = true)
         } ?: super.equals(obj)
     }
 

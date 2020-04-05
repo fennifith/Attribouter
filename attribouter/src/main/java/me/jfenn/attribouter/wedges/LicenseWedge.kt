@@ -198,10 +198,10 @@ class LicenseWedge(
 
     override fun equals(obj: Any?): Boolean {
         return (obj as? LicenseWedge)?.let {
-            return repo?.toLowerCase().equals(it.repo?.toLowerCase())
-                    || repo?.toLowerCase().equals(it.title?.toLowerCase())
-                    || title?.toLowerCase().equals(it.repo?.toLowerCase())
-                    || title?.toLowerCase().equals(it.title?.toLowerCase())
+            return repo?.equals(it.repo, ignoreCase = true) ?: false
+                    || repo?.equals(it.title, ignoreCase = true) ?: false
+                    || title?.equals(it.repo, ignoreCase = true) ?: false
+                    || title?.equals(it.title, ignoreCase = true) ?: false
         } ?: super.equals(obj)
     }
 

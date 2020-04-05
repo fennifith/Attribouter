@@ -63,22 +63,6 @@ fun LicensesWedge.addDefaults() {
                     licenseKey = "apache-2.0"
             ).create(lifecycle),
             LicenseWedge(
-                    repo = "ReactiveX/RxAndroid",
-                    title = "^RxAndroid",
-                    description = "RxJava bindings for Android.",
-                    licenseName = "Apache License 2.0",
-                    websiteUrl = "http://reactivex.io/",
-                    licenseKey = "apache-2.0"
-            ).create(lifecycle),
-            LicenseWedge(
-                    repo = "ReactiveX/RxJava",
-                    title = "^RxJava",
-                    description = "RxJava – Reactive Extensions for the JVM – a library for composing asynchronous and event-based programs using observable sequences for the Java VM.",
-                    licenseName = "Apache License 2.0",
-                    websiteUrl = "http://reactivex.io/",
-                    licenseKey = "apache-2.0"
-            ).create(lifecycle),
-            LicenseWedge(
                     title = "Android Open Source Project",
                     description = "Android is an open source software stack for a wide range of mobile devices and a corresponding open source project led by Google.",
                     licenseName = "Apache License 2.0",
