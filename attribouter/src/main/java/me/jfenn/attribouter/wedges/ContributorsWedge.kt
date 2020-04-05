@@ -41,7 +41,7 @@ class ContributorsWedge : Wedge<ContributorsWedge.ViewHolder>(R.layout.item_attr
     fun requestContributors(repo: String) {
         GlobalScope.launch { // TODO: use, err, the non-global scope...
             withContext(Dispatchers.IO) {
-                getProvider(repo.getProviderOrNull())?.getContributors(repo)
+                lifecycle?.getProvider(repo.getProviderOrNull())?.getContributors(repo)
             }?.forEach { contributor ->
                 onContributor(contributor)
             }
@@ -59,19 +59,17 @@ class ContributorsWedge : Wedge<ContributorsWedge.ViewHolder>(R.layout.item_attr
                 email = data.email
         )
 
-        val info = addChild(0, contributor.withProviders<ContributorWedge>(getProviders())
-                .withNotifiable<ContributorWedge>(notifiable)
-                .create())
+        val info = addChild(0, contributor.create(lifecycle))
 
         if (info is Mergeable<*> && !info.hasAll() && pass < 3) data.login?.let { login ->
             GlobalScope.launch { // TODO: use, err, the non-global scope...
                 withContext(Dispatchers.IO) {
-                    getProvider()?.getUser(login)
+                    lifecycle?.getProvider()?.getUser(login)
                 }?.let { onContributor(it, pass + 1) }
             }
         }
 
-        notifyItemChanged()
+        lifecycle?.notifyItemChanged(this)
     }
 
     public override fun getViewHolder(v: View): ViewHolder {

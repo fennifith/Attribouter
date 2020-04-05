@@ -12,21 +12,18 @@ import me.jfenn.attribouter.Attribouter
 import me.jfenn.attribouter.R
 import me.jfenn.attribouter.adapters.WedgeAdapter
 import me.jfenn.attribouter.interfaces.Notifiable
-import me.jfenn.attribouter.provider.net.RequestProvider
+import me.jfenn.attribouter.provider.LifecycleInstance
 import me.jfenn.attribouter.provider.net.github.GitHubService
 import me.jfenn.attribouter.provider.wedge.XMLWedgeProvider
 import me.jfenn.attribouter.wedges.Wedge
-import java.util.*
 
 class AboutFragment : Fragment(), Notifiable {
 
     private var recycler: RecyclerView? = null
     private var adapter: WedgeAdapter? = null
 
-    private var wedges: MutableList<Wedge<*>>? = null
+    private var wedges: List<Wedge<*>>? = null
     private var gitHubToken: String? = null
-
-    private var providers: Array<RequestProvider>? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         recycler = inflater.inflate(R.layout.fragment_attribouter_about, container, false) as RecyclerView
@@ -38,18 +35,18 @@ class AboutFragment : Fragment(), Notifiable {
             fileRes = args.getInt(Attribouter.EXTRA_FILE_RES, fileRes)
         }
 
-        providers = arrayOf(GitHubService.withToken(gitHubToken).create())
-
-        wedges = ArrayList()
         val parser = resources.getXml(fileRes)
-        wedges?.addAll(XMLWedgeProvider(parser).map { xmlProvider, item ->
-            providers?.forEach {
-                item.withProvider<Wedge<*>>(it)
-            }
+        val provider = XMLWedgeProvider(parser)
+        val lifecycle = LifecycleInstance(
+                providers = listOf(
+                        GitHubService.withToken(gitHubToken).create()
+                ),
+                notifiable = this
+        )
 
-            item.withProvider<Wedge<*>>(xmlProvider)
-                    .withNotifiable(this)
-        }.getAllWedges())
+        wedges = provider.map { _, wedge ->
+            wedge.withWedgeProvider(provider).create(lifecycle)
+        }.getAllWedges()
 
         parser.close()
 
@@ -71,6 +68,6 @@ class AboutFragment : Fragment(), Notifiable {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        providers?.forEach { it.destroy() }
+        //providers?.forEach { it.destroy() }
     }
 }

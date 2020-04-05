@@ -13,6 +13,7 @@ import me.jfenn.attribouter.interfaces.Mergeable
 import me.jfenn.attribouter.provider.net.data.UserData
 import me.jfenn.attribouter.utils.ResourceUtils
 import me.jfenn.attribouter.utils.UrlClickListener
+import me.jfenn.attribouter.utils.getProviderOrNull
 import me.jfenn.attribouter.utils.isResourceMutable
 
 class TranslatorWedge(
@@ -35,7 +36,7 @@ class TranslatorWedge(
         login?.let {
             if (!hasEverything()) GlobalScope.launch { // TODO: use, err, the non-global scope...
                 withContext(Dispatchers.IO) {
-                    getProvider()?.getUser(it)
+                    lifecycle?.getProvider(it.getProviderOrNull())?.getUser(it)
                 }?.let { user -> onTranslator(user) }
             }
         }
@@ -49,7 +50,7 @@ class TranslatorWedge(
                 null,
                 data.websiteUrl,
                 data.email
-        ).create())
+        ).create(lifecycle))
 
         notifyItemChanged()
     }

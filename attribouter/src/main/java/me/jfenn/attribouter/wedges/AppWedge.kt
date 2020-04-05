@@ -31,21 +31,21 @@ class AppWedge: Wedge<AppWedge.ViewHolder>(R.layout.item_attribouter_app_info) {
 
     override fun onCreate() {
         (gitHubUrl ?: repo?.let { "https://github.com/$it" })?.let {
-            addChild(GitHubLinkWedge(it, 0, true).create())
+            addChild(GitHubLinkWedge(it, 0, true).create(lifecycle))
         }
 
         websiteUrl?.let {
-            addChild(WebsiteLinkWedge(it, 0).create())
+            addChild(WebsiteLinkWedge(it, 0).create(lifecycle))
         }
 
         playStoreUrl?.let {
-            addChild(PlayStoreLinkWedge(it, 0).create())
+            addChild(PlayStoreLinkWedge(it, 0).create(lifecycle))
         }
 
         repo?.let {
             GlobalScope.launch { // TODO: use, err, the non-global scope...
                 withContext(Dispatchers.IO) {
-                    getProvider(it.getProviderOrNull())?.getRepository(it)
+                    lifecycle?.getProvider(it.getProviderOrNull())?.getRepository(it)
                 }?.let { data -> onRepository(data) }
             }
         }
@@ -58,14 +58,14 @@ class AppWedge: Wedge<AppWedge.ViewHolder>(R.layout.item_attribouter_app_info) {
         }
 
         repo.source.url?.let { repoUrl ->
-            addChild(GitHubLinkWedge(repoUrl, 0, true).create())
+            addChild(GitHubLinkWedge(repoUrl, 0, true).create(lifecycle))
         }
 
         repo.websiteUrl?.let { repoHomepage ->
             addChild(
                     if (repoHomepage.startsWith("https://play.google.com/"))
-                        PlayStoreLinkWedge(repoHomepage, 0).create()
-                    else WebsiteLinkWedge(repoHomepage, 0).create()
+                        PlayStoreLinkWedge(repoHomepage, 0).create(lifecycle)
+                    else WebsiteLinkWedge(repoHomepage, 0).create(lifecycle)
             )
         }
     }

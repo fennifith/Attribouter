@@ -70,7 +70,7 @@ class XMLWedgeProvider(private val parser: XmlResourceParser) : WedgeProvider {
 
                 if (parser.eventType == XmlPullParser.START_TAG) {
                     getWedge(parser.name)?.let {
-                        wedges.add(map(this, it).create())
+                        wedges.add(map(this, it))
                     }
                 }
 

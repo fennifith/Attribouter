@@ -44,7 +44,7 @@ class ContributorWedge(
         if (!hasAll()) login?.let {
             GlobalScope.launch { // TODO: use, err, the non-global scope...
                 withContext(Dispatchers.IO) {
-                    getProvider()?.getUser(it)
+                    lifecycle?.getProvider()?.getUser(it)
                 }?.let { user -> onContributor(user) }
             }
         }
@@ -62,9 +62,9 @@ class ContributorWedge(
                 data.bio,
                 data.websiteUrl,
                 data.email
-        ).create())
+        ).create(lifecycle))
 
-        notifyItemChanged()
+        lifecycle?.notifyItemChanged(this)
     }
 
     fun getCanonicalName(): String? {

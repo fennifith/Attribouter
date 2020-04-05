@@ -63,7 +63,7 @@ class LicenseWedge(
         if (!hasAllGeneric()) repo?.let {
             GlobalScope.launch { // TODO: use, err, the non-global scope...
                 withContext(Dispatchers.IO) {
-                    getProvider(it.getProviderOrNull())?.getRepository(it)
+                    lifecycle?.getProvider(it.getProviderOrNull())?.getRepository(it)
                 }?.let { data -> onRepository(data) }
             }
         }
@@ -71,7 +71,7 @@ class LicenseWedge(
         licenseKey?.let { key ->
             GlobalScope.launch { // TODO: use, err, the non-global scope...
                 withContext(Dispatchers.IO) {
-                    getProvider("github")?.getLicense(key)
+                    lifecycle?.getProvider("github")?.getLicense(key)
                 }?.let { onLicense(it) }
             }
         }
@@ -82,12 +82,12 @@ class LicenseWedge(
                 description = data.description,
                 licenseName = if (data.license != null) data.license.name else null,
                 websiteUrl = data.websiteUrl
-        ).create())
+        ).create(lifecycle))
 
         data.license?.key?.let { key ->
             if (!hasAllLicense()) GlobalScope.launch { // TODO: use, err, the non-global scope...
                 withContext(Dispatchers.IO) {
-                    getProvider("github")?.getLicense(key)
+                    lifecycle?.getProvider("github")?.getLicense(key)
                 }?.let { onLicense(it) }
             }
         }
@@ -105,7 +105,7 @@ class LicenseWedge(
                 licenseDescription = data.description,
                 licenseBody = data.body,
                 licenseKey = data.key
-        ).create())
+        ).create(lifecycle))
 
         notifyItemChanged()
     }

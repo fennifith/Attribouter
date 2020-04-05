@@ -14,7 +14,7 @@ fun ContributorsWedge.addDefaults() {
             bio = "Enjoys writing software on loud keyboards. Starts too many projects. Consumes food.",
             blog = "https://jfenn.me/",
             email = "dev@jfenn.me"
-    ).create())
+    ).create(lifecycle))
 
     requestContributors("github:fennifith/Attribouter")
 }
@@ -28,7 +28,7 @@ fun LicensesWedge.addDefaults() {
                     licenseName = "Apache License 2.0",
                     gitHubUrl = "https://github.com/fennifith/Attribouter",
                     licenseKey = "apache-2.0"
-            ).create(),
+            ).create(lifecycle),
             LicenseWedge(
                     repo = "google/gson",
                     title = "Gson",
@@ -36,7 +36,7 @@ fun LicensesWedge.addDefaults() {
                     licenseName = "Apache License 2.0",
                     gitHubUrl = "https://github.com/google/gson",
                     licenseKey = "apache-2.0"
-            ).create(),
+            ).create(lifecycle),
             LicenseWedge(
                     repo = "google/flexbox-layout",
                     title = "FlexBox Layout",
@@ -44,7 +44,7 @@ fun LicensesWedge.addDefaults() {
                     licenseName = "Apache License 2.0",
                     gitHubUrl = "https://github.com/google/flexbox-layout",
                     licenseKey = "apache-2.0"
-            ).create(),
+            ).create(lifecycle),
             LicenseWedge(
                     repo = "bumptech/glide",
                     title = "Glide",
@@ -53,7 +53,7 @@ fun LicensesWedge.addDefaults() {
                     websiteUrl = "https://bumptech.github.io/glide/",
                     gitHubUrl = "https://github.com/bumptech/glide",
                     licenseUrl = "https://raw.githubusercontent.com/bumptech/glide/master/LICENSE"
-            ).create(),
+            ).create(lifecycle),
             LicenseWedge(
                     repo = "square/retrofit",
                     title = "Retrofit",
@@ -61,7 +61,7 @@ fun LicensesWedge.addDefaults() {
                     licenseName = "Apache License 2.0",
                     websiteUrl = "https://square.github.io/retrofit/",
                     licenseKey = "apache-2.0"
-            ).create(),
+            ).create(lifecycle),
             LicenseWedge(
                     repo = "ReactiveX/RxAndroid",
                     title = "^RxAndroid",
@@ -69,7 +69,7 @@ fun LicensesWedge.addDefaults() {
                     licenseName = "Apache License 2.0",
                     websiteUrl = "http://reactivex.io/",
                     licenseKey = "apache-2.0"
-            ).create(),
+            ).create(lifecycle),
             LicenseWedge(
                     repo = "ReactiveX/RxJava",
                     title = "^RxJava",
@@ -77,7 +77,7 @@ fun LicensesWedge.addDefaults() {
                     licenseName = "Apache License 2.0",
                     websiteUrl = "http://reactivex.io/",
                     licenseKey = "apache-2.0"
-            ).create(),
+            ).create(lifecycle),
             LicenseWedge(
                     title = "Android Open Source Project",
                     description = "Android is an open source software stack for a wide range of mobile devices and a corresponding open source project led by Google.",
@@ -85,6 +85,6 @@ fun LicensesWedge.addDefaults() {
                     licenseUrl = "https://source.android.com/license",
                     websiteUrl = "https://github.com/aosp-mirror",
                     licenseKey = "apache-2.0"
-            ).create())
-    )
+            ).create(lifecycle)
+    ))
 }
