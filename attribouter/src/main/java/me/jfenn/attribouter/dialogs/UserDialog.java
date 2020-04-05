@@ -54,7 +54,12 @@ public class UserDialog extends AppCompatDialog {
 
         bioView.setText(ResourceUtils.getString(getContext(), contributor.getBio()));
 
-        List<LinkWedge> links = contributor.getChildren(LinkWedge.class);
+        List<LinkWedge> links = new ArrayList<>();
+        for (Wedge wedge : contributor.getChildren()) {
+            if (wedge instanceof LinkWedge)
+                links.add((LinkWedge) wedge);
+        }
+
         if (links.size() > 0) {
             Collections.sort(links, new LinkWedge.Comparator(getContext()));
 

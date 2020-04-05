@@ -64,12 +64,8 @@ abstract class Wedge<T : Wedge.ViewHolder>(@param:LayoutRes val layoutRes: Int) 
         return children
     }
 
-    fun <X : Wedge<*>> getChildren(type: Class<X>): List<X> {
-        val children = ArrayList<X>()
-        for (info in getChildren().filter { type.isInstance(it) })
-            children.add(info as X)
-
-        return children
+    inline fun <reified X : Wedge<*>> getTypedChildren(): List<X> {
+        return getChildren().filterIsInstance<X>()
     }
 
     abstract fun getViewHolder(v: View): T

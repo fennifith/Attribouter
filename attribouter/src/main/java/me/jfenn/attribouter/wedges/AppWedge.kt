@@ -99,15 +99,15 @@ class AppWedge: Wedge<AppWedge.ViewHolder>(R.layout.item_attribouter_app_info) {
         }
 
         viewHolder.links?.apply {
-            val children = getChildren(LinkWedge::class.java)
-            if (children.size > 0) {
+            val children = getTypedChildren<LinkWedge>()
+            if (children.isNotEmpty()) {
                 val links = children.filter { link -> !link.isHidden }
                 Collections.sort(links, LinkWedge.Comparator(context))
 
-                val flexbox = FlexboxLayoutManager(context)
-                flexbox.flexDirection = FlexDirection.ROW
-                flexbox.justifyContent = JustifyContent.CENTER
-                layoutManager = flexbox
+                layoutManager = FlexboxLayoutManager(context).apply {
+                    flexDirection = FlexDirection.ROW
+                    justifyContent = JustifyContent.CENTER
+                }
                 adapter = WedgeAdapter(links)
                 visibility = View.VISIBLE
             } else {

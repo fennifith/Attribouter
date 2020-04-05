@@ -227,7 +227,7 @@ class LicenseWedge(
             }
         }
 
-        val links = getChildren(LinkWedge::class.java).filter { !it.isHidden }
+        val links = getTypedChildren<LinkWedge>().filter { !it.isHidden }
 
         viewHolder.links?.apply {
             if (links.isNotEmpty()) {

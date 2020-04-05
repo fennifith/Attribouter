@@ -50,17 +50,15 @@ class TranslatorsWedge : Wedge<TranslatorsWedge.ViewHolder>(R.layout.item_attrib
         sortedTranslators = ArrayList()
         for (language in Locale.getISOLanguages()) {
             var isHeader = false
-            for (translator in getChildren(TranslatorWedge::class.java).filter { !it.locales.isNullOrEmpty() }) {
+            for (translator in getTypedChildren<TranslatorWedge>().filter { !it.locales.isNullOrEmpty() }) {
                 var isLocale = false
-                for (locale in translator.locales!!.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()) {
-                    if (language == locale) {
+                translator.locales?.split(",")?.forEach { locale ->
+                    if (language == locale)
                         isLocale = true
-                        break
-                    }
                 }
 
                 if (isLocale) {
-                    if (!isHeader) {
+                    if (!isHeader) { // add header/title wedge for language if not present yet
                         val header = HeaderWedge(Locale(language).displayLanguage)
                         sortedTranslators?.add(header)
                         if (remaining != 0)
@@ -69,6 +67,7 @@ class TranslatorsWedge : Wedge<TranslatorsWedge.ViewHolder>(R.layout.item_attrib
                         isHeader = true
                     }
 
+                    // add translator entry
                     sortedTranslators?.add(translator)
                     if (remaining != 0) {
                         sortedList.add(translator)
@@ -86,7 +85,7 @@ class TranslatorsWedge : Wedge<TranslatorsWedge.ViewHolder>(R.layout.item_attrib
         }
 
         viewHolder.overflow?.apply {
-            visibility = if (overflow != 0) {
+            visibility = if (overflow == 0) {
                 translatorsTitle?.let { text = ResourceUtils.getString(context, it) }
                 View.VISIBLE
             } else View.GONE
@@ -101,7 +100,7 @@ class TranslatorsWedge : Wedge<TranslatorsWedge.ViewHolder>(R.layout.item_attrib
         }
 
         viewHolder.expand?.apply {
-            visibility = if (sortedTranslators?.size ?: -1 > sortedList.size) {
+            visibility = if ((overflow ?: 0) != 0 && sortedTranslators?.size ?: -1 > sortedList.size) {
                 setOnClickListener { v -> OverflowDialog(v.context, translatorsTitle, sortedTranslators).show() }
                 View.VISIBLE
             } else View.GONE

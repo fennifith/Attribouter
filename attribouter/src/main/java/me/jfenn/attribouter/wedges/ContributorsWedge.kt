@@ -114,7 +114,7 @@ class ContributorsWedge : Wedge<ContributorsWedge.ViewHolder>(R.layout.item_attr
         var third: ContributorWedge? = null
         val remainingContributors = ArrayList<Wedge<*>>()
         var hiddenContributors = 0
-        for (contributor in getChildren(ContributorWedge::class.java)) {
+        for (contributor in getTypedChildren<ContributorWedge>()) {
             if (contributor.isHidden) {
                 hiddenContributors++
                 continue
@@ -158,7 +158,7 @@ class ContributorsWedge : Wedge<ContributorsWedge.ViewHolder>(R.layout.item_attr
                     OverflowDialog(
                             v.context,
                             contributorsTitle,
-                            getChildren(ContributorWedge::class.java).filter { !it.isHidden }
+                            getTypedChildren<ContributorWedge>().filter { !it.isHidden }
                     ).show()
                 }
 

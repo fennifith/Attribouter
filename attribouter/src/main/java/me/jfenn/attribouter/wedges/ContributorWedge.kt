@@ -137,7 +137,7 @@ class ContributorWedge(
             } else {
                 var importantLink: LinkWedge? = null
                 var clickListener: View.OnClickListener? = null
-                for (link in getChildren(LinkWedge::class.java).filter { !it.isHidden }) {
+                for (link in getTypedChildren<LinkWedge>().filter { !it.isHidden }) {
                     if (importantLink == null || link.priority() > importantLink.priority()) {
                         link.getListener(context)?.let {
                             importantLink = link
