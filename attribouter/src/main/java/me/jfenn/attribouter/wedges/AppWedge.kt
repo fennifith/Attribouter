@@ -20,13 +20,13 @@ import java.util.*
 
 class AppWedge: Wedge<AppWedge.ViewHolder>(R.layout.item_attribouter_app_info) {
 
-    private val icon: String? by attr("icon")
-    private var title: String? by attr("title")
-    private var description: String? by attr("description")
-    private val repo: ProviderString? by attrProvider("repo")
-    private val gitHubUrl: String? by attr("gitHubUrl")
-    private val websiteUrl: String? by attr("websiteUrl")
-    private val playStoreUrl: String? by attr("playStoreUrl")
+    val icon: String? by attr("icon")
+    var title: String? by attr("title")
+    var description: String? by attr("description")
+    val repo: ProviderString? by attrProvider("repo")
+    val gitHubUrl: String? by attr("gitHubUrl")
+    val websiteUrl: String? by attr("websiteUrl")
+    val playStoreUrl: String? by attr("playStoreUrl")
 
     override fun onCreate() {
         (gitHubUrl ?: repo?.let { "https://github.com/$it" })?.let {

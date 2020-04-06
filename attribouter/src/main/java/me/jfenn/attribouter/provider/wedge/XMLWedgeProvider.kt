@@ -10,7 +10,7 @@ import java.io.IOException
 import java.lang.reflect.InvocationTargetException
 import java.util.*
 
-class XMLWedgeProvider(private val parser: XmlResourceParser) : WedgeProvider {
+class XMLWedgeProvider(private val parser: XmlPullParser) : WedgeProvider {
 
     private var map: (WedgeProvider, Wedge<*>) -> Wedge<*> = { _, i -> i }
 
@@ -88,9 +88,9 @@ class XMLWedgeProvider(private val parser: XmlResourceParser) : WedgeProvider {
 
     override fun <T> getAttribute(wedge: Wedge<*>, attribute: String, defaultValue: T?): T? {
         if (defaultValue is Boolean)
-            return parser.getAttributeBooleanValue(null, attribute, defaultValue) as? T
+            return (parser as? XmlResourceParser)?.getAttributeBooleanValue(null, attribute, defaultValue) as? T
         if (defaultValue is Int)
-            return parser.getAttributeIntValue(null, attribute, defaultValue) as? T
+            return (parser as? XmlResourceParser)?.getAttributeIntValue(null, attribute, defaultValue) as? T
 
         return parser.getAttributeValue(null, attribute) as? T
     }

@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 29
-        versionCode 14
-        versionName "0.1.5"
+        versionCode 15
+        versionName "0.1.6"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -23,9 +23,18 @@ android {
        }
     }
 
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.robolectric:robolectric:4.3'
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$deps.kotlin"
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$deps.kotlin"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$deps.kotlinx.coroutines"
