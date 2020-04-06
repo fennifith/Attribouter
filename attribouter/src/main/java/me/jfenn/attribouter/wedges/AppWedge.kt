@@ -10,8 +10,6 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.jfenn.attribouter.R
 import me.jfenn.attribouter.adapters.WedgeAdapter
@@ -43,7 +41,7 @@ class AppWedge: Wedge<AppWedge.ViewHolder>(R.layout.item_attribouter_app_info) {
         }
 
         repo?.let {
-            GlobalScope.launch { // TODO: use, err, the non-global scope...
+            lifecycle?.launch {
                 withContext(Dispatchers.IO) {
                     lifecycle?.getProvider(it.getProviderOrNull())?.getRepository(it)
                 }?.let { data -> onRepository(data) }

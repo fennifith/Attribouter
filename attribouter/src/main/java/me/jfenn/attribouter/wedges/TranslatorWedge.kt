@@ -5,8 +5,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.jfenn.attribouter.R
 import me.jfenn.attribouter.interfaces.Mergeable
@@ -34,7 +32,7 @@ class TranslatorWedge(
 
     override fun onCreate() {
         login?.let {
-            if (!hasEverything()) GlobalScope.launch { // TODO: use, err, the non-global scope...
+            if (!hasEverything()) lifecycle?.launch {
                 withContext(Dispatchers.IO) {
                     lifecycle?.getProvider(it.getProviderOrNull())?.getUser(it)
                 }?.let { user -> onTranslator(user) }

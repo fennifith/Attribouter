@@ -7,8 +7,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.jfenn.attribouter.R
 import me.jfenn.attribouter.adapters.WedgeAdapter
@@ -38,7 +36,7 @@ class ContributorsWedge : Wedge<ContributorsWedge.ViewHolder>(R.layout.item_attr
     }
 
     fun requestContributors(repo: String) {
-        GlobalScope.launch { // TODO: use, err, the non-global scope...
+        lifecycle?.launch {
             withContext(Dispatchers.IO) {
                 lifecycle?.getProvider(repo.getProviderOrNull())?.getContributors(repo)
             }?.forEach { contributor ->

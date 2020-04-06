@@ -8,8 +8,6 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.jfenn.attribouter.R
 import me.jfenn.attribouter.adapters.WedgeAdapter
@@ -61,7 +59,7 @@ class LicenseWedge(
             addChild(LicenseLinkWedge(this, 0))
 
         if (!hasAllGeneric()) repo?.let {
-            GlobalScope.launch { // TODO: use, err, the non-global scope...
+            lifecycle?.launch {
                 withContext(Dispatchers.IO) {
                     lifecycle?.getProvider(it.getProviderOrNull())?.getRepository(it)
                 }?.let { data -> onRepository(data) }
@@ -69,7 +67,7 @@ class LicenseWedge(
         }
 
         licenseKey?.let { key ->
-            GlobalScope.launch { // TODO: use, err, the non-global scope...
+            lifecycle?.launch {
                 withContext(Dispatchers.IO) {
                     lifecycle?.getProvider("github")?.getLicense(key)
                 }?.let { onLicense(it) }
@@ -85,7 +83,7 @@ class LicenseWedge(
         ).create())
 
         data.license?.key?.let { key ->
-            if (!hasAllLicense()) GlobalScope.launch { // TODO: use, err, the non-global scope...
+            if (!hasAllLicense()) lifecycle?.launch {
                 withContext(Dispatchers.IO) {
                     lifecycle?.getProvider("github")?.getLicense(key)
                 }?.let { onLicense(it) }

@@ -32,6 +32,7 @@ dependencies {
 
     implementation "androidx.appcompat:appcompat:$deps.android.appcompat"
     implementation "androidx.browser:browser:$deps.android.browser"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0"
 
     implementation "com.google.android.material:material:$deps.google.material"
     implementation "com.google.android:flexbox:$deps.google.flexbox"
