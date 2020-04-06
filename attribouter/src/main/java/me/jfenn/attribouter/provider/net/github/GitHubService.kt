@@ -24,6 +24,7 @@ interface GitHubService {
     suspend fun getLicense(@Path("key") key: String): LicenseData
 
     companion object: ServiceBuilder<GitHubProvider> {
+        override val key: String = "github"
         override var cache: Cache? = null
         override var headers: MutableMap<String, String> = HashMap()
 
@@ -33,11 +34,11 @@ interface GitHubService {
             } ?: this
         }
 
-        override fun create(): GitHubProvider {
+        override fun create(context: String?): GitHubProvider {
             withHeader("Accept", "application/vnd.github.v3+json")
 
             val retrofit = retrofit()
-                    .baseUrl("https://api.github.com")
+                    .baseUrl("https://${context ?: "api.github.com"}")
                     .build()
 
             return GitHubProvider(retrofit.create(GitHubService::class.java))

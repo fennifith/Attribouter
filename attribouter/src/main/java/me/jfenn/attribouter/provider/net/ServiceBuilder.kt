@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit
 
 interface ServiceBuilder<T: RequestProvider> {
 
+    val key : String
     var headers : MutableMap<String, String>
     var cache : Cache?
 
@@ -51,6 +52,6 @@ interface ServiceBuilder<T: RequestProvider> {
                 .client(okhttp().build())
     }
 
-    fun create(): T
+    fun create(context: String?): T
 
 }

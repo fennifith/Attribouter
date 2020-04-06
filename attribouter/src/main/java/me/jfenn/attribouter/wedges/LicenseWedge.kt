@@ -12,10 +12,10 @@ import kotlinx.coroutines.withContext
 import me.jfenn.attribouter.R
 import me.jfenn.attribouter.adapters.WedgeAdapter
 import me.jfenn.attribouter.interfaces.Mergeable
+import me.jfenn.attribouter.provider.net.ProviderString
 import me.jfenn.attribouter.provider.net.data.LicenseData
 import me.jfenn.attribouter.provider.net.data.RepoData
 import me.jfenn.attribouter.utils.ResourceUtils
-import me.jfenn.attribouter.utils.getProviderOrNull
 import me.jfenn.attribouter.utils.toListString
 import java.util.regex.Pattern
 
@@ -35,7 +35,7 @@ class LicenseWedge(
         licenseKey: String? = null
 ) : Wedge<LicenseWedge.ViewHolder>(R.layout.item_attribouter_license), Mergeable<LicenseWedge> {
 
-    var repo: String? by attr("repo", repo)
+    var repo: ProviderString? by attrProvider("repo", repo)
     private var title: String? by attr("title", title)
     private var description: String? by attr("description", description)
     var licenseName: String? by attr("licenseName", licenseName)
@@ -43,17 +43,17 @@ class LicenseWedge(
     private var gitHubUrl: String? by attr("gitHubUrl", gitHubUrl)
     var licenseUrl: String? by attr("licenseUrl", licenseUrl)
     var licenseBody: String? by attr("licenseBody", licenseBody)
-    private var licenseKey: String? by attr("license", licenseKey)
+    private var licenseKey: ProviderString? by attrProvider("license", licenseKey)
 
     internal var token: String? = null
 
     override fun onCreate() {
-        token = repo ?: title
+        token = repo?.id ?: title
 
         if (!websiteUrl.isNullOrEmpty())
             websiteUrl?.let { addChild(WebsiteLinkWedge(it, 2)) }
 
-        repo?.let { addChild(GitHubLinkWedge(it, 1))}
+        repo?.let { addChild(GitHubLinkWedge(it.id, 1))}
 
         if (!licenseBody.isNullOrEmpty() && !licenseUrl.isNullOrEmpty())
             addChild(LicenseLinkWedge(this, 0))
@@ -61,7 +61,7 @@ class LicenseWedge(
         if (!hasAllGeneric()) repo?.let {
             lifecycle?.launch {
                 withContext(Dispatchers.IO) {
-                    lifecycle?.getProvider(it.getProviderOrNull())?.getRepository(it)
+                    lifecycle?.provider?.getRepository(it)
                 }?.let { data -> onRepository(data) }
             }
         }
@@ -69,7 +69,7 @@ class LicenseWedge(
         licenseKey?.let { key ->
             lifecycle?.launch {
                 withContext(Dispatchers.IO) {
-                    lifecycle?.getProvider("github")?.getLicense(key)
+                    lifecycle?.provider?.getLicense(key)
                 }?.let { onLicense(it) }
             }
         }
@@ -85,7 +85,7 @@ class LicenseWedge(
         data.license?.key?.let { key ->
             if (!hasAllLicense()) lifecycle?.launch {
                 withContext(Dispatchers.IO) {
-                    lifecycle?.getProvider("github")?.getLicense(key)
+                    lifecycle?.provider?.getLicense(ProviderString(key))
                 }?.let { onLicense(it) }
             }
         }
@@ -110,7 +110,7 @@ class LicenseWedge(
 
     private fun getFormattedName(): String? {
         return title ?: repo?.let { str ->
-            var name: String = str
+            var name: String = str.id
             if (name.contains("/")) {
                 val names = name.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
                 name = run {
@@ -194,13 +194,13 @@ class LicenseWedge(
         return false
     }
 
-    override fun equals(obj: Any?): Boolean {
-        return (obj as? LicenseWedge)?.let {
-            return repo?.equals(it.repo, ignoreCase = true) ?: false
-                    || repo?.equals(it.title, ignoreCase = true) ?: false
-                    || title?.equals(it.repo, ignoreCase = true) ?: false
+    override fun equals(other: Any?): Boolean {
+        return (other as? LicenseWedge)?.let {
+            return repo?.id?.equals(it.repo?.id, ignoreCase = true) ?: false
+                    || repo?.id?.equals(it.title, ignoreCase = true) ?: false
+                    || title?.equals(it.repo?.id, ignoreCase = true) ?: false
                     || title?.equals(it.title, ignoreCase = true) ?: false
-        } ?: super.equals(obj)
+        } ?: super.equals(other)
     }
 
     override fun getViewHolder(v: View): ViewHolder {

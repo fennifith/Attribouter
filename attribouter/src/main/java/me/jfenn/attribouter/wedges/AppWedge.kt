@@ -13,16 +13,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.jfenn.attribouter.R
 import me.jfenn.attribouter.adapters.WedgeAdapter
+import me.jfenn.attribouter.provider.net.ProviderString
 import me.jfenn.attribouter.provider.net.data.RepoData
 import me.jfenn.attribouter.utils.ResourceUtils
-import me.jfenn.attribouter.utils.getProviderOrNull
 import java.util.*
 
 class AppWedge: Wedge<AppWedge.ViewHolder>(R.layout.item_attribouter_app_info) {
 
     private val icon: String? by attr("icon")
     private var description: String? by attr("description")
-    private val repo: String? by attr("repo")
+    private val repo: ProviderString? by attrProvider("repo")
     private val gitHubUrl: String? by attr("gitHubUrl")
     private val websiteUrl: String? by attr("websiteUrl")
     private val playStoreUrl: String? by attr("playStoreUrl")
@@ -40,13 +40,11 @@ class AppWedge: Wedge<AppWedge.ViewHolder>(R.layout.item_attribouter_app_info) {
             addChild(PlayStoreLinkWedge(it, 0).create(lifecycle))
         }
 
-        repo?.let {
-            lifecycle?.launch {
-                withContext(Dispatchers.IO) {
-                    lifecycle?.getProvider(it.getProviderOrNull())?.getRepository(it)
-                }?.let { data -> onRepository(data) }
-            }
-        }
+        repo?.let { lifecycle?.launch {
+            withContext(Dispatchers.IO) {
+                lifecycle?.provider?.getRepository(it)
+            }?.let { data -> onRepository(data) }
+        }}
     }
 
     fun onRepository(repo: RepoData) {

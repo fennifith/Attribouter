@@ -1,5 +1,6 @@
 package me.jfenn.attribouter
 
+import me.jfenn.attribouter.provider.net.ProviderString
 import me.jfenn.attribouter.wedges.ContributorWedge
 import me.jfenn.attribouter.wedges.ContributorsWedge
 import me.jfenn.attribouter.wedges.LicenseWedge
@@ -16,7 +17,7 @@ fun ContributorsWedge.addDefaults() {
             email = "dev@jfenn.me"
     ).create(lifecycle))
 
-    requestContributors("github:fennifith/Attribouter")
+    requestContributors(ProviderString(provider = "github", id = "fennifith/Attribouter"))
 }
 
 fun LicensesWedge.addDefaults() {

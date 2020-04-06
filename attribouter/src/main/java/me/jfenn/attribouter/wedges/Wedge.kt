@@ -6,6 +6,7 @@ import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import me.jfenn.attribouter.interfaces.Mergeable
 import me.jfenn.attribouter.provider.LifecycleInstance
+import me.jfenn.attribouter.provider.net.ProviderString
 import me.jfenn.attribouter.provider.wedge.WedgeProvider
 import kotlin.reflect.KProperty
 
@@ -96,14 +97,27 @@ abstract class Wedge<T : Wedge.ViewHolder>(@param:LayoutRes val layoutRes: Int) 
         }
     }
 
-    inner class attrInt<in R: Wedge<*>, T>(
+    inner class attrInt<in R: Wedge<*>>(
             attribute: String,
-            property: T?
-    ) : attr<R, T>(attribute, property) {
+            property: Int?
+    ) : attr<R, Int?>(attribute, property) {
 
         override fun withProvider(provider: WedgeProvider) {
             property = provider.getAttribute(this@Wedge, attribute, property.toString())?.let {
-                Integer.parseInt(it) as? T
+                Integer.parseInt(it)
+            }
+        }
+
+    }
+
+    inner class attrProvider<in R: Wedge<*>>(
+            attribute: String,
+            property: String? = null
+    ) : attr<R, ProviderString?>(attribute, property?.let { ProviderString(it) }) {
+
+        override fun withProvider(provider: WedgeProvider) {
+            property = provider.getAttribute(this@Wedge, attribute, property.toString())?.let {
+                ProviderString(it)
             }
         }
 

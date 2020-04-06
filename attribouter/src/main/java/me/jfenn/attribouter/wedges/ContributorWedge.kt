@@ -9,6 +9,7 @@ import kotlinx.coroutines.withContext
 import me.jfenn.attribouter.R
 import me.jfenn.attribouter.dialogs.UserDialog
 import me.jfenn.attribouter.interfaces.Mergeable
+import me.jfenn.attribouter.provider.net.ProviderString
 import me.jfenn.attribouter.provider.net.data.UserData
 import me.jfenn.attribouter.utils.ResourceUtils
 import me.jfenn.attribouter.utils.isResourceMutable
@@ -24,7 +25,7 @@ class ContributorWedge(
         email: String? = null
 ) : Wedge<ContributorWedge.ViewHolder>(R.layout.item_attribouter_contributor), Mergeable<ContributorWedge> {
 
-    var login: String? by attr("login", login)
+    var login: ProviderString? by attrProvider("login", login)
     private var name: String? by attr("name", name)
     var avatarUrl: String? by attr("avatar", avatarUrl)
     var task: String? by attr("task", task)
@@ -35,14 +36,14 @@ class ContributorWedge(
     private var isHidden: Boolean? by attr("hidden", false)
 
     override fun onCreate() {
-        login?.let { addChild(GitHubLinkWedge(it, 1)) }
+        login?.let { addChild(GitHubLinkWedge(it.id, 1)) }
         blog?.let { addChild(WebsiteLinkWedge(it, 2)) }
         email?.let { addChild(EmailLinkWedge(it, -1)) }
 
         if (!hasAll()) login?.let {
             lifecycle?.launch {
                 withContext(Dispatchers.IO) {
-                    lifecycle?.getProvider()?.getUser(it)
+                    lifecycle?.provider?.getUser(it)
                 }?.let { user -> onContributor(user) }
             }
         }
@@ -66,7 +67,7 @@ class ContributorWedge(
     }
 
     fun getCanonicalName(): String? {
-        return name ?: login
+        return name ?: login?.id
     }
 
     override fun merge(contributor: ContributorWedge): ContributorWedge {
@@ -98,10 +99,10 @@ class ContributorWedge(
         return isHidden == true
     }
 
-    override fun equals(obj: Any?): Boolean {
-        return (obj as? ContributorWedge)?.let {
-            login?.equals(it.login, ignoreCase = true)
-        } ?: super.equals(obj)
+    override fun equals(other: Any?): Boolean {
+        return (other as? ContributorWedge)?.let {
+            login?.id?.equals(it.login?.id, ignoreCase = true)
+        } ?: super.equals(other)
     }
 
     override fun getViewHolder(v: View): ViewHolder {

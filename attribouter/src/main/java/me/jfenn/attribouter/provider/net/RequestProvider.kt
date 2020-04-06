@@ -6,16 +6,12 @@ import me.jfenn.attribouter.provider.net.data.UserData
 
 interface RequestProvider {
 
-    val id: String
+    suspend fun getUser(str: ProviderString): UserData?
 
-    suspend fun getUser(id: String): UserData?
+    suspend fun getRepository(str: ProviderString): RepoData?
 
-    suspend fun getRepository(id: String): RepoData?
+    suspend fun getContributors(str: ProviderString): List<UserData>?
 
-    suspend fun getContributors(id: String): List<UserData>?
-
-    suspend fun getLicense(id: String): LicenseData?
-
-    fun destroy()
+    suspend fun getLicense(str: ProviderString): LicenseData?
 
 }

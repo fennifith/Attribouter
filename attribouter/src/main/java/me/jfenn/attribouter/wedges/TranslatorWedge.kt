@@ -8,10 +8,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.jfenn.attribouter.R
 import me.jfenn.attribouter.interfaces.Mergeable
+import me.jfenn.attribouter.provider.net.ProviderString
 import me.jfenn.attribouter.provider.net.data.UserData
 import me.jfenn.attribouter.utils.ResourceUtils
 import me.jfenn.attribouter.utils.UrlClickListener
-import me.jfenn.attribouter.utils.getProviderOrNull
 import me.jfenn.attribouter.utils.isResourceMutable
 
 class TranslatorWedge(
@@ -23,7 +23,7 @@ class TranslatorWedge(
         email: String? = null
 ) : Wedge<TranslatorWedge.ViewHolder>(R.layout.item_attribouter_translator), Mergeable<TranslatorWedge> {
 
-    private var login: String? by attr("login", login)
+    private var login: ProviderString? by attrProvider("login", login)
     private var name: String? by attr("name", name)
     private var avatarUrl: String? by attr("avatar", avatarUrl)
     var locales: String? by attr("locales", locales)
@@ -34,7 +34,7 @@ class TranslatorWedge(
         login?.let {
             if (!hasEverything()) lifecycle?.launch {
                 withContext(Dispatchers.IO) {
-                    lifecycle?.getProvider(it.getProviderOrNull())?.getUser(it)
+                    lifecycle?.provider?.getUser(it)
                 }?.let { user -> onTranslator(user) }
             }
         }
@@ -54,7 +54,7 @@ class TranslatorWedge(
     }
 
     fun getCanonicalName(): String? {
-        return name ?: login
+        return name ?: login?.id
     }
 
     override fun merge(contributor: TranslatorWedge): TranslatorWedge {
@@ -84,10 +84,10 @@ class TranslatorWedge(
         return !name.isResourceMutable() && !blog.isResourceMutable()
     }
 
-    override fun equals(obj: Any?): Boolean {
-        return (obj as? TranslatorWedge)?.let {
-            login?.equals(it.login, ignoreCase = true)
-        } ?: super.equals(obj)
+    override fun equals(other: Any?): Boolean {
+        return (other as? TranslatorWedge)?.let {
+            login?.id?.equals(it.login?.id, ignoreCase = true)
+        } ?: super.equals(other)
     }
 
     override fun getViewHolder(v: View): ViewHolder {

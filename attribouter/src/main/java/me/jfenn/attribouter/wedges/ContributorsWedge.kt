@@ -13,15 +13,15 @@ import me.jfenn.attribouter.adapters.WedgeAdapter
 import me.jfenn.attribouter.addDefaults
 import me.jfenn.attribouter.dialogs.OverflowDialog
 import me.jfenn.attribouter.dialogs.UserDialog
+import me.jfenn.attribouter.provider.net.ProviderString
 import me.jfenn.attribouter.provider.net.data.UserData
 import me.jfenn.attribouter.utils.ResourceUtils
 import me.jfenn.attribouter.utils.UrlClickListener
-import me.jfenn.attribouter.utils.getProviderOrNull
 import java.util.*
 
 class ContributorsWedge : Wedge<ContributorsWedge.ViewHolder>(R.layout.item_attribouter_contributors) {
 
-    private var repo: String? by attr("repo")
+    private var repo: ProviderString? by attrProvider("repo")
     private var contributorsTitle: String? by attr("title", "@string/title_attribouter_contributors")
     private var overflow: Int? by attr("overflow", -1)
     private var showDefaults: Boolean? by attr("showDefaults", true)
@@ -35,10 +35,10 @@ class ContributorsWedge : Wedge<ContributorsWedge.ViewHolder>(R.layout.item_attr
         }
     }
 
-    fun requestContributors(repo: String) {
+    fun requestContributors(repo: ProviderString) {
         lifecycle?.launch {
             withContext(Dispatchers.IO) {
-                lifecycle?.getProvider(repo.getProviderOrNull())?.getContributors(repo)
+                lifecycle?.provider?.getContributors(repo)
             }?.forEach { contributor ->
                 onContributor(contributor)
             }
@@ -50,7 +50,7 @@ class ContributorsWedge : Wedge<ContributorsWedge.ViewHolder>(R.layout.item_attr
                 login = data.login,
                 name = data.name,
                 avatarUrl = data.avatarUrl,
-                task = if (data.login?.let { repo?.startsWith(it) } == true) "Owner" else "Contributor",
+                task = if (data.login?.let { repo?.id?.startsWith(it) } == true) "Owner" else "Contributor",
                 bio = data.bio,
                 blog = data.websiteUrl,
                 email = data.email
