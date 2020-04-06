@@ -18,7 +18,7 @@
         android:layout_marginEnd="12dp"
         android:layout_marginRight="12dp"
         android:layout_marginTop="6dp"
-        tools:src="@android:color/darker_gray" />
+        android:src="@drawable/ic_attribouter_avatar" />
 
     <TextView
         android:id="@+id/name"

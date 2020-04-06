@@ -2,14 +2,15 @@ package me.jfenn.attribouter.dialogs;
 
 import android.content.Context;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatDialog;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatDialog;
+
 import me.jfenn.attribouter.R;
-import me.jfenn.attribouter.wedges.LicenseWedge;
 import me.jfenn.attribouter.utils.ResourceUtils;
 import me.jfenn.attribouter.utils.UrlClickListener;
+import me.jfenn.attribouter.wedges.LicenseWedge;
 
 public class LicenseDialog extends AppCompatDialog {
 
@@ -38,9 +39,9 @@ public class LicenseDialog extends AppCompatDialog {
         TextView bodyView = findViewById(R.id.body);
         View moreInfoButton = findViewById(R.id.moreInfo);
 
-        nameView.setText(ResourceUtils.getString(getContext(), license.licenseName));
-        if (license.licenseDescription != null)
-            descriptionView.setText(license.licenseDescription);
+        nameView.setText(ResourceUtils.getString(getContext(), license.getLicenseName()));
+        if (license.getLicenseDescription() != null)
+            descriptionView.setText(license.getLicenseDescription());
         else descriptionView.setVisibility(View.GONE);
 
         String permissions = license.getLicensePermissions();
@@ -61,12 +62,12 @@ public class LicenseDialog extends AppCompatDialog {
         if (permissions == null && conditions == null && limitations == null)
             infoContainerView.setVisibility(View.GONE);
 
-        String body = ResourceUtils.getString(getContext(), license.licenseBody);
+        String body = ResourceUtils.getString(getContext(), license.getLicenseBody());
         if (body != null)
             bodyView.setText(body);
         else bodyContainerView.setVisibility(View.GONE);
 
-        String moreInfo = ResourceUtils.getString(getContext(), license.licenseUrl);
+        String moreInfo = ResourceUtils.getString(getContext(), license.getLicenseUrl());
         if (moreInfo != null)
             moreInfoButton.setOnClickListener(new UrlClickListener(moreInfo));
         else moreInfoButton.setVisibility(View.GONE);

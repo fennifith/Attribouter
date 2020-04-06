@@ -48,7 +48,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:scaleType="centerInside"
-                tools:src="@android:color/darker_gray" />
+                android:src="@drawable/ic_attribouter_avatar" />
 
             <TextView
                 android:id="@+id/secondName"
@@ -96,7 +96,7 @@
                 android:layout_marginRight="16dp"
                 android:padding="16dp"
                 android:scaleType="centerInside"
-                tools:src="@android:color/darker_gray" />
+                android:src="@drawable/ic_attribouter_avatar" />
 
             <TextView
                 android:id="@+id/firstName"
@@ -144,7 +144,7 @@
                 android:layout_marginRight="16dp"
                 android:padding="16dp"
                 android:scaleType="centerInside"
-                tools:src="@android:color/darker_gray" />
+                android:src="@drawable/ic_attribouter_avatar" />
 
             <TextView
                 android:id="@+id/thirdName"

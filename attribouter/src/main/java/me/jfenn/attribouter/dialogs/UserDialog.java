@@ -2,11 +2,12 @@ package me.jfenn.attribouter.dialogs;
 
 import android.content.Context;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatDialog;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatDialog;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayoutManager;
@@ -17,11 +18,11 @@ import java.util.Collections;
 import java.util.List;
 
 import me.jfenn.attribouter.R;
-import me.jfenn.attribouter.adapters.InfoAdapter;
-import me.jfenn.attribouter.wedges.ContributorWedge;
-import me.jfenn.attribouter.wedges.Wedge;
-import me.jfenn.attribouter.wedges.link.LinkWedge;
+import me.jfenn.attribouter.adapters.WedgeAdapter;
 import me.jfenn.attribouter.utils.ResourceUtils;
+import me.jfenn.attribouter.wedges.ContributorWedge;
+import me.jfenn.attribouter.wedges.LinkWedge;
+import me.jfenn.attribouter.wedges.Wedge;
 
 public class UserDialog extends AppCompatDialog {
 
@@ -43,17 +44,22 @@ public class UserDialog extends AppCompatDialog {
         TextView bioView = findViewById(R.id.description);
         RecyclerView recycler = findViewById(R.id.links);
 
-        nameView.setText(ResourceUtils.getString(getContext(), contributor.getName()));
-        taskView.setText(ResourceUtils.getString(getContext(), contributor.task));
+        nameView.setText(ResourceUtils.getString(getContext(), contributor.getCanonicalName()));
+        taskView.setText(ResourceUtils.getString(getContext(), contributor.getTask()));
 
-        String url = ResourceUtils.getString(getContext(), contributor.avatarUrl);
+        String url = ResourceUtils.getString(getContext(), contributor.getAvatarUrl());
         if (url != null)
-            ResourceUtils.setImage(getContext(), contributor.avatarUrl, imageView);
+            ResourceUtils.setImage(getContext(), contributor.getAvatarUrl(), R.drawable.ic_attribouter_avatar, imageView);
         else imageView.setVisibility(View.GONE);
 
-        bioView.setText(ResourceUtils.getString(getContext(), contributor.bio));
+        bioView.setText(ResourceUtils.getString(getContext(), contributor.getBio()));
 
-        List<LinkWedge> links = contributor.getChildren(LinkWedge.class);
+        List<LinkWedge> links = new ArrayList<>();
+        for (Wedge wedge : contributor.getChildren()) {
+            if (wedge instanceof LinkWedge)
+                links.add((LinkWedge) wedge);
+        }
+
         if (links.size() > 0) {
             Collections.sort(links, new LinkWedge.Comparator(getContext()));
 
@@ -69,7 +75,7 @@ public class UserDialog extends AppCompatDialog {
             layoutManager.setFlexDirection(FlexDirection.ROW);
             layoutManager.setJustifyContent(JustifyContent.FLEX_START);
             recycler.setLayoutManager(layoutManager);
-            recycler.setAdapter(new InfoAdapter(linksList));
+            recycler.setAdapter(new WedgeAdapter(linksList));
         } else recycler.setVisibility(View.GONE);
     }
 }

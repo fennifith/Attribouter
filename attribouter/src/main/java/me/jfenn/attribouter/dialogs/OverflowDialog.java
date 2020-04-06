@@ -2,18 +2,19 @@ package me.jfenn.attribouter.dialogs;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
+
 import androidx.appcompat.app.AppCompatDialog;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
-import android.view.View;
 
 import java.util.List;
 
 import me.jfenn.attribouter.R;
-import me.jfenn.attribouter.adapters.InfoAdapter;
-import me.jfenn.attribouter.wedges.Wedge;
+import me.jfenn.attribouter.adapters.WedgeAdapter;
 import me.jfenn.attribouter.utils.ResourceUtils;
+import me.jfenn.attribouter.wedges.Wedge;
 
 public class OverflowDialog extends AppCompatDialog {
 
@@ -44,6 +45,6 @@ public class OverflowDialog extends AppCompatDialog {
         });
 
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        recycler.setAdapter(new InfoAdapter(items));
+        recycler.setAdapter(new WedgeAdapter(items));
     }
 }
