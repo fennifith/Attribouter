@@ -21,6 +21,7 @@ import java.util.*
 class AppWedge: Wedge<AppWedge.ViewHolder>(R.layout.item_attribouter_app_info) {
 
     private val icon: String? by attr("icon")
+    private var title: String? by attr("title")
     private var description: String? by attr("description")
     private val repo: ProviderString? by attrProvider("repo")
     private val gitHubUrl: String? by attr("gitHubUrl")
@@ -73,7 +74,18 @@ class AppWedge: Wedge<AppWedge.ViewHolder>(R.layout.item_attribouter_app_info) {
     override fun bind(context: Context, viewHolder: ViewHolder) {
         val info = context.applicationInfo
         ResourceUtils.setImage(context, icon, info.icon, viewHolder.appIconView)
-        viewHolder.nameTextView?.setText(info.labelRes)
+        run { // get app label from string (safely)
+            ResourceUtils.getString(context, title) ?: if (info.labelRes == 0)
+                info.nonLocalizedLabel?.toString()
+            else context.getString(info.labelRes)
+        }?.let {
+            viewHolder.nameTextView?.apply {
+                visibility = View.VISIBLE
+                text = it
+            }
+        } ?: run { // hide view if not specified
+            viewHolder.nameTextView?.visibility = View.GONE
+        }
 
         viewHolder.versionTextView?.apply {
             try {

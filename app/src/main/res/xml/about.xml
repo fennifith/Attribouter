@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <about>
-    <AppWedge repo="fennifith/Attribouter">
+    <AppWedge
+        repo="fennifith/Attribouter"
+        title="^Example Config">
         <LinkWedge
             name="Bintray"
             icon="https://bintray.com/favicon.ico"
