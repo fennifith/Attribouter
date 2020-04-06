@@ -10,7 +10,9 @@
 -keep class * extends me.jfenn.attribouter.wedges.Wedge
 
 # For data/gson classes
--keepclassmembernames class me.jfenn.attribouter.provider.net.*.data.** { *; }
+-keepclassmembers class me.jfenn.attribouter.provider.net.*.data.** {
+    !transient <fields>;
+}
 
 ##---------------End: Attribouter-specific configuration ----------
 
