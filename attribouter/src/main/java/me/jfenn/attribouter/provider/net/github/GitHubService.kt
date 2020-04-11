@@ -2,10 +2,10 @@ package me.jfenn.attribouter.provider.net.github
 
 import android.util.Log
 import me.jfenn.attribouter.provider.net.ServiceBuilder
-import me.jfenn.attribouter.provider.net.github.data.ContributorData
-import me.jfenn.attribouter.provider.net.github.data.LicenseData
-import me.jfenn.attribouter.provider.net.github.data.RepositoryData
-import me.jfenn.attribouter.provider.net.github.data.UserData
+import me.jfenn.attribouter.provider.net.github.data.GithubContributorData
+import me.jfenn.attribouter.provider.net.github.data.GithubLicenseData
+import me.jfenn.attribouter.provider.net.github.data.GithubRepoData
+import me.jfenn.attribouter.provider.net.github.data.GithubUserData
 import okhttp3.Cache
 import okhttp3.CacheControl
 import okhttp3.Interceptor
@@ -17,16 +17,16 @@ import java.util.concurrent.TimeUnit
 interface GitHubService {
 
     @GET("users/{user}")
-    suspend fun getUser(@Path("user") user: String): UserData
+    suspend fun getUser(@Path("user") user: String): GithubUserData
 
     @GET("repos/{user}/{repo}")
-    suspend fun getRepo(@Path("user") user: String, @Path("repo") repo: String): RepositoryData
+    suspend fun getRepo(@Path("user") user: String, @Path("repo") repo: String): GithubRepoData
 
     @GET("repos/{user}/{repo}/contributors")
-    suspend fun getRepoContributors(@Path("user") user: String, @Path("repo") repo: String): List<ContributorData>
+    suspend fun getRepoContributors(@Path("user") user: String, @Path("repo") repo: String): List<GithubContributorData>
 
     @GET("licenses/{key}")
-    suspend fun getLicense(@Path("key") key: String): LicenseData
+    suspend fun getLicense(@Path("key") key: String): GithubLicenseData
 
     companion object: ServiceBuilder<GitHubProvider> {
         override val key: String = "github"

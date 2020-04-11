@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlinx-serialization'
 
 android {
     compileSdkVersion 29
@@ -39,6 +40,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$deps.kotlin"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$deps.kotlinx.coroutines"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0"
 
     implementation "androidx.appcompat:appcompat:$deps.android.appcompat"
     implementation "androidx.browser:browser:$deps.android.browser"
@@ -46,13 +48,12 @@ dependencies {
 
     implementation "com.google.android.material:material:$deps.google.material"
     implementation "com.google.android:flexbox:$deps.google.flexbox"
-    implementation 'com.google.code.gson:gson:2.8.5'
 
     implementation "com.github.bumptech.glide:glide:$deps.glide"
     annotationProcessor "com.github.bumptech.glide:compiler:$deps.glide"
 
     implementation "com.squareup.retrofit2:retrofit:$deps.retrofit"
-    implementation "com.squareup.retrofit2:converter-gson:$deps.retrofit"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.5.0"
 }
 
 apply from: "../versions.gradle"

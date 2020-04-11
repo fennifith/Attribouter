@@ -1,11 +1,10 @@
 package me.jfenn.attribouter.provider.net
 
-import okhttp3.Cache
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
-import okhttp3.Response
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonConfiguration
+import okhttp3.*
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 
 interface ServiceBuilder<T: RequestProvider> {
@@ -32,8 +31,11 @@ interface ServiceBuilder<T: RequestProvider> {
     }
 
     fun retrofit(): Retrofit.Builder {
+        val json = Json(JsonConfiguration.Default.copy(ignoreUnknownKeys = true))
+        val mediaType = MediaType.get("application/json")
+
         return Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(json.asConverterFactory(mediaType))
                 .client(okhttp().build())
     }
 

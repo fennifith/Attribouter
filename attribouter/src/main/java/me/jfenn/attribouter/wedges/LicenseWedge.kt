@@ -78,7 +78,7 @@ class LicenseWedge(
     private fun onRepository(data: RepoData) {
         merge(LicenseWedge(
                 description = data.description,
-                licenseName = if (data.license != null) data.license.name else null,
+                licenseName = data.license?.name,
                 websiteUrl = data.websiteUrl
         ).create())
 

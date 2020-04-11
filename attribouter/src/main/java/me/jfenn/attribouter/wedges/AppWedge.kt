@@ -54,7 +54,7 @@ class AppWedge: Wedge<AppWedge.ViewHolder>(R.layout.item_attribouter_app_info) {
                 description = repoDescription
         }
 
-        repo.source.url?.let { repoUrl ->
+        repo.url?.let { repoUrl ->
             addChild(GitHubLinkWedge(repoUrl, 0, true).create(lifecycle))
         }
 

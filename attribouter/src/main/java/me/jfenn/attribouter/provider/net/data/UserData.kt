@@ -1,11 +1,14 @@
 package me.jfenn.attribouter.provider.net.data
 
-data class UserData(
-        val login: String?,
-        val source: SourceData,
-        val name: String? = null,
-        val avatarUrl: String? = null,
-        val websiteUrl: String? = null,
-        val email: String? = null,
-        val bio: String? = null
-)
+import me.jfenn.attribouter.provider.net.ProviderString
+
+open class UserData {
+    @Transient
+    open var id: ProviderString? = null
+    open val login: String? = null
+    open val name: String? = null
+    open val avatarUrl: String? = null
+    open val websiteUrl: String? = null
+    open val email: String? = null
+    open val bio: String? = null
+}

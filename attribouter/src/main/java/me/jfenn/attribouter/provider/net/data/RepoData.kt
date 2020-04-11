@@ -1,9 +1,13 @@
 package me.jfenn.attribouter.provider.net.data
 
-data class RepoData(
-        val slug: String?,
-        val source: SourceData,
-        val description: String?,
-        val websiteUrl: String?,
-        val license: LicenseData?
-)
+import me.jfenn.attribouter.provider.net.ProviderString
+
+open class RepoData {
+    @Transient
+    open var id: ProviderString? = null
+    open val slug: String? = null
+    open val description: String? = null
+    open val url: String? = null
+    open val websiteUrl: String? = null
+    open val license: LicenseData? = null
+}
