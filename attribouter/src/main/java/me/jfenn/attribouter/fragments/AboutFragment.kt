@@ -15,6 +15,7 @@ import me.jfenn.attribouter.adapters.WedgeAdapter
 import me.jfenn.attribouter.interfaces.Notifiable
 import me.jfenn.attribouter.provider.LifecycleInstance
 import me.jfenn.attribouter.provider.net.github.GitHubService
+import me.jfenn.attribouter.provider.net.gitlab.GitlabService
 import me.jfenn.attribouter.provider.wedge.XMLWedgeProvider
 import me.jfenn.attribouter.wedges.Wedge
 
@@ -42,6 +43,9 @@ class AboutFragment : Fragment(), Notifiable {
                 services = listOf(
                         GitHubService.apply {
                             withToken(gitHubToken)
+                            context?.let { ctx -> withCache(ctx.cacheDir) }
+                        },
+                        GitlabService.apply {
                             context?.let { ctx -> withCache(ctx.cacheDir) }
                         }
                 ),

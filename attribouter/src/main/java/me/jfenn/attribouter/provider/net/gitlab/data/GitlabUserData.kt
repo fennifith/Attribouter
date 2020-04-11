@@ -1,28 +1,28 @@
-package me.jfenn.attribouter.provider.net.github.data
+package me.jfenn.attribouter.provider.net.gitlab.data
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import me.jfenn.attribouter.provider.net.data.UserData
 
 @Serializable
-class GithubUserData : UserData() {
+class GitlabUserData : UserData() {
 
-    @SerialName("login")
+    @SerialName("username")
     override val login: String? = null
 
     @SerialName("name")
     override val name: String? = null
 
-    @SerialName("html_url")
+    @SerialName("web_url")
     override val url: String? = null
 
     @SerialName("avatar_url")
     override val avatarUrl: String? = null
 
-    @SerialName("blog")
+    @SerialName("website_url")
     override val websiteUrl: String? = null
 
-    @SerialName("email")
+    @SerialName("public_email")
     override val email: String? = null
 
     @SerialName("bio")

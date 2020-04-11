@@ -31,14 +31,6 @@ fun LicensesWedge.addDefaults() {
                     licenseKey = "apache-2.0"
             ).create(lifecycle),
             LicenseWedge(
-                    repo = "google/gson",
-                    title = "Gson",
-                    description = "A Java serialization/deserialization library to convert Java Objects into JSON and back",
-                    licenseName = "Apache License 2.0",
-                    gitHubUrl = "https://github.com/google/gson",
-                    licenseKey = "apache-2.0"
-            ).create(lifecycle),
-            LicenseWedge(
                     repo = "google/flexbox-layout",
                     title = "FlexBox Layout",
                     description = "FlexboxLayout is a library that brings similar capabilities to the CSS Flexible Box Layout to Android.",

@@ -7,6 +7,7 @@ open class UserData {
     open var id: ProviderString? = null
     open val login: String? = null
     open val name: String? = null
+    open val url: String? = null
     open val avatarUrl: String? = null
     open val websiteUrl: String? = null
     open val email: String? = null

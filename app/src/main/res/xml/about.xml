@@ -54,6 +54,8 @@
                 hidden="true"
                 id="website" />
         </ContributorWedge>
+
+        <ContributorWedge login="gitlab:franciscofranco.1990" />
         <!-- For Jahir, the task "Lazy Slacker" will override the default task "Contributor" even after the github data is fetched (starting with the "^"
             character is what tells the library to do this) -->
         <ContributorWedge login="adueppen">
@@ -95,6 +97,8 @@
     <LicensesWedge
         overflow="1"
         showDefaults="false">
+        <LicenseWedge repo="gitlab:LinxGem33/Arc-Menu" />
+
         <LicenseWedge repo="fennifith/ColorPickerDialog" />
         <!-- all of ColorPickerDialog's info is fetched from github -->
         <LicenseWedge

@@ -2,7 +2,6 @@ package me.jfenn.attribouter.provider.net.github
 
 import android.util.Log
 import me.jfenn.attribouter.provider.net.ServiceBuilder
-import me.jfenn.attribouter.provider.net.github.data.GithubContributorData
 import me.jfenn.attribouter.provider.net.github.data.GithubLicenseData
 import me.jfenn.attribouter.provider.net.github.data.GithubRepoData
 import me.jfenn.attribouter.provider.net.github.data.GithubUserData
@@ -23,7 +22,7 @@ interface GitHubService {
     suspend fun getRepo(@Path("user") user: String, @Path("repo") repo: String): GithubRepoData
 
     @GET("repos/{user}/{repo}/contributors")
-    suspend fun getRepoContributors(@Path("user") user: String, @Path("repo") repo: String): List<GithubContributorData>
+    suspend fun getRepoContributors(@Path("user") user: String, @Path("repo") repo: String): List<GithubUserData>
 
     @GET("licenses/{key}")
     suspend fun getLicense(@Path("key") key: String): GithubLicenseData

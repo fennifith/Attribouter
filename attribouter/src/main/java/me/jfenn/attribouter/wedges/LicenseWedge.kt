@@ -82,10 +82,10 @@ class LicenseWedge(
                 websiteUrl = data.websiteUrl
         ).create())
 
-        data.license?.key?.let { key ->
+        data.license?.id?.let { id ->
             if (!hasAllLicense()) lifecycle?.launch {
                 withContext(Dispatchers.IO) {
-                    lifecycle?.provider?.getLicense(ProviderString(key))
+                    lifecycle?.provider?.getLicense(id)
                 }?.let { onLicense(it) }
             }
         }
