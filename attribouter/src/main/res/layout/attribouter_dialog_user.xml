@@ -22,7 +22,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="8dp"
-            android:src="@drawable/ic_attribouter_avatar" />
+            android:src="@drawable/attribouter_image_avatar" />
 
         <LinearLayout
             android:layout_width="0dp"

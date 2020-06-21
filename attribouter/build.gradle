@@ -43,6 +43,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0"
 
     implementation "androidx.appcompat:appcompat:$deps.android.appcompat"
+    implementation "androidx.constraintlayout:constraintlayout:$deps.android.constraintlayout"
     implementation "androidx.browser:browser:$deps.android.browser"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0"
 

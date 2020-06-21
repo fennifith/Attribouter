@@ -30,7 +30,7 @@ public class OverflowDialog extends AppCompatDialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.dialog_attribouter_overflow);
+        setContentView(R.layout.attribouter_dialog_overflow);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         RecyclerView recycler = findViewById(R.id.recycler);

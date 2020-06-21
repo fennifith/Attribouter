@@ -17,13 +17,12 @@ import me.jfenn.attribouter.provider.net.ProviderString
 import me.jfenn.attribouter.provider.net.data.UserData
 import me.jfenn.attribouter.utils.ResourceUtils
 import me.jfenn.attribouter.utils.UrlClickListener
-import java.util.*
 
-class ContributorsWedge : Wedge<ContributorsWedge.ViewHolder>(R.layout.item_attribouter_contributors) {
+class ContributorsWedge : Wedge<ContributorsWedge.ViewHolder>(R.layout.attribouter_item_contributors) {
 
     private var repo: ProviderString? by attrProvider("repo")
     private var contributorsTitle: String? by attr("title", "@string/title_attribouter_contributors")
-    private var overflow: Int? by attr("overflow", -1)
+    private var overflow: Int? by attr("overflow", Int.MAX_VALUE)
     private var showDefaults: Boolean? by attr("showDefaults", true)
 
     override fun onCreate() {
@@ -74,7 +73,7 @@ class ContributorsWedge : Wedge<ContributorsWedge.ViewHolder>(R.layout.item_attr
     ) {
         nameView?.text = ResourceUtils.getString(context, contributor.getCanonicalName())
         imageView?.apply {
-            ResourceUtils.setImage(context, contributor.avatarUrl, R.drawable.ic_attribouter_avatar, this)
+            ResourceUtils.setImage(context, contributor.avatarUrl, R.drawable.attribouter_image_avatar, this)
         }
 
         taskView?.apply {
@@ -99,7 +98,7 @@ class ContributorsWedge : Wedge<ContributorsWedge.ViewHolder>(R.layout.item_attr
         }
     }
 
-    public override fun bind(context: Context, viewHolder: ViewHolder) {
+    override fun bind(context: Context, viewHolder: ViewHolder) {
         viewHolder.titleView?.apply {
             visibility = if (overflow!! > 0) {
                 contributorsTitle?.let { text = ResourceUtils.getString(context, contributorsTitle) }
@@ -107,56 +106,24 @@ class ContributorsWedge : Wedge<ContributorsWedge.ViewHolder>(R.layout.item_attr
             } else View.GONE
         }
 
-        var first: ContributorWedge? = null
-        var second: ContributorWedge? = null
-        var third: ContributorWedge? = null
-        val remainingContributors = ArrayList<Wedge<*>>()
-        var hiddenContributors = 0
-        for (contributor in getTypedChildren<ContributorWedge>()) {
-            if (contributor.isHidden) {
-                hiddenContributors++
-                continue
-            }
-
-            when {
-                contributor.position == 1 -> first = first ?: contributor
-                contributor.position == 2 -> second = second ?: contributor
-                contributor.position == 3 -> third = third ?: contributor
-                else -> overflow?.let {
-                    if (remainingContributors.size < it || it == -1)
-                        remainingContributors.add(contributor)
-                }
-            }
-        }
-
-        if (first != null && second != null && third != null) {
-            viewHolder.topThreeView?.visibility = View.VISIBLE
-
-            bindContributorView(context, viewHolder.firstView, viewHolder.firstImageView, viewHolder.firstNameView, viewHolder.firstTaskView, first)
-            bindContributorView(context, viewHolder.secondView, viewHolder.secondImageView, viewHolder.secondNameView, viewHolder.secondTaskView, second)
-            bindContributorView(context, viewHolder.thirdView, viewHolder.thirdImageView, viewHolder.thirdNameView, viewHolder.thirdTaskView, third)
-        } else {
-            viewHolder.topThreeView?.visibility = View.GONE
-            third?.let { remainingContributors.add(0, third) }
-            second?.let { remainingContributors.add(0, second) }
-            first?.let { remainingContributors.add(0, first) }
-        }
+        val contributors = getTypedChildren<ContributorWedge>().filter { !it.isHidden }.sorted()
+        val displayContributors = contributors.take(overflow ?: Int.MAX_VALUE)
 
         viewHolder.recycler?.apply {
-            visibility = if (remainingContributors.isNotEmpty()) {
+            visibility = if (displayContributors.isNotEmpty()) {
                 layoutManager = LinearLayoutManager(context)
-                adapter = WedgeAdapter(remainingContributors)
+                adapter = WedgeAdapter(displayContributors)
                 View.VISIBLE
             } else View.GONE
         }
 
         viewHolder.expand?.apply {
-            visibility = if (overflow != 0 && remainingContributors.size + (if (first != null && second != null && third != null) 3 else 0) < getChildren().size - hiddenContributors) {
+            visibility = if (overflow != 0 && displayContributors.size < contributors.size) {
                 setOnClickListener { v ->
                     OverflowDialog(
                             v.context,
                             contributorsTitle,
-                            getTypedChildren<ContributorWedge>().filter { !it.isHidden }
+                            contributors
                     ).show()
                 }
 
@@ -180,19 +147,6 @@ class ContributorsWedge : Wedge<ContributorsWedge.ViewHolder>(R.layout.item_attr
 
     class ViewHolder(v: View) : Wedge.ViewHolder(v) {
         var titleView: TextView? = v.findViewById(R.id.contributorsTitle)
-        var topThreeView: View? = v.findViewById(R.id.topThree)
-        var firstView: View? = v.findViewById(R.id.first)
-        var firstImageView: ImageView? = v.findViewById(R.id.firstImage)
-        var firstNameView: TextView? = v.findViewById(R.id.firstName)
-        var firstTaskView: TextView? = v.findViewById(R.id.firstTask)
-        var secondView: View? = v.findViewById(R.id.second)
-        var secondImageView: ImageView? = v.findViewById(R.id.secondImage)
-        var secondNameView: TextView? = v.findViewById(R.id.secondName)
-        var secondTaskView: TextView? = v.findViewById(R.id.secondTask)
-        var thirdView: View? = v.findViewById(R.id.third)
-        var thirdImageView: ImageView? = v.findViewById(R.id.thirdImage)
-        var thirdNameView: TextView? = v.findViewById(R.id.thirdName)
-        var thirdTaskView: TextView? = v.findViewById(R.id.thirdTask)
         var expand: View? = v.findViewById(R.id.expand)
         var overflow: TextView? = v.findViewById(R.id.overflow)
         var recycler: RecyclerView? = v.findViewById(R.id.recycler)

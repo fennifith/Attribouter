@@ -19,11 +19,11 @@ class ContributorWedge(
         name: String? = null,
         avatarUrl: String? = null,
         task: String? = null,
-        position: Int = -1,
+        position: Int = Int.MAX_VALUE,
         bio: String? = null,
         blog: String? = null,
         email: String? = null
-) : Wedge<ContributorWedge.ViewHolder>(R.layout.item_attribouter_contributor), Mergeable<ContributorWedge> {
+) : Wedge<ContributorWedge.ViewHolder>(R.layout.attribouter_item_contributor), Mergeable<ContributorWedge>, Comparable<ContributorWedge> {
 
     var login: ProviderString? by attrProvider("login", login)
     private var name: String? by attr("name", name)
@@ -105,13 +105,19 @@ class ContributorWedge(
         } ?: super.equals(other)
     }
 
+    override fun compareTo(other: ContributorWedge): Int {
+        val a = position ?: Int.MAX_VALUE
+        val b = other.position ?: Int.MAX_VALUE
+        return a - b
+    }
+
     override fun getViewHolder(v: View): ViewHolder {
         return ViewHolder(v)
     }
 
     override fun bind(context: Context, viewHolder: ViewHolder) {
         viewHolder.imageView?.apply {
-            ResourceUtils.setImage(context, avatarUrl, R.drawable.ic_attribouter_avatar, this)
+            ResourceUtils.setImage(context, avatarUrl, R.drawable.attribouter_image_avatar, this)
         }
 
         viewHolder.nameView?.apply {
@@ -127,6 +133,26 @@ class ContributorWedge(
             }
         }
 
+        val links = getTypedChildren<LinkWedge>().filter { !it.isHidden }
+
+        viewHolder.firstLinkView?.apply {
+            links.getOrNull(0)?.let { link ->
+                link.bind(context, LinkWedge.ViewHolder(this))
+                visibility = View.VISIBLE
+            } ?: run {
+                visibility = View.GONE
+            }
+        }
+
+        viewHolder.secondLinkView?.apply {
+            links.getOrNull(1)?.let { link ->
+                link.bind(context, LinkWedge.ViewHolder(this))
+                visibility = View.VISIBLE
+            } ?: run {
+                visibility = View.GONE
+            }
+        }
+
         viewHolder.itemView.apply {
             if (ResourceUtils.getString(context, bio) != null) {
                 setOnClickListener { view ->
@@ -136,7 +162,7 @@ class ContributorWedge(
             } else {
                 var importantLink: LinkWedge? = null
                 var clickListener: View.OnClickListener? = null
-                for (link in getTypedChildren<LinkWedge>().filter { !it.isHidden }) {
+                for (link in links) {
                     if (importantLink == null || link.priority() > importantLink.priority()) {
                         link.getListener(context)?.let {
                             importantLink = link
@@ -154,5 +180,8 @@ class ContributorWedge(
         var imageView: ImageView? = v.findViewById(R.id.image)
         var nameView: TextView? = v.findViewById(R.id.name)
         var taskView: TextView? = v.findViewById(R.id.task)
+
+        var firstLinkView: View? = v.findViewById(R.id.link_1)
+        var secondLinkView: View? = v.findViewById(R.id.link_2)
     }
 }

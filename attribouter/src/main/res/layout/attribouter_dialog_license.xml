@@ -171,7 +171,7 @@
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
             android:layout_marginTop="8dp"
-            android:background="@drawable/bg_attribouter_emphasized"
+            android:background="@drawable/attribouter_bg_emphasized"
             android:scrollbars="horizontal">
 
             <TextView

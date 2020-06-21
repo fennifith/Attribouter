@@ -28,7 +28,7 @@ class AboutFragment : Fragment(), Notifiable {
     private var gitHubToken: String? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        recycler = inflater.inflate(R.layout.fragment_attribouter_about, container, false) as RecyclerView
+        recycler = inflater.inflate(R.layout.attribouter_fragment_about, container, false) as RecyclerView
 
         val args = arguments
         var fileRes = R.xml.attribouter

@@ -24,7 +24,7 @@ public class LicenseDialog extends AppCompatDialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.dialog_attribouter_license);
+        setContentView(R.layout.attribouter_dialog_license);
 
         TextView nameView = findViewById(R.id.name);
         TextView descriptionView = findViewById(R.id.description);

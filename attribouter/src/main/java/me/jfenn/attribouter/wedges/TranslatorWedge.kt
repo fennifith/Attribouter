@@ -96,7 +96,7 @@ class TranslatorWedge(
 
     override fun bind(context: Context, viewHolder: ViewHolder) {
         viewHolder.imageView?.apply {
-            ResourceUtils.setImage(context, avatarUrl, R.drawable.ic_attribouter_avatar, this)
+            ResourceUtils.setImage(context, avatarUrl, R.drawable.attribouter_image_avatar, this)
         }
 
         viewHolder.nameView?.apply {

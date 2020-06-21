@@ -36,7 +36,7 @@ public class UserDialog extends AppCompatDialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.dialog_attribouter_user);
+        setContentView(R.layout.attribouter_dialog_user);
 
         TextView nameView = findViewById(R.id.name);
         TextView taskView = findViewById(R.id.task);
@@ -49,7 +49,7 @@ public class UserDialog extends AppCompatDialog {
 
         String url = ResourceUtils.getString(getContext(), contributor.getAvatarUrl());
         if (url != null)
-            ResourceUtils.setImage(getContext(), contributor.getAvatarUrl(), R.drawable.ic_attribouter_avatar, imageView);
+            ResourceUtils.setImage(getContext(), contributor.getAvatarUrl(), R.drawable.attribouter_image_avatar, imageView);
         else imageView.setVisibility(View.GONE);
 
         bioView.setText(ResourceUtils.getString(getContext(), contributor.getBio()));
