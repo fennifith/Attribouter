@@ -13,8 +13,9 @@ import me.jfenn.attribouter.provider.net.data.UserData
 import me.jfenn.attribouter.utils.ResourceUtils
 import me.jfenn.attribouter.utils.UrlClickListener
 import me.jfenn.attribouter.utils.isResourceMutable
+import java.util.*
 
-class TranslatorWedge(
+open class TranslatorWedge(
         login: String? = null,
         name: String? = null,
         avatarUrl: String? = null,
@@ -23,12 +24,16 @@ class TranslatorWedge(
         email: String? = null
 ) : Wedge<TranslatorWedge.ViewHolder>(R.layout.item_attribouter_translator), Mergeable<TranslatorWedge> {
 
-    private var login: ProviderString? by attrProvider("login", login)
-    private var name: String? by attr("name", name)
-    private var avatarUrl: String? by attr("avatar", avatarUrl)
+    var login: ProviderString? by attrProvider("login", login)
+    var name: String? by attr("name", name)
+    var avatarUrl: String? by attr("avatar", avatarUrl)
     var locales: String? by attr("locales", locales)
-    private var blog: String? by attr("blog", blog)
-    private var email: String? by attr("email", email)
+    var blog: String? by attr("blog", blog)
+    var email: String? by attr("email", email)
+    override val isHidden: Boolean = false
+
+    // whether the translator is the first of a locale in the sorted list (i.e. should display its header)
+    var isFirst: Boolean = false
 
     override fun onCreate() {
         login?.let {
@@ -40,7 +45,7 @@ class TranslatorWedge(
         }
     }
 
-    internal fun onTranslator(data: UserData) {
+    open fun onTranslator(data: UserData) {
         merge(TranslatorWedge(
                 data.login,
                 data.name,
@@ -53,7 +58,7 @@ class TranslatorWedge(
         notifyItemChanged()
     }
 
-    fun getCanonicalName(): String? {
+    open fun getDisplayName(): String? {
         return name ?: login?.id
     }
 
@@ -76,10 +81,6 @@ class TranslatorWedge(
         return false
     }
 
-    override fun isHidden(): Boolean {
-        return false
-    }
-
     private fun hasEverything(): Boolean {
         return !name.isResourceMutable() && !blog.isResourceMutable()
     }
@@ -90,17 +91,37 @@ class TranslatorWedge(
         } ?: super.equals(other)
     }
 
+    fun clone() : TranslatorWedge {
+        return TranslatorWedge(
+                login.toString(),
+                name,
+                avatarUrl,
+                locales,
+                blog,
+                email
+        ).also {
+            it.addChildren(getChildren())
+        }
+    }
+
     override fun getViewHolder(v: View): ViewHolder {
         return ViewHolder(v)
     }
 
     override fun bind(context: Context, viewHolder: ViewHolder) {
+        viewHolder.localeView?.apply {
+            text = locales?.split(",")?.getOrNull(0)?.let {
+                Locale(it).displayName
+            } ?: ""
+            visibility = if (isFirst) View.VISIBLE else View.GONE
+        }
+
         viewHolder.imageView?.apply {
             ResourceUtils.setImage(context, avatarUrl, R.drawable.attribouter_image_avatar, this)
         }
 
         viewHolder.nameView?.apply {
-            text = ResourceUtils.getString(context, getCanonicalName())
+            text = ResourceUtils.getString(context, getDisplayName())
         }
 
         viewHolder.itemView.apply {
@@ -114,7 +135,8 @@ class TranslatorWedge(
         }
     }
 
-    class ViewHolder(v: View) : Wedge.ViewHolder(v) {
+    open class ViewHolder(v: View) : Wedge.ViewHolder(v) {
+        var localeView: TextView? = v.findViewById(R.id.locale)
         var imageView: ImageView? = v.findViewById(R.id.image)
         var nameView: TextView? = v.findViewById(R.id.name)
     }

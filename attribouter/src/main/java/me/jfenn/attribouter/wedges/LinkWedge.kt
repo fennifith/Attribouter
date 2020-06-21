@@ -3,6 +3,7 @@ package me.jfenn.attribouter.wedges
 import android.content.Context
 import android.view.View
 import android.webkit.URLUtil
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.TooltipCompat
@@ -23,12 +24,12 @@ open class LinkWedge(
         priority: Int = 0
 ) : Wedge<LinkWedge.ViewHolder>(R.layout.attribouter_item_link), Mergeable<LinkWedge>, Comparable<LinkWedge> {
 
-    private var id: String? by attr("id", id)
-    private var name: String? by attr("name", name)
-    protected var url: String? by attr("url", url)
-    private var icon: String? by attr("icon", icon)
-    private var isHidden: Boolean? by attr("hidden", isHidden)
-    private var priority: Int? by attrInt("priority", priority)
+    var id: String? by attr("id", id)
+    var name: String? by attr("name", name)
+    var url: String? by attr("url", url)
+    var icon: String? by attr("icon", icon)
+    override var isHidden: Boolean by attr("hidden", isHidden)
+    var priority: Int by attrInt("priority", priority)
 
     override fun onCreate() {
         if (!url.isNullOrEmpty()) this.url = url?.let {
@@ -57,7 +58,7 @@ open class LinkWedge(
             mergee.url?.let { url = it }
         if (icon.isResourceMutable())
             mergee.icon?.let { icon = it }
-        if (mergee.isHidden())
+        if (mergee.isHidden)
             isHidden = true
         if (mergee.priority != 0)
             priority = mergee.priority
@@ -69,14 +70,6 @@ open class LinkWedge(
         return true
     }
 
-    override fun isHidden(): Boolean {
-        return isHidden ?: false
-    }
-
-    open fun priority(): Int {
-        return priority ?: 0
-    }
-
     override fun equals(obj: Any?): Boolean {
         return (obj as? LinkWedge)?.let {
             (id?.equals(it.id) ?: false) || (url?.equals(obj.url) ?: false)
@@ -84,9 +77,7 @@ open class LinkWedge(
     }
 
     override fun compareTo(other: LinkWedge): Int {
-        val a = priority()
-        val b = other.priority()
-        return a - b
+        return priority - other.priority
     }
 
     override fun getViewHolder(v: View): ViewHolder {
@@ -95,6 +86,7 @@ open class LinkWedge(
 
     override fun bind(context: Context, viewHolder: ViewHolder) {
         val title = ResourceUtils.getString(context, name)
+        val listener = getListener(context)
 
         viewHolder.nameView?.text = title
         viewHolder.iconView?.contentDescription = title
@@ -105,26 +97,15 @@ open class LinkWedge(
         }
 
         TooltipCompat.setTooltipText(viewHolder.itemView, title)
-        viewHolder.itemView.setOnClickListener(getListener(context))
+
+        (viewHolder.iconView as? ImageButton)?.setOnClickListener(listener)
+        (viewHolder.nameView as? MaterialButton)?.setOnClickListener(listener)
+        viewHolder.itemView.setOnClickListener(listener)
     }
 
-    fun compareTo(context: Context, o: LinkWedge): Int {
-        val name = ResourceUtils.getString(context, this.name)
-        val oname = ResourceUtils.getString(context, o.name)
-        val comparison = if (name != null && oname != null) name.compareTo(oname) else 0
-        return (o.priority() - priority()) * 2 + if (comparison != 0) comparison / Math.abs(comparison) else 0
-    }
-
-    class ViewHolder(v: View) : Wedge.ViewHolder(v) {
+    open class ViewHolder(v: View) : Wedge.ViewHolder(v) {
         var nameView: TextView? = v.findViewById(R.id.name)
         var iconView: ImageView? = v.findViewById(R.id.icon)
-    }
-
-    class Comparator(private val context: Context) : java.util.Comparator<LinkWedge> {
-
-        override fun compare(o1: LinkWedge, o2: LinkWedge): Int {
-            return o1.compareTo(context, o2)
-        }
     }
 
 }

@@ -13,9 +13,6 @@ class ProviderString {
     }
 
     constructor(str: String) {
-        if (str.isEmpty())
-            throw RuntimeException("Attribouter - Empty ProviderString")
-
         val arr = str.split("@", ":")
         when (arr.size) {
             1 -> {
@@ -35,6 +32,10 @@ class ProviderString {
             }
             else -> throw RuntimeException("Attribouter - ProviderString with too many parts! '$str' Format: 'provider@context:id'")
         }
+    }
+
+    fun isEmpty(): Boolean {
+        return id.isEmpty()
     }
 
     fun toProviderString(): String {

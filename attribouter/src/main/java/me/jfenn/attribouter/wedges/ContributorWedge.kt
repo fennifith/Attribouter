@@ -14,7 +14,7 @@ import me.jfenn.attribouter.provider.net.data.UserData
 import me.jfenn.attribouter.utils.ResourceUtils
 import me.jfenn.attribouter.utils.isResourceMutable
 
-class ContributorWedge(
+open class ContributorWedge(
         login: String? = null,
         name: String? = null,
         avatarUrl: String? = null,
@@ -26,14 +26,14 @@ class ContributorWedge(
 ) : Wedge<ContributorWedge.ViewHolder>(R.layout.attribouter_item_contributor), Mergeable<ContributorWedge>, Comparable<ContributorWedge> {
 
     var login: ProviderString? by attrProvider("login", login)
-    private var name: String? by attr("name", name)
+    var name: String? by attr("name", name)
     var avatarUrl: String? by attr("avatar", avatarUrl)
     var task: String? by attr("task", task)
-    var position: Int? by attr("position", position)
+    var position: Int by attr("position", position)
     var bio: String? by attr("bio", bio)
     var blog: String? by attr("blog", blog)
-    private var email: String? by attr("email", email)
-    private var isHidden: Boolean? by attr("hidden", false)
+    var email: String? by attr("email", email)
+    override var isHidden: Boolean by attr("hidden", false)
 
     override fun onCreate() {
         login?.let { addChild(GitHubLinkWedge(it.id, 1)) }
@@ -95,10 +95,6 @@ class ContributorWedge(
                 && !email.isResourceMutable()
     }
 
-    override fun isHidden(): Boolean {
-        return isHidden == true
-    }
-
     override fun equals(other: Any?): Boolean {
         return (other as? ContributorWedge)?.let {
             login?.id?.equals(it.login?.id, ignoreCase = true)
@@ -133,7 +129,7 @@ class ContributorWedge(
             }
         }
 
-        val links = getTypedChildren<LinkWedge>().filter { !it.isHidden }
+        val links = getTypedChildren<LinkWedge>().filter { !it.isHidden }.sorted()
 
         viewHolder.firstLinkView?.apply {
             links.getOrNull(0)?.let { link ->
@@ -155,15 +151,14 @@ class ContributorWedge(
 
         viewHolder.itemView.apply {
             if (ResourceUtils.getString(context, bio) != null) {
-                setOnClickListener { view ->
-                    UserDialog(view.context, this@ContributorWedge)
-                            .show()
+                setOnClickListener {
+                    UserDialog(context, this@ContributorWedge).show()
                 }
             } else {
                 var importantLink: LinkWedge? = null
                 var clickListener: View.OnClickListener? = null
                 for (link in links) {
-                    if (importantLink == null || link.priority() > importantLink.priority()) {
+                    if (importantLink == null || link.priority > importantLink.priority) {
                         link.getListener(context)?.let {
                             importantLink = link
                             clickListener = it
@@ -176,7 +171,7 @@ class ContributorWedge(
         }
     }
 
-    class ViewHolder(v: View) : Wedge.ViewHolder(v) {
+    open class ViewHolder(v: View) : Wedge.ViewHolder(v) {
         var imageView: ImageView? = v.findViewById(R.id.image)
         var nameView: TextView? = v.findViewById(R.id.name)
         var taskView: TextView? = v.findViewById(R.id.task)

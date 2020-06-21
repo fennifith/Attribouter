@@ -5,9 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?selectableItemBackground"
-    android:orientation="vertical"
-    android:paddingBottom="8dp"
-    android:paddingTop="8dp">
+    android:orientation="vertical">
 
     <include layout="@layout/attribouter_item_header" />
 
@@ -15,6 +13,8 @@
         android:id="@+id/recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingVertical="4dp"
+        android:clipToPadding="false"
         tools:listitem="@layout/item_attribouter_translator"
         tools:itemCount="3" />
 

@@ -18,8 +18,7 @@ class LicenseLinkWedge(
         return when {
             license.licenseBody != null ->
                 View.OnClickListener { v ->
-                    LicenseDialog(v.context, license)
-                            .show()
+                    LicenseDialog(v.context, license).show()
                 }
             license.licenseUrl != null -> UrlClickListener(license.licenseUrl)
             else -> null

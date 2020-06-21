@@ -1,7 +1,6 @@
 package me.jfenn.attribouter.wedges
 
 import android.content.Context
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,29 +11,18 @@ import me.jfenn.attribouter.dialogs.OverflowDialog
 import me.jfenn.attribouter.utils.ResourceUtils
 import java.util.*
 
-class TranslatorsWedge : Wedge<TranslatorsWedge.ViewHolder>(R.layout.attribouter_item_translators) {
+open class TranslatorsWedge : Wedge<TranslatorsWedge.ViewHolder>(R.layout.attribouter_item_translators) {
 
-    private var translatorsTitle: String? by attr("title", "@string/title_attribouter_translators")
-    private val overflow: Int? by attr("overflow", -1)
+    var translatorsTitle: String? by attr("title", "@string/title_attribouter_translators")
+    val overflow: Int by attr("overflow", Int.MAX_VALUE)
     private var sortedTranslators: MutableList<Wedge<*>>? = null
 
     override fun getViewHolder(v: View): ViewHolder {
         return ViewHolder(v)
     }
 
-    fun getUnicodeFlag(iso: String): String {
-        Log.d(javaClass.name, "Country code $iso")
-        var flag = ""
-        val offset = 0x1F1A5
-        iso.indices.map { Character.codePointAt(iso, it) + offset }
-                .map { Character.toChars(it) }
-                .forEach { flag += String(it) }
-
-        return flag
-    }
-
     override fun bind(context: Context, viewHolder: ViewHolder) {
-        var remaining = overflow ?: -1
+        var remaining = overflow
         val sortedList = ArrayList<Wedge<*>>()
 
         sortedTranslators = ArrayList()
@@ -48,19 +36,20 @@ class TranslatorsWedge : Wedge<TranslatorsWedge.ViewHolder>(R.layout.attribouter
                 }
 
                 if (isLocale) {
-                    if (!isHeader) { // add header/title wedge for language if not present yet
-                        val header = HeaderWedge(Locale(language).displayLanguage)
-                        sortedTranslators?.add(header)
-                        if (remaining != 0)
-                            sortedList.add(header)
+                    var item = translator
+                    if (!isHeader) {
+                        item = translator.clone().apply {
+                            locales = language
+                            isFirst = true
+                        }
 
                         isHeader = true
                     }
 
                     // add translator entry
-                    sortedTranslators?.add(translator)
+                    sortedTranslators?.add(item)
                     if (remaining != 0) {
-                        sortedList.add(translator)
+                        sortedList.add(item)
                         remaining--
                     }
                 }
@@ -90,7 +79,7 @@ class TranslatorsWedge : Wedge<TranslatorsWedge.ViewHolder>(R.layout.attribouter
         }
 
         viewHolder.expand?.apply {
-            visibility = if ((overflow ?: 0) != 0 && sortedTranslators?.size ?: -1 > sortedList.size) {
+            visibility = if (overflow != 0 && sortedTranslators?.size ?: -1 > sortedList.size) {
                 setOnClickListener { v -> OverflowDialog(v.context, translatorsTitle, sortedTranslators).show() }
                 View.VISIBLE
             } else View.GONE

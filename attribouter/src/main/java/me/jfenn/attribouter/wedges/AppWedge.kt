@@ -14,7 +14,7 @@ import me.jfenn.attribouter.utils.ResourceUtils
 import me.jfenn.attribouter.utils.backgroundTint
 import me.jfenn.attribouter.utils.getThemedColor
 
-class AppWedge: Wedge<AppWedge.ViewHolder>(R.layout.attribouter_item_app_info) {
+open class AppWedge: Wedge<AppWedge.ViewHolder>(R.layout.attribouter_item_app_info) {
 
     val icon: String? by attr("icon")
     var title: String? by attr("title")
@@ -143,7 +143,7 @@ class AppWedge: Wedge<AppWedge.ViewHolder>(R.layout.attribouter_item_app_info) {
         }*/
     }
 
-    class ViewHolder(v: View) : Wedge.ViewHolder(v) {
+    open class ViewHolder(v: View) : Wedge.ViewHolder(v) {
 
         var appIconView: ImageView? = v.findViewById(R.id.appIcon)
         var nameTextView: TextView? = v.findViewById(R.id.appName)

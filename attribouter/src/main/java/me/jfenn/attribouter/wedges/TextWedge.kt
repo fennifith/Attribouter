@@ -17,7 +17,7 @@ import me.jfenn.attribouter.utils.ResourceUtils
 class TextWedge : Wedge<TextWedge.ViewHolder>(R.layout.attribouter_item_text) {
 
     private val text: String? by attr("text")
-    private val isCentered: Boolean? by attr("centered", false)
+    private val isCentered: Boolean by attr("centered", false)
 
     override fun getViewHolder(v: View): ViewHolder {
         return ViewHolder(v)
@@ -31,7 +31,7 @@ class TextWedge : Wedge<TextWedge.ViewHolder>(R.layout.attribouter_item_text) {
             text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) Html.fromHtml(string, 0) else Html.fromHtml(string)
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
-                textAlignment = if (isCentered == true) View.TEXT_ALIGNMENT_CENTER else View.TEXT_ALIGNMENT_GRAVITY
+                textAlignment = if (isCentered) View.TEXT_ALIGNMENT_CENTER else View.TEXT_ALIGNMENT_GRAVITY
         }
 
         val links = getTypedChildren<LinkWedge>().filter { !it.isHidden }.sorted()
@@ -40,7 +40,7 @@ class TextWedge : Wedge<TextWedge.ViewHolder>(R.layout.attribouter_item_text) {
                 adapter = WedgeAdapter(links)
                 layoutManager = FlexboxLayoutManager(context).apply {
                     flexDirection = FlexDirection.ROW
-                    justifyContent = if (isCentered == true) JustifyContent.CENTER else JustifyContent.FLEX_START
+                    justifyContent = if (isCentered) JustifyContent.CENTER else JustifyContent.FLEX_START
                 }
 
                 visibility = View.VISIBLE

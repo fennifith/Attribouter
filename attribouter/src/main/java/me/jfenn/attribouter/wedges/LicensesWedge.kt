@@ -15,7 +15,7 @@ class LicensesWedge : Wedge<LicensesWedge.ViewHolder>(R.layout.attribouter_item_
 
     private var title: String? by attr("title", "@string/title_attribouter_licenses")
     private var showDefaults: Boolean? by attr("showDefaults", true)
-    private var overflow: Int? by attr("overflow", -1)
+    private var overflow: Int by attr("overflow", -1)
 
     override fun onCreate() {
         if (showDefaults != false)
@@ -56,12 +56,10 @@ class LicensesWedge : Wedge<LicensesWedge.ViewHolder>(R.layout.attribouter_item_
         }
 
         viewHolder.expand?.apply {
-            overflow?.let {
-                visibility = if (it > 0 && it < getChildren().size) {
-                    setOnClickListener { v -> OverflowDialog(v.context, title, getChildren()).show() }
-                    View.VISIBLE
-                } else View.GONE
-            }
+            visibility = if (overflow > 0 && overflow < getChildren().size) {
+                setOnClickListener { v -> OverflowDialog(v.context, title, getChildren()).show() }
+                View.VISIBLE
+            } else View.GONE
         }
     }
 

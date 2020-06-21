@@ -88,23 +88,23 @@ abstract class Wedge<T : Wedge.ViewHolder>(@param:LayoutRes val layoutRes: Int) 
             property = provider.getAttribute(this@Wedge, attribute, property) ?: property
         }
 
-        operator fun getValue(thisRef: R?, prop: KProperty<*>): T? {
-            return property
+        operator fun getValue(thisRef: R?, prop: KProperty<*>): T {
+            return property as T
         }
 
-        open operator fun setValue(thisRef: R?, prop: KProperty<*>, value: T) {
-            property = value
+        open operator fun setValue(thisRef: R?, prop: KProperty<*>, value: T?) {
+            value?.let { property = it }
         }
     }
 
     inner class attrInt<in R: Wedge<*>>(
             attribute: String,
-            property: Int?
-    ) : attr<R, Int?>(attribute, property) {
+            property: Int? = null
+    ) : attr<R, Int>(attribute, property) {
 
         override fun withProvider(provider: WedgeProvider) {
-            property = provider.getAttribute(this@Wedge, attribute, property.toString())?.let {
-                Integer.parseInt(it)
+            provider.getAttribute(this@Wedge, attribute, property.toString())?.let {
+                property = Integer.parseInt(it)
             }
         }
 
@@ -113,11 +113,11 @@ abstract class Wedge<T : Wedge.ViewHolder>(@param:LayoutRes val layoutRes: Int) 
     inner class attrProvider<in R: Wedge<*>>(
             attribute: String,
             property: String? = null
-    ) : attr<R, ProviderString?>(attribute, property?.let { ProviderString(it) }) {
+    ) : attr<R, ProviderString>(attribute, property?.let { ProviderString(it) }) {
 
         override fun withProvider(provider: WedgeProvider) {
-            property = provider.getAttribute(this@Wedge, attribute, property.toString())?.let {
-                ProviderString(it)
+            provider.getAttribute(this@Wedge, attribute, property.toString())?.let {
+                property = ProviderString(it)
             }
         }
 

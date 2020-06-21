@@ -2,7 +2,6 @@ package me.jfenn.attribouter.wedges
 
 import android.content.Context
 import android.view.View
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -12,21 +11,19 @@ import me.jfenn.attribouter.R
 import me.jfenn.attribouter.adapters.WedgeAdapter
 import me.jfenn.attribouter.addDefaults
 import me.jfenn.attribouter.dialogs.OverflowDialog
-import me.jfenn.attribouter.dialogs.UserDialog
 import me.jfenn.attribouter.provider.net.ProviderString
 import me.jfenn.attribouter.provider.net.data.UserData
 import me.jfenn.attribouter.utils.ResourceUtils
-import me.jfenn.attribouter.utils.UrlClickListener
 
-class ContributorsWedge : Wedge<ContributorsWedge.ViewHolder>(R.layout.attribouter_item_contributors) {
+open class ContributorsWedge : Wedge<ContributorsWedge.ViewHolder>(R.layout.attribouter_item_contributors) {
 
-    private var repo: ProviderString? by attrProvider("repo")
-    private var contributorsTitle: String? by attr("title", "@string/title_attribouter_contributors")
-    private var overflow: Int? by attr("overflow", Int.MAX_VALUE)
-    private var showDefaults: Boolean? by attr("showDefaults", true)
+    var repo: ProviderString? by attrProvider("repo")
+    var contributorsTitle: String by attr("title", "@string/title_attribouter_contributors")
+    var overflow: Int by attr("overflow", Int.MAX_VALUE)
+    var showDefaults: Boolean by attr("showDefaults", true)
 
     override fun onCreate() {
-        if (showDefaults != false)
+        if (showDefaults)
             addDefaults()
 
         repo?.let {
@@ -59,55 +56,20 @@ class ContributorsWedge : Wedge<ContributorsWedge.ViewHolder>(R.layout.attribout
         notifyItemChanged()
     }
 
-    public override fun getViewHolder(v: View): ViewHolder {
+    override fun getViewHolder(v: View): ViewHolder {
         return ViewHolder(v)
-    }
-
-    private fun bindContributorView(
-            context: Context,
-            view: View?,
-            imageView: ImageView?,
-            nameView: TextView?,
-            taskView: TextView?,
-            contributor: ContributorWedge
-    ) {
-        nameView?.text = ResourceUtils.getString(context, contributor.getCanonicalName())
-        imageView?.apply {
-            ResourceUtils.setImage(context, contributor.avatarUrl, R.drawable.attribouter_image_avatar, this)
-        }
-
-        taskView?.apply {
-            visibility = contributor.task?.let {
-                text = ResourceUtils.getString(context, it)
-                View.VISIBLE
-            } ?: View.GONE
-        }
-
-        view?.apply {
-            tag = contributor
-            setOnClickListener(
-                    when {
-                        ResourceUtils.getString(context, contributor.bio) != null -> View.OnClickListener { v ->
-                            (v.tag as? ContributorWedge)?.let { UserDialog(v.context, it).show() }
-                        }
-                        ResourceUtils.getString(context, contributor.blog) != null -> UrlClickListener(ResourceUtils.getString(context, contributor.blog))
-                        contributor.login != null -> UrlClickListener("https://github.com/${contributor.login}")
-                        else -> null
-                    }
-            )
-        }
     }
 
     override fun bind(context: Context, viewHolder: ViewHolder) {
         viewHolder.titleView?.apply {
-            visibility = if (overflow!! > 0) {
-                contributorsTitle?.let { text = ResourceUtils.getString(context, contributorsTitle) }
+            visibility = if (overflow > 0) {
+                text = ResourceUtils.getString(context, contributorsTitle)
                 View.VISIBLE
             } else View.GONE
         }
 
         val contributors = getTypedChildren<ContributorWedge>().filter { !it.isHidden }.sorted()
-        val displayContributors = contributors.take(overflow ?: Int.MAX_VALUE)
+        val displayContributors = contributors.take(overflow)
 
         viewHolder.recycler?.apply {
             visibility = if (displayContributors.isNotEmpty()) {
@@ -145,7 +107,7 @@ class ContributorsWedge : Wedge<ContributorsWedge.ViewHolder>(R.layout.attribout
         }
     }
 
-    class ViewHolder(v: View) : Wedge.ViewHolder(v) {
+    open class ViewHolder(v: View) : Wedge.ViewHolder(v) {
         var titleView: TextView? = v.findViewById(R.id.header)
         var expand: View? = v.findViewById(R.id.expand)
         var overflow: TextView? = v.findViewById(R.id.overflow)

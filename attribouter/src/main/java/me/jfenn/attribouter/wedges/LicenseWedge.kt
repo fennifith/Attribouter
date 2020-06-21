@@ -19,7 +19,7 @@ import me.jfenn.attribouter.utils.ResourceUtils
 import me.jfenn.attribouter.utils.toListString
 import java.util.regex.Pattern
 
-class LicenseWedge(
+open class LicenseWedge(
         repo: String? = null,
         title: String? = null,
         description: String? = null,
@@ -36,14 +36,15 @@ class LicenseWedge(
 ) : Wedge<LicenseWedge.ViewHolder>(R.layout.attribouter_item_license), Mergeable<LicenseWedge> {
 
     var repo: ProviderString? by attrProvider("repo", repo)
-    private var title: String? by attr("title", title)
-    private var description: String? by attr("description", description)
+    var title: String? by attr("title", title)
+    var description: String? by attr("description", description)
     var licenseName: String? by attr("licenseName", licenseName)
-    private var websiteUrl: String? by attr("website", websiteUrl)
-    private var gitHubUrl: String? by attr("gitHubUrl", gitHubUrl)
+    var websiteUrl: String? by attr("website", websiteUrl)
+    var gitHubUrl: String? by attr("gitHubUrl", gitHubUrl)
     var licenseUrl: String? by attr("licenseUrl", licenseUrl)
     var licenseBody: String? by attr("licenseBody", licenseBody)
-    private var licenseKey: ProviderString? by attrProvider("license", licenseKey)
+    var licenseKey: ProviderString? by attrProvider("license", licenseKey)
+    override val isHidden: Boolean = false
 
     internal var token: String? = null
 
@@ -130,7 +131,7 @@ class LicenseWedge(
             val pattern = Pattern.compile("\\b(\\w)")
             val matcher = pattern.matcher(name)
             while (matcher.find())
-                matcher.appendReplacement(nameBuffer, matcher.group(1).toUpperCase())
+                matcher.appendReplacement(nameBuffer, matcher.group(1)?.toUpperCase() ?: "")
 
             matcher.appendTail(nameBuffer).toString()
         }
@@ -190,10 +191,6 @@ class LicenseWedge(
                 && (licenseBody?.startsWith("^") ?: false)
     }
 
-    override fun isHidden(): Boolean {
-        return false
-    }
-
     override fun equals(other: Any?): Boolean {
         return (other as? LicenseWedge)?.let {
             return repo?.id?.equals(it.repo?.id, ignoreCase = true) ?: false
@@ -225,7 +222,7 @@ class LicenseWedge(
             }
         }
 
-        val links = getTypedChildren<LinkWedge>().filter { !it.isHidden }
+        val links = getTypedChildren<LinkWedge>().filter { !it.isHidden }.sorted()
 
         viewHolder.links?.apply {
             if (links.isNotEmpty()) {
@@ -243,7 +240,7 @@ class LicenseWedge(
             var importantLink: LinkWedge? = null
             var clickListener: View.OnClickListener? = null
             for (link in links) {
-                if (importantLink == null || link.priority() > importantLink.priority()) {
+                if (importantLink == null || link.priority > importantLink.priority) {
                     val listener = link.getListener(context)
                     if (listener != null) {
                         clickListener = listener

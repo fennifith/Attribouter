@@ -6,7 +6,7 @@ import android.widget.TextView
 import me.jfenn.attribouter.R
 import me.jfenn.attribouter.utils.ResourceUtils
 
-class HeaderWedge(private val text: String) : Wedge<HeaderWedge.ViewHolder>(R.layout.attribouter_item_header) {
+open class HeaderWedge(private val text: String) : Wedge<HeaderWedge.ViewHolder>(R.layout.attribouter_item_header) {
 
     override fun getViewHolder(v: View): ViewHolder {
         return ViewHolder(v)
@@ -16,7 +16,7 @@ class HeaderWedge(private val text: String) : Wedge<HeaderWedge.ViewHolder>(R.la
         viewHolder.headerView?.text = ResourceUtils.getString(context, this.text)
     }
 
-    class ViewHolder(v: View) : Wedge.ViewHolder(v) {
+    open class ViewHolder(v: View) : Wedge.ViewHolder(v) {
         var headerView: TextView? = v.findViewById(R.id.header)
     }
 
