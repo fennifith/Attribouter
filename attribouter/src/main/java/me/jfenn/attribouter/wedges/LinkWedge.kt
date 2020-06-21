@@ -91,7 +91,7 @@ open class LinkWedge(
         viewHolder.nameView?.text = title
         viewHolder.iconView?.contentDescription = title
 
-        context.loadDrawable(icon, R.drawable.ic_attribouter_link) { drawable ->
+        context.loadDrawable(icon, R.drawable.attribouter_ic_link) { drawable ->
             (viewHolder.nameView as? MaterialButton)?.icon = drawable
             viewHolder.iconView?.setImageDrawable(drawable)
         }

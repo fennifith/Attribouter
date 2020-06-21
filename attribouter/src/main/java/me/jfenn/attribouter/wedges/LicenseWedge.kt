@@ -54,7 +54,7 @@ open class LicenseWedge(
         if (!websiteUrl.isNullOrEmpty())
             websiteUrl?.let { addChild(WebsiteLinkWedge(it, 2)) }
 
-        repo?.let { addChild(GitHubLinkWedge(it.id, 1))}
+        repo?.let { addChild(RepoLinkWedge(it.id, 1))}
 
         if (!licenseBody.isNullOrEmpty() && !licenseUrl.isNullOrEmpty())
             addChild(LicenseLinkWedge(this, 0))
@@ -210,7 +210,7 @@ open class LicenseWedge(
         }
 
         viewHolder.descriptionView?.apply {
-            text = ResourceUtils.getString(context, description)
+            text = ResourceUtils.getString(context, description)?.replace("\n", "")
         }
 
         viewHolder.licenseView?.apply {

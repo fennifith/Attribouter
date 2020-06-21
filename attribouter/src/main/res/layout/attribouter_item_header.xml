@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:text="@string/title_attribouter_contributors"
+        android:text="@string/attribouter_title_contributors"
         android:textColor="?attr/attribouter_textColorAccent"
         android:textSize="16sp"
         android:textStyle="bold" />

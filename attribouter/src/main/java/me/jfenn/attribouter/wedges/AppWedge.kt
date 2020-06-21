@@ -26,7 +26,7 @@ open class AppWedge: Wedge<AppWedge.ViewHolder>(R.layout.attribouter_item_app_in
 
     override fun onCreate() {
         (gitHubUrl ?: repo?.let { "https://github.com/$it" })?.let {
-            addChild(GitHubLinkWedge(it, 0, true).create(lifecycle))
+            addChild(RepoLinkWedge(it, 0, true).create(lifecycle))
         }
 
         websiteUrl?.let {
@@ -51,7 +51,7 @@ open class AppWedge: Wedge<AppWedge.ViewHolder>(R.layout.attribouter_item_app_in
         }
 
         repo.url?.let { repoUrl ->
-            addChild(GitHubLinkWedge(repoUrl, 0, true).create(lifecycle))
+            addChild(RepoLinkWedge(repoUrl, 0, true).create(lifecycle))
         }
 
         repo.websiteUrl?.let { repoHomepage ->
@@ -89,7 +89,7 @@ open class AppWedge: Wedge<AppWedge.ViewHolder>(R.layout.attribouter_item_app_in
         viewHolder.versionTextView?.apply {
             try {
                 val packageInfo = context.packageManager.getPackageInfo(info.packageName, 0)
-                text = String.format(context.getString(R.string.title_attribouter_version), packageInfo.versionName)
+                text = String.format(context.getString(R.string.attribouter_title_version), packageInfo.versionName)
                 visibility = View.VISIBLE
             } catch (e: PackageManager.NameNotFoundException) {
                 visibility = View.GONE

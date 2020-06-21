@@ -18,7 +18,7 @@ import me.jfenn.attribouter.utils.ResourceUtils
 open class ContributorsWedge : Wedge<ContributorsWedge.ViewHolder>(R.layout.attribouter_item_contributors) {
 
     var repo: ProviderString? by attrProvider("repo")
-    var contributorsTitle: String by attr("title", "@string/title_attribouter_contributors")
+    var contributorsTitle: String by attr("title", "@string/attribouter_title_contributors")
     var overflow: Int by attr("overflow", Int.MAX_VALUE)
     var showDefaults: Boolean by attr("showDefaults", true)
 

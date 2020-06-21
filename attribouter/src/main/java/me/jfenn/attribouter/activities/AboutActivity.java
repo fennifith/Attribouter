@@ -34,7 +34,7 @@ public class AboutActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Drawable backArrow = VectorDrawableCompat.create(getResources(), R.drawable.ic_attribouter_arrow_back, getTheme());
+        Drawable backArrow = VectorDrawableCompat.create(getResources(), R.drawable.attribouter_ic_arrow_back, getTheme());
         backArrow.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(backArrow);
 

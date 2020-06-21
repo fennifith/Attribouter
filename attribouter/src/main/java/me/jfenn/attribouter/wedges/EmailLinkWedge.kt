@@ -4,8 +4,8 @@ class EmailLinkWedge(
         address: String, priority: Int
 ) : LinkWedge(
         id = "email",
-        name = "@string/title_attribouter_email",
+        name = "@string/attribouter_title_email",
         url = "mailto:$address",
-        icon = "@drawable/ic_attribouter_email",
+        icon = "@drawable/attribouter_ic_email",
         priority = priority
 )

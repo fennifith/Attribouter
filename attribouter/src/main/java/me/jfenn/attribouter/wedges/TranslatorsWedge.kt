@@ -13,7 +13,7 @@ import java.util.*
 
 open class TranslatorsWedge : Wedge<TranslatorsWedge.ViewHolder>(R.layout.attribouter_item_translators) {
 
-    var translatorsTitle: String? by attr("title", "@string/title_attribouter_translators")
+    var translatorsTitle: String? by attr("title", "@string/attribouter_title_translators")
     val overflow: Int by attr("overflow", Int.MAX_VALUE)
     private var sortedTranslators: MutableList<Wedge<*>>? = null
 

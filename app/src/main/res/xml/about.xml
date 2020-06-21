@@ -15,8 +15,8 @@
             url="https://jfenn.me/projects/attribouter/wiki" />
 
         <LinkWedge
+            id="git"
             name="^Git Repo"
-            id="github"
             url="https://github.com/fennifith/Attribouter" />
 
     </AppWedge>
@@ -27,7 +27,9 @@
         text="@string/html"
         centered="true">
 
-        <PlayStoreLinkWedge />
+        <PlayStoreLinkWedge
+            name="Rate the app!"
+            icon="@drawable/ic_star_half" />
 
     </TextWedge>
 
@@ -103,7 +105,8 @@
     <LicensesWedge
         overflow="1"
         showDefaults="false">
-        <LicenseWedge repo="gitlab:LinxGem33/Arc-Menu" />
+
+        <LicenseWedge repo="gitlab:arcmenu-team/Arc-Menu" />
 
         <LicenseWedge repo="fennifith/ColorPickerDialog" />
         <!-- all of ColorPickerDialog's info is fetched from github -->

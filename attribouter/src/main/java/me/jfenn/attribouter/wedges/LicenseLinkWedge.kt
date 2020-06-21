@@ -9,8 +9,8 @@ class LicenseLinkWedge(
         private val license: LicenseWedge, priority: Int
 ) : LinkWedge(
         id = "license",
-        name = "@string/title_attribouter_license",
-        icon = "@drawable/ic_attribouter_copyright",
+        name = "@string/attribouter_title_license",
+        icon = "@drawable/attribouter_ic_copyright",
         priority = priority
 ) {
 

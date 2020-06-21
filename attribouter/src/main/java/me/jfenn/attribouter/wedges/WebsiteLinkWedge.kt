@@ -4,8 +4,8 @@ class WebsiteLinkWedge(
         url: String, priority: Int
 ) : LinkWedge(
         id = "website",
-        name = "@string/title_attribouter_website",
+        name = "@string/attribouter_title_website",
         url = url,
-        icon = "@drawable/ic_attribouter_link",
+        icon = "@drawable/attribouter_ic_website",
         priority = priority
 )

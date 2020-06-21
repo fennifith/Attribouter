@@ -64,7 +64,7 @@
                         android:layout_height="wrap_content"
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
-                        android:text="@string/title_attribouter_license_permissions"
+                        android:text="@string/attribouter_title_license_permissions"
                         android:textAllCaps="true"
                         android:textColor="@color/attribouter_licensePermissionsColor"
                         android:textSize="14sp"
@@ -97,7 +97,7 @@
                         android:layout_height="wrap_content"
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
-                        android:text="@string/title_attribouter_license_conditions"
+                        android:text="@string/attribouter_title_license_conditions"
                         android:textAllCaps="true"
                         android:textColor="@color/attribouter_licenseConditionsColor"
                         android:textSize="14sp"
@@ -130,7 +130,7 @@
                         android:layout_height="wrap_content"
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
-                        android:text="@string/title_attribouter_license_limitations"
+                        android:text="@string/attribouter_title_license_limitations"
                         android:textAllCaps="true"
                         android:textColor="@color/attribouter_licenseLimitationsColor"
                         android:textSize="14sp"
@@ -161,7 +161,7 @@
             android:paddingTop="4dp"
             android:paddingBottom="4dp"
             android:textSize="12sp"
-            android:text="@string/desc_attribouter_licenses_legal" />
+            android:text="@string/attribouter_desc_licenses_legal" />
 
         <HorizontalScrollView
             android:id="@+id/bodyContainer"
@@ -198,7 +198,7 @@
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
             android:paddingTop="8dp"
-            android:text="@string/title_attribouter_more_info"
+            android:text="@string/attribouter_title_more_info"
             android:textAlignment="center"
             android:textColor="@color/colorAccent"
             android:textSize="18sp" />

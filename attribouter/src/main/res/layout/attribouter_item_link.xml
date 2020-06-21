@@ -10,7 +10,7 @@
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:icon="@drawable/ic_attribouter_link"
+        app:icon="@drawable/attribouter_ic_link"
         style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
         tools:text="Email" />
 

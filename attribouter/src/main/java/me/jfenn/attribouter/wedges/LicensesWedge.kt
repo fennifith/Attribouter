@@ -13,7 +13,7 @@ import me.jfenn.attribouter.utils.ResourceUtils
 
 open class LicensesWedge : Wedge<LicensesWedge.ViewHolder>(R.layout.attribouter_item_licenses) {
 
-    var title: String? by attr("title", "@string/title_attribouter_licenses")
+    var title: String? by attr("title", "@string/attribouter_title_licenses")
     var showDefaults: Boolean? by attr("showDefaults", true)
     var overflow: Int by attr("overflow", -1)
 

@@ -15,6 +15,6 @@
         android:backgroundTint="?android:textColorPrimary"
         android:scaleType="fitCenter"
         android:tint="?android:textColorPrimary"
-        tools:src="@drawable/ic_attribouter_link" />
+        tools:src="@drawable/attribouter_ic_link" />
 
 </FrameLayout>

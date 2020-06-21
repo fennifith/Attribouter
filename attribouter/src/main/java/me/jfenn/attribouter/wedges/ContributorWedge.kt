@@ -36,7 +36,7 @@ open class ContributorWedge(
     override var isHidden: Boolean by attr("hidden", false)
 
     override fun onCreate() {
-        login?.let { addChild(GitHubLinkWedge(it.id, 1)) }
+        login?.let { addChild(RepoLinkWedge(it.id, 1)) }
         blog?.let { addChild(WebsiteLinkWedge(it, 2)) }
         email?.let { addChild(EmailLinkWedge(it, -1)) }
 

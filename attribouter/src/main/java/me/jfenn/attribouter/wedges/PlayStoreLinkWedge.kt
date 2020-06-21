@@ -6,9 +6,9 @@ import me.jfenn.attribouter.utils.UrlClickListener
 
 class PlayStoreLinkWedge @JvmOverloads constructor(url: String? = null, priority: Int = 0) : LinkWedge(
         id = "playStore",
-        name = "@string/title_attribouter_rate",
+        name = "@string/attribouter_title_play_store",
         url = url,
-        icon = "@drawable/ic_attribouter_rate",
+        icon = "@drawable/attribouter_ic_play_store",
         priority = priority
 ) {
 

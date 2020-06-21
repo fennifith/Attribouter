@@ -36,7 +36,7 @@ public class OverflowDialog extends AppCompatDialog {
         RecyclerView recycler = findViewById(R.id.recycler);
 
         toolbar.setTitle(ResourceUtils.getString(getContext(), title));
-        toolbar.setNavigationIcon(R.drawable.ic_attribouter_arrow_back);
+        toolbar.setNavigationIcon(R.drawable.attribouter_ic_arrow_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

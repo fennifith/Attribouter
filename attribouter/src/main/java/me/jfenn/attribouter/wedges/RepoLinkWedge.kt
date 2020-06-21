@@ -1,11 +1,11 @@
 package me.jfenn.attribouter.wedges
 
-class GitHubLinkWedge(
+class RepoLinkWedge(
         item: String, priority: Int, isFullUrl: Boolean = false
 ) : LinkWedge(
-        id = "github",
-        name = "@string/title_attribouter_github",
+        id = "git",
+        name = "@string/attribouter_title_git",
         url = if (isFullUrl) item else "https://github.com/$item",
-        icon = "@drawable/ic_attribouter_github",
+        icon = "@drawable/attribouter_ic_git",
         priority = priority
 )

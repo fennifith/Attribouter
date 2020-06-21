@@ -23,7 +23,7 @@
         android:background="?selectableItemBackground"
         android:scaleType="centerInside"
         android:tint="?android:textColorPrimary"
-        app:srcCompat="@drawable/ic_attribouter_expand" />
+        app:srcCompat="@drawable/attribouter_ic_expand_down" />
 
     <TextView
         android:id="@+id/overflow"

@@ -6,7 +6,7 @@
         </shape>
     </item>
     <item
-        android:drawable="@drawable/ic_attribouter_person"
+        android:drawable="@drawable/attribouter_ic_person"
         android:bottom="4dp"
         android:left="4dp"
         android:right="4dp"
