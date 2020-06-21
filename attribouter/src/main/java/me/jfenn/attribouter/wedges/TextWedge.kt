@@ -14,7 +14,7 @@ import me.jfenn.attribouter.R
 import me.jfenn.attribouter.adapters.WedgeAdapter
 import me.jfenn.attribouter.utils.ResourceUtils
 
-class TextWedge : Wedge<TextWedge.ViewHolder>(R.layout.attribouter_item_text) {
+open class TextWedge : Wedge<TextWedge.ViewHolder>(R.layout.attribouter_item_text) {
 
     private val text: String? by attr("text")
     private val isCentered: Boolean by attr("centered", false)
@@ -48,7 +48,7 @@ class TextWedge : Wedge<TextWedge.ViewHolder>(R.layout.attribouter_item_text) {
         }
     }
 
-    class ViewHolder(v: View) : Wedge.ViewHolder(v) {
+    open class ViewHolder(v: View) : Wedge.ViewHolder(v) {
         var textView: TextView? = v.findViewById(R.id.text)
         var links: RecyclerView? = v.findViewById(R.id.links)
     }

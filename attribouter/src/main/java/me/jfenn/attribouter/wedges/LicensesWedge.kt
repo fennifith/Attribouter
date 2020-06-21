@@ -11,11 +11,11 @@ import me.jfenn.attribouter.addDefaults
 import me.jfenn.attribouter.dialogs.OverflowDialog
 import me.jfenn.attribouter.utils.ResourceUtils
 
-class LicensesWedge : Wedge<LicensesWedge.ViewHolder>(R.layout.attribouter_item_licenses) {
+open class LicensesWedge : Wedge<LicensesWedge.ViewHolder>(R.layout.attribouter_item_licenses) {
 
-    private var title: String? by attr("title", "@string/title_attribouter_licenses")
-    private var showDefaults: Boolean? by attr("showDefaults", true)
-    private var overflow: Int by attr("overflow", -1)
+    var title: String? by attr("title", "@string/title_attribouter_licenses")
+    var showDefaults: Boolean? by attr("showDefaults", true)
+    var overflow: Int by attr("overflow", -1)
 
     override fun onCreate() {
         if (showDefaults != false)
@@ -63,7 +63,7 @@ class LicensesWedge : Wedge<LicensesWedge.ViewHolder>(R.layout.attribouter_item_
         }
     }
 
-    class ViewHolder(v: View) : Wedge.ViewHolder(v) {
+    open class ViewHolder(v: View) : Wedge.ViewHolder(v) {
         var titleView: TextView? = v.findViewById(R.id.header)
         var recycler: RecyclerView? = v.findViewById(R.id.recycler)
         var expand: View? = v.findViewById(R.id.expand)

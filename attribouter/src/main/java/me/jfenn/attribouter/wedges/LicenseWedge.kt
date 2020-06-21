@@ -27,9 +27,9 @@ open class LicenseWedge(
         websiteUrl: String? = null,
         gitHubUrl: String? = null,
         licenseUrl: String? = null,
-        private var licensePermissions: Array<String>? = null,
-        private var licenseConditions: Array<String>? = null,
-        private var licenseLimitations: Array<String>? = null,
+        var licensePermissions: Array<String>? = null,
+        var licenseConditions: Array<String>? = null,
+        var licenseLimitations: Array<String>? = null,
         var licenseDescription: String? = null,
         licenseBody: String? = null,
         licenseKey: String? = null
@@ -253,7 +253,7 @@ open class LicenseWedge(
         }
     }
 
-    class ViewHolder(v: View) : Wedge.ViewHolder(v) {
+    open class ViewHolder(v: View) : Wedge.ViewHolder(v) {
         var titleView: TextView? = v.findViewById(R.id.title)
         var descriptionView: TextView? = v.findViewById(R.id.description)
         var licenseView: TextView? = v.findViewById(R.id.license)

@@ -94,7 +94,7 @@ open class TranslatorsWedge : Wedge<TranslatorsWedge.ViewHolder>(R.layout.attrib
         }
     }
 
-    class ViewHolder(v: View) : Wedge.ViewHolder(v) {
+    open class ViewHolder(v: View) : Wedge.ViewHolder(v) {
         var titleView: TextView? = v.findViewById(R.id.header)
         var recycler: RecyclerView? = v.findViewById(R.id.recycler)
         var expand: View? = v.findViewById(R.id.expand)
