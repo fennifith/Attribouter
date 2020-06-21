@@ -22,7 +22,7 @@ open class TranslatorWedge(
         locales: String? = null,
         blog: String? = null,
         email: String? = null
-) : Wedge<TranslatorWedge.ViewHolder>(R.layout.item_attribouter_translator), Mergeable<TranslatorWedge> {
+) : Wedge<TranslatorWedge.ViewHolder>(R.layout.attribouter_item_translator), Mergeable<TranslatorWedge> {
 
     var login: ProviderString? by attrProvider("login", login)
     var name: String? by attr("name", name)

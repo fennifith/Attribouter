@@ -9,14 +9,23 @@
 
     <include layout="@layout/attribouter_item_header"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler"
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="4dp"
-        android:clipToPadding="false"
-        tools:listitem="@layout/attribouter_item_license"
-        tools:itemCount="2" />
+        app:cardCornerRadius="0dp"
+        app:cardElevation="1dp"
+        app:cardBackgroundColor="?attr/attribouter_cardColor">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="4dp"
+            android:clipToPadding="false"
+            tools:listitem="@layout/attribouter_item_license"
+            tools:itemCount="2" />
+
+    </com.google.android.material.card.MaterialCardView>
 
     <ImageView
         android:id="@+id/expand"
