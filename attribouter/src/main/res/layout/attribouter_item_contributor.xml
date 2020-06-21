@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:textColor="?android:textColorSecondary"
-            android:textSize="14sp"
+            android:textSize="12sp"
             app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/name"

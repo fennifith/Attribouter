@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import me.jfenn.attribouter.Attribouter
@@ -62,7 +61,7 @@ class AboutFragment : Fragment(), Notifiable {
         adapter = WedgeAdapter(wedges)
         recycler?.apply {
             layoutManager = LinearLayoutManager(context)
-            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+            //addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
             adapter = this@AboutFragment.adapter
         }
 

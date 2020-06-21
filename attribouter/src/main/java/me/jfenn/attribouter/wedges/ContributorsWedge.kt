@@ -146,7 +146,7 @@ class ContributorsWedge : Wedge<ContributorsWedge.ViewHolder>(R.layout.attribout
     }
 
     class ViewHolder(v: View) : Wedge.ViewHolder(v) {
-        var titleView: TextView? = v.findViewById(R.id.contributorsTitle)
+        var titleView: TextView? = v.findViewById(R.id.header)
         var expand: View? = v.findViewById(R.id.expand)
         var overflow: TextView? = v.findViewById(R.id.overflow)
         var recycler: RecyclerView? = v.findViewById(R.id.recycler)
