@@ -1,8 +1,12 @@
 package me.jfenn.attribouter.utils
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.util.TypedValue
+import android.view.View
+import android.view.Window
 import android.widget.ImageView
 import androidx.annotation.*
 import androidx.core.content.ContextCompat
@@ -105,4 +109,22 @@ fun Context.getThemedColor(@AttrRes attr: Int): Int {
     val typedValue = TypedValue()
     theme.resolveAttribute(attr, typedValue, true)
     return typedValue.data
+}
+
+fun Window.autoSystemUiColors() {
+    // handle light status bar colors
+    if (ColorUtils.isColorLight(context.getThemedColor(R.attr.colorPrimaryDark))) {
+        if (Build.VERSION.SDK_INT >= 23)
+            decorView.systemUiVisibility = decorView.systemUiVisibility.or(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
+        else if (Build.VERSION.SDK_INT >= 21)
+            statusBarColor = Color.BLACK
+    }
+
+    // handle light nav bar colors
+    if (ColorUtils.isColorLight(context.getThemedColor(R.attr.attribouter_windowInsetColor))) {
+        if (Build.VERSION.SDK_INT >= 26)
+            decorView.systemUiVisibility = decorView.systemUiVisibility.or(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR)
+        else if (Build.VERSION.SDK_INT >= 21)
+            navigationBarColor = Color.BLACK
+    }
 }

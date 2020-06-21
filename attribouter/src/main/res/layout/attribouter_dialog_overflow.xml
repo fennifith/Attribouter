@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:theme="@style/AttribouterTheme.ActionBar">
 
-        <com.google.android.material.appbar.MaterialToolbar
+        <me.jfenn.attribouter.views.CustomToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

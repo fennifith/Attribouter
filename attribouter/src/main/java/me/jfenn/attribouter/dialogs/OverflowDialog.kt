@@ -10,6 +10,7 @@ import me.jfenn.attribouter.R
 import me.jfenn.attribouter.adapters.WedgeAdapter
 import me.jfenn.attribouter.utils.ResourceUtils.getString
 import me.jfenn.attribouter.utils.ResourceUtils.getThemeResourceAttribute
+import me.jfenn.attribouter.utils.autoSystemUiColors
 import me.jfenn.attribouter.utils.bind
 import me.jfenn.attribouter.wedges.Wedge
 
@@ -25,13 +26,17 @@ open class OverflowDialog(
     private val toolbar: Toolbar? by bind(R.id.toolbar)
     private val recyclerView: RecyclerView? by bind(R.id.recycler)
 
+    override fun onStart() {
+        super.onStart()
+        window?.autoSystemUiColors()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.attribouter_dialog_overflow)
 
         toolbar?.apply {
             title = getString(context, this@OverflowDialog.title)
-            setNavigationIcon(R.drawable.attribouter_ic_arrow_back)
             setNavigationOnClickListener { dismiss() }
         }
 

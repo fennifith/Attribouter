@@ -2,7 +2,6 @@ package me.jfenn.attribouter.dialogs
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatDialog
@@ -11,6 +10,7 @@ import me.jfenn.attribouter.R
 import me.jfenn.attribouter.utils.ResourceUtils.getString
 import me.jfenn.attribouter.utils.ResourceUtils.getThemeResourceAttribute
 import me.jfenn.attribouter.utils.UrlClickListener
+import me.jfenn.attribouter.utils.autoSystemUiColors
 import me.jfenn.attribouter.utils.bind
 import me.jfenn.attribouter.utils.toListString
 import me.jfenn.attribouter.wedges.LicenseWedge
@@ -32,17 +32,19 @@ class LicenseDialog(
     val bodyView: TextView? by bind(R.id.body)
     val moreInfoButton: View? by bind(R.id.moreInfo)
 
+    override fun onStart() {
+        super.onStart()
+        window?.autoSystemUiColors()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.attribouter_dialog_license)
-
-        Log.d(javaClass.name, license.licenseDescription + " " + license.licenseBody)
 
         val licenseName = getString(context, license.licenseName)
 
         toolbar?.apply {
             title = licenseName
-            setNavigationIcon(R.drawable.attribouter_ic_arrow_back)
             setNavigationOnClickListener { dismiss() }
         }
 
