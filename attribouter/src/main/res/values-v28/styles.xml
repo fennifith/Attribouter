@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AttribouterTheme" parent="AttribouterTheme.Base">
+        <item name="android:statusBarColor">?attr/colorPrimaryDark</item>
+        <item name="android:navigationBarColor">?attr/attribouter_windowInsetColor</item>
+        <item name="android:dialogCornerRadius">?attr/attribouter_cardCornerRadius</item>
+    </style>
+
+</resources>

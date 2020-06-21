@@ -13,9 +13,9 @@ import java.util.*
 
 open class TranslatorsWedge : Wedge<TranslatorsWedge.ViewHolder>(R.layout.attribouter_item_translators) {
 
-    var translatorsTitle: String? by attr("title", "@string/attribouter_title_translators")
+    var translatorsTitle: String by attr("title", "@string/attribouter_title_translators")
     val overflow: Int by attr("overflow", Int.MAX_VALUE)
-    private var sortedTranslators: MutableList<Wedge<*>>? = null
+    private var sortedTranslators: MutableList<Wedge<*>> = ArrayList()
 
     override fun getViewHolder(v: View): ViewHolder {
         return ViewHolder(v)
@@ -25,7 +25,7 @@ open class TranslatorsWedge : Wedge<TranslatorsWedge.ViewHolder>(R.layout.attrib
         var remaining = overflow
         val sortedList = ArrayList<Wedge<*>>()
 
-        sortedTranslators = ArrayList()
+        sortedTranslators.clear()
         for (language in Locale.getISOLanguages()) {
             var isHeader = false
             for (translator in getTypedChildren<TranslatorWedge>().filter { !it.locales.isNullOrEmpty() }) {

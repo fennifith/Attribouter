@@ -25,7 +25,7 @@ interface GitlabService {
     @GET("projects/{id}/users")
     suspend fun getRepoContributors(@Path("id") projectId: String): List<GitlabUserData>
 
-    @GET("licenses/{key}")
+    @GET("templates/licenses/{key}")
     suspend fun getLicense(@Path("key") key: String): GitlabLicenseData
 
     companion object: ServiceBuilder<GitlabProvider> {

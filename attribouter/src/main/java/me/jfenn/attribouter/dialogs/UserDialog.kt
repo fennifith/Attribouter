@@ -3,6 +3,7 @@ package me.jfenn.attribouter.dialogs
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatDialog
@@ -33,6 +34,11 @@ open class UserDialog(
     private val bioView: TextView? by bind(R.id.description)
     private val recycler: RecyclerView? by bind(R.id.links)
 
+    override fun onStart() {
+        super.onStart()
+        window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.attribouter_dialog_user)
@@ -49,9 +55,13 @@ open class UserDialog(
         if (links.isNotEmpty()) {
             recycler?.apply {
                 visibility = View.VISIBLE
-                layoutManager = FlexboxLayoutManager(context).apply {
+                layoutManager = object : FlexboxLayoutManager(context) {
+                    // Hacky workaround for wrap_content bug: https://github.com/google/flexbox-layout/issues/349
+                    // - some items will occasionally get cut off because of this, but meh
+                    override fun canScrollVertically(): Boolean = false
+                }.apply {
                     flexDirection = FlexDirection.ROW
-                    justifyContent = JustifyContent.FLEX_START
+                    justifyContent = JustifyContent.CENTER
                 }
                 adapter = WedgeAdapter(links.filter { !it.isHidden }.sorted())
             }

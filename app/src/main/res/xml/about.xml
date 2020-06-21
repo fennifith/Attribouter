@@ -7,6 +7,7 @@
 
         <LinkWedge
             name="Bintray"
+            icon="@drawable/attribouter_ic_website"
             url="https://jitpack.io/#fennifith/Attribouter" />
 
         <LinkWedge
@@ -33,7 +34,7 @@
 
     </TextWedge>
 
-    <ContributorsWedge>
+    <ContributorsWedge title="Library Contributors">
         <ContributorWedge
             avatar="^@drawable/me"
             bio="This is a bio. I am a person."
@@ -86,7 +87,7 @@
             name="John Doe"
             avatar="https://jfenn.me/images/headers/rocks.jpg"
             blog="https://example.com/"
-            locales="zh,rn,sn" />
+            locales="zh,rn,sn,cy" />
         <!-- locales are comma separated, no whitespace -->
         <TranslatorWedge
             name="Jenny Doe"
@@ -97,7 +98,7 @@
             name="Joe Doe"
             avatar="https://jfenn.me/images/headers/highway.jpg"
             blog="https://example.com/"
-            locales="rn,cy" />
+            locales="rn,cy,zh" />
         <TranslatorWedge
             locales="en"
             login="fennifith" />

@@ -111,7 +111,7 @@ open class TranslatorWedge(
     override fun bind(context: Context, viewHolder: ViewHolder) {
         viewHolder.localeView?.apply {
             text = locales?.split(",")?.getOrNull(0)?.let {
-                Locale(it).displayName
+                Locale(it).getDisplayName(Locale(it))
             } ?: ""
             visibility = if (isFirst) View.VISIBLE else View.GONE
         }

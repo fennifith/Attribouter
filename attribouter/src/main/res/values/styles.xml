@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AttribouterTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="AttribouterTheme.Base" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>d
@@ -9,9 +9,10 @@
         <item name="attribouter_textColorAccent">@color/colorPrimary</item>
         <item name="attribouter_cardColor">#FFFFFF</item>
         <item name="attribouter_cardCornerRadius">8dp</item>
-        <item name="attribouter_windowBackground">#F5F5F5</item>
+        <item name="attribouter_windowBackgroundColor">#F5F5F5</item>
+        <item name="attribouter_windowInsetColor">#E0E0E0</item>
 
-        <item name="licenseDialogTheme">@style/AttribouterTheme.Dialog.Fullscreen</item>
+        <item name="cardCornerRadius">?attr/attribouter_cardCornerRadius</item>
 
         <item name="android:textColorPrimary">@color/attribouter_textColorPrimary</item>
         <item name="android:textColorSecondary">@color/attribouter_textColorSecondary</item>
@@ -23,9 +24,18 @@
         <item name="android:windowBackground">#F5F5F5</item>
     </style>
 
+    <style name="AttribouterTheme" parent="AttribouterTheme.Base"/>
+
     <style name="AttribouterTheme.ActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="AttribouterTheme.Dialog" parent="ThemeOverlay.AppCompat.Dialog" />
+    <style name="AttribouterTheme.Dialog" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="shapeAppearanceOverlay">@style/AttribouterTheme.DialogCorners</item>
+    </style>
+
+    <style name="AttribouterTheme.DialogCorners">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">?attr/attribouter_cardCornerRadius</item>
+    </style>
 
     <style name="AttribouterTheme.Dialog.Fullscreen" parent="AttribouterTheme">
         <item name="android:windowAnimationStyle">@style/AttribouterTheme.SlideAnimation</item>

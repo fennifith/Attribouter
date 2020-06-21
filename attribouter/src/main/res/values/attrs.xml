@@ -4,7 +4,8 @@
         <attr name="attribouter_textColorAccent" format="color" />
         <attr name="attribouter_cardColor" format="color" />
         <attr name="attribouter_cardCornerRadius" format="dimension" />
-        <attr name="attribouter_windowBackground" format="color" />
+        <attr name="attribouter_windowBackgroundColor" format="color" />
+        <attr name="attribouter_windowInsetColor" format="color"/>
 
         <attr name="personDialogTheme" format="reference" />
         <attr name="overflowDialogTheme" format="reference" />

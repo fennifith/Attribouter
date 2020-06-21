@@ -4,6 +4,7 @@
     <string name="attribouter_title_email">Email</string>
     <string name="attribouter_title_website">Website</string>
     <string name="attribouter_title_git">Repository</string>
+    <string name="attribouter_title_profile">Profile</string>
     <string name="attribouter_title_play_store">Play Store</string>
     <string name="attribouter_title_version">Version %1$s</string>
     <string name="attribouter_title_contributors">Contributors</string>

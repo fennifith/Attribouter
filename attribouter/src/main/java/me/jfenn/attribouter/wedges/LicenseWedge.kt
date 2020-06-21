@@ -16,8 +16,8 @@ import me.jfenn.attribouter.provider.net.ProviderString
 import me.jfenn.attribouter.provider.net.data.LicenseData
 import me.jfenn.attribouter.provider.net.data.RepoData
 import me.jfenn.attribouter.utils.ResourceUtils
-import me.jfenn.attribouter.utils.toListString
-import java.util.regex.Pattern
+import me.jfenn.attribouter.utils.isResourceMutable
+import me.jfenn.attribouter.utils.toTitleString
 
 open class LicenseWedge(
         repo: String? = null,
@@ -77,11 +77,12 @@ open class LicenseWedge(
     }
 
     private fun onRepository(data: RepoData) {
-        merge(LicenseWedge(
-                description = data.description,
-                licenseName = data.license?.name,
-                websiteUrl = data.websiteUrl
-        ).create())
+        if (description.isResourceMutable() && !data.description.isNullOrEmpty())
+            description = data.description
+        if (licenseName.isResourceMutable() && !data.license?.name.isNullOrEmpty())
+            licenseName = data.license?.name
+        if (websiteUrl.isResourceMutable() && !data.websiteUrl.isNullOrEmpty())
+            websiteUrl = data.websiteUrl
 
         data.license?.id?.let { id ->
             if (!hasAllLicense()) lifecycle?.launch {
@@ -95,58 +96,24 @@ open class LicenseWedge(
     }
 
     private fun onLicense(data: LicenseData) {
-        merge(LicenseWedge(
-                licenseName = data.name,
-                licenseUrl = data.infoUrl,
-                licensePermissions = data.permissions,
-                licenseConditions = data.conditions,
-                licenseLimitations = data.limitations,
-                licenseDescription = data.description,
-                licenseBody = data.body,
-                licenseKey = data.key
-        ).create())
+        if (licenseName.isResourceMutable() && !data.name.isNullOrEmpty())
+            licenseName = data.name
+        if (licenseDescription.isResourceMutable() && !data.description.isNullOrEmpty())
+            licenseDescription = data.description
+        if (licenseUrl.isResourceMutable() && !data.infoUrl.isNullOrEmpty())
+            licenseUrl = data.infoUrl
+
+        licensePermissions = data.permissions
+        licenseConditions = data.conditions
+        licenseLimitations = data.limitations
+
+        if (licenseBody.isResourceMutable() && !data.body.isNullOrEmpty())
+            licenseBody = data.body
+
+        if (!licenseBody.isNullOrEmpty() && !licenseUrl.isNullOrEmpty())
+            addChild(LicenseLinkWedge(this, 0))
 
         notifyItemChanged()
-    }
-
-    private fun getFormattedName(): String? {
-        return title ?: repo?.let { str ->
-            var name: String = str.id
-            if (name.contains("/")) {
-                val names = name.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-                name = run {
-                    if (names.size > 1 && names[1].isNotEmpty())
-                        names[1]
-                    else names[0]
-                }
-            }
-
-            name = name.replace('-', ' ')
-                    .replace('_', ' ')
-                    .replace("([a-z])([A-Z])".toRegex(), "$1 $2")
-                    .replace("([A-Z])([A-Z][a-z])".toRegex(), "$1 $2")
-                    .trim { it <= ' ' }
-
-            val nameBuffer = StringBuffer()
-            val pattern = Pattern.compile("\\b(\\w)")
-            val matcher = pattern.matcher(name)
-            while (matcher.find())
-                matcher.appendReplacement(nameBuffer, matcher.group(1)?.toUpperCase() ?: "")
-
-            matcher.appendTail(nameBuffer).toString()
-        }
-    }
-
-    fun getLicensePermissions(): String? {
-        return licensePermissions?.toListString()
-    }
-
-    fun getLicenseConditions(): String? {
-        return licenseConditions?.toListString()
-    }
-
-    fun getLicenseLimitations(): String? {
-        return licenseLimitations?.toListString()
     }
 
     override fun merge(mergee: LicenseWedge): LicenseWedge {
@@ -206,7 +173,7 @@ open class LicenseWedge(
 
     override fun bind(context: Context, viewHolder: ViewHolder) {
         viewHolder.titleView?.apply {
-            getFormattedName()?.let { text = ResourceUtils.getString(context, it) }
+            (title ?: repo?.id?.toTitleString())?.let { text = ResourceUtils.getString(context, it) }
         }
 
         viewHolder.descriptionView?.apply {

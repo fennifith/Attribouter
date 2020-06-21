@@ -36,9 +36,9 @@ open class ContributorWedge(
     override var isHidden: Boolean by attr("hidden", false)
 
     override fun onCreate() {
-        login?.let { addChild(RepoLinkWedge(it.id, 1)) }
+        email?.let { addChild(EmailLinkWedge(it, 0)) }
+        login?.let { addChild(ProfileLinkWedge("https://github.com/${it.id}", 1)) }
         blog?.let { addChild(WebsiteLinkWedge(it, 2)) }
-        email?.let { addChild(EmailLinkWedge(it, -1)) }
 
         if (!hasAll()) login?.let {
             lifecycle?.launch {
@@ -49,9 +49,7 @@ open class ContributorWedge(
         }
     }
 
-    fun getAbsolutePosition(): Int? = position?.let { if (it >= 0) it else null }
-
-    fun onContributor(data: UserData) {
+    open fun onContributor(data: UserData) {
         merge(ContributorWedge(
                 data.login,
                 data.name,

@@ -18,7 +18,7 @@ ext.deps = [
         ],
         google: [
                 material: '1.1.0',
-                flexbox: '1.0.0'
+                flexbox: '2.0.1'
         ],
         glide: '4.11.0',
         retrofit: '2.8.1',

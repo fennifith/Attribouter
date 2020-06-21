@@ -77,7 +77,7 @@ open class LinkWedge(
     }
 
     override fun compareTo(other: LinkWedge): Int {
-        return priority - other.priority
+        return other.priority - priority
     }
 
     override fun getViewHolder(v: View): ViewHolder {
@@ -98,8 +98,8 @@ open class LinkWedge(
 
         TooltipCompat.setTooltipText(viewHolder.itemView, title)
 
-        (viewHolder.iconView as? ImageButton)?.setOnClickListener(listener)
-        (viewHolder.nameView as? MaterialButton)?.setOnClickListener(listener)
+        (viewHolder.iconView as? ImageButton)?.isClickable = false
+        (viewHolder.nameView as? MaterialButton)?.isClickable = false
         viewHolder.itemView.setOnClickListener(listener)
     }
 

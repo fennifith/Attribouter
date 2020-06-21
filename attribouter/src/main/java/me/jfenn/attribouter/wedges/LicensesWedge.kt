@@ -13,12 +13,12 @@ import me.jfenn.attribouter.utils.ResourceUtils
 
 open class LicensesWedge : Wedge<LicensesWedge.ViewHolder>(R.layout.attribouter_item_licenses) {
 
-    var title: String? by attr("title", "@string/attribouter_title_licenses")
-    var showDefaults: Boolean? by attr("showDefaults", true)
-    var overflow: Int by attr("overflow", -1)
+    var title: String by attr("title", "@string/attribouter_title_licenses")
+    var showDefaults: Boolean by attr("showDefaults", true)
+    var overflow: Int by attr("overflow", Int.MAX_VALUE)
 
     override fun onCreate() {
-        if (showDefaults != false)
+        if (showDefaults)
             addDefaults()
     }
 
@@ -29,24 +29,24 @@ open class LicensesWedge : Wedge<LicensesWedge.ViewHolder>(R.layout.attribouter_
     override fun bind(context: Context, viewHolder: ViewHolder) {
         viewHolder.titleView?.apply {
             visibility = if (overflow != 0) {
-                title?.let { text = ResourceUtils.getString(context, title) }
+                text = ResourceUtils.getString(context, title)
                 View.VISIBLE
             } else View.GONE
         }
 
+        val licenses = getTypedChildren<LicenseWedge>().take(overflow)
+
         viewHolder.recycler?.apply {
             visibility = if (overflow != 0) {
                 layoutManager = LinearLayoutManager(context)
-                overflow?.let {
-                    adapter = WedgeAdapter(getChildren().subList(0, if (it > getChildren().size || it < 0) getChildren().size else it))
-                }
+                adapter = WedgeAdapter(licenses)
                 View.VISIBLE
             } else View.GONE
         }
 
         viewHolder.overflow?.apply {
             visibility = if (overflow == 0) {
-                title?.let { text = ResourceUtils.getString(context, it) }
+                text = ResourceUtils.getString(context, title)
                 viewHolder.itemView.setOnClickListener { v -> OverflowDialog(v.context, title, getChildren()).show() }
                 View.VISIBLE
             } else {
