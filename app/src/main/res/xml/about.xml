@@ -2,28 +2,34 @@
 <about>
     <AppWedge
         repo="fennifith/Attribouter"
-        title="^Example Config">
+        title="^Example Config"
+        playStoreUrl="https://play.google.com/store/apps/details?id=me.jfenn.alarmio">
+
         <LinkWedge
             name="Bintray"
-            icon="https://bintray.com/favicon.ico"
-            url="https://bintray.com/18jafenn90/maven/attribouter" />
+            url="https://jitpack.io/#fennifith/Attribouter" />
+
         <LinkWedge
             name="Documentation"
-            icon="https://jfenn.me/favicon.ico"
-            url="https://jfenn.me/about/?Attribouter" />
-        <LinkWedge
-            hidden="true"
-            id="playStore" />
+            icon="https://jfenn.me/images/favicon-152.png"
+            url="https://jfenn.me/projects/attribouter/wiki" />
+
         <LinkWedge
             name="^Git Repo"
-            id="github" />
+            id="github"
+            url="https://github.com/fennifith/Attribouter" />
+
     </AppWedge>
 
-    <TextWedge text="@string/html" />
     <!-- <text> elements can be added anywhere directly within the <about> tag -->
     <!-- they support html formatting (<p> <b> <i>) & links (<a href="">) -->
+    <TextWedge
+        text="@string/html"
+        centered="true">
 
-    <PlayStoreLinkWedge />
+        <PlayStoreLinkWedge />
+
+    </TextWedge>
 
     <ContributorsWedge>
         <ContributorWedge
@@ -35,7 +41,7 @@
             task="Owner">
             <LinkWedge
                 name="Twitter"
-                icon="https://twitter.com/favicon.ico"
+                icon="https://abs.twimg.com/favicons/twitter.ico"
                 url="https://jfenn.me/links/twitter" />
         </ContributorWedge>
         <!-- the "avatar" attribute can take either a url or a resource -->

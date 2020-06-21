@@ -1,6 +1,7 @@
 package me.jfenn.attribouter.wedges
 
 import android.content.Context
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,36 +12,25 @@ import me.jfenn.attribouter.dialogs.OverflowDialog
 import me.jfenn.attribouter.utils.ResourceUtils
 import java.util.*
 
-class TranslatorsWedge : Wedge<TranslatorsWedge.ViewHolder>(R.layout.item_attribouter_translators) {
+class TranslatorsWedge : Wedge<TranslatorsWedge.ViewHolder>(R.layout.attribouter_item_translators) {
 
     private var translatorsTitle: String? by attr("title", "@string/title_attribouter_translators")
     private val overflow: Int? by attr("overflow", -1)
     private var sortedTranslators: MutableList<Wedge<*>>? = null
 
-    /*override fun onInit(data: GitHubData) {
-        if (data is ContributorsData) {
-            if (!data.contributors.isNullOrEmpty()) for (contributor in data.contributors.filter { !it.login.isNullOrEmpty() }) {
-                val child = addChild(TranslatorWedge(
-                        login = contributor.login,
-                        avatarUrl = contributor.avatar_url
-                ).create())
-
-                if (child is Mergeable<*> && !(child as Mergeable<*>).hasAll())
-                    addRequest(UserData(contributor.login))
-            }
-        } else if (data is UserData) {
-            addChild(0, TranslatorWedge(
-                    login = data.login,
-                    name = data.name,
-                    avatarUrl = data.avatar_url,
-                    blog = data.blog,
-                    email = data.email
-            ).create())
-        }
-    }*/
-
     override fun getViewHolder(v: View): ViewHolder {
         return ViewHolder(v)
+    }
+
+    fun getUnicodeFlag(iso: String): String {
+        Log.d(javaClass.name, "Country code $iso")
+        var flag = ""
+        val offset = 0x1F1A5
+        iso.indices.map { Character.codePointAt(iso, it) + offset }
+                .map { Character.toChars(it) }
+                .forEach { flag += String(it) }
+
+        return flag
     }
 
     override fun bind(context: Context, viewHolder: ViewHolder) {
@@ -116,7 +106,7 @@ class TranslatorsWedge : Wedge<TranslatorsWedge.ViewHolder>(R.layout.item_attrib
     }
 
     class ViewHolder(v: View) : Wedge.ViewHolder(v) {
-        var titleView: TextView? = v.findViewById(R.id.contributorsTitle)
+        var titleView: TextView? = v.findViewById(R.id.header)
         var recycler: RecyclerView? = v.findViewById(R.id.recycler)
         var expand: View? = v.findViewById(R.id.expand)
         var overflow: TextView? = v.findViewById(R.id.overflow)

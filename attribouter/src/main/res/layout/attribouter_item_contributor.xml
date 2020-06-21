@@ -10,8 +10,9 @@
     android:layout_marginTop="4dp"
     android:layout_marginBottom="4dp"
     app:cardPreventCornerOverlap="false"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="4dp">
+    app:cardElevation="4dp"
+    app:cardCornerRadius="?attr/attribouter_cardCornerRadius"
+    app:cardBackgroundColor="?attr/attribouter_cardColor">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -60,9 +61,9 @@
             tools:text="This person did something once, and he will never do that thing again. It was truly an extremely grave mistake that cost him all hope of ever having a social life." />
 
         <FrameLayout
+            android:id="@+id/link_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/link_1"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/link_2"
@@ -73,9 +74,9 @@
         </FrameLayout>
 
         <FrameLayout
+            android:id="@+id/link_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/link_2"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

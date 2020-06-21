@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackgroundBorderless">
 
-    <ImageView
+    <ImageButton
         android:id="@+id/icon"
         android:layout_width="32dp"
         android:layout_height="32dp"

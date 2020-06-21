@@ -1,16 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AttribouterTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AttribouterTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorAccent</item>d
+
+        <item name="attribouter_textColorAccent">@color/colorPrimary</item>
+        <item name="attribouter_cardColor">#FFFFFF</item>
+        <item name="attribouter_cardCornerRadius">8dp</item>
+        <item name="attribouter_windowBackground">#F5F5F5</item>
+
+        <item name="licenseDialogTheme">@style/AttribouterTheme.Dialog.Fullscreen</item>
+
         <item name="android:textColorPrimary">@color/attribouter_textColorPrimary</item>
         <item name="android:textColorSecondary">@color/attribouter_textColorSecondary</item>
         <item name="android:textColorTertiary">@color/attribouter_textColorTertiary</item>
         <item name="android:textColorPrimaryInverse">@color/attribouter_textColorPrimaryInverse</item>
         <item name="android:textColorSecondaryInverse">@color/attribouter_textColorSecondaryInverse</item>
         <item name="android:textColorTertiaryInverse">@color/attribouter_textColorTertiaryInverse</item>
+
+        <item name="android:windowBackground">#F5F5F5</item>
     </style>
 
     <style name="AttribouterTheme.ActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

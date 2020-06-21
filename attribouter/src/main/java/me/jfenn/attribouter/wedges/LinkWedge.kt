@@ -5,11 +5,14 @@ import android.view.View
 import android.webkit.URLUtil
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.TooltipCompat
+import com.google.android.material.button.MaterialButton
 import me.jfenn.attribouter.R
 import me.jfenn.attribouter.interfaces.Mergeable
 import me.jfenn.attribouter.utils.ResourceUtils
 import me.jfenn.attribouter.utils.UrlClickListener
 import me.jfenn.attribouter.utils.isResourceMutable
+import me.jfenn.attribouter.utils.loadDrawable
 
 open class LinkWedge(
         id: String? = null,
@@ -18,7 +21,7 @@ open class LinkWedge(
         icon: String? = null,
         isHidden: Boolean = false,
         priority: Int = 0
-) : Wedge<LinkWedge.ViewHolder>(R.layout.item_attribouter_link), Mergeable<LinkWedge> {
+) : Wedge<LinkWedge.ViewHolder>(R.layout.attribouter_item_link), Mergeable<LinkWedge>, Comparable<LinkWedge> {
 
     private var id: String? by attr("id", id)
     private var name: String? by attr("name", name)
@@ -31,16 +34,6 @@ open class LinkWedge(
         if (!url.isNullOrEmpty()) this.url = url?.let {
             if (it.startsWith("http")) it else "http://$it"
         }
-    }
-
-    /**
-     * Returns the human-readable "name" of the link.
-     *
-     * @param context the current context
-     * @return a string name that describes the link
-     */
-    fun getName(context: Context): String? {
-        return ResourceUtils.getString(context, name)
     }
 
     /**
@@ -84,19 +77,16 @@ open class LinkWedge(
         return priority ?: 0
     }
 
-    /**
-     * Loads the link's icon.
-     *
-     * @param imageView the image view to load the icon into
-     */
-    fun loadIcon(imageView: ImageView) {
-        ResourceUtils.setImage(imageView.context, icon, R.drawable.ic_attribouter_link, imageView)
-    }
-
     override fun equals(obj: Any?): Boolean {
         return (obj as? LinkWedge)?.let {
             (id?.equals(it.id) ?: false) || (url?.equals(obj.url) ?: false)
         } ?: super.equals(obj)
+    }
+
+    override fun compareTo(other: LinkWedge): Int {
+        val a = priority()
+        val b = other.priority()
+        return a - b
     }
 
     override fun getViewHolder(v: View): ViewHolder {
@@ -104,8 +94,17 @@ open class LinkWedge(
     }
 
     override fun bind(context: Context, viewHolder: ViewHolder) {
-        viewHolder.nameView?.text = getName(context)
-        viewHolder.iconView?.let { loadIcon(it) }
+        val title = ResourceUtils.getString(context, name)
+
+        viewHolder.nameView?.text = title
+        viewHolder.iconView?.contentDescription = title
+
+        context.loadDrawable(icon, R.drawable.ic_attribouter_link) { drawable ->
+            (viewHolder.nameView as? MaterialButton)?.icon = drawable
+            viewHolder.iconView?.setImageDrawable(drawable)
+        }
+
+        TooltipCompat.setTooltipText(viewHolder.itemView, title)
         viewHolder.itemView.setOnClickListener(getListener(context))
     }
 

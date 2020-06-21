@@ -5,6 +5,7 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="attribouter_iconColor">#000000</color>
+    <color name="attribouter_dividerColor">#3ABDBDBD</color>
     <color name="attribouter_menuIconColor">#FFFFFF</color>
     <color name="attribouter_licensePermissionsColor">#00C853</color>
     <color name="attribouter_licenseConditionsColor">#0091EA</color>

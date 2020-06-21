@@ -5,20 +5,16 @@ import android.content.pm.PackageManager
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.flexbox.FlexDirection
-import com.google.android.flexbox.FlexboxLayoutManager
-import com.google.android.flexbox.JustifyContent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.jfenn.attribouter.R
-import me.jfenn.attribouter.adapters.WedgeAdapter
 import me.jfenn.attribouter.provider.net.ProviderString
 import me.jfenn.attribouter.provider.net.data.RepoData
 import me.jfenn.attribouter.utils.ResourceUtils
-import java.util.*
+import me.jfenn.attribouter.utils.backgroundTint
+import me.jfenn.attribouter.utils.getThemedColor
 
-class AppWedge: Wedge<AppWedge.ViewHolder>(R.layout.item_attribouter_app_info) {
+class AppWedge: Wedge<AppWedge.ViewHolder>(R.layout.attribouter_item_app_info) {
 
     val icon: String? by attr("icon")
     var title: String? by attr("title")
@@ -73,7 +69,10 @@ class AppWedge: Wedge<AppWedge.ViewHolder>(R.layout.item_attribouter_app_info) {
 
     override fun bind(context: Context, viewHolder: ViewHolder) {
         val info = context.applicationInfo
-        ResourceUtils.setImage(context, icon, info.icon, viewHolder.appIconView)
+        viewHolder.appIconView?.apply {
+            ResourceUtils.setImage(context, icon, info.icon, this)
+        }
+
         run { // get app label from string (safely)
             ResourceUtils.getString(context, title) ?: if (info.labelRes == 0)
                 info.nonLocalizedLabel?.toString()
@@ -106,7 +105,27 @@ class AppWedge: Wedge<AppWedge.ViewHolder>(R.layout.item_attribouter_app_info) {
             }
         }
 
-        viewHolder.links?.apply {
+        val links = getTypedChildren<LinkWedge>().filter { !it.isHidden }
+
+        viewHolder.linkViews.forEachIndexed { index, view ->
+            view?.apply {
+                links.getOrNull(index)?.let { link ->
+                    link.bind(context, LinkWedge.ViewHolder(this))
+                    visibility = View.VISIBLE
+                } ?: run {
+                    visibility = View.GONE
+                }
+
+                val icon: ImageView? = view.findViewById(R.id.icon)
+                icon?.apply {
+                    val color = context.getThemedColor(R.attr.attribouter_textColorAccent)
+                    backgroundTint = color
+                    setColorFilter(color)
+                }
+            }
+        }
+
+        /*viewHolder.links?.apply {
             val children = getTypedChildren<LinkWedge>()
             if (children.isNotEmpty()) {
                 val links = children.filter { link -> !link.isHidden }
@@ -121,7 +140,7 @@ class AppWedge: Wedge<AppWedge.ViewHolder>(R.layout.item_attribouter_app_info) {
             } else {
                 visibility = View.GONE
             }
-        }
+        }*/
     }
 
     class ViewHolder(v: View) : Wedge.ViewHolder(v) {
@@ -130,7 +149,13 @@ class AppWedge: Wedge<AppWedge.ViewHolder>(R.layout.item_attribouter_app_info) {
         var nameTextView: TextView? = v.findViewById(R.id.appName)
         var versionTextView: TextView? = v.findViewById(R.id.appVersion)
         var descriptionTextView: TextView? = v.findViewById(R.id.description)
-        var links: RecyclerView? = v.findViewById(R.id.appLinks)
+        //var links: RecyclerView? = v.findViewById(R.id.appLinks)
 
+        var linkViews: Array<View?> = arrayOf(
+                v.findViewById(R.id.link_1),
+                v.findViewById(R.id.link_2),
+                v.findViewById(R.id.link_3),
+                v.findViewById(R.id.link_4)
+        )
     }
 }

@@ -33,7 +33,7 @@ class LicenseWedge(
         var licenseDescription: String? = null,
         licenseBody: String? = null,
         licenseKey: String? = null
-) : Wedge<LicenseWedge.ViewHolder>(R.layout.item_attribouter_license), Mergeable<LicenseWedge> {
+) : Wedge<LicenseWedge.ViewHolder>(R.layout.attribouter_item_license), Mergeable<LicenseWedge> {
 
     var repo: ProviderString? by attrProvider("repo", repo)
     private var title: String? by attr("title", title)
