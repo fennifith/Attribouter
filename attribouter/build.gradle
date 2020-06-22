@@ -55,6 +55,7 @@ dependencies {
 
     implementation "com.squareup.retrofit2:retrofit:$deps.retrofit"
     implementation "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.5.0"
+    implementation "me.jfenn:AndroidUtils:0.0.3"
 }
 
 apply from: "../versions.gradle"

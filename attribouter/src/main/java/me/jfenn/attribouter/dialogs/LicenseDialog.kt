@@ -6,12 +6,12 @@ import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatDialog
 import androidx.appcompat.widget.Toolbar
+import me.jfenn.androidutils.autoSystemUiColors
+import me.jfenn.androidutils.bind
 import me.jfenn.attribouter.R
 import me.jfenn.attribouter.utils.ResourceUtils.getString
 import me.jfenn.attribouter.utils.ResourceUtils.getThemeResourceAttribute
 import me.jfenn.attribouter.utils.UrlClickListener
-import me.jfenn.attribouter.utils.autoSystemUiColors
-import me.jfenn.attribouter.utils.bind
 import me.jfenn.attribouter.utils.toListString
 import me.jfenn.attribouter.wedges.LicenseWedge
 

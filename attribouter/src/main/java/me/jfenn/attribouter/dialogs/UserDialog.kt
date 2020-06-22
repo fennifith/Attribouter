@@ -11,11 +11,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import me.jfenn.androidutils.bind
 import me.jfenn.attribouter.R
 import me.jfenn.attribouter.adapters.WedgeAdapter
 import me.jfenn.attribouter.utils.ResourceUtils.getString
 import me.jfenn.attribouter.utils.ResourceUtils.getThemeResourceAttribute
-import me.jfenn.attribouter.utils.bind
 import me.jfenn.attribouter.utils.loadDrawable
 import me.jfenn.attribouter.wedges.ContributorWedge
 import me.jfenn.attribouter.wedges.LinkWedge
