@@ -17,6 +17,7 @@
         <item name="attribouter_overflowDialogTheme">@style/AttribouterTheme.Dialog.Fullscreen</item>
 
         <item name="cardCornerRadius">?attr/attribouter_cardCornerRadius</item>
+        <item name="colorControlHighlight">#1F000000</item>
 
         <item name="android:textColorPrimary">@color/attribouter_textColorPrimary</item>
         <item name="android:textColorSecondary">@color/attribouter_textColorSecondary</item>
@@ -46,6 +47,8 @@
 
         <item name="attribouter_licenseDialogTheme">@style/AttribouterTheme.Dialog.Fullscreen.Dark</item>
         <item name="attribouter_overflowDialogTheme">@style/AttribouterTheme.Dialog.Fullscreen.Dark</item>
+
+        <item name="colorControlHighlight">#33FFFFFF</item>
 
         <item name="android:textColorPrimary">@color/attribouter_textColorPrimaryInverse</item>
         <item name="android:textColorSecondary">@color/attribouter_textColorSecondaryInverse</item>
