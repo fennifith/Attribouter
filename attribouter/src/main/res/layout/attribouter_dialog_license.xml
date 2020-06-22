@@ -183,7 +183,7 @@
                 android:paddingTop="8dp"
                 android:text="@string/attribouter_title_more_info"
                 android:textAlignment="center"
-                android:textColor="@color/colorAccent"
+                android:textColor="?attr/colorAccent"
                 android:textSize="18sp" />
 
         </LinearLayout>

@@ -4,6 +4,10 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="colorPrimaryNight">#D9DEff</color>
+    <color name="colorPrimaryDarkNight">#BAC2F5</color>
+    <color name="colorAccentNight">#FFABC7</color>
+
     <color name="attribouter_textColorPrimary">#DE000000</color>
     <color name="attribouter_textColorSecondary">#8A000000</color>
     <color name="attribouter_textColorTertiary">#61000000</color>

@@ -4,13 +4,17 @@
     <style name="AttribouterTheme.Base" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>d
+        <item name="colorAccent">@color/colorAccent</item>
 
         <item name="attribouter_textColorAccent">@color/colorPrimary</item>
         <item name="attribouter_cardColor">#FFFFFF</item>
         <item name="attribouter_cardCornerRadius">8dp</item>
         <item name="attribouter_windowBackgroundColor">#F5F5F5</item>
         <item name="attribouter_windowInsetColor">#E0E0E0</item>
+
+        <item name="attribouter_userDialogTheme">@style/AttribouterTheme.Dialog</item>
+        <item name="attribouter_licenseDialogTheme">@style/AttribouterTheme.Dialog.Fullscreen</item>
+        <item name="attribouter_overflowDialogTheme">@style/AttribouterTheme.Dialog.Fullscreen</item>
 
         <item name="cardCornerRadius">?attr/attribouter_cardCornerRadius</item>
 
@@ -21,23 +25,51 @@
         <item name="android:textColorSecondaryInverse">@color/attribouter_textColorSecondaryInverse</item>
         <item name="android:textColorTertiaryInverse">@color/attribouter_textColorTertiaryInverse</item>
 
-        <item name="android:windowBackground">#F5F5F5</item>
+        <item name="android:windowBackground">?attr/attribouter_windowBackgroundColor</item>
+        <item name="android:colorBackground">?attr/attribouter_windowBackgroundColor</item>
     </style>
 
+    <!-- Activity themes: derived from AttribouterTheme.Base -->
+
     <style name="AttribouterTheme" parent="AttribouterTheme.Base"/>
+
+    <style name="AttribouterTheme.Dark" parent="AttribouterTheme.Base">
+        <item name="colorPrimary">@color/colorPrimaryNight</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkNight</item>
+        <item name="colorAccent">@color/colorAccentNight</item>
+
+        <item name="attribouter_textColorAccent">@color/colorPrimaryNight</item>
+        <item name="attribouter_cardColor">#303030</item>
+        <item name="attribouter_cardCornerRadius">8dp</item>
+        <item name="attribouter_windowBackgroundColor">#000000</item>
+        <item name="attribouter_windowInsetColor">#212121</item>
+
+        <item name="attribouter_licenseDialogTheme">@style/AttribouterTheme.Dialog.Fullscreen.Dark</item>
+        <item name="attribouter_overflowDialogTheme">@style/AttribouterTheme.Dialog.Fullscreen.Dark</item>
+
+        <item name="android:textColorPrimary">@color/attribouter_textColorPrimaryInverse</item>
+        <item name="android:textColorSecondary">@color/attribouter_textColorSecondaryInverse</item>
+        <item name="android:textColorTertiary">@color/attribouter_textColorTertiaryInverse</item>
+        <item name="android:textColorPrimaryInverse">@color/attribouter_textColorPrimary</item>
+        <item name="android:textColorSecondaryInverse">@color/attribouter_textColorSecondary</item>
+        <item name="android:textColorTertiaryInverse">@color/attribouter_textColorTertiary</item>
+    </style>
+
+    <style name="AttribouterTheme.DayNight" parent="AttribouterTheme"/>
+
+    <!-- Component styles -->
 
     <style name="AttribouterTheme.ActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AttribouterTheme.Dialog" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
-        <item name="shapeAppearanceOverlay">@style/AttribouterTheme.DialogCorners</item>
-    </style>
-
-    <style name="AttribouterTheme.DialogCorners">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">?attr/attribouter_cardCornerRadius</item>
+        <item name="colorBackgroundFloating">?attr/attribouter_cardColor</item>
     </style>
 
     <style name="AttribouterTheme.Dialog.Fullscreen" parent="AttribouterTheme">
+        <item name="android:windowAnimationStyle">@style/AttribouterTheme.SlideAnimation</item>
+    </style>
+
+    <style name="AttribouterTheme.Dialog.Fullscreen.Dark" parent="AttribouterTheme.Dark">
         <item name="android:windowAnimationStyle">@style/AttribouterTheme.SlideAnimation</item>
     </style>
 

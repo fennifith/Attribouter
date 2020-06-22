@@ -7,7 +7,7 @@
 
         <activity
             android:name=".activities.AboutActivity"
-            android:theme="@style/AttribouterTheme" />
+            android:theme="@style/AttribouterTheme.DayNight" />
 
     </application>
 

@@ -10,8 +10,8 @@ import me.jfenn.androidutils.autoSystemUiColors
 import me.jfenn.androidutils.bind
 import me.jfenn.attribouter.R
 import me.jfenn.attribouter.utils.ResourceUtils.getString
-import me.jfenn.attribouter.utils.ResourceUtils.getThemeResourceAttribute
 import me.jfenn.attribouter.utils.UrlClickListener
+import me.jfenn.attribouter.utils.getThemeAttr
 import me.jfenn.attribouter.utils.toListString
 import me.jfenn.attribouter.wedges.LicenseWedge
 
@@ -20,7 +20,7 @@ class LicenseDialog(
         private val license: LicenseWedge
 ) : AppCompatDialog(
         context,
-        getThemeResourceAttribute(context, R.styleable.AttribouterTheme_licenseDialogTheme, R.style.AttribouterTheme_Dialog_Fullscreen)
+        context.getThemeAttr(R.attr.attribouter_licenseDialogTheme, R.style.AttribouterTheme_Dialog_Fullscreen)
 ) {
 
     val toolbar: Toolbar? by bind(R.id.toolbar)

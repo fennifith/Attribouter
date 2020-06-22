@@ -8,6 +8,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.TooltipCompat
 import com.google.android.material.button.MaterialButton
+import me.jfenn.androidutils.getThemedColor
+import me.jfenn.androidutils.setBackgroundTint
 import me.jfenn.attribouter.R
 import me.jfenn.attribouter.interfaces.Mergeable
 import me.jfenn.attribouter.utils.ResourceUtils
@@ -93,7 +95,13 @@ open class LinkWedge(
 
         context.loadDrawable(icon, R.drawable.attribouter_ic_link) { drawable ->
             (viewHolder.nameView as? MaterialButton)?.icon = drawable
-            viewHolder.iconView?.setImageDrawable(drawable)
+            viewHolder.iconView?.apply {
+                setImageDrawable(drawable)
+
+                val color = context.getThemedColor(android.R.attr.textColorPrimary)
+                setBackgroundTint(color)
+                setColorFilter(color)
+            }
         }
 
         TooltipCompat.setTooltipText(viewHolder.itemView, title)

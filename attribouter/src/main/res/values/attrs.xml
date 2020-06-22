@@ -7,9 +7,9 @@
         <attr name="attribouter_windowBackgroundColor" format="color" />
         <attr name="attribouter_windowInsetColor" format="color"/>
 
-        <attr name="personDialogTheme" format="reference" />
-        <attr name="overflowDialogTheme" format="reference" />
-        <attr name="licenseDialogTheme" format="reference" />
+        <attr name="attribouter_userDialogTheme" format="reference" />
+        <attr name="attribouter_overflowDialogTheme" format="reference" />
+        <attr name="attribouter_licenseDialogTheme" format="reference" />
     </declare-styleable>
 
 </resources>

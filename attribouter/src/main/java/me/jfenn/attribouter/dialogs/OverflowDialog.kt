@@ -11,7 +11,7 @@ import me.jfenn.androidutils.bind
 import me.jfenn.attribouter.R
 import me.jfenn.attribouter.adapters.WedgeAdapter
 import me.jfenn.attribouter.utils.ResourceUtils.getString
-import me.jfenn.attribouter.utils.ResourceUtils.getThemeResourceAttribute
+import me.jfenn.attribouter.utils.getThemeAttr
 import me.jfenn.attribouter.wedges.Wedge
 
 open class OverflowDialog(
@@ -20,7 +20,7 @@ open class OverflowDialog(
         val items: List<Wedge<*>>
 ) : AppCompatDialog(
         context,
-        getThemeResourceAttribute(context, R.styleable.AttribouterTheme_overflowDialogTheme, R.style.AttribouterTheme_Dialog_Fullscreen)
+        context.getThemeAttr(R.attr.attribouter_overflowDialogTheme, R.style.AttribouterTheme_Dialog_Fullscreen)
 ) {
 
     private val toolbar: Toolbar? by bind(R.id.toolbar)
