@@ -6,7 +6,7 @@
         <item name="colorPrimaryDark">@color/attribouter_colorPrimaryDark</item>
         <item name="colorAccent">@color/attribouter_colorAccent</item>
 
-        <item name="attribouter_textColorAccent">@color/attribouter_colorPrimary</item>
+        <item name="attribouter_textColorAccent">@color/attribouter_textColorAccent</item>
         <item name="attribouter_cardColor">@color/attribouter_cardColor</item>
         <item name="attribouter_cardCornerRadius">@dimen/attribouter_cardCornerRadius</item>
         <item name="attribouter_windowBackgroundColor">@color/attribouter_windowBackgroundColor</item>
@@ -39,7 +39,7 @@
         <item name="colorPrimaryDark">@color/attribouter_colorPrimaryDark_night</item>
         <item name="colorAccent">@color/attribouter_colorAccent_night</item>
 
-        <item name="attribouter_textColorAccent">@color/attribouter_colorPrimary_night</item>
+        <item name="attribouter_textColorAccent">@color/attribouter_textColorAccent_night</item>
         <item name="attribouter_cardColor">@color/attribouter_cardColor_night</item>
         <item name="attribouter_windowBackgroundColor">@color/attribouter_windowBackgroundColor_night</item>
         <item name="attribouter_windowInsetColor">@color/attribouter_windowInsetColor_night</item>
