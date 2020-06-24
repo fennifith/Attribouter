@@ -1,5 +1,6 @@
 package me.jfenn.attribouter.utils
 
+import me.jfenn.gitrest.model.ProviderString
 import java.util.regex.Pattern
 
 fun Array<String>.toListString(): String {
@@ -39,4 +40,12 @@ fun String.toTitleString(): String {
         matcher.appendReplacement(nameBuffer, matcher.group(1)?.toUpperCase() ?: "")
 
     return matcher.appendTail(nameBuffer).toString()
+}
+
+fun String?.equalsProvider(other: String?) : Boolean {
+    return this?.let {
+        other?.let { other ->
+            ProviderString(it) == ProviderString(other)
+        }
+    } == true
 }

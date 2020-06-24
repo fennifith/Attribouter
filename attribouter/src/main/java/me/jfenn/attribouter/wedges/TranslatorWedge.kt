@@ -7,12 +7,11 @@ import android.widget.TextView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.jfenn.attribouter.R
-import me.jfenn.attribouter.interfaces.Mergeable
-import me.jfenn.attribouter.provider.net.ProviderString
-import me.jfenn.attribouter.provider.net.data.UserData
 import me.jfenn.attribouter.utils.ResourceUtils
 import me.jfenn.attribouter.utils.UrlClickListener
+import me.jfenn.attribouter.utils.equalsProvider
 import me.jfenn.attribouter.utils.isResourceMutable
+import me.jfenn.gitrest.model.User
 import java.util.*
 
 open class TranslatorWedge(
@@ -22,15 +21,14 @@ open class TranslatorWedge(
         locales: String? = null,
         blog: String? = null,
         email: String? = null
-) : Wedge<TranslatorWedge.ViewHolder>(R.layout.attribouter_item_translator), Mergeable<TranslatorWedge> {
+) : Wedge<TranslatorWedge.ViewHolder>(R.layout.attribouter_item_translator) {
 
-    var login: ProviderString? by attrProvider("login", login)
+    var login: String? by attr("login", login)
     var name: String? by attr("name", name)
-    var avatarUrl: String? by attr("avatar", avatarUrl)
+    var avatar: String? by attr("avatar", avatarUrl)
+    var websiteUrl: String? by attr("websiteUrl", blog)
     var locales: String? by attr("locales", locales)
-    var blog: String? by attr("blog", blog)
     var email: String? by attr("email", email)
-    override val isHidden: Boolean = false
 
     // whether the translator is the first of a locale in the sorted list (i.e. should display its header)
     var isFirst: Boolean = false
@@ -45,59 +43,36 @@ open class TranslatorWedge(
         }
     }
 
-    open fun onTranslator(data: UserData) {
-        merge(TranslatorWedge(
-                data.login,
-                data.name,
-                data.avatarUrl,
-                null,
-                data.websiteUrl,
-                data.email
-        ).create())
+    open fun onTranslator(data: User) {
+        name = data.name
+        avatar = data.avatarUrl
+        websiteUrl = data.websiteUrl
+        email = data.email
 
         notifyItemChanged()
     }
 
     open fun getDisplayName(): String? {
-        return name ?: login?.id
-    }
-
-    override fun merge(contributor: TranslatorWedge): TranslatorWedge {
-        if (name.isResourceMutable())
-            contributor.name?.let { name = it }
-        if (avatarUrl.isResourceMutable())
-            contributor.avatarUrl?.let { avatarUrl = it }
-        if (blog.isResourceMutable() && !contributor.blog.isNullOrEmpty())
-            contributor.blog?.let { blog = it }
-        if (email.isResourceMutable() && !contributor.email.isNullOrEmpty())
-            contributor.email?.let { email = it }
-        if (locales.isResourceMutable())
-            contributor.locales?.let { locales = it }
-
-        return this
-    }
-
-    override fun hasAll(): Boolean {
-        return false
+        return name ?: login
     }
 
     private fun hasEverything(): Boolean {
-        return !name.isResourceMutable() && !blog.isResourceMutable()
+        return !name.isResourceMutable() && !websiteUrl.isResourceMutable()
     }
 
     override fun equals(other: Any?): Boolean {
         return (other as? TranslatorWedge)?.let {
-            login?.id?.equals(it.login?.id, ignoreCase = true)
+            login.equalsProvider(other.login)
         } ?: super.equals(other)
     }
 
     fun clone() : TranslatorWedge {
         return TranslatorWedge(
-                login.toString(),
+                login,
                 name,
-                avatarUrl,
+                avatar,
                 locales,
-                blog,
+                websiteUrl,
                 email
         ).also {
             it.addChildren(getChildren())
@@ -117,7 +92,7 @@ open class TranslatorWedge(
         }
 
         viewHolder.imageView?.apply {
-            ResourceUtils.setImage(context, avatarUrl, R.drawable.attribouter_image_avatar, this)
+            ResourceUtils.setImage(context, avatar, R.drawable.attribouter_image_avatar, this)
         }
 
         viewHolder.nameView?.apply {
@@ -125,7 +100,7 @@ open class TranslatorWedge(
         }
 
         viewHolder.itemView.apply {
-            ResourceUtils.getString(context, blog)?.let {
+            ResourceUtils.getString(context, websiteUrl)?.let {
                 setOnClickListener(UrlClickListener(it))
             } ?: login?.let {
                 setOnClickListener(UrlClickListener("https://github.com/$it"))

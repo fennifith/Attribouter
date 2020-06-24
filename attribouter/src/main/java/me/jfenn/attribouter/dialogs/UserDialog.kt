@@ -59,7 +59,7 @@ open class UserDialog(
         taskView?.text = getString(context, contributor.task)
         bioView?.text = getString(context, contributor.bio)
 
-        context.loadDrawable(contributor.avatarUrl, R.drawable.attribouter_image_avatar) {
+        context.loadDrawable(contributor.avatar, R.drawable.attribouter_image_avatar) {
             imageView?.setImageDrawable(it)
         }
 

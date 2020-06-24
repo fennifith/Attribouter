@@ -11,10 +11,8 @@ import com.google.android.material.button.MaterialButton
 import me.jfenn.androidutils.getThemedColor
 import me.jfenn.androidutils.setBackgroundTint
 import me.jfenn.attribouter.R
-import me.jfenn.attribouter.interfaces.Mergeable
 import me.jfenn.attribouter.utils.ResourceUtils
 import me.jfenn.attribouter.utils.UrlClickListener
-import me.jfenn.attribouter.utils.isResourceMutable
 import me.jfenn.attribouter.utils.loadDrawable
 
 open class LinkWedge(
@@ -22,16 +20,17 @@ open class LinkWedge(
         name: String? = null,
         url: String? = null,
         icon: String? = null,
-        isHidden: Boolean = false,
         priority: Int = 0
-) : Wedge<LinkWedge.ViewHolder>(R.layout.attribouter_item_link), Mergeable<LinkWedge>, Comparable<LinkWedge> {
+) : Wedge<LinkWedge.ViewHolder>(R.layout.attribouter_item_link), Comparable<LinkWedge> {
 
     var id: String? by attr("id", id)
     var name: String? by attr("name", name)
     var url: String? by attr("url", url)
     var icon: String? by attr("icon", icon)
-    override var isHidden: Boolean by attr("hidden", isHidden)
-    var priority: Int by attrInt("priority", priority)
+    var priority: Int by object : attrInt<LinkWedge>("priority", priority) {
+        // ignore new "0" values (likely unset)
+        override fun apply(original: Int?, value: Int?): Int? = if (value == 0) original else value
+    }
 
     override fun onCreate() {
         if (!url.isNullOrEmpty()) this.url = url?.let {
@@ -47,29 +46,8 @@ open class LinkWedge(
      */
     open fun getListener(context: Context): View.OnClickListener? {
         return if (!url.isNullOrEmpty() && URLUtil.isValidUrl(url))
-            UrlClickListener(ResourceUtils.getString(context, url))
+            UrlClickListener(url)
         else null
-    }
-
-    override fun merge(mergee: LinkWedge): LinkWedge {
-        if (id == null)
-            mergee.id?.let { id = it }
-        if (name.isResourceMutable())
-            mergee.name?.let { name = it }
-        if (url.isResourceMutable())
-            mergee.url?.let { url = it }
-        if (icon.isResourceMutable())
-            mergee.icon?.let { icon = it }
-        if (mergee.isHidden)
-            isHidden = true
-        if (mergee.priority != 0)
-            priority = mergee.priority
-
-        return this
-    }
-
-    override fun hasAll(): Boolean {
-        return true
     }
 
     override fun equals(obj: Any?): Boolean {

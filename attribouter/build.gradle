@@ -24,6 +24,11 @@ android {
        }
     }
 
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        merge 'META-INF/*.kotlin_module'
+    }
+
     testOptions.unitTests.includeAndroidResources = true
     testOptions.unitTests.all {
         testLogging {
@@ -33,14 +38,11 @@ android {
 }
 
 dependencies {
-    testImplementation 'junit:junit:4.12'
-    testImplementation 'org.robolectric:robolectric:4.3'
+    testImplementation 'junit:junit:4.13'
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$deps.kotlin"
 
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$deps.kotlin"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$deps.kotlinx.coroutines"
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0"
 
     implementation "androidx.appcompat:appcompat:$deps.android.appcompat"
     implementation "androidx.constraintlayout:constraintlayout:$deps.android.constraintlayout"
@@ -53,9 +55,8 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$deps.glide"
     annotationProcessor "com.github.bumptech.glide:compiler:$deps.glide"
 
-    implementation "com.squareup.retrofit2:retrofit:$deps.retrofit"
-    implementation "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.5.0"
     implementation "me.jfenn:AndroidUtils:0.0.3"
+    implementation "dev.horrific.code.james.git-rest-wrapper:gitrest:0.0.1"
 }
 
 apply from: "../versions.gradle"

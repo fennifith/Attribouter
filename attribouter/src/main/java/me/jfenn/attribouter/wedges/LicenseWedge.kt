@@ -11,21 +11,19 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.jfenn.attribouter.R
 import me.jfenn.attribouter.adapters.WedgeAdapter
-import me.jfenn.attribouter.interfaces.Mergeable
-import me.jfenn.attribouter.provider.net.ProviderString
-import me.jfenn.attribouter.provider.net.data.LicenseData
-import me.jfenn.attribouter.provider.net.data.RepoData
 import me.jfenn.attribouter.utils.ResourceUtils
-import me.jfenn.attribouter.utils.isResourceMutable
+import me.jfenn.attribouter.utils.equalsProvider
 import me.jfenn.attribouter.utils.toTitleString
+import me.jfenn.gitrest.model.License
+import me.jfenn.gitrest.model.Repo
 
 open class LicenseWedge(
         repo: String? = null,
         title: String? = null,
         description: String? = null,
         licenseName: String? = null,
+        repoUrl: String? = null,
         websiteUrl: String? = null,
-        gitHubUrl: String? = null,
         licenseUrl: String? = null,
         var licensePermissions: Array<String>? = null,
         var licenseConditions: Array<String>? = null,
@@ -33,36 +31,28 @@ open class LicenseWedge(
         var licenseDescription: String? = null,
         licenseBody: String? = null,
         licenseKey: String? = null
-) : Wedge<LicenseWedge.ViewHolder>(R.layout.attribouter_item_license), Mergeable<LicenseWedge> {
+) : Wedge<LicenseWedge.ViewHolder>(R.layout.attribouter_item_license) {
 
-    var repo: ProviderString? by attrProvider("repo", repo)
+    var repo: String? by attr("repo", repo)
     var title: String? by attr("title", title)
     var description: String? by attr("description", description)
     var licenseName: String? by attr("licenseName", licenseName)
+    var repoUrl: String? by attr("repoUrl", repoUrl)
     var websiteUrl: String? by attr("website", websiteUrl)
-    var gitHubUrl: String? by attr("gitHubUrl", gitHubUrl)
     var licenseUrl: String? by attr("licenseUrl", licenseUrl)
     var licenseBody: String? by attr("licenseBody", licenseBody)
-    var licenseKey: ProviderString? by attrProvider("license", licenseKey)
-    override val isHidden: Boolean = false
+    var licenseKey: String? by attr("license", licenseKey)
 
-    internal var token: String? = null
+    private var token: String? = null
 
     override fun onCreate() {
-        token = repo?.id ?: title
-
-        if (!websiteUrl.isNullOrEmpty())
-            websiteUrl?.let { addChild(WebsiteLinkWedge(it, 2)) }
-
-        repo?.let { addChild(RepoLinkWedge(it.id, 1))}
-
-        if (!licenseBody.isNullOrEmpty() && !licenseUrl.isNullOrEmpty())
-            addChild(LicenseLinkWedge(this, 0))
+        token = repo ?: title
+        initChildren()
 
         if (!hasAllGeneric()) repo?.let {
             lifecycle?.launch {
                 withContext(Dispatchers.IO) {
-                    lifecycle?.provider?.getRepository(it)
+                    lifecycle?.provider?.getRepo(it)
                 }?.let { data -> onRepository(data) }
             }
         }
@@ -70,80 +60,50 @@ open class LicenseWedge(
         licenseKey?.let { key ->
             lifecycle?.launch {
                 withContext(Dispatchers.IO) {
-                    lifecycle?.provider?.getLicense(key)
+                    lifecycle?.provider?.getLicense("github:$key")
                 }?.let { onLicense(it) }
             }
         }
     }
 
-    private fun onRepository(data: RepoData) {
-        if (description.isResourceMutable() && !data.description.isNullOrEmpty())
-            description = data.description
-        if (licenseName.isResourceMutable() && !data.license?.name.isNullOrEmpty())
-            licenseName = data.license?.name
-        if (websiteUrl.isResourceMutable() && !data.websiteUrl.isNullOrEmpty())
-            websiteUrl = data.websiteUrl
+    fun initChildren() {
+        repoUrl?.let { addChild(RepoLinkWedge(it, 1))}
+        websiteUrl?.let { addChild(WebsiteLinkWedge(it, 2)) }
+        if (!licenseBody.isNullOrEmpty() && !licenseUrl.isNullOrEmpty())
+            addChild(LicenseLinkWedge(this, 0))
+    }
 
-        data.license?.id?.let { id ->
+    private fun onRepository(data: Repo) {
+        description = data.description
+        licenseName = data.license?.name ?: data.license?.id
+        repoUrl = data.url
+        websiteUrl = data.websiteUrl
+
+        data.license?.id.let { id ->
             if (!hasAllLicense()) lifecycle?.launch {
                 withContext(Dispatchers.IO) {
-                    lifecycle?.provider?.getLicense(id)
+                    lifecycle?.provider?.getLicense("github:$id")
                 }?.let { onLicense(it) }
             }
         }
 
+        initChildren()
         notifyItemChanged()
     }
 
-    private fun onLicense(data: LicenseData) {
-        if (licenseName.isResourceMutable() && !data.name.isNullOrEmpty())
-            licenseName = data.name
-        if (licenseDescription.isResourceMutable() && !data.description.isNullOrEmpty())
-            licenseDescription = data.description
-        if (licenseUrl.isResourceMutable() && !data.infoUrl.isNullOrEmpty())
-            licenseUrl = data.infoUrl
+    private fun onLicense(data: License) {
+        licenseName = data.name
+        licenseDescription = data.description
+        licenseUrl = data.infoUrl
 
         licensePermissions = data.permissions
         licenseConditions = data.conditions
         licenseLimitations = data.limitations
 
-        if (licenseBody.isResourceMutable() && !data.body.isNullOrEmpty())
-            licenseBody = data.body
+        licenseBody = data.body
 
-        if (!licenseBody.isNullOrEmpty() && !licenseUrl.isNullOrEmpty())
-            addChild(LicenseLinkWedge(this, 0))
-
+        initChildren()
         notifyItemChanged()
-    }
-
-    override fun merge(mergee: LicenseWedge): LicenseWedge {
-        if ((title == null || !title!!.startsWith("^")) && !mergee.title.isNullOrEmpty())
-            title = mergee.title
-        if ((description == null || !description!!.startsWith("^")) && !mergee.description.isNullOrEmpty())
-            description = mergee.description
-        if (licenseName == null || !licenseName!!.startsWith("^"))
-            mergee.licenseName?.let { licenseName = it }
-        if ((websiteUrl == null || !websiteUrl!!.startsWith("^")) && !mergee.websiteUrl.isNullOrEmpty())
-            websiteUrl = mergee.websiteUrl
-        if (gitHubUrl == null || !gitHubUrl!!.startsWith("^"))
-            mergee.gitHubUrl?.let { gitHubUrl = it }
-        if (licenseUrl == null || !licenseUrl!!.startsWith("^"))
-            mergee.licenseUrl?.let { licenseUrl = it }
-
-        mergee.licensePermissions?.let { licensePermissions = it }
-        mergee.licenseConditions?.let { licenseConditions = it }
-        mergee.licenseLimitations?.let { licenseLimitations = it }
-        mergee.licenseDescription?.let { licenseDescription = it }
-
-        if (licenseBody == null || !licenseBody!!.startsWith("^"))
-            mergee.licenseBody?.let { licenseBody = it }
-
-        addChildren(mergee.getChildren())
-        return this
-    }
-
-    override fun hasAll(): Boolean {
-        return hasAllGeneric() && hasAllLicense()
     }
 
     fun hasAllGeneric(): Boolean {
@@ -160,9 +120,9 @@ open class LicenseWedge(
 
     override fun equals(other: Any?): Boolean {
         return (other as? LicenseWedge)?.let {
-            return repo?.id?.equals(it.repo?.id, ignoreCase = true) ?: false
-                    || repo?.id?.equals(it.title, ignoreCase = true) ?: false
-                    || title?.equals(it.repo?.id, ignoreCase = true) ?: false
+            return repo.equalsProvider(other.repo)
+                    || repo?.equals(it.title, ignoreCase = true) ?: false
+                    || title?.equals(it.repo, ignoreCase = true) ?: false
                     || title?.equals(it.title, ignoreCase = true) ?: false
         } ?: super.equals(other)
     }
@@ -173,7 +133,7 @@ open class LicenseWedge(
 
     override fun bind(context: Context, viewHolder: ViewHolder) {
         viewHolder.titleView?.apply {
-            (title ?: repo?.id?.toTitleString())?.let { text = ResourceUtils.getString(context, it) }
+            (title ?: repo?.toTitleString())?.let { text = ResourceUtils.getString(context, it) }
         }
 
         viewHolder.descriptionView?.apply {

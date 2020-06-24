@@ -13,10 +13,11 @@ import me.jfenn.attribouter.R
 import me.jfenn.attribouter.adapters.WedgeAdapter
 import me.jfenn.attribouter.interfaces.Notifiable
 import me.jfenn.attribouter.provider.LifecycleInstance
-import me.jfenn.attribouter.provider.net.github.GitHubService
-import me.jfenn.attribouter.provider.net.gitlab.GitlabService
 import me.jfenn.attribouter.provider.wedge.XMLWedgeProvider
 import me.jfenn.attribouter.wedges.Wedge
+import me.jfenn.gitrest.impl.gitea.GiteaProvider
+import me.jfenn.gitrest.impl.github.GithubProvider
+import me.jfenn.gitrest.impl.gitlab.GitlabProvider
 
 class AboutFragment : Fragment(), Notifiable {
 
@@ -24,7 +25,7 @@ class AboutFragment : Fragment(), Notifiable {
     private var adapter: WedgeAdapter? = null
 
     private var wedges: List<Wedge<*>>? = null
-    private var gitHubToken: String? = null
+    private var tokens = HashMap<String, String>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         recycler = inflater.inflate(R.layout.attribouter_fragment_about, container, false) as RecyclerView
@@ -32,22 +33,29 @@ class AboutFragment : Fragment(), Notifiable {
         val args = arguments
         var fileRes = R.xml.attribouter
         if (args != null) {
-            gitHubToken = args.getString(Attribouter.EXTRA_GITHUB_OAUTH_TOKEN, null)
             fileRes = args.getInt(Attribouter.EXTRA_FILE_RES, fileRes)
+
+            // parse hostname args
+            args.keySet().filter { it.startsWith(Attribouter.EXTRA_TOKEN) }.forEach { key ->
+                val hostname = key.substring(Attribouter.EXTRA_TOKEN.length)
+                val token = args.getString(key, "")
+                if (token.isNotBlank())
+                    tokens[hostname] = token
+            }
         }
 
         val parser = resources.getXml(fileRes)
         val provider = XMLWedgeProvider(parser)
         val lifecycle = LifecycleInstance(
                 services = listOf(
-                        GitHubService.apply {
-                            withToken(gitHubToken)
-                            context?.let { ctx -> withCache(ctx.cacheDir) }
-                        },
-                        GitlabService.apply {
-                            context?.let { ctx -> withCache(ctx.cacheDir) }
-                        }
-                ),
+                        GithubProvider,
+                        GitlabProvider,
+                        GiteaProvider
+                ).map {
+                    it.apply {
+                        tokens.putAll(this@AboutFragment.tokens)
+                    }
+                },
                 scope = viewLifecycleOwner.lifecycleScope,
                 notifiable = this
         )

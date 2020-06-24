@@ -10,12 +10,22 @@ android {
         versionCode 1
         versionName "1.0"
 
+        def githubToken = System.getenv("GITHUB_TOKEN")
+        if (githubToken != null)
+            buildConfigField "String", "GITHUB_TOKEN", "\"$githubToken\""
+        else buildConfigField "String", "GITHUB_TOKEN", "null"
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        merge 'META-INF/*.kotlin_module'
     }
 
     buildTypes {

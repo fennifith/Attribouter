@@ -34,7 +34,7 @@
 
     </TextWedge>
 
-    <ContributorsWedge title="Library Contributors">
+    <ContributorsWedge title="Library Contributors" repo="fennifith/Attribouter">
         <ContributorWedge
             avatar="^@drawable/me"
             bio="This is a bio. I am a person."
@@ -86,18 +86,18 @@
         <TranslatorWedge
             name="John Doe"
             avatar="https://jfenn.me/images/headers/rocks.jpg"
-            blog="https://example.com/"
+            websiteUrl="https://example.com/"
             locales="zh,rn,sn,cy" />
         <!-- locales are comma separated, no whitespace -->
         <TranslatorWedge
             name="Jenny Doe"
             avatar="https://example.com/broken_link.png"
-            blog="https://example.com/"
+            websiteUrl="https://example.com/"
             locales="zh,sn" />
         <TranslatorWedge
             name="Joe Doe"
             avatar="https://jfenn.me/images/headers/highway.jpg"
-            blog="https://example.com/"
+            websiteUrl="https://example.com/"
             locales="rn,cy,zh" />
         <TranslatorWedge
             locales="en"

@@ -1,6 +1,7 @@
 package me.jfenn.attriboutersample;
 
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,9 +13,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Attribouter.from(this)
-                .withFile(R.xml.about)
-                .show();
+        Attribouter attribouter = Attribouter.from(this)
+                .withFile(R.xml.about);
+
+        if (BuildConfig.GITHUB_TOKEN != null)
+            attribouter.withGitHubToken(BuildConfig.GITHUB_TOKEN);
+
+        attribouter.show();
 
         finish();
     }

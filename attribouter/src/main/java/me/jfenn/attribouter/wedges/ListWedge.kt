@@ -20,6 +20,9 @@ abstract class ListWedge(
     var title: String by attr("title", defaultTitle)
     var overflow: Int by attr("overflow", Int.MAX_VALUE)
 
+    val displayItems = ArrayList<Wedge<*>>()
+    val itemsAdapter = WedgeAdapter(displayItems)
+
     override fun getViewHolder(v: View): ViewHolder {
         return ViewHolder(v)
     }
@@ -37,12 +40,13 @@ abstract class ListWedge(
         }
 
         val items = getListItems()
-        val displayItems = items.take(overflow)
+        displayItems.clear()
+        displayItems.addAll(items.take(overflow))
 
         viewHolder.recycler?.apply {
             visibility = if (displayItems.isNotEmpty()) {
                 layoutManager = LinearLayoutManager(context)
-                adapter = WedgeAdapter(displayItems)
+                adapter = itemsAdapter
                 View.VISIBLE
             } else View.GONE
         }
@@ -73,6 +77,10 @@ abstract class ListWedge(
                 View.GONE
             }
         }
+    }
+
+    override fun onItemChanged(changed: Wedge<*>) {
+        itemsAdapter.notifyItemChanged(displayItems.indexOf(changed))
     }
 
     open class ViewHolder(v: View) : Wedge.ViewHolder(v) {

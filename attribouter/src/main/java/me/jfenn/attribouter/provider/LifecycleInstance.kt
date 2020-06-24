@@ -5,9 +5,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import me.jfenn.attribouter.interfaces.Notifiable
-import me.jfenn.attribouter.provider.net.RequestProviderDelegate
-import me.jfenn.attribouter.provider.net.ServiceBuilder
 import me.jfenn.attribouter.wedges.Wedge
+import me.jfenn.gitrest.RequestProviderDelegate
+import me.jfenn.gitrest.base.ServiceBuilder
 
 class LifecycleInstance(
         services: List<ServiceBuilder<*>>,
@@ -15,7 +15,7 @@ class LifecycleInstance(
         val notifiable: Notifiable? = null
 ) {
 
-    val provider = RequestProviderDelegate(services)
+    val provider = RequestProviderDelegate(services.toTypedArray())
 
     fun notifyItemChanged(wedge: Wedge<*>) {
         notifiable?.onItemChanged(wedge)
