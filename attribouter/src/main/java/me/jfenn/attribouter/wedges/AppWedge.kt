@@ -8,7 +8,6 @@ import android.widget.TextView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.jfenn.androidutils.getThemedColor
-import me.jfenn.androidutils.setBackgroundTint
 import me.jfenn.attribouter.R
 import me.jfenn.attribouter.utils.ResourceUtils
 import me.jfenn.attribouter.utils.isResourceMutable
@@ -102,17 +101,12 @@ open class AppWedge: Wedge<AppWedge.ViewHolder>(R.layout.attribouter_item_app_in
         viewHolder.linkViews.forEachIndexed { index, view ->
             view?.apply {
                 links.getOrNull(index)?.let { link ->
-                    link.bind(context, LinkWedge.ViewHolder(this))
+                    link.apply {
+                        tintColor = context.getThemedColor(R.attr.attribouter_textColorAccent)
+                    }.bind(context, LinkWedge.ViewHolder(this))
                     visibility = View.VISIBLE
                 } ?: run {
                     visibility = View.GONE
-                }
-
-                val icon: ImageView? = view.findViewById(R.id.icon)
-                icon?.apply {
-                    val color = context.getThemedColor(R.attr.attribouter_textColorAccent)
-                    setBackgroundTint(color)
-                    setColorFilter(color)
                 }
             }
         }

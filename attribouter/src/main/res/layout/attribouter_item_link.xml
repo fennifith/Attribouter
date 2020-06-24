@@ -10,7 +10,10 @@
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="?attr/attribouter_textColorAccent"
         app:icon="@drawable/attribouter_ic_link"
+        app:iconTint="?attr/attribouter_textColorAccent"
+        app:rippleColor="?attr/colorControlHighlight"
         style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
         tools:text="Email" />
 

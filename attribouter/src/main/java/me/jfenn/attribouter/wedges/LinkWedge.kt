@@ -32,6 +32,8 @@ open class LinkWedge(
         override fun apply(original: Int?, value: Int?): Int? = if (value == 0) original else value
     }
 
+    var tintColor: Int? = null
+
     override fun onCreate() {
         if (!url.isNullOrEmpty()) this.url = url?.let {
             if (it.startsWith("http")) it else "http://$it"
@@ -76,7 +78,7 @@ open class LinkWedge(
             viewHolder.iconView?.apply {
                 setImageDrawable(drawable)
 
-                val color = context.getThemedColor(android.R.attr.textColorPrimary)
+                val color = tintColor ?: context.getThemedColor(android.R.attr.textColorPrimary)
                 setBackgroundTint(color)
                 setColorFilter(color)
             }
