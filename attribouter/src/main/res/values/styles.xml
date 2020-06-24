@@ -2,22 +2,22 @@
 <resources>
 
     <style name="AttribouterTheme.Base" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/attribouter_colorPrimary</item>
+        <item name="colorPrimaryDark">@color/attribouter_colorPrimaryDark</item>
+        <item name="colorAccent">@color/attribouter_colorAccent</item>
 
-        <item name="attribouter_textColorAccent">@color/colorPrimary</item>
-        <item name="attribouter_cardColor">#FFFFFF</item>
-        <item name="attribouter_cardCornerRadius">8dp</item>
-        <item name="attribouter_windowBackgroundColor">#F5F5F5</item>
-        <item name="attribouter_windowInsetColor">#E0E0E0</item>
+        <item name="attribouter_textColorAccent">@color/attribouter_colorPrimary</item>
+        <item name="attribouter_cardColor">@color/attribouter_cardColor</item>
+        <item name="attribouter_cardCornerRadius">@dimen/attribouter_cardCornerRadius</item>
+        <item name="attribouter_windowBackgroundColor">@color/attribouter_windowBackgroundColor</item>
+        <item name="attribouter_windowInsetColor">@color/attribouter_windowInsetColor</item>
 
         <item name="attribouter_userDialogTheme">@style/AttribouterTheme.Dialog</item>
         <item name="attribouter_licenseDialogTheme">@style/AttribouterTheme.Dialog.Fullscreen</item>
         <item name="attribouter_overflowDialogTheme">@style/AttribouterTheme.Dialog.Fullscreen</item>
 
         <item name="cardCornerRadius">?attr/attribouter_cardCornerRadius</item>
-        <item name="colorControlHighlight">#1F000000</item>
+        <item name="colorControlHighlight">@color/attribouter_highlightColor</item>
 
         <item name="android:textColorPrimary">@color/attribouter_textColorPrimary</item>
         <item name="android:textColorSecondary">@color/attribouter_textColorSecondary</item>
@@ -35,20 +35,19 @@
     <style name="AttribouterTheme" parent="AttribouterTheme.Base"/>
 
     <style name="AttribouterTheme.Dark" parent="AttribouterTheme.Base">
-        <item name="colorPrimary">@color/colorPrimaryNight</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDarkNight</item>
-        <item name="colorAccent">@color/colorAccentNight</item>
+        <item name="colorPrimary">@color/attribouter_colorPrimary_night</item>
+        <item name="colorPrimaryDark">@color/attribouter_colorPrimaryDark_night</item>
+        <item name="colorAccent">@color/attribouter_colorAccent_night</item>
 
-        <item name="attribouter_textColorAccent">@color/colorPrimaryNight</item>
-        <item name="attribouter_cardColor">#303030</item>
-        <item name="attribouter_cardCornerRadius">8dp</item>
-        <item name="attribouter_windowBackgroundColor">#000000</item>
-        <item name="attribouter_windowInsetColor">#212121</item>
+        <item name="attribouter_textColorAccent">@color/attribouter_colorPrimary_night</item>
+        <item name="attribouter_cardColor">@color/attribouter_cardColor_night</item>
+        <item name="attribouter_windowBackgroundColor">@color/attribouter_windowBackgroundColor_night</item>
+        <item name="attribouter_windowInsetColor">@color/attribouter_windowInsetColor_night</item>
 
         <item name="attribouter_licenseDialogTheme">@style/AttribouterTheme.Dialog.Fullscreen.Dark</item>
         <item name="attribouter_overflowDialogTheme">@style/AttribouterTheme.Dialog.Fullscreen.Dark</item>
 
-        <item name="colorControlHighlight">#33FFFFFF</item>
+        <item name="colorControlHighlight">@color/attribouter_highlightColor_night</item>
 
         <item name="android:textColorPrimary">@color/attribouter_textColorPrimaryInverse</item>
         <item name="android:textColorSecondary">@color/attribouter_textColorSecondaryInverse</item>
