@@ -11,6 +11,8 @@ import me.jfenn.androidutils.getThemedColor
 import me.jfenn.attribouter.R
 import me.jfenn.attribouter.utils.ResourceUtils
 import me.jfenn.attribouter.utils.isResourceMutable
+import me.jfenn.attribouter.utils.toTitleString
+import me.jfenn.gitrest.model.ProviderString
 import me.jfenn.gitrest.model.Repo
 
 open class AppWedge: Wedge<AppWedge.ViewHolder>(R.layout.attribouter_item_app_info) {
@@ -34,7 +36,18 @@ open class AppWedge: Wedge<AppWedge.ViewHolder>(R.layout.attribouter_item_app_in
     }
 
     fun initChildren() {
-        repoUrl?.let { addChild(RepoLinkWedge(it, 0).create(lifecycle)) }
+        (repoUrl ?: repo?.let { ProviderString(it).inferUrl() })?.let { url ->
+            repo?.let { repoId ->
+                val id = ProviderString(repoId)
+                addChild(RepoLinkWedge(
+                        name = id.provider.toTitleString(),
+                        url = url,
+                        icon = "@drawable/attribouter_ic_${id.provider}",
+                        priority = 0
+                ).create(lifecycle))
+            } ?: addChild(RepoLinkWedge(url = url, priority = 1).create(lifecycle))
+        }
+
         websiteUrl?.let { addChild(WebsiteLinkWedge(it, 0).create(lifecycle)) }
         playStoreUrl?.let { addChild(PlayStoreLinkWedge(it, 0).create(lifecycle)) }
     }

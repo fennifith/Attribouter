@@ -1,11 +1,14 @@
 package me.jfenn.attribouter.wedges
 
 class ProfileLinkWedge(
-        url: String, priority: Int
+        name: String = "@string/attribouter_title_profile",
+        url: String,
+        icon: String = "@drawable/attribouter_ic_person",
+        priority: Int
 ) : LinkWedge(
         id = "profile",
-        name = "@string/attribouter_title_profile",
+        name = name,
         url = url,
-        icon = "@drawable/attribouter_ic_person",
+        icon = icon,
         priority = priority
 )

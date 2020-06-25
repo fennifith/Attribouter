@@ -69,9 +69,18 @@ open class LicenseWedge(
 
     fun initChildren() {
         // try to guess repository URL from id
-        val inferredRepoUrl = repoUrl ?: repo?.let { repoId -> ProviderString(repoId).inferUrl() }
+        (repoUrl ?: repo?.let { ProviderString(it).inferUrl() })?.let { url ->
+            repo?.let { repoId ->
+                val id = ProviderString(repoId)
+                addChild(RepoLinkWedge(
+                        name = id.provider.toTitleString(),
+                        url = url,
+                        icon = "@drawable/attribouter_ic_${id.provider}",
+                        priority = 0
+                ).create(lifecycle))
+            } ?: addChild(RepoLinkWedge(url = url, priority = 1).create(lifecycle))
+        }
 
-        inferredRepoUrl?.let { addChild(RepoLinkWedge(it, 1))}
         websiteUrl?.let { addChild(WebsiteLinkWedge(it, 2)) }
         if (!licenseBody.isNullOrEmpty() && !licenseUrl.isNullOrEmpty())
             addChild(LicenseLinkWedge(this, 0))
