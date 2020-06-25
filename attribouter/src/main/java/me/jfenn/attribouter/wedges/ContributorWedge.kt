@@ -11,6 +11,7 @@ import me.jfenn.attribouter.R
 import me.jfenn.attribouter.dialogs.UserDialog
 import me.jfenn.attribouter.utils.ResourceUtils
 import me.jfenn.attribouter.utils.equalsProvider
+import me.jfenn.gitrest.model.ProviderString
 import me.jfenn.gitrest.model.User
 
 open class ContributorWedge(
@@ -53,6 +54,9 @@ open class ContributorWedge(
     }
 
     fun initChildren() {
+        // try to guess profile URL from id
+        profileUrl = profileUrl ?: login?.let { userId -> ProviderString(userId).inferUrl() }
+
         email?.let { addChild(EmailLinkWedge(it, 0)) }
         profileUrl?.let { addChild(ProfileLinkWedge(it, 1)) }
         websiteUrl?.let { addChild(WebsiteLinkWedge(it, 2)) }

@@ -52,7 +52,11 @@ fun LicensesWedge.addDefaults() {
                     licenseKey = "apache-2.0"
             ).create(lifecycle),
             LicenseWedge(
-                    repo = "gitea@code.horrific.dev:james/git-rest-wrapper"
+                    repo = "gitea@code.horrific.dev:james/git-rest-wrapper",
+                    title = "^Git REST Wrapper",
+                    description = "A 'universal' / normalized API wrapper for git hosting platforms.",
+                    licenseName = "Mozilla Public License 2.0",
+                    licenseKey = "mpl-2.0"
             ).create(lifecycle),
             LicenseWedge(
                     repo = "google/flexbox-layout",
@@ -70,14 +74,6 @@ fun LicensesWedge.addDefaults() {
                     websiteUrl = "https://bumptech.github.io/glide/",
                     repoUrl = "https://github.com/bumptech/glide",
                     licenseUrl = "https://raw.githubusercontent.com/bumptech/glide/master/LICENSE"
-            ).create(lifecycle),
-            LicenseWedge(
-                    repo = "square/retrofit",
-                    title = "Retrofit",
-                    description = "Type-safe HTTP client for Android and Java by Square, Inc.",
-                    licenseName = "Apache License 2.0",
-                    websiteUrl = "https://square.github.io/retrofit/",
-                    licenseKey = "apache-2.0"
             ).create(lifecycle),
             LicenseWedge(
                     title = "Android Open Source Project",

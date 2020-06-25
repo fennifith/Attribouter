@@ -11,6 +11,7 @@ import me.jfenn.attribouter.utils.ResourceUtils
 import me.jfenn.attribouter.utils.UrlClickListener
 import me.jfenn.attribouter.utils.equalsProvider
 import me.jfenn.attribouter.utils.isResourceMutable
+import me.jfenn.gitrest.model.ProviderString
 import me.jfenn.gitrest.model.User
 import java.util.*
 
@@ -100,10 +101,10 @@ open class TranslatorWedge(
         }
 
         viewHolder.itemView.apply {
-            ResourceUtils.getString(context, websiteUrl)?.let {
+            websiteUrl?.let {
                 setOnClickListener(UrlClickListener(it))
             } ?: login?.let {
-                setOnClickListener(UrlClickListener("https://github.com/$it"))
+                setOnClickListener(UrlClickListener(ProviderString(it).inferUrl()))
             } ?: run {
                 setOnClickListener(null)
             }

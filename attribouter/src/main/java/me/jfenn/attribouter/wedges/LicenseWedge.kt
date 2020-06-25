@@ -15,6 +15,7 @@ import me.jfenn.attribouter.utils.ResourceUtils
 import me.jfenn.attribouter.utils.equalsProvider
 import me.jfenn.attribouter.utils.toTitleString
 import me.jfenn.gitrest.model.License
+import me.jfenn.gitrest.model.ProviderString
 import me.jfenn.gitrest.model.Repo
 
 open class LicenseWedge(
@@ -67,7 +68,10 @@ open class LicenseWedge(
     }
 
     fun initChildren() {
-        repoUrl?.let { addChild(RepoLinkWedge(it, 1))}
+        // try to guess repository URL from id
+        val inferredRepoUrl = repoUrl ?: repo?.let { repoId -> ProviderString(repoId).inferUrl() }
+
+        inferredRepoUrl?.let { addChild(RepoLinkWedge(it, 1))}
         websiteUrl?.let { addChild(WebsiteLinkWedge(it, 2)) }
         if (!licenseBody.isNullOrEmpty() && !licenseUrl.isNullOrEmpty())
             addChild(LicenseLinkWedge(this, 0))
