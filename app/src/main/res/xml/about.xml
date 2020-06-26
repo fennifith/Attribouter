@@ -115,7 +115,7 @@
             description="Something Does Stuff With Things"
             licenseName="This Is A License"
             title="Library Something Or Other"
-            website="https://jfenn.me/" />
+            websiteUrl="https://jfenn.me/" />
         <!-- this data is not fetched from github, and works exactly the same as the contributors -->
         <!-- some license identifiers can be found here https://developer.github.com/v3/licenses/ -->
     </LicensesWedge>

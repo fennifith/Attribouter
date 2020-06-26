@@ -39,7 +39,7 @@ open class LicenseWedge(
     var description: String? by attr("description", description)
     var licenseName: String? by attr("licenseName", licenseName)
     var repoUrl: String? by attr("repoUrl", repoUrl)
-    var websiteUrl: String? by attr("website", websiteUrl)
+    var websiteUrl: String? by attr("websiteUrl", websiteUrl)
     var licenseUrl: String? by attr("licenseUrl", licenseUrl)
     var licenseBody: String? by attr("licenseBody", licenseBody)
     var licenseKey: String? by attr("license", licenseKey)
