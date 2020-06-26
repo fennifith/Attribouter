@@ -15,7 +15,7 @@
 
 | Contributors | Contributor | Licenses | License | Night Theme |
 |--------------|-------------|----------|---------|-------------|
-| ![img](.github/images/attribouter-contributors.png) | ![img](.github/images/attribouter-contributor.png) | ![img](.github/images/attribouter-licenses.png) | ![img](.github/images/attribouter-license.png) | ![img](.github/images/attribouter-night.png) |
+| ![img](./.github/images/attribouter-contributors.png?raw=true) | ![img](./.github/images/attribouter-contributor.png?raw=true) | ![img](./.github/images/attribouter-licenses.png?raw=true) | ![img](./.github/images/attribouter-license.png?raw=true) | ![img](./.github/images/attribouter-night.png?raw=true) |
 
 ### APK
 
