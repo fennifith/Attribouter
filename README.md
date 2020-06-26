@@ -1,4 +1,4 @@
-<p align="center"><img alt="Attribouter" width="128px" src="https://raw.githubusercontent.com/fennifith/Attribouter/main/.github/images/icon.png" /></p>
+<p align="center"><img alt="Attribouter" width="128px" style="width: 128px;" src="https://raw.githubusercontent.com/fennifith/Attribouter/main/.github/images/icon.png" /></p>
 <h1 align="center">Attribouter</h1>
 <p align="center">
     Attribouter is a lightweight "about screen" for Android apps, built for developers to easily credit a project's contributors & dependencies while matching the style of their app. It ships with the ability to fetch metadata directly from GitHub, GitLab, or Gitea (see: <a href="https://code.horrific.dev/james/git-rest-wrapper">git-rest-wrapper</a>), allowing contributors and licenses to be updated or modified without explicit configuration.
@@ -15,7 +15,7 @@
 
 | Contributors | Contributor | Licenses | License | Night Theme |
 |--------------|-------------|----------|---------|-------------|
-| ![img](./.github/images/attribouter-contributors.png) | ![img](./.github/images/attribouter-contributor.png) | ![img](./.github/images/attribouter-licenses.png) | ![img](./.github/images/attribouter-license.png) | ![img](./.github/images/attribouter-night.png) |
+| ![img](.github/images/attribouter-contributors.png) | ![img](.github/images/attribouter-contributor.png) | ![img](.github/images/attribouter-licenses.png) | ![img](.github/images/attribouter-license.png) | ![img](.github/images/attribouter-night.png) |
 
 ### APK
 
