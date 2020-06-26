@@ -23,11 +23,6 @@ android {
        }
     }
 
-    packagingOptions {
-        exclude 'META-INF/DEPENDENCIES'
-        merge 'META-INF/*.kotlin_module'
-    }
-
     testOptions.unitTests.includeAndroidResources = true
     testOptions.unitTests.all {
         testLogging {
@@ -56,5 +51,5 @@ dependencies {
     annotationProcessor "com.github.bumptech.glide:compiler:4.11.0"
 
     implementation "me.jfenn:AndroidUtils:0.0.3"
-    implementation "dev.horrific.code.james.git-rest-wrapper:gitrest:0.0.3"
+    implementation "dev.horrific.code.james.git-rest-wrapper:gitrest:0.0.4"
 }

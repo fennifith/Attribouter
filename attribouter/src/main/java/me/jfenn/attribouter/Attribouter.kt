@@ -1,6 +1,7 @@
 package me.jfenn.attribouter
 
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.XmlRes
@@ -20,11 +21,11 @@ class Attribouter(
         return this
     }
 
-    fun withGitHubToken(token: String) = withToken("api.github.com", token)
-    fun withGitLabToken(token: String) = withToken("gitlab.com", token)
+    fun withGitHubToken(token: String?) = withToken("api.github.com", token)
+    fun withGitLabToken(token: String?) = withToken("gitlab.com", token)
 
-    fun withToken(hostname: String, token: String) : Attribouter {
-        tokens[hostname] = token
+    fun withToken(hostname: String, token: String?) : Attribouter {
+        token?.let { tokens[hostname] = it }
         return this
     }
 
@@ -61,3 +62,9 @@ class Attribouter(
     }
 
 }
+
+fun ContextWrapper.attribouter(block: Attribouter.() -> Unit) = Attribouter(this).apply { block() }
+
+fun ContextWrapper.attribouterActivity(block: Attribouter.() -> Unit) = attribouter(block).show()
+
+fun ContextWrapper.attribouterFragment(block: Attribouter.() -> Unit) = attribouter(block).toFragment()
