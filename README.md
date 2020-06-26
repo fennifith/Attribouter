@@ -49,6 +49,18 @@ attribouterActivity {
 }
 ```
 
+<details>
+<summary>Java</summary>
+<div class="highlight highlight-source-java">
+<pre>
+Attribouter.from(context)
+    .withFile(R.xml.attribouter)
+    .withGitHubToken("abc123")
+    .show();
+</pre>
+</div>
+</details>
+
 ### Creating a Fragment
 This is also pretty simple.
 
@@ -58,6 +70,18 @@ val fragment = attribouterFragment {
     withGitHubToken("abc123")
 }
 ```
+
+<details>
+<summary>Java</summary>
+<div class="highlight highlight-source-java">
+<pre>
+Attribouter.from(context)
+    .withFile(R.xml.attribouter)
+    .withGitHubToken("abc123")
+    .show();
+</pre>
+</div>
+</details>
 
 ## Things to Note
 
