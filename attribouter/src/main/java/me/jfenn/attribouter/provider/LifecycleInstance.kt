@@ -24,9 +24,11 @@ class LifecycleInstance(
     val client = gitrest {
         this.providers = providers.toTypedArray()
         cache = MemoryCache(DiskCache(this, context.cacheDir))
+        logDebug = {
+            if (BuildConfig.DEBUG) Log.d("me.jfenn.gitrest", it)
+        }
         logError = {
-            if (BuildConfig.DEBUG)
-                Log.d("me.jfenn.gitrest", it)
+            if (BuildConfig.DEBUG) Log.e("me.jfenn.gitrest", it)
         }
     }
 

@@ -37,7 +37,7 @@
         app:layout_constraintEnd_toStartOf="@id/name"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:src="@drawable/attribouter_image_avatar" />
+        tools:src="@drawable/attribouter_image_avatar" />
 
     <TextView
         android:id="@+id/name"

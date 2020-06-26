@@ -10,6 +10,7 @@ import me.jfenn.attribouter.R
 import me.jfenn.attribouter.dialogs.UserDialog
 import me.jfenn.attribouter.utils.ResourceUtils
 import me.jfenn.attribouter.utils.equalsProvider
+import me.jfenn.attribouter.utils.loadDrawable
 import me.jfenn.attribouter.utils.toTitleString
 import me.jfenn.gitrest.model.ProviderString
 import me.jfenn.gitrest.model.User
@@ -108,7 +109,9 @@ open class ContributorWedge(
 
     override fun bind(context: Context, viewHolder: ViewHolder) {
         viewHolder.imageView?.apply {
-            ResourceUtils.setImage(context, avatar, R.drawable.attribouter_image_avatar, this)
+            context.loadDrawable(avatar, R.drawable.attribouter_image_avatar) {
+                setImageDrawable(it)
+            }
         }
 
         viewHolder.nameView?.apply {

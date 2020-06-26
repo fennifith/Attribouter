@@ -11,6 +11,7 @@ import me.jfenn.androidutils.getThemedColor
 import me.jfenn.attribouter.R
 import me.jfenn.attribouter.utils.ResourceUtils
 import me.jfenn.attribouter.utils.isResourceMutable
+import me.jfenn.attribouter.utils.loadDrawable
 import me.jfenn.attribouter.utils.toTitleString
 import me.jfenn.gitrest.model.ProviderString
 import me.jfenn.gitrest.model.Repo
@@ -74,7 +75,9 @@ open class AppWedge: Wedge<AppWedge.ViewHolder>(R.layout.attribouter_item_app_in
     override fun bind(context: Context, viewHolder: ViewHolder) {
         val info = context.applicationInfo
         viewHolder.appIconView?.apply {
-            ResourceUtils.setImage(context, icon, info.icon, this)
+            context.loadDrawable(icon, info.icon) {
+                setImageDrawable(it)
+            }
         }
 
         run { // get app label from string (safely)

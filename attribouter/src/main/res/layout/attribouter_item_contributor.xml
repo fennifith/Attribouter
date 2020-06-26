@@ -24,10 +24,10 @@
             android:id="@+id/image"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/attribouter_image_avatar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/attribouter_image_avatar" />
 
         <TextView
             android:id="@+id/name"

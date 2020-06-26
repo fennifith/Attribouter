@@ -1,59 +1,48 @@
 package me.jfenn.attribouter.utils
 
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.drawable.Drawable
-import android.widget.ImageView
-import androidx.annotation.DrawableRes
 import androidx.annotation.StyleRes
 import androidx.annotation.StyleableRes
 import androidx.core.content.ContextCompat
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import me.jfenn.attribouter.R
 
-fun Context.loadDrawable(identifier: String?, defaultRes: Int, set: (drawable: Drawable) -> Unit) {
-    val resInt = ResourceUtils.getResourceInt(this, identifier)
-    when {
-        resInt != null && resInt != -1 -> {
-            ContextCompat.getDrawable(this, resInt)?.let { set(it) }
-        }
-        identifier != null -> {
-            Glide.with(this)
-                    .load(identifier)
-                    .apply(RequestOptions().placeholder(defaultRes).error(defaultRes))
-                    .into(object : CustomTarget<Drawable>() {
-                        override fun onLoadCleared(placeholder: Drawable?) {}
-
-                        override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
-                            set(resource)
-                        }
-
-                    })
-        }
-        else -> ContextCompat.getDrawable(this, defaultRes)?.let { set(it) }
+fun Context.getDrawableSafe(res: Int) : Drawable? {
+    return try {
+        ContextCompat.getDrawable(this, res)
+    } catch (e: Resources.NotFoundException) {
+        VectorDrawableCompat.create(this.resources, res, this.theme)
     }
 }
 
-object ResourceUtils {
+fun Context.loadDrawable(identifier: String?, defaultRes: Int, set: (drawable: Drawable) -> Unit) {
+    val resInt = ResourceUtils.getResourceInt(this, identifier)
+    if (resInt != null && resInt != -1)
+        getDrawableSafe(resInt)?.let { set(it); return }
 
-    @JvmStatic
-    fun setImage(context: Context, identifier: String?, @DrawableRes defaultRes: Int, imageView: ImageView) {
-        val resInt = getResourceInt(context, identifier)
-        when {
-            resInt != null -> imageView.setImageResource(resInt)
-            identifier != null -> {
-                Glide.with(context)
-                        .load(identifier)
-                        .apply(RequestOptions()
-                                .placeholder(defaultRes)
-                                .error(defaultRes))
-                        .into(imageView)
-            }
-            else -> imageView.setImageResource(defaultRes)
-        }
-    }
+    if (identifier != null) {
+        val default = getDrawableSafe(defaultRes)
+        Glide.with(this)
+                .load(identifier)
+                .apply(RequestOptions().placeholder(default).error(default))
+                .into(object : CustomTarget<Drawable>() {
+                    override fun onLoadCleared(placeholder: Drawable?) {}
+
+                    override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+                        set(resource)
+                    }
+
+                })
+    } else getDrawableSafe(defaultRes)?.let { set(it) }
+}
+
+object ResourceUtils {
 
     @JvmStatic
     fun getString(context: Context, identifier: String?): String? {

@@ -7,10 +7,7 @@ import android.widget.TextView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.jfenn.attribouter.R
-import me.jfenn.attribouter.utils.ResourceUtils
-import me.jfenn.attribouter.utils.UrlClickListener
-import me.jfenn.attribouter.utils.equalsProvider
-import me.jfenn.attribouter.utils.isResourceMutable
+import me.jfenn.attribouter.utils.*
 import me.jfenn.gitrest.model.ProviderString
 import me.jfenn.gitrest.model.User
 import java.util.*
@@ -93,7 +90,9 @@ open class TranslatorWedge(
         }
 
         viewHolder.imageView?.apply {
-            ResourceUtils.setImage(context, avatar, R.drawable.attribouter_image_avatar, this)
+            context.loadDrawable(avatar, R.drawable.attribouter_image_avatar) {
+                setImageDrawable(it)
+            }
         }
 
         viewHolder.nameView?.apply {
