@@ -15,9 +15,9 @@ import me.jfenn.attribouter.interfaces.Notifiable
 import me.jfenn.attribouter.provider.LifecycleInstance
 import me.jfenn.attribouter.provider.wedge.XMLWedgeProvider
 import me.jfenn.attribouter.wedges.Wedge
-import me.jfenn.gitrest.impl.gitea.GiteaProvider
-import me.jfenn.gitrest.impl.github.GithubProvider
-import me.jfenn.gitrest.impl.gitlab.GitlabProvider
+import me.jfenn.gitrest.provider.gitea.GiteaProvider
+import me.jfenn.gitrest.provider.github.GithubProvider
+import me.jfenn.gitrest.provider.gitlab.GitlabProvider
 
 class AboutFragment : Fragment(), Notifiable {
 
@@ -47,7 +47,8 @@ class AboutFragment : Fragment(), Notifiable {
         val parser = resources.getXml(fileRes)
         val provider = XMLWedgeProvider(parser)
         val lifecycle = LifecycleInstance(
-                services = listOf(
+                requireContext(),
+                providers = listOf(
                         GithubProvider,
                         GitlabProvider,
                         GiteaProvider

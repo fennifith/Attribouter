@@ -53,7 +53,7 @@ open class LicenseWedge(
         if (!hasAllGeneric()) repo?.let {
             lifecycle?.launch {
                 withContext(Dispatchers.IO) {
-                    lifecycle?.provider?.getRepo(it)
+                    lifecycle?.client?.getRepo(it)
                 }?.let { data -> onRepository(data) }
             }
         }
@@ -61,7 +61,7 @@ open class LicenseWedge(
         licenseKey?.let { key ->
             lifecycle?.launch {
                 withContext(Dispatchers.IO) {
-                    lifecycle?.provider?.getLicense("github:$key")
+                    lifecycle?.client?.getLicense("github:$key")
                 }?.let { onLicense(it) }
             }
         }
@@ -95,7 +95,7 @@ open class LicenseWedge(
         data.license?.id.let { id ->
             if (!hasAllLicense()) lifecycle?.launch {
                 withContext(Dispatchers.IO) {
-                    lifecycle?.provider?.getLicense("github:$id")
+                    lifecycle?.client?.getLicense("github:$id")
                 }?.let { onLicense(it) }
             }
         }

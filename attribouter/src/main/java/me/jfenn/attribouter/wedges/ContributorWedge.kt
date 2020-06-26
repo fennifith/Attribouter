@@ -46,7 +46,7 @@ open class ContributorWedge(
         login?.let {
             lifecycle?.launch {
                 withContext(Dispatchers.IO) {
-                    lifecycle?.provider?.getUser(it)
+                    lifecycle?.client?.getUser(it)
                 }.let { user ->
                     user?.let { onContributor(user) }
                 }

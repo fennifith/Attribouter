@@ -56,5 +56,5 @@ dependencies {
     annotationProcessor "com.github.bumptech.glide:compiler:4.11.0"
 
     implementation "me.jfenn:AndroidUtils:0.0.3"
-    implementation "dev.horrific.code.james.git-rest-wrapper:gitrest:c91ae81f26"
+    implementation "dev.horrific.code.james.git-rest-wrapper:gitrest:0.0.3"
 }

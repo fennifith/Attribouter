@@ -38,7 +38,7 @@ open class TranslatorWedge(
         login?.let {
             if (!hasEverything()) lifecycle?.launch {
                 withContext(Dispatchers.IO) {
-                    lifecycle?.provider?.getUser(it)
+                    lifecycle?.client?.getUser(it)
                 }?.let { user -> onTranslator(user) }
             }
         }

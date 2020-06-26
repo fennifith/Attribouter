@@ -20,7 +20,7 @@ open class ContributorsWedge : ListWedge("@string/attribouter_title_contributors
     fun requestContributors(repo: String) {
         lifecycle?.launch {
             withContext(Dispatchers.IO) {
-                lifecycle?.provider?.getRepoContributors(repo)
+                lifecycle?.client?.getRepoContributors(repo)
             }?.forEach { contributor ->
                 onContributor(contributor)
             }

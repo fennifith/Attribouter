@@ -30,7 +30,7 @@ open class AppWedge: Wedge<AppWedge.ViewHolder>(R.layout.attribouter_item_app_in
 
         repo?.let { lifecycle?.launch {
             withContext(Dispatchers.IO) {
-                lifecycle?.provider?.getRepo(it)
+                lifecycle?.client?.getRepo(it)
             }?.let { data -> onRepository(data) }
         }}
     }
