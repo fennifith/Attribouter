@@ -8,7 +8,7 @@ import me.jfenn.attribouter.wedges.LicensesWedge
 fun ContributorsWedge.addDefaults() {
     addChildren(listOf(
             ContributorWedge(
-                    login = "fennifith",
+                    login = "github:fennifith",
                     name = "James Fenn",
                     avatarUrl = "https://avatars1.githubusercontent.com/u/13000407",
                     task = "^Library Maintainer",
@@ -17,20 +17,20 @@ fun ContributorsWedge.addDefaults() {
                     email = "dev@jfenn.me"
             ).create(lifecycle),
             ContributorWedge(
-                    login = "rroyGit",
+                    login = "github:rroyGit",
                     name = "Rupam Roy",
                     avatarUrl = "https://avatars2.githubusercontent.com/u/20290568",
                     task = "^Contributor"
             ).create(lifecycle),
             ContributorWedge(
-                    login = "divadsn",
+                    login = "github:divadsn",
                     name = "David Sn",
                     avatarUrl = "https://avatars0.githubusercontent.com/u/28547847",
                     task = "^Contributor",
                     websiteUrl = "https://www.codebucket.de/"
             ).create(lifecycle),
             ContributorWedge(
-                    login = "gcantoni",
+                    login = "github:gcantoni",
                     name = "Giorgio Cantoni",
                     avatarUrl = "https://avatars3.githubusercontent.com/u/30368951",
                     task = "^Contributor",
@@ -44,11 +44,10 @@ fun ContributorsWedge.addDefaults() {
 fun LicensesWedge.addDefaults() {
     addChildren(listOf(
             LicenseWedge(
-                    repo = "fennifith/Attribouter",
+                    repo = "github:fennifith/Attribouter",
                     title = "Attribouter",
                     description = "A lightweight \"about screen\" library to allow quick but customizable attribution in Android apps.",
                     licenseName = "Apache License 2.0",
-                    repoUrl = "https://github.com/fennifith/Attribouter",
                     licenseKey = "apache-2.0"
             ).create(lifecycle),
             LicenseWedge(
@@ -59,20 +58,18 @@ fun LicensesWedge.addDefaults() {
                     licenseKey = "mpl-2.0"
             ).create(lifecycle),
             LicenseWedge(
-                    repo = "google/flexbox-layout",
+                    repo = "github:google/flexbox-layout",
                     title = "FlexBox Layout",
                     description = "FlexboxLayout is a library that brings similar capabilities to the CSS Flexible Box Layout to Android.",
                     licenseName = "Apache License 2.0",
-                    repoUrl = "https://github.com/google/flexbox-layout",
                     licenseKey = "apache-2.0"
             ).create(lifecycle),
             LicenseWedge(
-                    repo = "bumptech/glide",
+                    repo = "github:bumptech/glide",
                     title = "Glide",
                     description = "An image loading and caching library for Android focused on smooth scrolling",
                     licenseName = "Other",
                     websiteUrl = "https://bumptech.github.io/glide/",
-                    repoUrl = "https://github.com/bumptech/glide",
                     licenseUrl = "https://raw.githubusercontent.com/bumptech/glide/master/LICENSE"
             ).create(lifecycle),
             LicenseWedge(

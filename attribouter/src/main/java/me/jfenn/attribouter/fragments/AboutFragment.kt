@@ -63,17 +63,15 @@ class AboutFragment : Fragment(), Notifiable {
 
         wedges = provider.map { _, wedge ->
             wedge.withWedgeProvider(provider).create(lifecycle)
-        }.getAllWedges()
-
-        parser.close()
-
-        adapter = WedgeAdapter(wedges)
-        recycler?.apply {
-            layoutManager = LinearLayoutManager(context)
-            //addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-            adapter = this@AboutFragment.adapter
+        }.getAllWedges().also { wedges ->
+            adapter = WedgeAdapter(wedges)
+            recycler?.apply {
+                layoutManager = LinearLayoutManager(context)
+                adapter = this@AboutFragment.adapter
+            }
         }
 
+        parser.close()
         return recycler
     }
 
@@ -81,10 +79,5 @@ class AboutFragment : Fragment(), Notifiable {
         wedges?.indexOf(changed)?.let {
             recycler?.post { adapter?.notifyItemChanged(it) }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        //providers?.forEach { it.destroy() }
     }
 }

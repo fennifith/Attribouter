@@ -1,7 +1,6 @@
 package me.jfenn.attribouter.wedges
 
 import android.content.Context
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -108,8 +107,6 @@ open class ContributorWedge(
     }
 
     override fun bind(context: Context, viewHolder: ViewHolder) {
-        Log.d(javaClass.name, "binding view for $login")
-
         viewHolder.imageView?.apply {
             ResourceUtils.setImage(context, avatar, R.drawable.attribouter_image_avatar, this)
         }

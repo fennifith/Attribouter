@@ -8,6 +8,7 @@
 	<a href="https://github.com/fennifith/Alarmio/actions"><img alt="Build Status" src="https://github.com/fennifith/Attribouter/workflows/Gradle%20Build/badge.svg" /></a>
 	<a href="https://discord.jfenn.me/"><img alt="Discord" src="https://img.shields.io/discord/514625116706177035.svg?logo=discord&colorB=7289da" /></a>
 	<a href="https://liberapay.com/fennifith/donate"><img alt="Liberapay" src="https://img.shields.io/badge/liberapay-donate-yellow.svg?logo=liberapay" /></a>
+	<a href="https://jfenn.me/projects/attribouter/wiki/"><img alt="Documentation" src="https://img.shields.io/static/v1?label=wiki&message=jfenn.me&color=blue" /></a>
 </p>
 
 ### Screenshots
