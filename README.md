@@ -1,4 +1,4 @@
-<p align="center"><img alt="Attribouter" width="128px" src="https://raw.githubusercontent.com/fennifith/Attribouter/main/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png" /></p>
+<p align="center"><img alt="Attribouter" width="128px" src="https://raw.githubusercontent.com/fennifith/Attribouter/main/.github/images/icon.png" /></p>
 <h1 align="center">Attribouter</h1>
 <p align="center">
     Attribouter is a lightweight "about screen" for Android apps, built for developers to easily credit a project's contributors & dependencies while matching the style of their app. It ships with the ability to fetch metadata directly from GitHub, GitLab, or Gitea (see: <a href="https://code.horrific.dev/james/git-rest-wrapper">git-rest-wrapper</a>), allowing contributors and licenses to be updated or modified without explicit configuration.
@@ -139,3 +139,7 @@ Also, mega props to [Kevin Aguilar](https://twitter.com/kevttob) and [221 Pixels
 - [@gcantoni](https://github.com/gcantoni)
 - [@divadsn](https://github.com/divadsn)
 - [@jahirfiquitiva](https://github.com/jahirfiquitiva)
+
+### Design
+
+- [@221pxls](https://twitter.com/221pxls)
