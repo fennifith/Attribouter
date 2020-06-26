@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Default values for properties: these can be overridden by implementers without declaring their own <style> -->
+
+    <!-- Default Themed Colors -->
+    <color name="attribouter_colorPrimary">#3F51B5</color>
+    <color name="attribouter_colorPrimaryDark">#303F9F</color>
+    <color name="attribouter_colorAccent">#FF4081</color>
+    <color name="attribouter_textColorAccent">@color/attribouter_colorPrimary</color>
+    <color name="attribouter_cardColor">#FFFFFF</color>
+    <color name="attribouter_windowBackgroundColor">#F5F5F5</color>
+    <color name="attribouter_windowInsetColor">#E0E0E0</color>
+    <color name="attribouter_highlightColor">#1F000000</color>
+
+    <color name="attribouter_colorPrimary_night">#D9DEff</color>
+    <color name="attribouter_colorPrimaryDark_night">#BAC2F5</color>
+    <color name="attribouter_colorAccent_night">#FFABC7</color>
+    <color name="attribouter_textColorAccent_night">@color/attribouter_colorPrimary_night</color>
+    <color name="attribouter_cardColor_night">#303030</color>
+    <color name="attribouter_windowBackgroundColor_night">#000000</color>
+    <color name="attribouter_windowInsetColor_night">#212121</color>
+    <color name="attribouter_highlightColor_night">#33FFFFFF</color>
+
+    <color name="attribouter_textColorPrimary">#DE000000</color>
+    <color name="attribouter_textColorSecondary">#8A000000</color>
+    <color name="attribouter_textColorTertiary">#61000000</color>
+    <color name="attribouter_textColorPrimaryInverse">#FFFFFF</color>
+    <color name="attribouter_textColorSecondaryInverse">#B3FFFFFF</color>
+    <color name="attribouter_textColorTertiaryInverse">#80FFFFFF</color>
+
+    <!-- Default Dimension Attributes -->
+    <dimen name="attribouter_cardCornerRadius">8dp</dimen>
+</resources>

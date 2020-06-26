@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AttribouterTheme.ActionBar">
+
+        <me.jfenn.attribouter.views.CustomToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingVertical="8dp"
+        android:clipToPadding="false"
+        android:minHeight="500dp"
+        android:minWidth="400dp"
+        android:scrollbars="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textColor="?android:textColorSecondary"
+                android:textSize="14sp"
+                android:lineSpacingMultiplier="1.2"
+                tools:text="This is a license that does things and stuff and things and stuff and things and stuff and things and stuff and things and stuff and things and stuff." />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="@string/attribouter_title_license_permissions"
+                android:textColor="?attr/attribouter_textColorAccent"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="?attr/attribouter_cardColor"
+                app:cardCornerRadius="0dp"
+                app:cardElevation="1dp">
+
+                <TextView
+                    android:id="@+id/permissionsText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:lineSpacingMultiplier="1.4"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:text="attribution\nopen source\nwhatever" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="@string/attribouter_title_license_conditions"
+                android:textColor="?attr/attribouter_textColorAccent"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="?attr/attribouter_cardColor"
+                app:cardCornerRadius="0dp"
+                app:cardElevation="1dp">
+
+                <TextView
+                    android:id="@+id/conditionsText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:lineSpacingMultiplier="1.4"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:text="attribution\nopen source\nwhatever" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="@string/attribouter_title_license_limitations"
+                android:textColor="?attr/attribouter_textColorAccent"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="?attr/attribouter_cardColor"
+                app:cardCornerRadius="0dp"
+                app:cardElevation="1dp">
+
+                <TextView
+                    android:id="@+id/limitationsText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:lineSpacingMultiplier="1.4"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:text="attribution\nopen source\nwhatever" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:lineSpacingMultiplier="1.2"
+                android:textSize="12sp"
+                android:text="@string/attribouter_desc_licenses_legal" />
+
+            <HorizontalScrollView
+                android:id="@+id/bodyContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginVertical="8dp"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp"
+                android:clipToPadding="false"
+                android:background="@drawable/attribouter_bg_emphasized"
+                android:scrollbars="horizontal">
+
+                <TextView
+                    android:id="@+id/body"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="12dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="12dp"
+                    android:textColor="?android:textColorSecondary"
+                    android:textSize="12sp"
+                    android:typeface="monospace"
+                    tools:text="somethingsomethingsomethingsomething\tsomethingsomethingsomething\nsomething" />
+
+            </HorizontalScrollView>
+
+            <TextView
+                android:id="@+id/moreInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                android:gravity="center"
+                android:paddingBottom="12dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="8dp"
+                android:text="@string/attribouter_title_more_info"
+                android:textAlignment="center"
+                android:textColor="?attr/colorAccent"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackgroundBorderless">
+
+    <ImageButton
+        android:id="@+id/icon"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_margin="8dp"
+        android:background="@drawable/attribouter_bg_action"
+        android:backgroundTint="?android:textColorPrimary"
+        android:scaleType="fitCenter"
+        android:tint="?android:textColorPrimary"
+        tools:src="@drawable/attribouter_ic_link" />
+
+</FrameLayout>

@@ -8,101 +8,99 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.jfenn.attribouter.R
 import me.jfenn.attribouter.dialogs.UserDialog
-import me.jfenn.attribouter.interfaces.Mergeable
-import me.jfenn.attribouter.provider.net.ProviderString
-import me.jfenn.attribouter.provider.net.data.UserData
 import me.jfenn.attribouter.utils.ResourceUtils
-import me.jfenn.attribouter.utils.isResourceMutable
+import me.jfenn.attribouter.utils.equalsProvider
+import me.jfenn.attribouter.utils.loadDrawable
+import me.jfenn.attribouter.utils.toTitleString
+import me.jfenn.gitrest.model.ProviderString
+import me.jfenn.gitrest.model.User
 
-class ContributorWedge(
+open class ContributorWedge(
         login: String? = null,
         name: String? = null,
         avatarUrl: String? = null,
-        task: String? = null,
-        position: Int = -1,
+        profileUrl: String? = null,
+        websiteUrl: String? = null,
+        task: String? = "Contributor",
+        position: Int = 0,
         bio: String? = null,
-        blog: String? = null,
         email: String? = null
-) : Wedge<ContributorWedge.ViewHolder>(R.layout.item_attribouter_contributor), Mergeable<ContributorWedge> {
+) : Wedge<ContributorWedge.ViewHolder>(R.layout.attribouter_item_contributor), Comparable<ContributorWedge> {
 
-    var login: ProviderString? by attrProvider("login", login)
-    private var name: String? by attr("name", name)
-    var avatarUrl: String? by attr("avatar", avatarUrl)
+    var login: String? by attr("login", login)
+    var name: String? by attr("name", name)
+    var avatar: String? by attr("avatar", avatarUrl)
+    var profileUrl: String? by attr("profileUrl", profileUrl)
+    var websiteUrl: String? by attr("websiteUrl", websiteUrl)
     var task: String? by attr("task", task)
-    var position: Int? by attr("position", position)
+    var position: Int by object : attr<ContributorWedge, Int>("position", position) {
+        override fun apply(original: Int?, value: Int?): Int? = if (value != null && value != 0) value else original
+    }
     var bio: String? by attr("bio", bio)
-    var blog: String? by attr("blog", blog)
-    private var email: String? by attr("email", email)
-    private var isHidden: Boolean? by attr("hidden", false)
+    var email: String? by attr("email", email)
+    override var isHidden: Boolean by attr("hidden", false)
 
     override fun onCreate() {
-        login?.let { addChild(GitHubLinkWedge(it.id, 1)) }
-        blog?.let { addChild(WebsiteLinkWedge(it, 2)) }
-        email?.let { addChild(EmailLinkWedge(it, -1)) }
+        initChildren()
 
-        if (!hasAll()) login?.let {
+        login?.let {
             lifecycle?.launch {
                 withContext(Dispatchers.IO) {
-                    lifecycle?.provider?.getUser(it)
-                }?.let { user -> onContributor(user) }
+                    lifecycle?.client?.getUser(it)
+                }.let { user ->
+                    user?.let { onContributor(user) }
+                }
             }
         }
     }
 
-    fun getAbsolutePosition(): Int? = position?.let { if (it >= 0) it else null }
+    fun initChildren() {
+        // try to guess profile URL from id
+        (profileUrl ?: login?.let { ProviderString(it).inferUrl() })?.let { url ->
+            login?.let { userId ->
+                val id = ProviderString(userId)
+                addChild(ProfileLinkWedge(
+                        name = id.provider.toTitleString(),
+                        url = url,
+                        icon = "@drawable/attribouter_ic_${id.provider}",
+                        priority = 0
+                ).create(lifecycle))
+            } ?: addChild(ProfileLinkWedge(url = url, priority = 1).create(lifecycle))
+        }
 
-    fun onContributor(data: UserData) {
-        merge(ContributorWedge(
-                data.login,
-                data.name,
-                data.avatarUrl,
-                if (task == null) "Contributor" else null,
-                -1,
-                data.bio,
-                data.websiteUrl,
-                data.email
-        ).create())
+        email?.let { addChild(EmailLinkWedge(it, 0)) }
+        websiteUrl?.let { addChild(WebsiteLinkWedge(it, 2)) }
+    }
 
-        lifecycle?.notifyItemChanged(this)
+    open fun onContributor(data: User) {
+        login = data.providerString.toString()
+        name = data.name
+        avatar = data.avatarUrl
+        profileUrl = data.url
+        websiteUrl = data.websiteUrl
+        bio = data.bio
+        email = data.email
+
+        initChildren()
+        notifyItemChanged()
     }
 
     fun getCanonicalName(): String? {
-        return name ?: login?.id
-    }
-
-    override fun merge(contributor: ContributorWedge): ContributorWedge {
-        if (name.isResourceMutable())
-            contributor.name?.let { name = it }
-        if (avatarUrl.isResourceMutable())
-            contributor.avatarUrl?.let { avatarUrl = it }
-        if (bio.isResourceMutable() && !contributor.bio.isNullOrEmpty())
-            contributor.bio?.let { bio = it }
-        if (blog.isResourceMutable() && !contributor.blog.isNullOrEmpty())
-            contributor.blog?.let { blog = it }
-        if (email.isResourceMutable() && !contributor.email.isNullOrEmpty())
-            contributor.email?.let { email = it }
-        if (task.isResourceMutable())
-            contributor.task?.let { task = it }
-
-        addChildren(contributor.getChildren())
-        return this
-    }
-
-    override fun hasAll(): Boolean {
-        return !name.isResourceMutable()
-                && !bio.isResourceMutable()
-                && !blog.isResourceMutable()
-                && !email.isResourceMutable()
-    }
-
-    override fun isHidden(): Boolean {
-        return isHidden == true
+        return name ?: login
     }
 
     override fun equals(other: Any?): Boolean {
         return (other as? ContributorWedge)?.let {
-            login?.id?.equals(it.login?.id, ignoreCase = true)
+            login.equalsProvider(other.login)
         } ?: super.equals(other)
+    }
+
+    override fun compareTo(other: ContributorWedge): Int {
+        if (position == 0)
+            return 1;
+        if (other.position == 0)
+            return -1;
+        return position - other.position
     }
 
     override fun getViewHolder(v: View): ViewHolder {
@@ -111,7 +109,9 @@ class ContributorWedge(
 
     override fun bind(context: Context, viewHolder: ViewHolder) {
         viewHolder.imageView?.apply {
-            ResourceUtils.setImage(context, avatarUrl, R.drawable.ic_attribouter_avatar, this)
+            context.loadDrawable(avatar, R.drawable.attribouter_image_avatar) {
+                setImageDrawable(it)
+            }
         }
 
         viewHolder.nameView?.apply {
@@ -127,17 +127,36 @@ class ContributorWedge(
             }
         }
 
+        val links = getTypedChildren<LinkWedge>().filter { !it.isHidden }.sorted()
+
+        viewHolder.firstLinkView?.apply {
+            links.getOrNull(0)?.let { link ->
+                link.bind(context, LinkWedge.ViewHolder(this))
+                visibility = View.VISIBLE
+            } ?: run {
+                visibility = View.GONE
+            }
+        }
+
+        viewHolder.secondLinkView?.apply {
+            links.getOrNull(1)?.let { link ->
+                link.bind(context, LinkWedge.ViewHolder(this))
+                visibility = View.VISIBLE
+            } ?: run {
+                visibility = View.GONE
+            }
+        }
+
         viewHolder.itemView.apply {
             if (ResourceUtils.getString(context, bio) != null) {
-                setOnClickListener { view ->
-                    UserDialog(view.context, this@ContributorWedge)
-                            .show()
+                setOnClickListener {
+                    UserDialog(context, this@ContributorWedge).show()
                 }
             } else {
                 var importantLink: LinkWedge? = null
                 var clickListener: View.OnClickListener? = null
-                for (link in getTypedChildren<LinkWedge>().filter { !it.isHidden }) {
-                    if (importantLink == null || link.priority() > importantLink.priority()) {
+                for (link in links) {
+                    if (importantLink == null || link.priority > importantLink.priority) {
                         link.getListener(context)?.let {
                             importantLink = link
                             clickListener = it
@@ -150,9 +169,12 @@ class ContributorWedge(
         }
     }
 
-    class ViewHolder(v: View) : Wedge.ViewHolder(v) {
+    open class ViewHolder(v: View) : Wedge.ViewHolder(v) {
         var imageView: ImageView? = v.findViewById(R.id.image)
         var nameView: TextView? = v.findViewById(R.id.name)
         var taskView: TextView? = v.findViewById(R.id.task)
+
+        var firstLinkView: View? = v.findViewById(R.id.link_1)
+        var secondLinkView: View? = v.findViewById(R.id.link_2)
     }
 }

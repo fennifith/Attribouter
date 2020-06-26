@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import me.jfenn.attribouter.Attribouter
@@ -14,9 +13,11 @@ import me.jfenn.attribouter.R
 import me.jfenn.attribouter.adapters.WedgeAdapter
 import me.jfenn.attribouter.interfaces.Notifiable
 import me.jfenn.attribouter.provider.LifecycleInstance
-import me.jfenn.attribouter.provider.net.github.GitHubService
 import me.jfenn.attribouter.provider.wedge.XMLWedgeProvider
 import me.jfenn.attribouter.wedges.Wedge
+import me.jfenn.gitrest.provider.gitea.GiteaProvider
+import me.jfenn.gitrest.provider.github.GithubProvider
+import me.jfenn.gitrest.provider.gitlab.GitlabProvider
 
 class AboutFragment : Fragment(), Notifiable {
 
@@ -24,44 +25,53 @@ class AboutFragment : Fragment(), Notifiable {
     private var adapter: WedgeAdapter? = null
 
     private var wedges: List<Wedge<*>>? = null
-    private var gitHubToken: String? = null
+    private var tokens = HashMap<String, String>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        recycler = inflater.inflate(R.layout.fragment_attribouter_about, container, false) as RecyclerView
+        recycler = inflater.inflate(R.layout.attribouter_fragment_about, container, false) as RecyclerView
 
         val args = arguments
         var fileRes = R.xml.attribouter
         if (args != null) {
-            gitHubToken = args.getString(Attribouter.EXTRA_GITHUB_OAUTH_TOKEN, null)
             fileRes = args.getInt(Attribouter.EXTRA_FILE_RES, fileRes)
+
+            // parse hostname args
+            args.keySet().filter { it.startsWith(Attribouter.EXTRA_TOKEN) }.forEach { key ->
+                val hostname = key.substring(Attribouter.EXTRA_TOKEN.length)
+                val token = args.getString(key, "")
+                if (token.isNotBlank())
+                    tokens[hostname] = token
+            }
         }
 
         val parser = resources.getXml(fileRes)
         val provider = XMLWedgeProvider(parser)
         val lifecycle = LifecycleInstance(
-                services = listOf(
-                        GitHubService.apply {
-                            withToken(gitHubToken)
-                            context?.let { ctx -> withCache(ctx.cacheDir) }
-                        }
-                ),
+                requireContext(),
+                providers = listOf(
+                        GithubProvider,
+                        GitlabProvider,
+                        GiteaProvider
+                ).map {
+                    it.apply {
+                        tokens.putAll(this@AboutFragment.tokens)
+                    }
+                },
                 scope = viewLifecycleOwner.lifecycleScope,
                 notifiable = this
         )
 
         wedges = provider.map { _, wedge ->
             wedge.withWedgeProvider(provider).create(lifecycle)
-        }.getAllWedges()
-
-        parser.close()
-
-        adapter = WedgeAdapter(wedges)
-        recycler?.apply {
-            layoutManager = LinearLayoutManager(context)
-            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-            adapter = this@AboutFragment.adapter
+        }.getAllWedges().also { wedges ->
+            adapter = WedgeAdapter(wedges)
+            recycler?.apply {
+                layoutManager = LinearLayoutManager(context)
+                adapter = this@AboutFragment.adapter
+            }
         }
 
+        parser.close()
         return recycler
     }
 
@@ -69,10 +79,5 @@ class AboutFragment : Fragment(), Notifiable {
         wedges?.indexOf(changed)?.let {
             recycler?.post { adapter?.notifyItemChanged(it) }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        //providers?.forEach { it.destroy() }
     }
 }

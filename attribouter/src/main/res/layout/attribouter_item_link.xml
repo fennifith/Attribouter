@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="?attr/attribouter_textColorAccent"
+        app:iconTint="?attr/attribouter_textColorAccent"
+        app:rippleColor="?attr/colorControlHighlight"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+        tools:text="Email" />
+
+</FrameLayout>

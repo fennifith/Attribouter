@@ -9,8 +9,8 @@ class LicenseLinkWedge(
         private val license: LicenseWedge, priority: Int
 ) : LinkWedge(
         id = "license",
-        name = "@string/title_attribouter_license",
-        icon = "@drawable/ic_attribouter_copyright",
+        name = "@string/attribouter_title_license",
+        icon = "@drawable/attribouter_ic_copyright",
         priority = priority
 ) {
 
@@ -18,8 +18,7 @@ class LicenseLinkWedge(
         return when {
             license.licenseBody != null ->
                 View.OnClickListener { v ->
-                    LicenseDialog(v.context, license)
-                            .show()
+                    LicenseDialog(v.context, license).show()
                 }
             license.licenseUrl != null -> UrlClickListener(license.licenseUrl)
             else -> null

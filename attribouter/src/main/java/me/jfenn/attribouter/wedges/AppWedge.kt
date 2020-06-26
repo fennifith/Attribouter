@@ -5,66 +5,67 @@ import android.content.pm.PackageManager
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.flexbox.FlexDirection
-import com.google.android.flexbox.FlexboxLayoutManager
-import com.google.android.flexbox.JustifyContent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import me.jfenn.androidutils.getThemedColor
 import me.jfenn.attribouter.R
-import me.jfenn.attribouter.adapters.WedgeAdapter
-import me.jfenn.attribouter.provider.net.ProviderString
-import me.jfenn.attribouter.provider.net.data.RepoData
 import me.jfenn.attribouter.utils.ResourceUtils
-import java.util.*
+import me.jfenn.attribouter.utils.isResourceMutable
+import me.jfenn.attribouter.utils.loadDrawable
+import me.jfenn.attribouter.utils.toTitleString
+import me.jfenn.gitrest.model.ProviderString
+import me.jfenn.gitrest.model.Repo
 
-class AppWedge: Wedge<AppWedge.ViewHolder>(R.layout.item_attribouter_app_info) {
+open class AppWedge: Wedge<AppWedge.ViewHolder>(R.layout.attribouter_item_app_info) {
 
     val icon: String? by attr("icon")
     var title: String? by attr("title")
     var description: String? by attr("description")
-    val repo: ProviderString? by attrProvider("repo")
-    val gitHubUrl: String? by attr("gitHubUrl")
-    val websiteUrl: String? by attr("websiteUrl")
-    val playStoreUrl: String? by attr("playStoreUrl")
+    val repo: String? by attr("repo")
+    var repoUrl: String? by attr("repoUrl")
+    var websiteUrl: String? by attr("websiteUrl")
+    var playStoreUrl: String? by attr("playStoreUrl")
 
     override fun onCreate() {
-        (gitHubUrl ?: repo?.let { "https://github.com/$it" })?.let {
-            addChild(GitHubLinkWedge(it, 0, true).create(lifecycle))
-        }
-
-        websiteUrl?.let {
-            addChild(WebsiteLinkWedge(it, 0).create(lifecycle))
-        }
-
-        playStoreUrl?.let {
-            addChild(PlayStoreLinkWedge(it, 0).create(lifecycle))
-        }
+        initChildren()
 
         repo?.let { lifecycle?.launch {
             withContext(Dispatchers.IO) {
-                lifecycle?.provider?.getRepository(it)
+                lifecycle?.client?.getRepo(it)
             }?.let { data -> onRepository(data) }
         }}
     }
 
-    fun onRepository(repo: RepoData) {
-        repo.description?.let { repoDescription ->
-            if ((description == null || !description!!.startsWith("^")))
-                description = repoDescription
+    fun initChildren() {
+        (repoUrl ?: repo?.let { ProviderString(it).inferUrl() })?.let { url ->
+            repo?.let { repoId ->
+                val id = ProviderString(repoId)
+                addChild(RepoLinkWedge(
+                        name = id.provider.toTitleString(),
+                        url = url,
+                        icon = "@drawable/attribouter_ic_${id.provider}",
+                        priority = 0
+                ).create(lifecycle))
+            } ?: addChild(RepoLinkWedge(url = url, priority = 1).create(lifecycle))
         }
 
-        repo.source.url?.let { repoUrl ->
-            addChild(GitHubLinkWedge(repoUrl, 0, true).create(lifecycle))
-        }
+        websiteUrl?.let { addChild(WebsiteLinkWedge(it, 0).create(lifecycle)) }
+        playStoreUrl?.let { addChild(PlayStoreLinkWedge(it, 0).create(lifecycle)) }
+    }
 
-        repo.websiteUrl?.let { repoHomepage ->
-            addChild(
-                    if (repoHomepage.startsWith("https://play.google.com/"))
-                        PlayStoreLinkWedge(repoHomepage, 0).create(lifecycle)
-                    else WebsiteLinkWedge(repoHomepage, 0).create(lifecycle)
-            )
-        }
+    fun onRepository(repo: Repo) {
+        if (description.isResourceMutable())
+            repo.description?.let { description = it }
+        if (repoUrl.isResourceMutable())
+            repo.url?.let { repoUrl = it }
+
+        if (repo.websiteUrl?.startsWith("https://play.google.com/") == true) {
+            if (playStoreUrl.isResourceMutable())
+                playStoreUrl = repo.websiteUrl
+        } else if (websiteUrl.isResourceMutable())
+            repo.websiteUrl?.let { websiteUrl = it }
+
+        initChildren()
     }
 
     override fun getViewHolder(v: View): ViewHolder {
@@ -73,7 +74,12 @@ class AppWedge: Wedge<AppWedge.ViewHolder>(R.layout.item_attribouter_app_info) {
 
     override fun bind(context: Context, viewHolder: ViewHolder) {
         val info = context.applicationInfo
-        ResourceUtils.setImage(context, icon, info.icon, viewHolder.appIconView)
+        viewHolder.appIconView?.apply {
+            context.loadDrawable(icon, info.icon) {
+                setImageDrawable(it)
+            }
+        }
+
         run { // get app label from string (safely)
             ResourceUtils.getString(context, title) ?: if (info.labelRes == 0)
                 info.nonLocalizedLabel?.toString()
@@ -90,7 +96,7 @@ class AppWedge: Wedge<AppWedge.ViewHolder>(R.layout.item_attribouter_app_info) {
         viewHolder.versionTextView?.apply {
             try {
                 val packageInfo = context.packageManager.getPackageInfo(info.packageName, 0)
-                text = String.format(context.getString(R.string.title_attribouter_version), packageInfo.versionName)
+                text = String.format(context.getString(R.string.attribouter_title_version), packageInfo.versionName)
                 visibility = View.VISIBLE
             } catch (e: PackageManager.NameNotFoundException) {
                 visibility = View.GONE
@@ -106,7 +112,22 @@ class AppWedge: Wedge<AppWedge.ViewHolder>(R.layout.item_attribouter_app_info) {
             }
         }
 
-        viewHolder.links?.apply {
+        val links = getTypedChildren<LinkWedge>().filter { !it.isHidden }
+
+        viewHolder.linkViews.forEachIndexed { index, view ->
+            view?.apply {
+                links.getOrNull(index)?.let { link ->
+                    link.apply {
+                        tintColor = context.getThemedColor(R.attr.attribouter_textColorAccent)
+                    }.bind(context, LinkWedge.ViewHolder(this))
+                    visibility = View.VISIBLE
+                } ?: run {
+                    visibility = View.GONE
+                }
+            }
+        }
+
+        /*viewHolder.links?.apply {
             val children = getTypedChildren<LinkWedge>()
             if (children.isNotEmpty()) {
                 val links = children.filter { link -> !link.isHidden }
@@ -121,16 +142,22 @@ class AppWedge: Wedge<AppWedge.ViewHolder>(R.layout.item_attribouter_app_info) {
             } else {
                 visibility = View.GONE
             }
-        }
+        }*/
     }
 
-    class ViewHolder(v: View) : Wedge.ViewHolder(v) {
+    open class ViewHolder(v: View) : Wedge.ViewHolder(v) {
 
         var appIconView: ImageView? = v.findViewById(R.id.appIcon)
         var nameTextView: TextView? = v.findViewById(R.id.appName)
         var versionTextView: TextView? = v.findViewById(R.id.appVersion)
         var descriptionTextView: TextView? = v.findViewById(R.id.description)
-        var links: RecyclerView? = v.findViewById(R.id.appLinks)
+        //var links: RecyclerView? = v.findViewById(R.id.appLinks)
 
+        var linkViews: Array<View?> = arrayOf(
+                v.findViewById(R.id.link_1),
+                v.findViewById(R.id.link_2),
+                v.findViewById(R.id.link_3),
+                v.findViewById(R.id.link_4)
+        )
     }
 }

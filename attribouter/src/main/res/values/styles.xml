@@ -1,23 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AttribouterTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="AttribouterTheme.Base" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/attribouter_colorPrimary</item>
+        <item name="colorPrimaryDark">@color/attribouter_colorPrimaryDark</item>
+        <item name="colorAccent">@color/attribouter_colorAccent</item>
+
+        <item name="attribouter_textColorAccent">@color/attribouter_textColorAccent</item>
+        <item name="attribouter_cardColor">@color/attribouter_cardColor</item>
+        <item name="attribouter_cardCornerRadius">@dimen/attribouter_cardCornerRadius</item>
+        <item name="attribouter_windowBackgroundColor">@color/attribouter_windowBackgroundColor</item>
+        <item name="attribouter_windowInsetColor">@color/attribouter_windowInsetColor</item>
+
+        <item name="attribouter_userDialogTheme">@style/AttribouterTheme.Dialog</item>
+        <item name="attribouter_licenseDialogTheme">@style/AttribouterTheme.Dialog.Fullscreen</item>
+        <item name="attribouter_overflowDialogTheme">@style/AttribouterTheme.Dialog.Fullscreen</item>
+
+        <item name="cardCornerRadius">?attr/attribouter_cardCornerRadius</item>
+        <item name="colorControlHighlight">@color/attribouter_highlightColor</item>
+
         <item name="android:textColorPrimary">@color/attribouter_textColorPrimary</item>
         <item name="android:textColorSecondary">@color/attribouter_textColorSecondary</item>
         <item name="android:textColorTertiary">@color/attribouter_textColorTertiary</item>
         <item name="android:textColorPrimaryInverse">@color/attribouter_textColorPrimaryInverse</item>
         <item name="android:textColorSecondaryInverse">@color/attribouter_textColorSecondaryInverse</item>
         <item name="android:textColorTertiaryInverse">@color/attribouter_textColorTertiaryInverse</item>
+
+        <item name="android:windowBackground">?attr/attribouter_windowBackgroundColor</item>
+        <item name="android:colorBackground">?attr/attribouter_windowBackgroundColor</item>
     </style>
+
+    <!-- Activity themes: derived from AttribouterTheme.Base -->
+
+    <style name="AttribouterTheme" parent="AttribouterTheme.Base"/>
+
+    <style name="AttribouterTheme.Dark" parent="AttribouterTheme.Base">
+        <item name="colorPrimary">@color/attribouter_colorPrimary_night</item>
+        <item name="colorPrimaryDark">@color/attribouter_colorPrimaryDark_night</item>
+        <item name="colorAccent">@color/attribouter_colorAccent_night</item>
+
+        <item name="attribouter_textColorAccent">@color/attribouter_textColorAccent_night</item>
+        <item name="attribouter_cardColor">@color/attribouter_cardColor_night</item>
+        <item name="attribouter_windowBackgroundColor">@color/attribouter_windowBackgroundColor_night</item>
+        <item name="attribouter_windowInsetColor">@color/attribouter_windowInsetColor_night</item>
+
+        <item name="attribouter_licenseDialogTheme">@style/AttribouterTheme.Dialog.Fullscreen.Dark</item>
+        <item name="attribouter_overflowDialogTheme">@style/AttribouterTheme.Dialog.Fullscreen.Dark</item>
+
+        <item name="colorControlHighlight">@color/attribouter_highlightColor_night</item>
+
+        <item name="android:textColorPrimary">@color/attribouter_textColorPrimaryInverse</item>
+        <item name="android:textColorSecondary">@color/attribouter_textColorSecondaryInverse</item>
+        <item name="android:textColorTertiary">@color/attribouter_textColorTertiaryInverse</item>
+        <item name="android:textColorPrimaryInverse">@color/attribouter_textColorPrimary</item>
+        <item name="android:textColorSecondaryInverse">@color/attribouter_textColorSecondary</item>
+        <item name="android:textColorTertiaryInverse">@color/attribouter_textColorTertiary</item>
+    </style>
+
+    <style name="AttribouterTheme.DayNight" parent="AttribouterTheme"/>
+
+    <!-- Component styles -->
 
     <style name="AttribouterTheme.ActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="AttribouterTheme.Dialog" parent="ThemeOverlay.AppCompat.Dialog" />
+    <style name="AttribouterTheme.Dialog" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="colorBackgroundFloating">?attr/attribouter_cardColor</item>
+    </style>
 
     <style name="AttribouterTheme.Dialog.Fullscreen" parent="AttribouterTheme">
+        <item name="android:windowAnimationStyle">@style/AttribouterTheme.SlideAnimation</item>
+    </style>
+
+    <style name="AttribouterTheme.Dialog.Fullscreen.Dark" parent="AttribouterTheme.Dark">
         <item name="android:windowAnimationStyle">@style/AttribouterTheme.SlideAnimation</item>
     </style>
 

@@ -2,30 +2,39 @@
 <about>
     <AppWedge
         repo="fennifith/Attribouter"
-        title="^Example Config">
+        title="^Example Config"
+        playStoreUrl="https://play.google.com/store/apps/details?id=me.jfenn.alarmio">
+
         <LinkWedge
             name="Bintray"
-            icon="https://bintray.com/favicon.ico"
-            url="https://bintray.com/18jafenn90/maven/attribouter" />
+            icon="@drawable/attribouter_ic_website"
+            url="https://jitpack.io/#fennifith/Attribouter" />
+
         <LinkWedge
             name="Documentation"
-            icon="https://jfenn.me/favicon.ico"
-            url="https://jfenn.me/about/?Attribouter" />
+            icon="https://jfenn.me/images/favicon-152.png"
+            url="https://jfenn.me/projects/attribouter/wiki" />
+
         <LinkWedge
-            hidden="true"
-            id="playStore" />
-        <LinkWedge
+            id="git"
             name="^Git Repo"
-            id="github" />
+            url="https://github.com/fennifith/Attribouter" />
+
     </AppWedge>
 
-    <TextWedge text="@string/html" />
     <!-- <text> elements can be added anywhere directly within the <about> tag -->
     <!-- they support html formatting (<p> <b> <i>) & links (<a href="">) -->
+    <TextWedge
+        text="@string/html"
+        centered="true">
 
-    <PlayStoreLinkWedge />
+        <PlayStoreLinkWedge
+            name="Rate the app!"
+            icon="@drawable/ic_star_half" />
 
-    <ContributorsWedge>
+    </TextWedge>
+
+    <ContributorsWedge title="Library Contributors" repo="fennifith/Attribouter">
         <ContributorWedge
             avatar="^@drawable/me"
             bio="This is a bio. I am a person."
@@ -35,7 +44,7 @@
             task="Owner">
             <LinkWedge
                 name="Twitter"
-                icon="https://twitter.com/favicon.ico"
+                icon="https://abs.twimg.com/favicons/twitter.ico"
                 url="https://jfenn.me/links/twitter" />
         </ContributorWedge>
         <!-- the "avatar" attribute can take either a url or a resource -->
@@ -54,6 +63,8 @@
                 hidden="true"
                 id="website" />
         </ContributorWedge>
+
+        <ContributorWedge login="gitlab:franciscofranco.1990" />
         <!-- For Jahir, the task "Lazy Slacker" will override the default task "Contributor" even after the github data is fetched (starting with the "^"
             character is what tells the library to do this) -->
         <ContributorWedge login="adueppen">
@@ -75,19 +86,19 @@
         <TranslatorWedge
             name="John Doe"
             avatar="https://jfenn.me/images/headers/rocks.jpg"
-            blog="https://example.com/"
-            locales="zh,rn,sn" />
+            websiteUrl="https://example.com/"
+            locales="zh,rn,sn,cy" />
         <!-- locales are comma separated, no whitespace -->
         <TranslatorWedge
             name="Jenny Doe"
             avatar="https://example.com/broken_link.png"
-            blog="https://example.com/"
+            websiteUrl="https://example.com/"
             locales="zh,sn" />
         <TranslatorWedge
             name="Joe Doe"
             avatar="https://jfenn.me/images/headers/highway.jpg"
-            blog="https://example.com/"
-            locales="rn,cy" />
+            websiteUrl="https://example.com/"
+            locales="rn,cy,zh" />
         <TranslatorWedge
             locales="en"
             login="fennifith" />
@@ -95,6 +106,9 @@
     <LicensesWedge
         overflow="1"
         showDefaults="false">
+
+        <LicenseWedge repo="gitlab:arcmenu-team/Arc-Menu" />
+
         <LicenseWedge repo="fennifith/ColorPickerDialog" />
         <!-- all of ColorPickerDialog's info is fetched from github -->
         <LicenseWedge

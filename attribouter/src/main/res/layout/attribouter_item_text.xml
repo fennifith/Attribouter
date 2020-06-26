@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="16dp"
+        android:paddingHorizontal="16dp"
+        android:textColor="?android:textColorSecondary"
+        android:textSize="14sp"
+        android:lineSpacingMultiplier="1.2"
+        tools:text="This is some text." />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/links"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-16dp"
+        android:paddingHorizontal="8dp"
+        tools:listitem="@layout/attribouter_item_link"
+        tools:itemCount="1" />
+
+</LinearLayout>

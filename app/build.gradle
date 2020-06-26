@@ -1,14 +1,20 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
 
     defaultConfig {
         applicationId "me.jfenn.attriboutersample"
         minSdkVersion 16
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
+
+        def githubToken = System.getenv("GITHUB_TOKEN_PUB")
+        if (githubToken != null)
+            buildConfigField "String", "GITHUB_TOKEN", "\"$githubToken\""
+        else buildConfigField "String", "GITHUB_TOKEN", "null"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -31,9 +37,10 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "androidx.appcompat:appcompat:$deps.android.appcompat"
-    implementation "com.google.android.material:material:$deps.google.material"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    implementation "androidx.appcompat:appcompat:1.1.0"
+    implementation "com.google.android.material:material:1.1.0"
 
     implementation project(':attribouter')
 }

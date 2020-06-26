@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="?selectableItemBackground">
+
+    <include layout="@layout/attribouter_item_header"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="4dp"
+        android:clipToPadding="false"
+        tools:listitem="@layout/attribouter_item_license"
+        tools:itemCount="2" />
+
+    <ImageView
+        android:id="@+id/expand"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="?selectableItemBackground"
+        android:scaleType="centerInside"
+        android:tint="?android:textColorPrimary"
+        app:srcCompat="@drawable/attribouter_ic_expand_down" />
+
+    <TextView
+        android:id="@+id/overflow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:textSize="18sp"
+        android:textColor="?android:textColorPrimary"
+        android:textStyle="bold"
+        tools:text="View Licenses" />
+
+</LinearLayout>
