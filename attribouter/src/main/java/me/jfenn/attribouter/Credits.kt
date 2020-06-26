@@ -17,6 +17,13 @@ fun ContributorsWedge.addDefaults() {
                     email = "dev@jfenn.me"
             ).create(lifecycle),
             ContributorWedge(
+                    login = "github:kevttob",
+                    name = "Kevin Aguilar",
+                    avatarUrl = "https://avatars3.githubusercontent.com/u/16209409",
+                    task = "^Designer",
+                    websiteUrl = "https://221pxls.com/"
+            ).create(lifecycle),
+            ContributorWedge(
                     login = "github:rroyGit",
                     name = "Rupam Roy",
                     avatarUrl = "https://avatars2.githubusercontent.com/u/20290568",
@@ -35,6 +42,13 @@ fun ContributorsWedge.addDefaults() {
                     avatarUrl = "https://avatars3.githubusercontent.com/u/30368951",
                     task = "^Contributor",
                     websiteUrl = "https://giorgiocantoni.it/"
+            ).create(lifecycle),
+            ContributorWedge(
+                    login = "github:jahirfiquitiva",
+                    name = "Jahir Fiquitiva",
+                    avatarUrl = "https://avatars1.githubusercontent.com/u/10360816",
+                    task = "^Contributor",
+                    websiteUrl = "https://jahir.dev/"
             ).create(lifecycle)
     ))
 
