@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.os.Bundle
+import androidx.annotation.StyleRes
 import androidx.annotation.XmlRes
 import androidx.fragment.app.Fragment
 import me.jfenn.attribouter.activities.AboutActivity
@@ -13,8 +14,14 @@ class Attribouter(
         private val context: Context
 ) {
 
+    private var themeRes: Int? = null
     private var fileRes: Int? = null
     private val tokens = HashMap<String, String>()
+
+    fun withTheme(@StyleRes themeRes: Int): Attribouter {
+        this.themeRes = themeRes
+        return this
+    }
 
     fun withFile(@XmlRes fileRes: Int): Attribouter {
         this.fileRes = fileRes
@@ -31,6 +38,7 @@ class Attribouter(
 
     fun show() {
         val intent = Intent(context, AboutActivity::class.java)
+        intent.putExtra(EXTRA_THEME_RES, themeRes)
         intent.putExtra(EXTRA_FILE_RES, fileRes)
         tokens.forEach { (hostname, token) ->
             intent.putExtra(EXTRA_TOKEN + hostname, token)
@@ -41,7 +49,8 @@ class Attribouter(
 
     fun toFragment(): Fragment {
         val args = Bundle()
-        if (fileRes != null) args.putInt(EXTRA_FILE_RES, fileRes!!)
+        themeRes?.let { args.putInt(EXTRA_THEME_RES, it) }
+        fileRes?.let { args.putInt(EXTRA_FILE_RES, it) }
         tokens.forEach { (hostname, token) ->
             args.putString(EXTRA_TOKEN + hostname, token)
         }
@@ -52,6 +61,7 @@ class Attribouter(
     }
 
     companion object {
+        const val EXTRA_THEME_RES = "me.jfenn.attribouter.EXTRA_THEME_RES"
         const val EXTRA_FILE_RES = "me.jfenn.attribouter.EXTRA_FILE_RES"
         const val EXTRA_TOKEN = "me.jfenn.attribouter.EXTRA_TOKEN:"
 

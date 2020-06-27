@@ -1,6 +1,7 @@
 package me.jfenn.attribouter.fragments
 
 import android.os.Bundle
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,11 +29,11 @@ class AboutFragment : Fragment(), Notifiable {
     private var tokens = HashMap<String, String>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        recycler = inflater.inflate(R.layout.attribouter_fragment_about, container, false) as RecyclerView
-
         val args = arguments
         var fileRes = R.xml.attribouter
+        var themeRes = R.style.AttribouterTheme_DayNight
         if (args != null) {
+            themeRes = args.getInt(Attribouter.EXTRA_THEME_RES, themeRes)
             fileRes = args.getInt(Attribouter.EXTRA_FILE_RES, fileRes)
 
             // parse hostname args
@@ -43,6 +44,9 @@ class AboutFragment : Fragment(), Notifiable {
                     tokens[hostname] = token
             }
         }
+
+        val layoutInflater = inflater.cloneInContext(ContextThemeWrapper(inflater.context, themeRes))
+        recycler = layoutInflater.inflate(R.layout.attribouter_fragment_about, container, false) as RecyclerView
 
         val parser = resources.getXml(fileRes)
         val provider = XMLWedgeProvider(parser)

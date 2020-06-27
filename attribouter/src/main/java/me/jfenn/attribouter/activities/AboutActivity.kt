@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import me.jfenn.androidutils.autoSystemUiColors
 import me.jfenn.androidutils.bind
+import me.jfenn.attribouter.Attribouter
 import me.jfenn.attribouter.R
 import me.jfenn.attribouter.fragments.AboutFragment
 
@@ -16,10 +17,12 @@ class AboutActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val bundle = intent.extras
+        setTheme(bundle?.getInt(Attribouter.EXTRA_THEME_RES, R.style.AttribouterTheme_DayNight) ?: R.style.AttribouterTheme_DayNight)
+
         setContentView(R.layout.attribouter_activity_about)
         setSupportActionBar(toolbar)
 
-        val bundle = intent.extras
         val fragment = AboutFragment()
 
         if (bundle != null) fragment.arguments = bundle

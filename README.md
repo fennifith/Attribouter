@@ -46,19 +46,21 @@ This is pretty simple.
 ``` kotlin
 attribouterActivity {
     withFile(R.xml.attribouter)
+    withTheme(R.style.AttribouterTheme_DayNight)
     withGitHubToken("abc123")
 }
 ```
 
 <details>
 <summary>Java</summary>
-<div class="highlight highlight-source-java">
-<pre>
+<div class="language-java highlighter-rouge">
+<pre><code>
 Attribouter.from(context)
     .withFile(R.xml.attribouter)
+    .withTheme(R.style.AttribouterTheme_DayNight)
     .withGitHubToken("abc123")
     .show();
-</pre>
+</code></pre>
 </div>
 </details>
 
@@ -68,21 +70,27 @@ This is also pretty simple.
 ``` kotlin
 val fragment = attribouterFragment {
     withFile(R.xml.attribouter)
+    withTheme(R.style.AttribouterTheme_DayNight)
     withGitHubToken("abc123")
 }
 ```
 
 <details>
 <summary>Java</summary>
-<div class="highlight highlight-source-java">
-<pre>
+<div class="language-java highlighter-rouge">
+<pre><code>
 Attribouter.from(context)
     .withFile(R.xml.attribouter)
+    .withTheme(R.style.AttribouterTheme_DayNight)
     .withGitHubToken("abc123")
     .show();
-</pre>
+</code></pre>
 </div>
 </details>
+
+---
+
+**When using the fragment** with `R.style.AttribouterTheme_DayNight` (the default theme value), be sure that your activity also [uses a dark theme](https://developer.android.com/guide/topics/ui/look-and-feel/darktheme) in the `-night` configuration, or you will have problems with text contrast (the fragment does not have a background, so the parent activity's window background will be drawn behind it). You can also call `withTheme(R.style.AttribouterTheme)` (light) or `withTheme(R.style.AttribouterTheme_Dark)` to change this behavior.
 
 ## Things to Note
 
@@ -121,10 +129,10 @@ This repository has two persistent branches: `main` and `develop` - of the two, 
 
 ### Example contributions
 
-- *Development:* Developers can help Alarmio by fixing bugs, implementing features, or helping to debug & research new issues. I'm hoping to write a complete guide to this process in the future - for now, please refer to [CONTRIBUTING.md](./.github/CONTRIBUTING.md).
-- *Design:* Attribouter should be intuitive and accessible to a wide variety of users - suggestions to improve certain interfaces are always welcome. This includes compatibility with screen readers, problems with contrast / color blindness, and the sizing/positioning of touch targets in the UI - many of which are shamefully untested in its present state.
-- *Localization:* If Attribouter doesn't have support for your fluent language(s), please consider translating it! Most in-app text is stored in [strings.xml](./attribouter/src/main/res/values/strings.xml) - this file should be copied to ../values-{lang}/strings.xml when translated. (this is an absurdly concise explanation - if this isn't clear, simply sending us translations in a new issue or email is perfectly fine!)
-- *Documentation:* Writing guides and explanations of how Attribouter works, how to use it, and how to contribute to it can go a long way to ensuring its usefulness and stability in the future. Whether this involves an update to the README, a tutorial for users and contributors, or adding Javadocs & comments to undocumented parts of the codebase - anything is valid!
+- **Development:** Developers can help Alarmio by fixing bugs, implementing features, or helping to debug & research new issues. I'm hoping to write a complete guide to this process in the future - for now, please refer to [CONTRIBUTING.md](./.github/CONTRIBUTING.md).
+- **Design:** Attribouter should be intuitive and accessible to a wide variety of users - suggestions to improve certain interfaces are always welcome. This includes compatibility with screen readers, problems with contrast / color blindness, and the sizing/positioning of touch targets in the UI - many of which are shamefully untested in its present state.
+- **Localization:** If Attribouter doesn't have support for your fluent language(s), please consider translating it! Most in-app text is stored in [strings.xml](./attribouter/src/main/res/values/strings.xml) - this file should be copied to ../values-{lang}/strings.xml when translated. (this is an absurdly concise explanation - if this isn't clear, simply sending us translations in a new issue or email is perfectly fine!)
+- **Documentation:** Writing guides and explanations of how Attribouter works, how to use it, and how to contribute to it can go a long way to ensuring its usefulness and stability in the future. Whether this involves an update to the README, a tutorial for users and contributors, or adding Javadocs & comments to undocumented parts of the codebase - anything is valid!
 
 ## Acknowledgements
 

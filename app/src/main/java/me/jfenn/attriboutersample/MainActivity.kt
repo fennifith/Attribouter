@@ -12,6 +12,7 @@ class MainActivity : AppCompatActivity() {
         // immediately start the Attribouter activity
         attribouterActivity {
             withFile(R.xml.about)
+            withTheme(R.style.AttribouterTheme_DayNight)
             withGitHubToken(BuildConfig.GITHUB_TOKEN)
         }
     }
