@@ -11,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="?attr/attribouter_textColorAccent"
+        app:iconPadding="8dp"
         app:iconTint="?attr/attribouter_textColorAccent"
         app:rippleColor="?attr/colorControlHighlight"
         style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
