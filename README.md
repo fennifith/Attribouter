@@ -37,7 +37,7 @@ allprojects {
 To add the dependency, copy this line into your app module's build.gradle file.
 
 ```gradle
-implementation 'me.jfenn:Attribouter:0.1.7'
+implementation 'me.jfenn:Attribouter:0.1.8'
 ```
 
 ### Starting an Activity
