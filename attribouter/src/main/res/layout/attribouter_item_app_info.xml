@@ -111,9 +111,9 @@
             android:layout_height="wrap_content"
             app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintTop_toBottomOf="@id/link_2"
-            app:layout_constraintStart_toEndOf="@id/link_3"
+            app:layout_constraintStart_toStartOf="@id/link_2"
             app:layout_constraintEnd_toEndOf="@id/link_2"
-            app:layout_constraintBottom_toBottomOf="@id/link_3">
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <include layout="@layout/attribouter_item_link_inline" />
 
