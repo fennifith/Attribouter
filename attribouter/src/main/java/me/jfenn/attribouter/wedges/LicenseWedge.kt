@@ -166,13 +166,19 @@ open class LicenseWedge(
 
         viewHolder.links?.apply {
             if (links.isNotEmpty()) {
+                visibility = View.VISIBLE
+
+                if (adapter != null) {
+                    // fix for google/flexbox-layout#349 - don't re-apply the layout manager to a recycled view
+                    swapAdapter(WedgeAdapter(links), true)
+                    return@apply
+                }
+
                 adapter = WedgeAdapter(links)
                 layoutManager = FlexboxLayoutManager(context).apply {
                     flexDirection = FlexDirection.ROW
                     justifyContent = JustifyContent.FLEX_START
                 }
-
-                visibility = View.VISIBLE
             } else visibility = View.GONE
         }
 
