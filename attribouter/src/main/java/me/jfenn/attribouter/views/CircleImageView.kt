@@ -42,9 +42,9 @@ class CircleImageView : AppCompatImageView {
         scaleType = ScaleType.CENTER_CROP
     }
 
-    constructor(context: Context?) : super(context)
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context?, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
+    constructor(context: Context) : super(context)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
 
     override fun onDraw(canvas: Canvas) {
         // don't draw border if used as a small icon (width < 56dp)
