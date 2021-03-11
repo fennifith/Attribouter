@@ -13,9 +13,9 @@ jobs:
         with:
           ref: main
       - name: Set up OpenJDK 1.8
-        uses: joschi/setup-jdk@v1
+        uses: joschi/setup-jdk@v2
         with:
-          java-version: 'openjdk8'
+          java-version: '8'
       - name: Gradle Build / APK
         run: ./gradlew assemble
       - uses: Shopify/upload-to-release@master
