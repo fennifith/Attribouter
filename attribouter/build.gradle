@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 29
-        versionCode 17
-        versionName "0.1.8"
+        versionCode 18
+        versionName "0.1.9"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -51,7 +51,7 @@ dependencies {
     annotationProcessor "com.github.bumptech.glide:compiler:4.11.0"
 
     implementation "me.jfenn:AndroidUtils:0.0.3"
-    implementation ("dev.horrific.code.james.git-rest-wrapper:gitrest:0.0.5") {
+    implementation ("dev.horrific.code.james.git-rest-wrapper:gitrest:0.0.8") {
         exclude group: "org.jetbrains.kotlinx", module: "kotlinx-serialization-runtime-common"
     }
 }
